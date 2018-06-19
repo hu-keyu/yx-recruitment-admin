@@ -1,0 +1,64 @@
+<!-- 公共重置CSS -->
+<link href="${link.contextPath}/static/css/common.css" rel="stylesheet" type="text/css">
+<link href="" skin-href="${link.contextPath}/static/css/skin-${user.skin}.css" plug-ln="skin" rel="stylesheet" type="text/css">
+<link href="http://at.alicdn.com/t/font_1474956227_0993266.css" rel="stylesheet" type="text/css">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="${link.contextPath}/static/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<!-- avalon (JavaScript plugins) -->
+<script src="${link.contextPath}/static/js/avalon-1.5.5.shim.min.js" type="text/javascript"></script>
+<!-- 项目公共JS -->
+<script src="${link.contextPath}/static/js/common.js" type="text/javascript"></script>
+<script src="${link.contextPath}/static/js/zh-common.js" type="text/javascript"></script>
+<script src="${link.contextPath}/static/js/modernizr.js" type="text/javascript"></script>
+<!--表单异步提交-->
+<script src="${link.contextPath}/static/js/jquery-form.js"></script>
+
+<!-- 97日历控件 http://www.my97.net/dp/demo/index.htm -->
+<script src="${link.contextPath}/static/lib/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<!-- 前台验证控件 http://validform.rjboy.cn/document.html -->
+<script src="${link.contextPath}/static/lib/Validform_v5.3.2/js/Validform_v5.3.2.js" type="text/javascript"></script>
+<!-- layui控件 http://layer.layui.com/ -->
+<link href="${link.contextPath}/static//lib/layui/css/layui.css" rel="stylesheet" type="text/css">
+<script src="${link.contextPath}/static/lib/layui/layui.js" type="text/javascript"></script>
+<!-- 分页控件 http://jqpaginator.keenwon.com/ -->
+<script src="${link.contextPath}/static/lib/jqPaginator/jqPaginator-1.2.0.min.js" type="text/javascript"></script>
+<!-- 前台验证控件 http://validator.niceue.com/ -->
+<script src="${link.contextPath}/static/lib/nice-validator/jquery.validator.js?local=zh-CN" type="text/javascript"></script>
+<!-- 省市区控件 -->
+<link href="${link.contextPath}/static/lib/city-picker/css/city-picker.css" rel="stylesheet">
+<script src="${link.contextPath}/static/lib/city-picker/js/city-picker.data.js"></script>
+<script src="${link.contextPath}/static/lib/city-picker/js/city-picker.js"></script>
+
+<!-- zTree控件 begin -->
+<link href="${link.contextPath}/static/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css">
+<script src="${link.contextPath}/static/zTree/js/jquery.ztree.all.min.js"></script>
+<!-- zTree控件 end-->
+<script>
+$(function(){
+//读取cookie;
+var cookieVal = readCookie("skin"),
+	     skinName = "${user.skin}",
+		 path = '${link.contextPath}/static/css/skin-';
+if (cookieVal){
+	if(cookieVal!=skinName){
+		var systemVar = $('link[plug-ln="skin"]').attr("skin-href");
+	    $('link[plug-ln="skin"]').attr("href",systemVar);
+	    $('#js_skin li').find('input[data-skin='+skinName+']').prop('checked', true);
+	}else{
+	    $('link[plug-ln="skin"]').attr('href',path+cookieVal+'.css');
+	    $('#js_skin li').find('input[data-skin='+cookieVal+']').prop('checked', true);
+	}
+}else{
+    var systemVar = $('link[plug-ln="skin"]').attr("skin-href");
+    $('link[plug-ln="skin"]').attr("href",systemVar);
+    $('#js_skin li').find('input[data-skin='+skinName+']').prop('checked', true);
+}
+$(document).on('click','#js_skin li',function(){
+	var _this = $(this),
+		skinVar = _this.find('input[type="radio"]').attr('data-skin');
+	_this.find('input[type="radio"]').prop('checked', true);
+	$('link[plug-ln="skin"]').attr('href',path+skinVar+'.css');
+	createCookie('skin',skinVar,365);
+});
+});
+</script>

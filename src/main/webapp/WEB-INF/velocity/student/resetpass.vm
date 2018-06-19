@@ -1,0 +1,49 @@
+<!-- 公共重置CSS -->
+<link href="${link.contextPath}/static/css/common.css" rel="stylesheet" type="text/css">
+<link href="${link.contextPath}/static/css/student.css" rel="stylesheet">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="${link.contextPath}/static/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="${link.contextPath}/static/js/common.js" type="text/javascript"></script>
+<!--表单异步提交-->
+<script src="${link.contextPath}/static/js/jquery-form.js"></script>
+<!-- layui控件 http://layer.layui.com/ -->
+<link href="${link.contextPath}/static//lib/layui/css/layui.css" rel="stylesheet" type="text/css">
+<script src="${link.contextPath}/static/lib/layui/layui.js" type="text/javascript"></script>
+<!-- 前台验证控件 http://validator.niceue.com/ -->
+<script src="${link.contextPath}/static/lib/nice-validator/jquery.validator.js?local=zh-CN" type="text/javascript"></script>
+<!-- 项目公共JS -->
+<script src="${link.contextPath}/static/js/zh-common.js"></script>
+<script type="text/javascript">
+	$('#formPass').validator({
+        formClass:'n-yellow',
+        msgClass: "n-top",
+        msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>'
+    });     
+</script>
+ <!-- 设置密保问题 S-->
+    <div class="dialog dialog-encrypted" id="parentDiv">
+    <form action="" method="post" id="formPass"  accept-charset="utf-8">
+        <div class="table-content" id="verifysecret">
+            <table class="formTable">
+                <tbody>
+                   <tr>
+	                   <th class='text-right' width='20%'>原密码：</th>
+	                   <td><input class='input' type='password' name='oldpass' id='oldpass' 
+	                   title="以字母开头，长度在6~18之间，只能包含字母、数字和下划线"
+                         placeholder="以字母开头，长度在6~18之间，只能包含字母、数字和下划线"
+                         value=""
+	                   ></td>
+                   </tr>
+                   <tr>
+                   <th class='text-right' width='20%'>新密码：</th>
+                   <td><input class='input' type='password' name='newpass' id='newpass'
+                   title="以字母开头，长度在6~18之间，只能包含字母、数字和下划线"
+                         placeholder="以字母开头，长度在6~18之间，只能包含字母、数字和下划线"
+                         value=""
+                   ></td>
+                   </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <!-- 设置密保问题 E-->

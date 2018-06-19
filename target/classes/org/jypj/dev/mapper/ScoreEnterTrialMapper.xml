@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.ScoreEnterTrialDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.ScoreEnterTrial" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="ITEMS_ID" property="itemsId" jdbcType="VARCHAR" />
+	<result column="POST_ID" property="postId" jdbcType="VARCHAR" />
+	<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+	<result column="TYPE" property="type" jdbcType="VARCHAR" />
+	<result column="IS_ENTER" property="isEnter" jdbcType="VARCHAR" />
+	<result column="SUBJECT_TYPE" property="subjectType" jdbcType="VARCHAR" />
+	<result column="SCORE_PUBLISH_STATUS" property="scorePublishStatus" jdbcType="VARCHAR" />
+	<result column="LIST_PUBLISH_STATUS" property="listPublishStatus" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+	<result column="SCHOOL_ID" property="schoolId" jdbcType="VARCHAR" />
+	<result column="GROUPID" property="groupId" jdbcType="VARCHAR" />
+	
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,ITEMS_ID,POST_ID,STUDENT_ID,TYPE,IS_ENTER,SUBJECT_TYPE,SCORE_PUBLISH_STATUS,LIST_PUBLISH_STATUS,CREATE_USER,CTIME,MODIFY_USER,MTIME,SCHOOL_ID,GROUPID
+  </sql>
+  
+   <insert id="saveScoreEnterTrialByField" parameterType="org.jypj.dev.entity.ScoreEnterTrial" >
+    insert into score_enter_trial
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="itemsId != null" >
+    ITEMS_ID,
+   </if>
+   <if test="postId != null" >
+    POST_ID,
+   </if>
+   <if test="studentId != null" >
+    STUDENT_ID,
+   </if>
+   <if test="type != null" >
+    TYPE,
+   </if>
+   <if test="isEnter != null" >
+    IS_ENTER,
+   </if>
+   <if test="subjectType != null" >
+    SUBJECT_TYPE,
+   </if>
+   <if test="scorePublishStatus != null" >
+    SCORE_PUBLISH_STATUS,
+   </if>
+   <if test="listPublishStatus != null" >
+    LIST_PUBLISH_STATUS,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="ctime != null" >
+    CTIME,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+   <if test="mtime != null" >
+    MTIME,
+   </if>
+   <if test="schoolId != null" >
+    SCHOOL_ID,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="itemsId != null" >
+        #{itemsId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnter != null" >
+        #{isEnter,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectType != null" >
+        #{subjectType,jdbcType=VARCHAR},
+      </if>
+      <if test="scorePublishStatus != null" >
+        #{scorePublishStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="listPublishStatus != null" >
+        #{listPublishStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=DATE},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        #{mtime,jdbcType=DATE},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveScoreEnterTrial" parameterType="org.jypj.dev.entity.ScoreEnterTrial" >
+    insert into score_enter_trial (
+	ID,
+	ITEMS_ID,
+	POST_ID,
+	STUDENT_ID,
+	TYPE,
+	IS_ENTER,
+	SUBJECT_TYPE,
+	SCORE_PUBLISH_STATUS,
+	LIST_PUBLISH_STATUS,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	MTIME,
+	 SCHOOL_ID
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{itemsId,jdbcType=VARCHAR},
+	#{postId,jdbcType=VARCHAR},
+	#{studentId,jdbcType=VARCHAR},
+	#{type,jdbcType=VARCHAR},
+	#{isEnter,jdbcType=VARCHAR},
+	#{subjectType,jdbcType=VARCHAR},
+	#{scorePublishStatus,jdbcType=VARCHAR},
+	#{listPublishStatus,jdbcType=VARCHAR},
+	#{createUser,jdbcType=VARCHAR},
+	#{ctime,jdbcType=DATE},
+	#{modifyUser,jdbcType=VARCHAR},
+	#{mtime,jdbcType=DATE},
+	#{schoolId,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <insert id="saveTrialsList" parameterType="list" >
+    insert into score_enter_trial (
+	ID,
+	ITEMS_ID,
+	POST_ID,
+	STUDENT_ID,
+	TYPE,
+	IS_ENTER,
+	SUBJECT_TYPE,
+	SCORE_PUBLISH_STATUS,
+	LIST_PUBLISH_STATUS,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	MTIME,
+	 SCHOOL_ID
+	)
+	<foreach collection="list" item="item" index="index" open="(" separator="union all" close=")" >  
+	select sys_guid(),
+	#{item.itemsId,jdbcType=VARCHAR},
+	#{item.postId,jdbcType=VARCHAR},
+	#{item.studentId,jdbcType=VARCHAR},
+	#{item.type,jdbcType=VARCHAR},
+	#{item.isEnter,jdbcType=VARCHAR},
+	#{item.subjectType,jdbcType=VARCHAR},
+	#{item.scorePublishStatus,jdbcType=VARCHAR},
+	#{item.listPublishStatus,jdbcType=VARCHAR},
+	#{item.createUser,jdbcType=VARCHAR},
+	systimeStamp,
+	#{item.modifyUser,jdbcType=VARCHAR},
+	#{item.mtime,jdbcType=DATE},
+	#{item.schoolId,jdbcType=VARCHAR}
+	from dual
+	</foreach> 
+  </insert>
+  
+  <delete id="deleteScoreEnterTrialById" parameterType="java.lang.String" >
+    delete from score_enter_trial
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteScoreEnterTrialByObject" parameterType="org.jypj.dev.entity.ScoreEnterTrial" >
+    delete from score_enter_trial
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteScoreEnterTrial" parameterType="org.jypj.dev.entity.ScoreEnterTrial">
+  	delete from score_enter_trial 
+  	where 1=1
+  	<if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="itemsId != null and itemsId !='' ">
+	  and ITEMS_ID=#{itemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isEnter != null and isEnter !='' ">
+	  and IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectType != null and subjectType !='' ">
+	  and SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="scorePublishStatus != null and scorePublishStatus !='' ">
+	  and SCORE_PUBLISH_STATUS=#{scorePublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="listPublishStatus != null and listPublishStatus !='' ">
+	  and LIST_PUBLISH_STATUS=#{listPublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+  </delete>
+  
+  <!--取消发布成绩时，将数据进行删除-->
+   <delete id="deleteTrialByProjectId" parameterType="java.lang.String" >
+    delete from score_enter_trial
+    where ITEMS_ID = #{projectId,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateScoreEnterTrialByField" parameterType="org.jypj.dev.entity.ScoreEnterTrial" >
+    update score_enter_trial
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="itemsId != null" >
+  	 ITEMS_ID=#{itemsId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="postId != null" >
+  	 POST_ID=#{postId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="studentId != null" >
+  	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="type != null" >
+  	 TYPE=#{type,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isEnter != null" >
+  	 IS_ENTER=#{isEnter,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="subjectType != null" >
+  	 SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="scorePublishStatus != null" >
+  	 SCORE_PUBLISH_STATUS=#{scorePublishStatus,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="listPublishStatus != null" >
+  	 LIST_PUBLISH_STATUS=#{listPublishStatus,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="ctime != null" >
+  	 CTIME=#{ctime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="mtime != null" >
+  	 MTIME=#{mtime,jdbcType=DATE},
+  	 </if>
+     <if test="schoolId != null" >
+  	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateScoreEnterTrial" parameterType="org.jypj.dev.entity.ScoreEnterTrial" >
+    update score_enter_trial
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 ITEMS_ID=#{itemsId,jdbcType=VARCHAR},
+	 POST_ID=#{postId,jdbcType=VARCHAR},
+	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+	 TYPE=#{type,jdbcType=VARCHAR},
+	 IS_ENTER=#{isEnter,jdbcType=VARCHAR},
+	 SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR},
+	 SCORE_PUBLISH_STATUS=#{scorePublishStatus,jdbcType=VARCHAR},
+	 LIST_PUBLISH_STATUS=#{listPublishStatus,jdbcType=VARCHAR},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 CTIME=#{ctime,jdbcType=DATE},
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MTIME=#{mtime,jdbcType=DATE},
+	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectScoreEnterTrialById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_trial
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_trial
+    where 1=1 
+  </select> 
+    
+  <select id="selectCountOfEnterTrial" resultType="java.lang.Integer" parameterType="org.jypj.dev.entity.ScoreEnterTrial" >
+  select count(0) from score_enter_trial setl where setl.items_id = #{itemsId,jdbcType=VARCHAR} 
+	and setl.is_enter = '1' and setl.list_publish_status = '2' and setl.SUBJECT_TYPE = #{subjectType,jdbcType=VARCHAR}
+  </select> 
+  
+  
+  <select id="selectOnePageByScoreEnterTrial" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ScoreEnterTrial" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_trial
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="itemsId != null and itemsId !='' ">
+	  and ITEMS_ID=#{itemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isEnter != null and isEnter !='' ">
+	  and IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectType != null and subjectType !='' ">
+	  and SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="scorePublishStatus != null and scorePublishStatus !='' ">
+	  and SCORE_PUBLISH_STATUS=#{scorePublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="listPublishStatus != null and listPublishStatus !='' ">
+	  and LIST_PUBLISH_STATUS=#{listPublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+  <!--查询统一试讲入围名单（调整和删除名单）-->
+  <select id="selectTrialEnterPage" resultType="org.jypj.dev.vo.ScoreEntersOutVo" parameterType="java.util.Map" >
+     select s.id as studentId,t.IS_ENTER as isPass,t.TYPE as type,s.NAME as studentName,s.ticketNum as ticketnum,s.SEX as sex,
+     nvl(g.GRADE,0.0) as score,d.TEXT as school,t.SCHOOL_ID as schoolId from score_enter_trial t
+ 	 left join STUDENT_INFO s on t.STUDENT_ID=s.ID left join SYS_DICTIONARY d on 
+ 	 t.SCHOOL_ID=d.ID left join SCORE_GRADE_TRIAL g on g.STUDENT_ID=t.STUDENT_ID where 1=1
+ 	
+  	<if test="isEnter != null and isEnter !='' ">
+	  and t.IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	</if>
+	<!--<if test="year != null and year !='' ">
+	  and to_char(t.CTIME,'yyyy')=#{year,jdbcType=VARCHAR}
+	</if>  -->
+  	<if test="projectId != null and projectId !='' ">
+	  and t.ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="isList != null and isList !='' ">
+	  and t.LIST_PUBLISH_STATUS=#{isList,jdbcType=VARCHAR}
+	</if>
+	<!--<if test="testType != null and testType !='' ">
+	  and t.TYPE=#{testType,jdbcType=VARCHAR}
+	</if>  -->
+	<if test="postId != null and postId !='' ">
+	  and t.POST_ID=#{postId,jdbcType=VARCHAR}
+	</if>
+	<if test="nameOrNum != null and nameOrNum !='' ">
+	  and (s.NAME like concat(concat('%',#{nameOrNum,jdbcType=VARCHAR}),'%') 
+	  or s.TICKETNUM like concat(concat('%',#{nameOrNum,jdbcType=VARCHAR}),'%'))
+	</if>
+	  order by g.SCHOOL_ID,to_number(g.GRADE) desc,g.ID,t.MTIME,t.SCHOOL_ID,t.id
+  </select>
+  
+  <!--查询入围的考生及分数（导入专用）-->
+  <select id="selectExportByMap" resultType="org.jypj.dev.vo.ScoreEntersOutVo" parameterType="java.util.Map" >
+    select s.id as studentId,s.NAME as studentName,s.ticketNum as ticketnum,s.SEX as sex,d.TEXT as school, nvl(g.GRADE,0.0) as score,
+	t.POST_ID as postId ,r.POST_NAME as postName from score_enter_trial t inner join STUDENT_INFO s on t.STUDENT_ID=s.ID 
+	inner join SYS_DICTIONARY d on t.SCHOOL_ID=d.ID inner join RECRUIT_POSTSET r on t.POST_ID= r.ID 
+	left join SCORE_GRADE_TRIAL g on g.STUDENT_ID=t.STUDENT_ID where 1=1
+  	<if test="isEnter != null and isEnter !='' ">
+	  and t.IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	</if>
+  	<if test="projectId != null and projectId !='' ">
+	  and t.ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="isList != null and isList !='' ">
+	  and t.LIST_PUBLISH_STATUS=#{isList,jdbcType=VARCHAR}
+	</if>
+	order by t.POST_ID,r.POST_NAME
+  </select>
+  
+  <!--批量更新入围名单-->
+  <update id="updateTrialEnterList" parameterType="list">
+  		<foreach collection="list" item="item" index="index" open="begin" close="end;" separator="" > 
+	        update score_enter_trial 
+	        <set>
+	        	<if test="item.isEnter != null and item.isEnter !='' ">
+				   IS_ENTER=#{item.isEnter,jdbcType=VARCHAR},
+				 </if>
+				 <if test="item.modifyUser != null and item.modifyUser !='' ">
+				   MODIFY_USER=#{item.modifyUser,jdbcType=VARCHAR},
+				 </if>
+	        	 <if test="item.listPublishStatus != null and item.listPublishStatus !='' ">
+				   LIST_PUBLISH_STATUS=#{item.listPublishStatus,jdbcType=VARCHAR},
+				 </if>
+	        	MTIME=systimeStamp
+	        </set>
+	        where ID = #{item.id,jdbcType=VARCHAR};
+       </foreach>
+  </update>
+  
+  <!--查询统一试讲入围名单（发布名单）-->
+  <select id="selectAllTrial" resultType="org.jypj.dev.vo.ScoreEntersOutVo" parameterType="java.util.Map" >
+     select s.id as studentId,t.IS_ENTER as isPass,t.TYPE as type,s.NAME as studentName,s.ticketNum as ticketnum,s.SEX as sex,t.ID as id,
+     t.ITEMS_ID as projectId,t.POST_ID as postId,d.TEXT as school,t.SCHOOL_ID as schoolId,e.POST_NAME as postName ,n.ID as applyId
+     from score_enter_trial t inner join STUDENT_INFO s on t.STUDENT_ID=s.ID inner join STUDENT_APPLY_INFO n on  
+ 	 n.STUDENT_ID=s.ID left join SYS_DICTIONARY d on t.SCHOOL_ID=d.ID left join RECRUIT_POSTSET e on t.POST_ID=e.ID where 1=1
+ 	 and s.ticketNum is not null
+  	<if test="isEnter != null and isEnter !='' ">
+	  and t.IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	</if>
+	<!-- <if test="year != null and year !='' ">
+	  and to_char(t.CTIME,'yyyy')=#{year,jdbcType=VARCHAR}
+	</if>  -->
+  	<if test="projectId != null and projectId !='' ">
+	  and t.ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="liststatus != null and liststatus !='' ">
+	  and t.LIST_PUBLISH_STATUS=#{liststatus,jdbcType=VARCHAR}
+	</if>
+	<if test="subjectType != null and subjectType !='' ">
+	  and t.SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR}
+	</if>
+	<!--<if test="testType != null and testType !='' ">
+	  and t.TYPE=#{testType,jdbcType=VARCHAR}
+	</if>  
+	<if test="postId != null and postId !='' ">
+	  and t.POST_ID=#{postId,jdbcType=VARCHAR}
+	</if>-->
+	
+	order by t.MTIME,t.id
+  </select>
+  
+  <!--查询综合成绩-->
+   <select id="selectSynthesizePageByMap" resultType="org.jypj.dev.vo.ScoreEntersOutVo" parameterType="java.util.Map" >
+     
+     select distinct t.studentId as studentId,t.isPass as isPass,t.studentName as studentName,t.ticketnum as ticketnum,t.sex as sex,
+	 t.phone as phone,t.scyscore as scyscore,t.score as score,t.offer as offer,t.projectId as projectId,t.schoolId as schoolId,d.TEXT as school
+	 from ( select  s.id as studentId,t.IS_ENTER as isPass,s.NAME as studentName,s.ticketNum as ticketnum,s.SEX as sex,r.IS_RESET as phone,
+     nvl(r.remark,0) as scyscore,nvl(g.GRADE,0) as score,nvl(r.GRADE,0) as offer,t.ITEMS_ID as projectId,t.POST_ID as postId,
+     t.SCHOOL_ID as schoolId from SCORE_ENTER_TRIAL  t left join STUDENT_INFO s on t.STUDENT_ID=s.ID left join SCORE_GRADE_WRITTEN g on 
+ 	 g.STUDENT_ID=t.STUDENT_ID left join SCORE_GRADE_TRIAL r on r.STUDENT_ID=t.STUDENT_ID union
+     select s.id as studentId,t.IS_ENTER as isPass,s.NAME as studentName,s.ticketNum as ticketnum,s.SEX as sex,r.IS_RESET as phone,
+     nvl(r.remark,0) as scyscore,nvl(g.GRADE,0) as score,nvl(r.GRADE,0) as offer,t.ITEMS_ID as projectId,t.POST_ID as postId,
+     t.SCHOOL_ID as schoolId from SCORE_ENTER_WRITTEN  t left join STUDENT_INFO s on t.STUDENT_ID=s.ID left join SCORE_GRADE_WRITTEN g on 
+ 	 g.STUDENT_ID=t.STUDENT_ID left join SCORE_GRADE_TRIAL r on r.STUDENT_ID=t.STUDENT_ID 
+ 	 where 1=1  and s.FREE_STUDENT='0' and s.PROFESSIONAL_COURSE='0')t  
+	 left join SYS_DICTIONARY d on t.schoolId=d.ID where 1=1
+ 	
+  	<if test="isEnter != null and isEnter !='' ">
+	  and t.isPass=#{isEnter,jdbcType=VARCHAR}
+	</if>
+	<!-- <if test="year != null and year !='' ">
+	  and to_char(t.CTIME,'yyyy')=#{year,jdbcType=VARCHAR}
+	</if>  -->
+  	<if test="projectId != null and projectId !='' ">
+	  and t.projectId=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="postId != null and postId !='' ">
+	  and t.postId=#{postId,jdbcType=VARCHAR}
+	</if>
+	<if test="nameOrNum != null and nameOrNum !='' ">
+	  and (t.studentName like concat(concat('%',#{nameOrNum,jdbcType=VARCHAR}),'%') 
+	  or t.ticketnum like concat(concat('%',#{nameOrNum,jdbcType=VARCHAR}),'%'))
+	</if>
+	order by t.schoolId,to_number(t.scyscore) desc,to_number(t.offer) desc,to_number(t.score) desc,t.studentId
+  </select>
+  
+  
+  
+  <!-- <select id="selectSynthesizePageByMap" resultType="org.jypj.dev.vo.ScoreEntersOutVo" parameterType="java.util.Map" >
+     
+     select s.id as studentId,t.IS_ENTER as isPass,t.TYPE as type,s.NAME as studentName,s.ticketNum as ticketnum,s.SEX as sex,r.IS_RESET as phone,
+     r.remark as scyscore,nvl(g.GRADE,0.0) as score,nvl(r.GRADE,0.0) as offer,d.TEXT as school,
+     t.SCHOOL_ID as schoolId from SCORE_ENTER_TRIAL  t inner join STUDENT_INFO s on t.STUDENT_ID=s.ID inner join SYS_DICTIONARY d on 
+     t.SCHOOL_ID=d.ID left join SCORE_GRADE_WRITTEN g on 
+ 	 g.STUDENT_ID=t.STUDENT_ID left join SCORE_GRADE_TRIAL r on r.STUDENT_ID=t.STUDENT_ID  where 1=1-->
+ 	
+  	<!--<if test="isEnter != null and isEnter !='' ">
+	  and t.IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	</if>
+	 <if test="year != null and year !='' ">
+	  and to_char(t.CTIME,'yyyy')=#{year,jdbcType=VARCHAR}
+	</if> 
+  	<if test="projectId != null and projectId !='' ">
+	  and t.ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+	</if> 
+	<if test="testType != null and testType !='' ">
+	  and t.TYPE=#{testType,jdbcType=VARCHAR}
+	</if>  
+	<if test="postId != null and postId !='' ">
+	  and t.POST_ID=#{postId,jdbcType=VARCHAR}
+	</if>
+	<if test="nameOrNum != null and nameOrNum !='' ">
+	  and (s.NAME like concat(concat('%',#{nameOrNum,jdbcType=VARCHAR}),'%') 
+	  or s.TICKETNUM like concat(concat('%',#{nameOrNum,jdbcType=VARCHAR}),'%'))
+	</if>
+	order by t.SCHOOL_ID,to_number(r.remark) desc,to_number(r.GRADE) desc,to_number(g.GRADE) desc,t.MTIME,t.id
+  </select> -->
+  
+  
+  <!--导出试讲成绩-->
+  <select id="selectPersonLecture" resultType="org.jypj.dev.vo.ScoreEntersOutVo" parameterType="java.util.Map" >
+     select s.id as studentId,
+     t.IS_ENTER as isPass,
+     t.TYPE as type,
+     s.NAME as studentName,
+     s.ticketNum as ticketnum,
+     s.SEX as sex,
+     s.IDENTITY_CARD idCard,
+     s.phone_number phone,
+     r.remark as scyscore,
+     rp.post_name postName,
+     nvl(g.GRADE,0.0) as score,
+     nvl(r.GRADE,0.0) as offer,
+  	 case
+     when el.period = '1' then to_char(el.start_date,'yyyy-MM-dd')||'-'||'上午'
+     when el.period = '2' then to_char(el.start_date,'yyyy-MM-dd')||'-'||'下午'
+     end lectureTime,
+     d.TEXT as school,
+     t.SCHOOL_ID as schoolId 
+     from SCORE_ENTER_TRIAL  t 
+     inner join STUDENT_INFO s on t.STUDENT_ID=s.ID 
+     inner join SYS_DICTIONARY d on t.SCHOOL_ID=d.ID 
+     inner join recruit_postset rp on t.post_id = rp.id
+     left join SCORE_GRADE_WRITTEN g on g.STUDENT_ID=t.STUDENT_ID 
+     left join SCORE_ENTER_TRIAL se on t.student_id = se.student_id and t.items_id = se.items_id
+     left join EXAM_LECTURE_GROUP el on se.groupid = el.id 
+ 	 left join SCORE_GRADE_TRIAL r on r.STUDENT_ID=t.STUDENT_ID  where 1=1
+ 	 and el.is_show = '1'
+	 and t.IS_ENTER = '1'
+  	<if test="projectId != null and projectId !='' ">
+	  and t.ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="name != null and name !='' ">
+	  and (s.NAME like concat(concat('%',#{name,jdbcType=VARCHAR}),'%') 
+	</if>
+	order by d.value,t.id
+  </select>
+  
+   <select id="selectLabsCount" resultType="Integer" parameterType="java.util.Map" >
+    select count(*) from SCORE_ENTER_TRIAL t inner join EXAM_LECTURE_GROUP e on t.GROUPID=e.ID where 1=1  and t.IS_ENTER='1' 
+  	<if test="projectId != null and projectId !='' ">
+	  and t.ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="testType != null and testType !='' ">
+	  and t.TYPE=#{testType,jdbcType=VARCHAR}
+	</if>
+	<if test="flag != null and flag !='' and flag ==1">
+	  and e.IS_SHOW='1' and t.GROUPID is not null
+	</if>
+  </select>
+  
+  <select id="selectEntersCount" resultType="Integer" parameterType="java.util.Map" >
+    select count(*) from SCORE_ENTER_TRIAL t where 1=1  and t.IS_ENTER='1' 
+  	<if test="projectId != null and projectId !='' ">
+	  and t.ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="testType != null and testType !='' ">
+	  and t.TYPE=#{testType,jdbcType=VARCHAR}
+	</if>
+  </select>
+  
+  <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_trial
+    where 1=1 
+    <if test="studentIds != null and studentIds !=''">
+    	AND STUDENT_ID IN 
+		<foreach collection="studentIds" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+    </if>
+    <if test="projectId != null and projectId !=''">
+    	and ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+    </if>
+    <if test="positionid != null and positionid !=''">
+    	and POST_ID=#{positionid,jdbcType=VARCHAR}
+    </if>
+  </select>
+  
+  <select id="selectCountByMap" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    select count(1) from score_enter_trial where 1=1
+    <if test="projectId != null and projectId !=''">
+    	and ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+    </if>
+    <!--名单发布状态-->
+    <if test="listStatus != null and listStatus !=''">
+    	and LIST_PUBLISH_STATUS=#{listStatus,jdbcType=VARCHAR}
+    </if>
+    <!--学科类别-->
+    <if test="subjectType != null and subjectType !=''">
+    	and SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR}
+    </if>
+    
+  </select>
+  
+  <!--查询入围名单（名单导出专用） -->
+  <select id="selectListExportByMap" resultType="org.jypj.dev.vo.ScoreEntersOutVo" parameterType="java.util.Map" >
+    select s.IDENTITY_CARD as idCard,s.NAME as studentName,s.ticketNum as ticketnum,s.SEX as sex,
+   	d.TEXT as school,t.POST_ID as postId,r.POST_NAME as postName from score_enter_trial t
+ 	left join STUDENT_INFO s on t.STUDENT_ID=s.ID left join SYS_DICTIONARY d on 
+ 	t.SCHOOL_ID=d.ID left join RECRUIT_POSTSET r on r.ID=t.POST_ID  where 1=1 and s.ticketNum is not null
+  	<if test="isEnter != null and isEnter !='' ">
+	  and t.IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	</if>
+  	<if test="projectId != null and projectId !='' ">
+	  and t.ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	order by t.POST_ID,r.POST_NAME
+  </select>
+  
+   <select id="selectAllByScoreEnterTrial" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ScoreEnterTrial" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_trial
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="itemsId != null and itemsId !='' ">
+	  and ITEMS_ID=#{itemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isEnter != null and isEnter !='' ">
+	  and IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectType != null and subjectType !='' ">
+	  and SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="scorePublishStatus != null and scorePublishStatus !='' ">
+	  and SCORE_PUBLISH_STATUS=#{scorePublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="listPublishStatus != null and listPublishStatus !='' ">
+	  and LIST_PUBLISH_STATUS=#{listPublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+	  <if test="groupId != null and groupId !='' ">
+	  and GROUPID=#{groupId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+  <!--根据准考证号和姓名还有项目ID查询考生是否存在(排除成绩已发布的学生)-->
+  <select id="selectByStu" resultType="org.jypj.dev.vo.ScoreEntersOutVo">
+ 	 select s.TICKETNUM as ticketnum,s.NAME as studentName from SCORE_GRADE_TRIAL t inner join STUDENT_INFO s on t.STUDENT_ID=s.ID 
+     where 1=1 and t.SCORE_PUBLISH_STATUS='0'
+ 	 <if test="ticketNum != null and ticketNum !='' ">
+	  	and  s.TICKETNUM=#{ticketNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentName != null and studentName !='' ">
+	  	and s.NAME=#{studentName,jdbcType=VARCHAR}
+	 </if>
+  	 <if test="projectId != null and projectId !='' ">
+	  	and t.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+  </select>
+  
+  <!--查询所有名单-->
+  <select id="selectByStuCondition" resultType="org.jypj.dev.vo.ScoreEntersOutVo">
+ 	 select s.TICKETNUM as ticketnum,s.NAME as studentName,r.POST_NAME as postName from SCORE_GRADE_TRIAL t 
+ 	 inner join STUDENT_INFO s on t.STUDENT_ID=s.ID inner join RECRUIT_POSTSET r on t.POSITION_ID=r.ID
+     where 1=1 and t.SCORE_PUBLISH_STATUS='0'
+ 	 <if test="projectId != null and projectId !='' ">
+	  	and t.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+  </select>
+  
+  <!--根据准考证号和姓名还有项目ID查询考生是否存在(排除名单已发布的学生)-->
+  <!--<select id="selectByStu" resultType="org.jypj.dev.vo.ScoreEntersOutVo">
+ 	 select s.TICKETNUM as ticketnum,s.NAME as studentName from score_enter_trial t inner join STUDENT_INFO s on t.STUDENT_ID=s.ID 
+ 	 inner join RECRUIT_NOTICE n on t.ITEMS_ID=n.THEME_ID where 1=1 and t.LIST_PUBLISH_STATUS='2'
+ 	 <if test="ticketNum != null and ticketNum !='' ">
+	  	and  s.TICKETNUM=#{ticketNum,jdbcType=VARCHAR}
+	 </if>
+  	 <if test="isPass != null and isPass !='' ">
+	  	and t.IS_ENTER=#{isPass,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentName != null and studentName !='' ">
+	  	and s.NAME=#{studentName,jdbcType=VARCHAR}
+	 </if>
+  	 <if test="projectId != null and projectId !='' ">
+	  	and t.ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	<if test="sex != null and sex !='' " >
+	  and t.SUBJECT_TYPE=#{sex,jdbcType=VARCHAR}
+	 </if>
+  </select>  -->
+  
+  <insert id="batchSaveScoreEnterTrial" parameterType="map">
+  	INSERT INTO SCORE_ENTER_TRIAL(ID, ITEMS_ID, POST_ID, STUDENT_ID, TYPE, IS_ENTER, SCORE_PUBLISH_STATUS, LIST_PUBLISH_STATUS, CREATE_USER, CTIME, MODIFY_USER, MTIME, SCHOOL_ID,SUBJECT_TYPE) 
+    	SELECT sys_guid(),t.PROJECT_ID,t.POSITION_ID,t.STUDENT_ID,'3',decode(t.IS_EMPLOY,'1','1','2'),'2','1',t.CREATEUSER,sysdate,t.MODIFYUSER,sysdate,t.SCHOOL_ID,r.IS_ART
+        FROM SCHOOL_GRADE t left join RECRUIT_POSTSET r on t.POSITION_ID=r.ID
+        WHERE 1=1
+        <if test="projectId != null and projectId !='' ">
+		  and t.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+		</if>
+        <if test="schoolId != null and schoolId !='' ">
+		  and t.SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+		</if>
+  </insert>
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_trial
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByScoreEnterTrial" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ScoreEnterTrial" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_trial
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="itemsId != null and itemsId !='' ">
+	  and ITEMS_ID=#{itemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isEnter != null and isEnter !='' ">
+	  and IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectType != null and subjectType !='' ">
+	  and SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="scorePublishStatus != null and scorePublishStatus !='' ">
+	  and SCORE_PUBLISH_STATUS=#{scorePublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="listPublishStatus != null and listPublishStatus !='' ">
+	  and LIST_PUBLISH_STATUS=#{listPublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  <update id="updateBatchScoreEnterTrialList" parameterType="list">
+	  
+		<foreach collection="list" item="item" index="index" open="begin" close="end;" separator="" >
+	    update score_enter_trial G 
+	 <set >
+	 G.ID=#{item.id,jdbcType=VARCHAR},
+	 G.ITEMS_ID=#{item.itemsId,jdbcType=VARCHAR},
+	 G.POST_ID=#{item.postId,jdbcType=VARCHAR},
+	 G.STUDENT_ID=#{item.studentId,jdbcType=VARCHAR},
+	 G.TYPE=#{item.type,jdbcType=VARCHAR},
+	 G.IS_ENTER=#{item.isEnter,jdbcType=VARCHAR},
+	 G.SUBJECT_TYPE=#{item.subjectType,jdbcType=VARCHAR},
+	 G.SCORE_PUBLISH_STATUS=#{item.scorePublishStatus,jdbcType=VARCHAR},
+	 G.LIST_PUBLISH_STATUS=#{item.listPublishStatus,jdbcType=VARCHAR},
+	 G.CREATE_USER=#{item.createUser,jdbcType=VARCHAR},
+	 G.CTIME=#{item.ctime,jdbcType=DATE},
+	 G.MODIFY_USER=#{item.modifyUser,jdbcType=VARCHAR},
+	 G.MTIME=#{item.mtime,jdbcType=DATE},
+	 G.SCHOOL_ID=#{item.schoolId,jdbcType=VARCHAR},
+	 G.GROUPID=#{item.groupId,jdbcType=VARCHAR}
+    </set>
+    where G.ID = #{item.id,jdbcType=VARCHAR};
+       </foreach>
+	</update>  
+</mapper>

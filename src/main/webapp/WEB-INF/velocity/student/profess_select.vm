@@ -1,0 +1,276 @@
+<!-- 公共重置CSS -->
+<link href="${link.contextPath}/static/css/common.css" rel="stylesheet" type="text/css">
+<link href="${link.contextPath}/static/css/student.css" rel="stylesheet">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="${link.contextPath}/static/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="${link.contextPath}/static/js/common.js" type="text/javascript"></script>
+<!--表单异步提交-->
+<script src="${link.contextPath}/static/js/jquery-form.js"></script>
+<!-- layui控件 http://layer.layui.com/ -->
+<link href="${link.contextPath}/static//lib/layui/css/layui.css" rel="stylesheet" type="text/css">
+<script src="${link.contextPath}/static/lib/layui/layui.js" type="text/javascript"></script>
+<!-- 前台验证控件 http://validator.niceue.com/ -->
+<script src="${link.contextPath}/static/lib/nice-validator/jquery.validator.js?local=zh-CN" type="text/javascript"></script>
+ <!-- 97日历控件 -->
+<script src="${link.contextPath}/static/lib/My97DatePicker/WdatePicker.js"></script>
+<!-- 项目公共JS -->
+<script src="${link.contextPath}/static/js/zh-common.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		getFprofess();
+		var options = {
+                    url:'${link.contextPath}/dg/studentInfo/queryProfess',   
+                    type:'post',                    
+                    data:$("#formProfess").serialize(),
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success:function(data){
+                    	var jso = $.parseJSON(data);
+                    	console.log(jso);
+                    	renderProfessTable(jso);
+                    	return false;
+                    }
+                 };
+        //专业code或者专业名称
+        $('#ajaxSubmit').click(function() { 
+			$("#zylx").find('option').eq(0).attr('selected','selected').trigger('change');
+         	$("#formProfess").ajaxSubmit(options);
+        });
+		
+		$('ul#chosedProfess').on('dblclick','li',function(){
+			$(this).remove();
+			$('input[name=chkItem]').attr('checked',false);
+		});
+	});
+	
+	//获取一级学科
+	function getFprofess() {
+		$("#fProfess").empty();
+		$("#fProfess").prepend("<option value='0'>== 请选择 ==</option>");
+		var zylx = $("#zylx").val();
+		if (!zylx) {
+			return;
+		}
+		
+		$.ajax({
+            	url : '${link.contextPath}/dg/studentInfo/getFprofess?zylx=' + zylx,
+            	type : 'post',
+            	async: false,
+            	cache : false,
+            	dataType : 'json',
+            	success : function(data) {
+            		if (data.speciaList.length > 0) {
+            			console.log(data);
+	    				var speciaList = data.speciaList;
+	    				console.log(speciaList);
+						for (var i = 0; i < speciaList.length; i++) {
+							var id = speciaList[i].id;
+							var name = speciaList[i].name;
+							var title = name;
+							name = name.length > 5 ? name.substring(0,5) + "..." : name;
+							$("#fProfess").append("<option value='" + id + "' title='" + title + "'>" + name + "</option>");
+						}
+						
+						$('#fProfess').find('option').eq(0).attr("selected","selected");
+						getSprofess();
+            		} else {
+            			$("#fProfess").empty();
+            			$("#fProfess").prepend("<option value='0'>== 请选择 ==</option>");
+            		}
+            	}
+            });
+            
+        
+	}
+	
+	//获取二级学科
+	function getSprofess() {
+		$("#sProfess").empty();
+		$("#sProfess").prepend("<option value='0'>== 请选择 ==</option>");
+		var fProfess = $("#fProfess").val();
+		if (!fProfess || fProfess === '0') {
+			return;
+		}
+		
+		$("#sProfess").empty();
+		$("#sProfess").prepend("<option value='0'>== 请选择 ==</option>");
+		$.ajax({
+            	url : '${link.contextPath}/dg/studentInfo/getSprofess?fProfess=' + fProfess,
+            	type : 'post',
+            	async: false,
+            	cache : false,
+            	dataType : 'json',
+            	success : function(data) {
+            		if (data.speciaList.length > 0) {
+	    				var speciaList = data.speciaList;
+	    				console.log(speciaList);
+						for (var i = 0; i < speciaList.length; i++) {
+							var id = speciaList[i].id;
+							var name = speciaList[i].name;
+							var title = name;
+							name = name.length > 5 ? name.substring(0,5) + "..." : name;
+							$("#sProfess").append("<option value='" + id + "' title='" + title + "'>" + name + "</option>");
+						}
+						
+						$('#sProfess').find('option').eq(0).attr("selected","selected");
+						getAllProfess();
+            		} else {
+            			$("#sProfess").empty();
+            			$("#sProfess").prepend("<option value='0'>== 请选择 ==</option>");
+            		}
+            	}
+            });
+	}
+	
+	//获取二级学科下的所有专业
+	function getAllProfess() {
+		var selectArr = new Array();
+		
+		var sProfess = $("#sProfess").val();
+		$("#professTable").html('');
+		//alert(fProfess);
+		if (!sProfess || sProfess === '0') {
+			return;
+		}
+		
+		$.ajax({
+            	url : '${link.contextPath}/dg/studentInfo/getAllprofess?sProfess=' + sProfess,
+            	type : 'post',
+            	async: false,
+            	cache : false,
+            	dataType : 'json',
+            	success : function(data) {
+            			renderProfessTable(data);
+            		}
+            });
+	}
+	
+	
+	function renderProfessTable(data) {
+		$("#professTable tbody").html("");
+		var tempSelectId = '';
+		if (data.speciaList.length > 0) {
+		    				var speciaList = data.speciaList;
+		    				console.log(speciaList);
+		    				var trStr = '';
+		    				var jsStr = '';
+							for (var i = 0; i < speciaList.length; i++) {
+							    var title = speciaList[i].code + speciaList[i].name;
+							    var strName = speciaList[i].name.length > 5 ? speciaList[i].name.substring(0,5) + "..." : speciaList[i].name;
+								jsStr += "<td class='text-left'><label><input type='checkbox' id='chkItem_" + i + "' name='chkItem' value='"+speciaList[i].id+"'><label title='" + title + "'>"
+								+ speciaList[i].code + strName + "</label></label></td>";
+								if ((i - 3) % 4 == 0) {
+									trStr += "<tr>" + jsStr + "</tr>";
+									jsStr = '';
+								}
+							}
+							trStr += "<tr>" + jsStr + "</tr>";
+							console.log(trStr);
+							$("#professTable").append(trStr);
+						        $("[name = chkItem]:checkbox").each(function () {
+						        	$(this).bind("click", function () {
+							        	if (tempSelectId != '' && tempSelectId != $(this).attr("id")) {
+							        		$("#" + tempSelectId).attr("checked" , false);
+							        	}
+							        	
+							        	$(this).attr("checked", !$(this).attr("checked"));
+							        	if ($(this).attr('checked')) {
+							        		tempSelectId = $(this).attr("id");
+							        		$("#chosedProfess").html("<li><label>" + $(this).parent().find('label').attr('title') + "</label></li>");
+							        	} else {
+							        		$("#chosedProfess").html("");
+							        		tempSelectId = '';
+							        	}
+						        	
+						        });
+						        
+						    });
+						}
+	}
+</script>
+<!-- 岗位选择 S-->
+    <div class="dialog dialog-select">
+        <!-- 条件搜索 S-->
+        <form class="form-inline border-left-none border-right-none" id="formProfess">
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-left">
+                    <li>
+                        <span>查找对象：</span>
+                        <input class="input" type="text" id= "keyProfess" name="keyProfess">
+                    </li>
+                    <li>
+                        <button class="btn btn-default btn-sm" id="ajaxSubmit" type="button">搜索</button>
+                    </li>
+                </ul>
+            </div>
+            <hr>
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-left">
+                    <li>
+                        <span>专业类型：</span>
+                        <select class="select" name="zylx" id="zylx" onChange="getFprofess()">
+                        	   #foreach($list in $zylxs)
+									<option value="$!list.value">$!list.text</option>
+								#end
+                        </select>
+                    </li>
+                    <li>
+                        <span>一级学科：</span>
+                        <select class="select grid-120" name="fProfess" id="fProfess" onChange="getSprofess()">
+                        <option value="0">== 请选择 ==</option>
+                                #foreach($list in $speciaFs)
+									<option value="$!list.code" title="$!list.name">$!list.fProfessTitle</option>
+								#end
+                        </select>
+                    </li>
+                    <li>
+                        <span>二级学科：</span>
+                        <select class="select grid-120" name="sProfess" id="sProfess" onChange="getAllProfess()">
+                        <option value="0">== 请选择 ==</option>
+##                                #foreach($list in $speciaSs)
+##									<option value="$!list.code" title="$!list.name">$!list.sProfessTitle</option>
+##								#end
+                        </select>
+                    </li>
+                </ul>
+                <!--
+                <ul class="pull-right">
+                    <li>
+                        <button class="btn btn-primary btn-sm" type="button">清空</button>
+                    </li>
+                </ul>-->
+            </div>
+        </form>
+        <!-- 条件搜索 E-->
+        <div class="table-content">
+            <table class="table">
+            <!--
+                <thead>
+                    <tr>
+                        <th class="text-left" colspan="4">
+                        
+                            <label><input type="checkbox" name="">全选</label>
+                            
+                        </th>
+                    </tr>
+                </thead>-->
+            </table>
+            <div class="grid-h-130 overflow">
+                <table class="table" id="professTable">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="selectedBox">
+                <div class="title"><strong>已选择专业</strong>（提示：双击名称可删除）只能选择1个</strong></div>
+                <div class="listbox">
+                    <ul class="clearfix" id="chosedProfess">
+                        <li><label>#*$!chosedProfess*#</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt10" style="padding-left:15px;padding-right:15px;">
+                <input type="checkbox" id="isSimilar" name="isSimilar" #if($!isSimilar == '1') checked #end>&nbsp;&nbsp;列表中没有我的专业，但我选择了相近的专业，我的专业是&nbsp;&nbsp;<input class="input" type="text" value="$!similarCode" id="similarProfess" name="similarProfess" data-rule="length(1~50);">
+            </div>
+        </div>
+    </div>
+    <!-- 岗位选择 E-->

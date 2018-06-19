@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.StudentFamInfoDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.StudentFamInfo" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="EMPLOY_ITEMS_ID" property="employItemsId" jdbcType="VARCHAR" />
+	<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+	<result column="STUDENT_NAME" property="studentName" jdbcType="VARCHAR" />
+	<result column="MEMBER_RELATION" property="memberRelation" jdbcType="VARCHAR" />
+	<result column="MEMBER_NAME" property="memberName" jdbcType="VARCHAR" />
+	<result column="MEMBER_AGE" property="memberAge" jdbcType="INTEGER" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+	<result column="MEMBERWORK" property="memberwork" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,EMPLOY_ITEMS_ID,STUDENT_ID,STUDENT_NAME,MEMBER_RELATION,MEMBER_NAME,MEMBER_AGE,CREATE_USER,CTIME,MODIFY_USER,MTIME,MEMBERWORK
+  </sql>
+  
+   <insert id="saveStudentFamInfoByField" parameterType="org.jypj.dev.entity.StudentFamInfo" >
+    insert into student_family_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="employItemsId != null" >
+    EMPLOY_ITEMS_ID,
+   </if>
+   <if test="studentId != null" >
+    STUDENT_ID,
+   </if>
+   <if test="studentName != null" >
+    STUDENT_NAME,
+   </if>
+   <if test="memberRelation != null" >
+    MEMBER_RELATION,
+   </if>
+   <if test="memberName != null" >
+    MEMBER_NAME,
+   </if>
+   <if test="memberAge != null" >
+    MEMBER_AGE,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="ctime != null" >
+    CTIME,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+   <if test="mtime != null" >
+    MTIME,
+   </if>
+   <if test="memberwork != null" >
+    MEMBERWORK,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="employItemsId != null" >
+        #{employItemsId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentName != null" >
+        #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberRelation != null" >
+        #{memberRelation,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null" >
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberAge != null" >
+        #{memberAge,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=DATE},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        #{mtime,jdbcType=DATE},
+      </if>
+      <if test="memberwork != null" >
+        #{memberwork,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveStudentFamInfo" parameterType="org.jypj.dev.entity.StudentFamInfo" >
+    insert into student_family_info (
+	ID,
+	EMPLOY_ITEMS_ID,
+	STUDENT_ID,
+	STUDENT_NAME,
+	MEMBER_RELATION,
+	MEMBER_NAME,
+	MEMBER_AGE,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	MTIME,
+	 MEMBERWORK
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{employItemsId,jdbcType=VARCHAR},
+	#{studentId,jdbcType=VARCHAR},
+	#{studentName,jdbcType=VARCHAR},
+	#{memberRelation,jdbcType=VARCHAR},
+	#{memberName,jdbcType=VARCHAR},
+	#{memberAge,jdbcType=INTEGER},
+	#{createUser,jdbcType=VARCHAR},
+	sysdate,
+	#{modifyUser,jdbcType=VARCHAR},
+	sysdate,
+	#{memberwork,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteStudentFamInfoById" parameterType="java.lang.String" >
+    delete from student_family_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteStudentFamInfoByObject" parameterType="org.jypj.dev.entity.StudentFamInfo" >
+    delete from student_family_info
+    where 1=1
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateStudentFamInfoByField" parameterType="org.jypj.dev.entity.StudentFamInfo" >
+    update student_family_info
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="employItemsId != null" >
+  	 EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="studentId != null" >
+  	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="studentName != null" >
+  	 STUDENT_NAME=#{studentName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="memberRelation != null" >
+  	 MEMBER_RELATION=#{memberRelation,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="memberName != null" >
+  	 MEMBER_NAME=#{memberName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="memberAge != null" >
+  	 MEMBER_AGE=#{memberAge,jdbcType=INTEGER},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="ctime != null" >
+  	 CTIME=#{ctime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="mtime != null" >
+  	 MTIME=#{mtime,jdbcType=DATE},
+  	 </if>
+     <if test="memberwork != null" >
+  	 MEMBERWORK=#{memberwork,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateStudentFamInfo" parameterType="org.jypj.dev.entity.StudentFamInfo" >
+    update student_family_info
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR},
+	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+	 STUDENT_NAME=#{studentName,jdbcType=VARCHAR},
+	 MEMBER_RELATION=#{memberRelation,jdbcType=VARCHAR},
+	 MEMBER_NAME=#{memberName,jdbcType=VARCHAR},
+	 MEMBER_AGE=#{memberAge,jdbcType=INTEGER},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 CTIME=#{ctime,jdbcType=DATE},
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MTIME=#{mtime,jdbcType=DATE},
+	 MEMBERWORK=#{memberwork,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectStudentFamInfoById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_family_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_family_info
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageByStudentFamInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.StudentFamInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_family_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentName != null and studentName !='' ">
+	  and STUDENT_NAME=#{studentName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="memberRelation != null and memberRelation !='' ">
+	  and MEMBER_RELATION=#{memberRelation,jdbcType=VARCHAR}
+	 </if>
+	 <if test="memberName != null and memberName !='' ">
+	  and MEMBER_NAME=#{memberName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="memberAge != null and memberAge !='' ">
+	  and MEMBER_AGE=#{memberAge,jdbcType=INTEGER}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="memberwork != null and memberwork !='' ">
+	  and MEMBERWORK=#{memberwork,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_family_info
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByStudentFamInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.StudentFamInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_family_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentName != null and studentName !='' ">
+	  and STUDENT_NAME=#{studentName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="memberRelation != null and memberRelation !='' ">
+	  and MEMBER_RELATION=#{memberRelation,jdbcType=VARCHAR}
+	 </if>
+	 <if test="memberName != null and memberName !='' ">
+	  and MEMBER_NAME=#{memberName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="memberAge != null and memberAge !='' ">
+	  and MEMBER_AGE=#{memberAge,jdbcType=INTEGER}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="memberwork != null and memberwork !='' ">
+	  and MEMBERWORK=#{memberwork,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_family_info
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByStudentFamInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.StudentFamInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_family_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentName != null and studentName !='' ">
+	  and STUDENT_NAME=#{studentName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="memberRelation != null and memberRelation !='' ">
+	  and MEMBER_RELATION=#{memberRelation,jdbcType=VARCHAR}
+	 </if>
+	 <if test="memberName != null and memberName !='' ">
+	  and MEMBER_NAME=#{memberName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="memberAge != null and memberAge !='' ">
+	  and MEMBER_AGE=#{memberAge,jdbcType=INTEGER}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="memberwork != null and memberwork !='' ">
+	  and MEMBERWORK=#{memberwork,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+</mapper>

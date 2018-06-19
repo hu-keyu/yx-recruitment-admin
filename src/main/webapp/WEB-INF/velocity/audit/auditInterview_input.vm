@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+		$("document").ready(function(){
+			$("input").attr("disabled",true);
+			$("select").attr("disabled",true);
+			$("textarea").attr("disabled",true);
+			$("#auditReason").attr("disabled",false);
+			
+			var idcard=$("input[name='identityCard']").val();
+			getBirthdatByIdNo(idcard);
+			//获取荣誉称号
+			#if($!studentInfo.honorCode)
+    		var honorCodes="$!studentInfo.honorCode".split(",");
+    		for(var i in honorCodes){
+    			$("input[name='honorCodes'][value='"+honorCodes[i]+"']").attr("checked",true);
+    		}
+    		#end
+		});
+		
+		var sloadindex;
+		function checkInterview(ispass,flag){
+			var projectId='$!studentInfo.employItemsId';
+			var stuId='$!studentInfo.id';
+			var url="${link.contextPath}/dg/planApply/auditInterview";
+			if(!stuId){
+				layer.msg("学生ID为空，请稍后再试", {icon: 2});	
+				return;			
+			}
+			if(!projectId){
+				layer.msg("招聘主题ID为空，请稍后再试！", {icon: 2});	
+				return;	
+			}
+			if(flag && flag == 'audit'){
+				url="${link.contextPath}/dg/planApply/auditInterviewPass";
+			}
+			if(ispass =='0'){
+				var auditReason=$("#auditReason").val();
+				if(!auditReason){
+					layer.msg("请选择审核不通过的原因！", {icon: 2});	
+					return;
+				}
+				layer.confirm('您确定要将考生审核为不通过吗?', {icon: 3, title:'提示'}, function(index){
+    				checkOper(ispass,stuId,projectId,auditReason,url);
+					layer.close(index);
+				});
+			}else{
+				checkOper(ispass,stuId,projectId,"",url);
+			}
+		}
+		
+		function checkOper(ispass,stuId,projectId,reason,url){
+			$.ajax({
+    			url : '${link.contextPath}/dg/planApply/checkInterview',
+    			type : 'post',
+    			data: {"chk":stuId,"projectId":projectId,"reason":reason,"ispass":ispass},
+    			async: false,
+    			cache : false,
+    			dataType : 'json',
+				beforeSend: function(){
+                    sloadindex = layer.load(0, {
+                    	shade: [0.3,'#fff']
+                    });
+                },
+    			success : function(data) {
+    				if(data.flag == 'success'){
+    					alert(data.msg);
+    					window.location.href=url;
+    				}else{
+        				layer.close(sloadindex);
+						layer.msg(data.msg, {icon: 2});
+    				}
+				}
+    		});
+		}
+		
+		function checkCancel(status){
+			var projectId='$!studentInfo.employItemsId';
+			var stuId='$!studentInfo.id';
+			if(!stuId){
+				layer.msg("学生ID为空，请稍后再试", {icon: 2});	
+				return;			
+			}
+			if(!projectId){
+				layer.msg("招聘主题ID为空，请稍后再试！", {icon: 2});	
+				return;	
+			}
+			if(!status){
+				layer.msg("参数状态为空，请稍后再试！", {icon: 2});	
+				return;	
+			}
+			var auditReason=$("#auditReason").val();
+			if(!auditReason){
+				layer.msg("请选择审核原因！", {icon: 2});	
+				return;
+			}
+			layer.confirm('您确定要操作吗?', {icon: 3, title:'提示'}, function(index){
+				cancelOper(stuId,projectId,status,auditReason);
+				layer.close(index);
+			});
+		}
+				
+		function cancelOper(stuId,projectId,status,auditReason){
+			$.ajax({
+    			url : '${link.contextPath}/dg/planApply/checkCancel',
+    			type : 'post',
+    			data: {"chk":stuId,"projectId":projectId,"status":status,"reason":auditReason},
+    			async: false,
+    			cache : false,
+    			dataType : 'json',
+				beforeSend: function(){
+                    sloadindex = layer.load(0, {
+                    	shade: [0.3,'#fff']
+                    });
+                },
+    			success : function(data) {
+    				if(data.flag == 'success'){
+    					alert(data.msg);
+    					window.location.href="${link.contextPath}/dg/planApply/auditInterviewPass";
+    				}else{
+        				layer.close(sloadindex);
+						layer.msg(data.msg, {icon: 2});
+    				}
+				}
+    		});
+		}
+		
+		function reason(){
+			layer.open({
+            	type: 2,
+            	title:['招聘单位审核原因维护', 'font-weight:600'],
+				content:['${link.contextPath}/dg/auditReason/reasonList','yes'],
+				btn:['取消'],
+            	shadeClose:false,
+            	fix:true,
+            	area: ['650px','550px'],
+            	maxWidth:474,
+            	move: false,
+            	yes: function(index, layero){
+            		layer.close(index);
+				},
+				end: function(){
+        			window.location.reload();
+    		    }
+            });
+		}
+		
+		function getBirthdatByIdNo(iIdNo){
+            var myDate = new Date(); 
+            var month = myDate.getMonth() + 1; 
+            var day = myDate.getDate();
+            var age  = '';
+            var tmpStr = "";
+            var birthday = $('input[name="birthday"]');
+            iIdNo = $.trim(iIdNo);
+            if(iIdNo.length == 15){
+            	tmpStr = iIdNo.substring(6, 12);
+            	tmpStr = "19" + tmpStr;
+                tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+                birthday.val(tmpStr);
+            } else if(iIdNo.length == 18){
+                tmpStr = iIdNo.substring(6, 14);
+                tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+                birthday.val(tmpStr);
+            } else {
+            	birthday.val('');
+            }
+            //不为空的时候才算年龄
+            if (tmpStr != '') {
+                age = myDate.getFullYear() - tmpStr.substring(0, 4) - 1; 
+                if (tmpStr.substring(4, 6) < month || tmpStr.substring(4, 6) == month && tmpStr.substring(6) <= day) { 
+                	age++;
+                } 
+                birthday.val(birthday.val() + "  " + age + '岁');
+            }
+		}
+	</script>
+</head>
+<body>
+     #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+			<form id="regisForm" enctype="multipart/form-data" data-validator-option="{timely:2, focusCleanup:true}">
+        		<!-- table表单模块 S-->
+        			<input type="hidden" name="id" value="$!studentInfo.id"/>
+        			<input type="hidden" name="employItemsId" value="$!studentInfo.employItemsId"/>
+        			<input type="hidden" name="password" value="$!studentInfo.password"/>
+                <div class="table-content">
+                    <table class="formTable">
+                        <caption>基本信息</caption>
+                        <tbody>
+                            <tr>
+                                <th colspan="2"><span class="flag">*</span>姓名：</th>
+                                <td><input class="input" type="text" name="name" data-rule="required;username;"
+                                data-rule-name="[/[\w\d]{4,30}/, 'Please enter 3-12 digits, letters, underscores']"
+                                 value="$!studentInfo.name"></td>
+                                <th><span class="flag">*</span>性别：</th>
+                                <td> 
+                                   <select class="select" name="sex" data-rule="required">
+        							<option value="1" #if($!studentInfo.sex == '1') selected #end>男</option>
+        							<option value="2" #if($!studentInfo.sex == '2') selected #end>女</option>
+                                    </select>
+                                </td>
+                                <td rowspan="4" colspan="1">
+                                    <img src="$!attachement.path" width="120" height="120" alt="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="2"><span class="flag">*</span>身份证号码：</th>
+                                <td><input class="input" type="text" name="identityCard" 
+                                data-rule="required;identityCard;" 
+                                data-rule-identityCard = "[/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/, '请输入正确的身份证号码']"
+                                 value="$!studentInfo.identityCard"></td>
+                                <th><span class="flag">*</span>出生日期和年龄：</th>
+                                <td>
+                                <input class="input" readonly="readonly" type="text" name="birthday" value="$!date.format('yyyy-MM-dd',$!studentInfo.birthday)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="2"><span class="flag">*</span>民族：</th>
+                                <td>
+                                    <select class="select" name="nationCode" data-rule="required">
+                                      <option value="">--请选择--</option>
+                                        #foreach($list in $mzs)
+        									<option value="$!list.value" #if($!studentInfo.nationCode == $!list.value) selected #end>$!list.text</option>
+        								#end
+                                    </select>
+                                </td>
+                                <th><span class="flag">*</span>籍贯：</th>
+                                <td style="position: relative;">
+                                    <input class="input" readonly type="text" name="nativePlace" data-rule="nativePlace: required; length(0~100)"
+                                     value="$!studentInfo.nativePlace">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="2"><span class="flag">*</span>生源地：</th>
+                                                        <td style="position: relative;">
+                                <input class="input" readonly type="text" name="originPlace" data-rule="originPlace: required; length(0~100)"
+                                       value="$!studentInfo.originPlace">
+                                </td>
+                                <th><span class="flag">*</span>户籍（派出所）：</th>
+                                <td>
+                                    <input class="input" type="text" name="familyRegister" 
+                                    data-rule="familyRegister: required; length(0~100)"
+                                     value="$!studentInfo.familyRegister">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center" rowspan="4">学历</th>
+                                <th>中师：</th>
+                                <td colspan="4">
+                                	<!--隐藏域值-->
+                    				<input type="hidden" name="studentEduInfoList[0].id" value="#if($!{studentInfo.studentEduInfoList.size()} > 0)$!studentInfo.studentEduInfoList[0].id#end"/>
+        							<input type="hidden" name="studentEduInfoList[0].employItemsId" value="#if($!{studentInfo.studentEduInfoList.size()} > 0)$!studentInfo.studentEduInfoList[0].employItemsId#end"/>
+        							<input type="hidden" name="studentEduInfoList[0].studentId" value="#if($!{studentInfo.studentEduInfoList.size()} > 0)$!studentInfo.studentEduInfoList[0].studentId#end"/>
+        							<input type="hidden" name="studentEduInfoList[0].eduCode" value="4"/>
+                               		 <input type="hidden" name="studentEduInfoList[0].eduName" value="中师"/>
+                                    <input class="input grid-120" name="studentEduInfoList[0].eduSchoolName" 
+									title="#if($!{studentInfo.studentEduInfoList.size()} > 0)$!studentInfo.studentEduInfoList[0].eduSchoolName#end"
+                                    type="text" value="#if($!{studentInfo.studentEduInfoList.size()} > 0)$!studentInfo.studentEduInfoList[0].eduSchoolName#end">&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>毕业时间：</span>
+                                    <input id="d4313_0"  class="input grid-120 Wdate" type="text"
+                                     name="studentEduInfoList[0].eduGraduateTime" 
+                                    onfocus="WdatePicker({minDate:'1990-09-10',maxDate:'2020-12-20'})" value="#if($!{studentInfo.studentEduInfoList.size()} > 0)$!studentInfo.studentEduInfoList[0].eduGraduateTimeStr#end"/>
+                                    <input class="input grid-120" type="text" name="studentEduInfoList[0].eduProfessionName"
+                                     value="#if($!{studentInfo.studentEduInfoList.size()} > 0)$!studentInfo.studentEduInfoList[0].eduProfessionName#end" title="#if($!{studentInfo.studentEduInfoList.size()} > 0)$!studentInfo.studentEduInfoList[0].eduProfessionName#end"/>
+                                              <input  type="hidden" name="studentEduInfoList[0].eduProfessionCode"
+                                     value="#if($!{studentInfo.studentEduInfoList.size()} > 0)$!studentInfo.studentEduInfoList[0].eduProfessionCode#end"/>
+                                    <select class="select grid-120" name="studentEduInfoList[0].eduBachelorCode">
+                                        <option value="">== 学位 ==</option>
+                                        #foreach($list in $xws)
+        									<option value="$!list.value" #if($!{studentInfo.studentEduInfoList.size()} > 0 and $!studentInfo.studentEduInfoList[0].eduBachelorCode == $!list.value) selected#end>$!list.text</option>
+        								#end
+                                    </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <select class="select grid-120" name="studentEduInfoList[0].eduType">
+                                        <option value="">== 请选择 ==</option>
+                                        #foreach($list in $jys)
+        									<option value="$!list.value" #if($!{studentInfo.studentEduInfoList.size()} > 0 and $!studentInfo.studentEduInfoList[0].eduType == $!list.value) selected#end>$!list.text</option>
+        								#end
+                                    </select>
+									#if($!{studentInfo.studentEduInfoList.size()} > 3)
+										#if($!studentInfo.studentEduInfoList[0].isSimilarTerm == '1')
+        									<span class="red">（注意：考生在该学历上选择了相近专业！)</span>
+										#end
+									#end
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>大专：</th>
+                                <td colspan="4">
+                                <!--隐藏域值-->
+                    				<input type="hidden" name="studentEduInfoList[1].id" value="#if($!{studentInfo.studentEduInfoList.size()} > 1)$!studentInfo.studentEduInfoList[1].id#end"/>
+        							<input type="hidden" name="studentEduInfoList[1].employItemsId" value="#if($!{studentInfo.studentEduInfoList.size()} > 1)$!studentInfo.studentEduInfoList[1].employItemsId#end"/>
+        							<input type="hidden" name="studentEduInfoList[1].studentId" value="#if($!{studentInfo.studentEduInfoList.size()} > 1)$!studentInfo.studentEduInfoList[1].studentId#end"/>
+        			                <input type="hidden" name="studentEduInfoList[1].eduCode" value="3"/>
+                                	<input type="hidden" name="studentEduInfoList[1].eduName" value="大专"/>
+                                    <input class="input grid-120" name="studentEduInfoList[1].eduSchoolName"
+                                     title="#if($!{studentInfo.studentEduInfoList.size()} > 1)$!studentInfo.studentEduInfoList[1].eduSchoolName#end"
+									 type="text" value="#if($!{studentInfo.studentEduInfoList.size()} > 1)$!studentInfo.studentEduInfoList[1].eduSchoolName#end">&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>毕业时间：</span>
+                                    <input id="d4313_1"  class="input grid-120 Wdate"
+                                     type="text" name="studentEduInfoList[1].eduGraduateTime" 
+                                    onfocus="WdatePicker({minDate:'1990-09-10',maxDate:'2020-12-20'})" value="#if($!{studentInfo.studentEduInfoList.size()} > 1)$!studentInfo.studentEduInfoList[1].eduGraduateTimeStr#end"/>
+                                    <input class="input grid-120" type="text" name="studentEduInfoList[1].eduProfessionName"
+                                     value="#if($!{studentInfo.studentEduInfoList.size()} > 1)$!studentInfo.studentEduInfoList[1].eduProfessionName#end" title="#if($!{studentInfo.studentEduInfoList.size()} > 1)$!studentInfo.studentEduInfoList[1].eduProfessionName#end"/>
+                                                         <input  type="hidden" name="studentEduInfoList[1].eduProfessionCode"
+                                     value="#if($!{studentInfo.studentEduInfoList.size()} > 1)$!studentInfo.studentEduInfoList[1].eduProfessionCode#end"/>
+                                    
+                                    <select class="select grid-120" name="studentEduInfoList[1].eduBachelorCode">
+                                        <option value="">== 学位 ==</option>
+                                        #foreach($list in $xws)
+        									<option value="$!list.value" #if($!{studentInfo.studentEduInfoList.size()} > 1 and $!studentInfo.studentEduInfoList[1].eduBachelorCode == $!list.value) selected#end>$!list.text</option>
+        								#end
+                                    </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <select class="select grid-120" name="studentEduInfoList[1].eduType">
+                                        <option value="">== 请选择 ==</option>
+                                        #foreach($list in $jys)
+        									<option value="$!list.value" #if($!{studentInfo.studentEduInfoList.size()} > 1 and $!studentInfo.studentEduInfoList[1].eduType == $!list.value) selected#end>$!list.text</option>
+        								#end
+                                    </select>
+									#if($!{studentInfo.studentEduInfoList.size()} > 3)
+										#if($!studentInfo.studentEduInfoList[1].isSimilarTerm == '1')
+        									<span class="red">（注意：考生在该学历上选择了相近专业！)</span>
+										#end
+									#end
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>本科：</th>
+                               <td colspan="4">
+                               <!--隐藏域值-->
+                    				<input type="hidden" name="studentEduInfoList[2].id" value="#if($!{studentInfo.studentEduInfoList.size()} > 2)$!studentInfo.studentEduInfoList[2].id#end"/>
+        							<input type="hidden" name="studentEduInfoList[2].employItemsId" value="#if($!{studentInfo.studentEduInfoList.size()} > 2)$!studentInfo.studentEduInfoList[2].employItemsId#end"/>
+        							<input type="hidden" name="studentEduInfoList[2].studentId" value="#if($!{studentInfo.studentEduInfoList.size()} > 2)$!studentInfo.studentEduInfoList[2].studentId#end"/>
+        							             <input type="hidden" name="studentEduInfoList[2].eduCode" value="2"/>
+                                <input type="hidden" name="studentEduInfoList[2].eduName" value="本科"/>
+                                    <input class="input grid-120" name="studentEduInfoList[2].eduSchoolName"
+                                     title="#if($!{studentInfo.studentEduInfoList.size()} > 2)$!studentInfo.studentEduInfoList[2].eduSchoolName#end"
+									 type="text" value="#if($!{studentInfo.studentEduInfoList.size()} > 2)$!studentInfo.studentEduInfoList[2].eduSchoolName#end">&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>毕业时间：</span>
+                                    <input id="d4313_2"  class="input grid-120 Wdate" type="text"
+                                     name="studentEduInfoList[2].eduGraduateTime" 
+                                    onfocus="WdatePicker({minDate:'1990-09-10',maxDate:'2020-12-20'})" value="#if($!{studentInfo.studentEduInfoList.size()} > 2)$!studentInfo.studentEduInfoList[2].eduGraduateTimeStr#end"/>
+                                    <input class="input grid-120" type="text" name="studentEduInfoList[2].eduProfessionName"
+                                     value="#if($!{studentInfo.studentEduInfoList.size()} > 2)$!studentInfo.studentEduInfoList[2].eduProfessionName#end" title="#if($!{studentInfo.studentEduInfoList.size()} > 2)$!studentInfo.studentEduInfoList[2].eduProfessionName#end"/>
+                                    <input  type="hidden" name="studentEduInfoList[2].eduProfessionCode"
+                                     value="#if($!{studentInfo.studentEduInfoList.size()} > 2)$!studentInfo.studentEduInfoList[2].eduProfessionCode#end"/>
+                                    <select class="select grid-120" name="studentEduInfoList[2].eduBachelorCode">
+                                        <option value="">== 学位 ==</option>
+                                        #foreach($list in $xws)
+        									<option value="$!list.value" #if($!{studentInfo.studentEduInfoList.size()} > 2 and $!studentInfo.studentEduInfoList[2].eduBachelorCode == $!list.value) selected#end>$!list.text</option>
+        								#end
+                                    </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <select class="select grid-120" name="studentEduInfoList[2].eduType">
+                                        <option value="">== 请选择 ==</option>
+                                        #foreach($list in $jys)
+        									<option value="$!list.value" #if($!{studentInfo.studentEduInfoList.size()} > 2 and $!studentInfo.studentEduInfoList[2].eduType == $!list.value) selected#end>$!list.text</option>
+        								#end
+                                    </select>
+									#if($!{studentInfo.studentEduInfoList.size()} > 3)
+										#if($!studentInfo.studentEduInfoList[2].isSimilarTerm == '1')
+        									<span class="red">（注意：考生在该学历上选择了相近专业！)</span>
+										#end
+									#end
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>研究生及以上：</th>
+                                <td colspan="4">
+                                <!--隐藏域值-->
+                                 <input type="hidden" name="studentEduInfoList[3].eduCode" value="1"/>
+                                <input type="hidden" name="studentEduInfoList[3].eduName" value="研究生"/>
+                                <input type="hidden" name="studentEduInfoList[3].studentId" value="#if($!{studentInfo.studentEduInfoList.size()} > 3)$!studentInfo.studentEduInfoList[3].studentId#end"/>
+                    				<input type="hidden" name="studentEduInfoList[3].id" value="#if($!{studentInfo.studentEduInfoList.size()} > 3)$!studentInfo.studentEduInfoList[3].id#end"/>
+        							<input type="hidden" name="studentEduInfoList[3].employItemsId" value="#if($!{studentInfo.studentEduInfoList.size()} > 3)$!studentInfo.studentEduInfoList[3].employItemsId#end"/>
+                                    <input class="input grid-120" name="studentEduInfoList[3].eduSchoolName"
+                                     title="#if($!{studentInfo.studentEduInfoList.size()} > 3)$!studentInfo.studentEduInfoList[3].eduSchoolName#end"
+									 type="text" value="#if($!{studentInfo.studentEduInfoList.size()} > 3)$!studentInfo.studentEduInfoList[3].eduSchoolName#end">&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>毕业时间：</span>
+                                    <input id="d4313_3" class="input grid-120 Wdate" type="text"
+                                     name="studentEduInfoList[3].eduGraduateTime"  
+                                    onfocus="WdatePicker({minDate:'1990-09-10',maxDate:'2020-12-20'})" value="#if($!{studentInfo.studentEduInfoList.size()} > 3)$!studentInfo.studentEduInfoList[3].eduGraduateTimeStr#end"/>
+                                    <input class="input grid-120" type="text" name="studentEduInfoList[3].eduProfessionName" 
+                                    value="#if($!{studentInfo.studentEduInfoList.size()} > 3)$!studentInfo.studentEduInfoList[3].eduProfessionName#end" title="#if($!{studentInfo.studentEduInfoList.size()} > 3)$!studentInfo.studentEduInfoList[3].eduProfessionName#end"/>
+                                                        <input  type="hidden" name="studentEduInfoList[3].eduProfessionCode"
+                                     value="#if($!{studentInfo.studentEduInfoList.size()} > 3)$!studentInfo.studentEduInfoList[3].eduProfessionCode#end"/>
+                                    <select class="select grid-120" name="studentEduInfoList[3].eduBachelorCode">
+                                        <option value="">== 学位 ==</option>
+                                        #foreach($list in $xws)
+        									<option value="$!list.value" #if($!{studentInfo.studentEduInfoList.size()} > 3 and $!studentInfo.studentEduInfoList[3].eduBachelorCode == $!list.value) selected#end>$!list.text</option>
+        								#end
+                                    </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <select class="select grid-120" name="studentEduInfoList[3].eduType">
+                                        <option value="">== 请选择 ==</option>
+                                        #foreach($list in $jys)
+        									<option value="$!list.value" #if($!{studentInfo.studentEduInfoList.size()} > 3 and $!studentInfo.studentEduInfoList[3].eduType == $!list.value) selected#end>$!list.text</option>
+        								#end
+                                    </select>
+									#if($!{studentInfo.studentEduInfoList.size()} > 3)
+										#if($!studentInfo.studentEduInfoList[3].isSimilarTerm == '1')
+        									<span class="red">（注意：考生在该学历上选择了相近专业！)</span>
+										#end
+									#end
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="formTable">
+                        <caption>其它信息</caption>
+                        <tbody>
+                            <tr>
+                                <th><span class="flag">*</span>是否违反计划生育：</th>
+                                <td>
+                                    <select class="select" name="birthControl" data-rule="required">
+                                        <option value="1" #if($!studentInfo.birthControl == '1') selected #end>是</option>
+                                        <option value="" #if($!studentInfo.birthControl == '0') selected #end>否</option>
+                                    </select>
+                                </td>
+                                <th><span class="flag">*</span>身体是否健康：</th>
+                                <td>
+                                    <select class="select" name="healthy" data-rule="required">
+                                        <option value="1" #if($!studentInfo.healthy == '1') selected #end>是</option>
+                                        <option value="" #if($!studentInfo.healthy == '0') selected #end>否</option>
+                                    </select>
+                                </td>
+                                <th><span class="flag">*</span>政治面貌：</th>
+                                <td>
+                                    <select class="select" name="politicalStatus" data-rule="required">
+                                        <option value="">== 请选择 ==</option>
+                                        #foreach($list in $zzmms)
+        									<option value="$!list.value" #if($!studentInfo.politicalStatus == $!list.value) selected #end>$!list.text</option>
+        								#end
+                                    </select>
+                                </td>
+                            </tr>
+							#if($!studentInfo.studentType == '2')
+								<tr id="trSocial1">
+                                    <th><span class="flag">*</span>是否公职人员：</th>
+                                    <td>
+                                        <select class="select" name="publicOffice">
+                                            <option value="1" #if($!studentInfo.publicOffice == '1') selected #end>是</option>
+                                            <option value="0" #if($!studentInfo.publicOffice == '0') selected #end>否</option>
+                                        </select>
+                                    </td>
+                                    <th><span class="flag">*</span>是否东莞市聘用合同制教师：</th>
+                                    <td>
+                                        <select class="select" name="contractTeacher">
+                                            <option value="1" #if($!studentInfo.contractTeacher == '1') selected #end>是</option>
+                                            <option value="0" #if($!studentInfo.contractTeacher == '0') selected #end>否</option>
+                                        </select>
+                                    </td>
+                                    <th><span class="flag">*</span>现人事档案挂靠单位：</th>
+                                    <td>
+                                      <input class="input" type="text" name="attachedUnits"
+                                        data-rule="required; length(0~100)"
+                                         value="$!studentInfo.attachedUnits">
+                                    </td>
+                                </tr>
+                                	<tr id="trSocial2">
+			                        <th><span class="flag">*</span>荣誉称号：</th>
+			                        <td colspan="5">
+										<input type='checkbox' id='rych0' name='honorCodes' value='1'><label>获特级教师荣誉称号&nbsp;&nbsp;</label>
+			                        	<input type='checkbox' id='rych1' name='honorCodes' value='2'><label>近五年获地级市以上名校长、名教师、优秀校长、优秀教育工作者、优秀班主任、优秀教师、教坛新秀荣誉称号&nbsp;&nbsp;</label>
+			                        	<input type='checkbox' id='rych2' name='honorCodes' value='3'><label>近五年被评为地级市以上学科带头人&nbsp;&nbsp;</label>
+			                        	<input type='checkbox' id='rych3' name='honorCodes' value='4'><label>获东莞市委市政府授予的荣誉称号&nbsp;&nbsp;</label>
+			                        	<input type='checkbox' id='rych4' name='honorCodes' value='5'><label>省部级荣誉称号&nbsp;&nbsp;</label>
+			                        	<input type='checkbox' id='rych5' name='honorCodes' value='0'><label>无</label>
+			                        </td>
+			                        </tr>
+							#end
+                            <tr>
+                                <th><span class="flag">*</span>资格证种类：</th>
+                                <td>
+                                    <select class="select" name="certiType" data-rule="required">
+                                       <option value="">== 请选择 ==</option>
+                                        #foreach($list in $jszgzls)
+        									<option value="$!list.value" #if($!studentInfo.certiType == $!list.value) selected #end>$!list.text</option>
+        								#end
+                                    </select>
+                                </td>
+                                <th><span class="flag">*</span>专业技术资格：</th>
+                                <td>
+                                    <select class="select" name="expertiseCode" data-rule="required">
+                                     <option value="">== 请选择 ==</option>
+                                        #foreach($list in $zyjszgs)
+        									<option value="$!list.value" #if($!studentInfo.expertiseCode == $!list.value) selected #end>$!list.text</option>
+        								#end
+                                    </select>
+                                </td>
+                                <th><span class="flag">*</span>专业技术资格证书任教学科：</th>
+                                <td>
+                                    <input class="input" type="text" name="teachingSubject"
+                                    data-rule="任教学科: required; length(0~100)"
+                                     value="$!studentInfo.teachingSubject">
+                                </td>
+                            </tr>
+                            #if($!studentInfo.certiType == '0')
+							<tr>
+                                <th><span class="flag">*</span>普通话成绩：</th>
+                                <td>
+                                    <input class="input" type="text" name="mandarinScore" 
+                                    data-rule="普通话成绩: required;integer(+);length(1~4)"
+                                    value="$!studentInfo.mandarinScore">
+                                </td>
+                                <th><span class="flag">*</span>教育学成绩：</th>
+                                <td>
+                                    <input class="input" type="text" name="educationScore" 
+                                    data-rule="教育学成绩: required;integer(+);length(1~4)"
+                                    value="$!studentInfo.educationScore">
+                                </td>
+                                <th><span class="flag">*</span>心理学成绩：</th>
+                                <td>
+                                    <input class="input" type="text" name="psychologyScore"
+                                    data-rule="心理学成绩: required;integer(+);length(1~4)"
+                                     value="$!studentInfo.psychologyScore">
+                                </td>
+                            </tr>
+							<tr class="trScore">
+        						<th>教育教学能力测试：</th>
+        						<td>
+        							<input class="input" type="text" name="teachingAbilityScore"
+        								data-rule="integer(+);length(1~4);"
+        								value="$!studentInfo.teachingAbilityScore">
+        						</td>
+        						<th>教育实习证明：</th>
+        						<td colspan="3">
+        							<select class="select" name="internshipCertification">
+                                        <option value="1"#if($!studentInfo.internshipCertification == "1") selected="selected"#end>有</option>
+        								<option value="0"#if($!studentInfo.internshipCertification == "0") selected="selected"#end>无</option>
+        							</select>
+        						</td>
+        					</tr>
+							#end
+                            <tr>
+                                <th><span class="flag">*</span>手机号码：</th>
+                                <td>
+                                    <input class="input" type="text" name="phoneNumber"
+                                    data-rule="required;phoneNumber;" 
+                                	data-rule-phoneNumber = "[/^1[34578]\d{9}$/, '请输入正确的手机号码']"
+                                     value="$!studentInfo.phoneNumber">
+                                </td>
+                                <th><span class="flag"></span>联系电话：</th>
+                                <td colspan="3">
+                                    <input class="input" type="text" name="contactPhone" 
+                                    data-rule="required;contactPhone;" 
+                                	data-rule-contactPhone = "[/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/, '请输入正确的固定电话']"
+                                    value="$!studentInfo.contactPhone">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><span class="flag">*</span>考生类别：</th>
+                                <td>
+                                    <select class="select" name="studentType" data-rule="required">
+                                       <option value="">== 请选择 ==</option>
+                                        #foreach($list in $kslxs)
+        									<option value="$!list.value" #if($!studentInfo.studentType == $!list.value) selected #end>$!list.text</option>
+        								#end
+                                    </select>
+                                </td>
+                                <th><span class="flag">*</span>联系地址：</th>
+                                <td colspan="3">
+                                    <input class="input" type="text" name="address"
+                                    data-rule="联系地址: required; length(0~200)"
+                                     value="$!studentInfo.address">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><span class="flag">*</span>学习简历：</th>
+                                <td colspan="5">
+                                    <textarea class="textarea" rows="5" 
+                                    data-rule="学习简历: required; length(0~500)"
+                                    name="resume" text="">$!studentInfo.resume</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><span class="flag">*</span>工作经历：</th>
+                                <td colspan="5">
+                                    <textarea class="textarea" rows="5"
+                                    data-rule="工作经历: required; length(0~500)"
+                                     name="workExperience" text="">$!studentInfo.workExperience</textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="formTable" id="famTable">
+                        <caption>家庭信息</caption>
+                        <thead>
+                            <tr>
+                                <th class="text-center">关系</th>
+                                <th class="text-center">姓名</th>
+                                <th class="text-center">年龄</th>
+                                <th class="text-center">工作单位及职务</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    	#foreach($list in $!{studentInfo.studentFamInfoList})
+                    	<tr>
+                            <td class="text-center">
+                            <!--隐藏域值-->
+                			<input type="hidden" name="studentFamInfoList[$foreach.index].id" value="$!list.id"/>
+        					<input type="hidden" name="studentFamInfoList[$foreach.index].employItemsId" value="$!list.employItemsId"/>
+        					<select class="select" name="studentFamInfoList[$foreach.index].memberRelation" data-rule="required">
+        					<option value="">== 请选择 ==</option>
+        		                   #foreach($listJt in $jtcygxs)
+        									<option value="$!listJt.value" #if($!list.memberRelation == $!listJt.value) selected #end>$!listJt.text</option>
+        								#end
+        								</select>
+                            <td class="text-center"><input class="input" type="text" data-rule="姓名: required; length(0~500)" name="studentFamInfoList[$foreach.index].memberName" value="$!list.memberName"></td>
+                            <td class="text-center"><input class="input" type="text" data-rule="年龄: required;integer(+);length(1~2)" name="studentFamInfoList[$foreach.index].memberAge" value="$!list.memberAge"></td>
+                            <td class="text-center"><input class="input" type="text" name="studentFamInfoList[$foreach.index].memberwork" value="$!list.memberwork"></td>
+                        </tr>
+                    	#end
+                        </tbody>
+                    </table>
+        			<table class="formTable">
+                        <caption>个人资料附件</caption>
+                        <tbody>
+                            <tr>
+                                <th class="text-right" width="20%"><span class="flag">*</span>身份证：</th>
+                                <td width="30%">
+        							<div class="fileName ellipsis"><a href="$!studentApplyInfo.idcardUrlPath" target="_blank"><span title="$!studentApplyInfo.idcardRealName">$!studentApplyInfo.idcardRealName</span></a></div>
+                                </td>
+                                #if($!studentInfo.certiType != '0')
+    								<th class="text-right" width="20%"><span class="flag">*</span>教师资格证：</th>
+                                    <td width="30%">
+            						    <div class="fileName ellipsis">
+											#if($!cerAchIsImage == '1')<!--图片 -->
+    											<a href="$!studentApplyInfo.cerAchUrlPath" target="_blank"><span title="$!studentApplyInfo.cerAchRealName">$!studentApplyInfo.cerAchRealName</span></a>
+											#end
+											#if($!cerAchIsImage == '0')<!--非图片 -->
+												<a href="${link.contextPath}/dg/planApply/downloadFile?fileId=$!studentApplyInfo.cerAchAttId"><span title="$!studentApplyInfo.cerAchRealName">$!studentApplyInfo.cerAchRealName</span></a>
+											#end
+										</div>
+                                    </td>
+								#else
+									<th class="text-right" width="20%"><span class="flag">*</span>教育学成绩单：</th>
+                                    <td width="30%">
+            						    <div class="fileName ellipsis"><a href="$!studentApplyInfo.cerPedUrlPath" target="_blank"><span title="$!studentApplyInfo.cerPedRealName">$!studentApplyInfo.cerPedRealName</span></a></div>
+                                    </td>
+								#end
+                            </tr>
+                            #if($!studentInfo.certiType == '0')
+    							<tr>
+                                    <th class="text-right" width="20%"><span class="flag">*</span>心理学成绩单：</th>
+                                    <td width="30%">
+            							<div class="fileName ellipsis"><a href="$!studentApplyInfo.cerPsyUrlPath" target="_blank"><span title="$!studentApplyInfo.cerPsyRealName">$!studentApplyInfo.cerPsyRealName</span></a></div>
+                                    </td>
+    								<th class="text-right" width="20%"><span class="flag">*</span>普通话成绩单：</th>
+                                    <td width="30%">
+            						    <div class="fileName ellipsis"><a href="$!studentApplyInfo.cerManUrlPath" target="_blank"><span title="$!studentApplyInfo.cerManRealName">$!studentApplyInfo.cerManRealName</span></a></div>
+                                    </td>
+                                </tr>
+								<tr>
+                                    <th class="text-right" width="20%">#if($!studentInfo.teachingAbilityScore)<span class="flag">*</span>#end教育教学能力测试：</th>
+                                    <td width="30%">
+            							<div class="fileName ellipsis"><a href="$!studentApplyInfo.cerAbiUrlPath" target="_blank"><span title="$!studentApplyInfo.cerAbiRealName">$!studentApplyInfo.cerAbiRealName</span></a></div>
+                                    </td>
+    								<th class="text-right" width="20%">#if($!studentInfo.internshipCertification == "1")<span class="flag">*</span>#end教育实习证明：</th>
+                                    <td width="30%">
+            						    <div class="fileName ellipsis"><a href="$!studentApplyInfo.cerShipUrlPath" target="_blank"><span title="$!studentApplyInfo.cerShipRealName">$!studentApplyInfo.cerShipRealName</span></a></div>
+                                    </td>
+                                </tr>
+							#end
+							<tr>
+                                <th class="text-right" width="20%"><span class="flag">*</span>毕业证书或就业推荐表或其他证明：</th>
+                                <td width="30%">
+        					        <div class="fileName ellipsis">
+										#if($!graRecomIsImage == '1')<!--图片 -->
+    										<a href="$!studentApplyInfo.graRecomUrlPath" target="_blank"><span title="$!studentApplyInfo.graRecomRealName">$!studentApplyInfo.graRecomRealName</span></a>
+										#end
+										#if($!graRecomIsImage == '0')<!--非图片 -->
+											<a href="${link.contextPath}/dg/planApply/downloadFile?fileId=$!studentApplyInfo.graRecomAttId"><span title="$!studentApplyInfo.graRecomRealName">$!studentApplyInfo.graRecomRealName</span></a>
+										#end
+									</div>
+                                </td>
+                                <th class="text-right" width="20%">学历鉴定证明：</th> 
+                                <td width="30%">
+        					        <div class="fileName ellipsis"><a href="$!studentApplyInfo.acaQuaUrlPath" target="_blank"><span title="$!studentApplyInfo.acaQuaRealName">$!studentApplyInfo.acaQuaRealName</span></a></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-right" width="20%">学位证书：</th>
+                                <td width="30%">
+                                 <div class="layui-box">
+        					        <div class="fileName ellipsis"><a href="$!studentApplyInfo.bacUrlPath" target="_blank"><span title="$!studentApplyInfo.bacRealName">$!studentApplyInfo.bacRealName</span></a></div>
+                                </td>
+                                <th class="text-right" width="20%">学位鉴定证明：</th> 
+                                <td width="30%">
+                                	<div class="layui-box">
+        					        <div class="fileName ellipsis"><a href="$!studentApplyInfo.bacQuaUrlPath" target="_blank"><span title="$!studentApplyInfo.bacQuaRealName">$!studentApplyInfo.bacQuaRealName</span></a></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-right" width="20%">#if($!studentInfo.birthControl == '1') <span class="flag">*</span> #end计划生育处罚证明：</th>
+                                <td width="30%">
+                                 <div class="layui-box">
+        					        <div class="fileName ellipsis"><a href="$!studentApplyInfo.famPlanUrlPath" target="_blank"><span title="$!studentApplyInfo.famPlanRealName">$!studentApplyInfo.famPlanRealName</span></a></div>
+                                </td>
+                                <th class="text-right" width="20%"><span class="flag">*</span>个人学习和工作情况总结：</th> 
+                                <td width="30%">
+                                <div class="layui-box">
+        					        <div class="fileName ellipsis">
+										#if($!studyWorkIsImage == '1')<!--图片 -->
+    										<a href="$!studentApplyInfo.studyWorkUrlPath" target="_blank"><span title="$!studentApplyInfo.studyWorkRealName">$!studentApplyInfo.studyWorkRealName</span></a>
+										#end
+										#if($!studyWorkIsImage == '0')<!--非图片 -->
+											<a href="${link.contextPath}/dg/planApply/downloadFile?fileId=$!studentApplyInfo.studyWorkAttId"><span title="$!studentApplyInfo.studyWorkRealName">$!studentApplyInfo.studyWorkRealName</span></a>
+										#end
+									</div>
+                                </td>
+                            </tr>
+                            #if($!studentInfo.hasSimilar == '1')
+                            <tr>
+                               <th class="text-right" width="20%"><span class="flag">*</span>毕业成绩单：</th>
+                               <td width="30%">
+                               <div class="layui-box">
+									<div class="fileName ellipsis"><a href="$!studentApplyInfo.transcriptUrlPath" target="_blank"><span title="$!studentApplyInfo.transcriptRealName">$!studentApplyInfo.transcriptRealName</span></a></div>
+                               </td>
+                            </tr>
+                            #end
+							<tr>
+                                <th class="text-right" rowspan="2">其他材料：</th>
+                                <th>暂缓就业协议书（已办理暂缓就业手续的毕业生必须提供）：</th>
+                                <td colspan="2">
+                                    <div class="layui-box">
+        					        <div class="fileName ellipsis"><a href="$!studentApplyInfo.suspendEmpUrlPath" target="_blank"><span title="$!studentApplyInfo.suspendEmpRealName">$!studentApplyInfo.suspendEmpRealName</span></a></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>国外留学归来有关材料（国外留学归来人员必须提供）：</th>
+                                <td colspan="2">
+                                    <div class="layui-box">
+        					        <div class="fileName ellipsis"><a href="$!studentApplyInfo.abroadStudyUrlPath" target="_blank"><span title="$!studentApplyInfo.abroadStudyRealName">$!studentApplyInfo.abroadStudyRealName</span></a></div>
+                                </td>
+                            </tr>
+							<tr>
+                                <td colspan="4">
+                                    <p>申请理由：</p>
+                                    <textarea class="textarea" rows="5" name="applyReason">$!studentApplyInfo.applyReason</textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+					<table class="formTable">
+                        <caption>申请岗位信息</caption>
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+        							<div class="ellipsis">$!postset.postName</div>
+                                </td>
+                                <td colspan="2">
+        						    <div class="ellipsis">$!postset.subjectText</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+					<table class="formTable">
+                        <caption>审核意见</caption>
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+        							<select class="select" id="auditReason">
+                                        <option value="">--请选择--</option>
+        								#foreach($!list in $!auditReasons)
+        									<option title="$!list.reason" value="$!list.id" #if(($!studentApplyInfo.applyStatus == '4' || $!studentApplyInfo.applyStatus == '5') && $!list.id == $!studentApplyInfo.applyAuditCode) selected #end >
+            									#if($!list.reason.length()>40)
+                                                    $!list.reason.substring(0,40)...
+                                                #else
+                                                    $!list.reason
+                                                #end
+											</option>
+        								#end
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table表单模块 E-->
+                <!-- 操作按钮 S-->
+                <div class="text-center pagesBox">
+                    <button class="btn btn-primary btn-sm" type="button" onclick="reason();">原因维护</button>
+					#if($!theme.step < 2)
+						#if(!$!flag)
+    						<button class="btn btn-danger btn-sm" type="button" onclick="checkInterview(0,'noAudit');">不通过</button>
+    						<button class="btn btn-info btn-sm" type="button" onclick="checkInterview(1,'noAudit');">通过</button>
+    					#end
+    					#if($!flag && $!flag == '1' )
+							#if($!studentApplyInfo.audittype=='2')
+								#if($!studentApplyInfo.applyStatus == '6')
+									<button class="btn btn-info btn-sm" type="button" onclick="checkCancel('5');">退回申请</button>
+									<button class="btn btn-default btn-sm" type="button" onclick="checkCancel('4');">照片退回</button>
+								#end
+								#if($!studentApplyInfo.applyStatus == '4')
+        							<button class="btn btn-info btn-sm" type="button" onclick="checkInterview(1,'audit');">取消照片退回</button>
+								#end
+							#end
+    					#end
+					#end
+        			<button class="btn btn-warning btn-sm" type="button" onclick="window.history.go(-1);">返回</button>
+                </div>
+                <!-- 操作按钮 E-->
+        	</form>
+        </div>
+        <!-- context内容 E-->
+        #parse("/common/foot.vm")
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

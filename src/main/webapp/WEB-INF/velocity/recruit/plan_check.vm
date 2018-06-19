@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+#parse("/common/head-meta.vm")
+<title>东莞招聘</title> #parse("/common/head-js+css.vm")
+<script type="text/javascript">
+
+	function edit(id){
+        layer.open({
+            type: 2,
+            title:['招聘计划审核', 'font-weight:600'],
+            content:['${link.contextPath}/dg/position/addposition?themeId=$themeId&planApplyId=$planApplyId&id='+id,'yes'],
+            btn: ['确定', '取消'],
+            shadeClose:false,
+            fix:true,
+            area: ['750px','580px'],
+            maxWidth:474,
+            move: false,
+            yes: function(index, layero){
+                var $input_form=$(document).find("#layui-layer-iframe1").contents().find("#input_form");
+                $.ajax({
+                    url : '${link.contextPath}/dg/position/updatePosition',
+                    type : 'post',
+                    async: false,
+                    cache : false,
+                    data:$input_form.serialize(),
+                    dataType : 'json',
+                    success : function(data) {
+                        layer.msg(data.msg, {icon: 1});
+                        if(data.success){
+                            layer.close(index);
+                            window.parent.location.reload();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+	function planApplyCheck(){
+		var notNull = true ;
+		var toolong = false ;
+		var small = false ;
+        $("[subjectApproveCount=subjectApproveCount]").each(function () {
+			if($(this).val().length>4){
+				toolong = true ;
+			}
+			if($(this).val()==""){
+                notNull = false ;
+				return ;
+			} 
+			if($(this).val()<0){
+                small = true ;
+				return ;
+			} 
+        })
+		if(!notNull){
+            layer.msg("所有岗位的实际招聘人数必填！", {icon: 2});
+			return ;
+		}
+		if(toolong){
+            layer.msg("审批人数不能大于四位数！", {icon: 2});
+			return ;
+		}
+		if(small){
+			layer.msg("实际审批人数必须大于等于0！", {icon: 2});
+			return ;
+		}
+        $.ajax({
+            url : '${link.contextPath}/dg/planApply/planApplyCheck',
+            type : 'post',
+            async: false,
+            cache : false,
+            data:$("#input_form").serialize(),
+            dataType : 'json',
+            success : function(data) {
+                layer.msg(data.msg, {icon: 1});
+                if(data.success){
+                    window.location.href="${link.contextPath}/dg/planApply/checkIndex";
+                }
+            }
+        });
+	}
+
+</script>
+</head>
+<body>
+	#parse("/common/topMenu.vm")
+	#parse("/common/leftTemplate.vm")
+	<!-- Main内容模块 S-->
+	<div class="content-wrapper">
+		<!-- context内容 S-->
+    	<div class="content">
+            <!-- table表单模块 S-->
+            <div class="table-content">
+				<form id="input_form" >
+					<input name="id" type="hidden" value="$!planApply.id">
+					<dl class="formTable">
+						#foreach($list in $positions)
+							<dd>
+								<table class="formTable">
+									<tbody>
+										<tr>
+											<th class="text-right" width="10%">岗位名称：</th>
+											<td width="20%">$!list.postName</td>
+											<th class="text-right" width="10%">科目名称：</th>
+											<td>$!list.subjectText</td>
+											<input  type="hidden" name="positionList[$foreach.index].id" value="$!list.id">
+										</tr>
+										<tr>
+											<th class="text-right">科目课时：</th>
+											<td width="20%">$!list.subjectHour</td>
+											<th class="text-right">本岗位应设人数：</th>
+											<td>$!list.subjectCount</td>
+										</tr>
+										<tr>
+											<th class="text-right">本岗位现有人数：</th>
+											<td width="20%">$!list.subjectCurrentCount</td>
+											<th class="text-right">本岗位空缺人数：</th>
+											<td>$!list.subjectVacancyCount</td>
+										</tr>
+										<tr>
+											<th class="text-right">本岗位计划招聘人数：</th>
+											<td width="20%">$!list.subjectPlanCount</td>
+											<th class="text-right">本岗位实际招聘人数：</th>
+											<td>
+												#if($!planApply.isNoticePub == 0)
+													#if(!$!list.subjectApproveCount)
+                                                        <input class="input" data-rule="required; integer[+0];length(1~4)" name="positionList[$foreach.index].subjectApproveCount" subjectApproveCount="subjectApproveCount">
+													#else
+                                                        <input class="input" value="$!list.subjectApproveCount" data-rule="required; integer[+0];length(1~4)" name="positionList[$foreach.index].subjectApproveCount" subjectApproveCount="subjectApproveCount">
+													#end
+												#else $!list.subjectApproveCount
+												#end
+											</td>
+										</tr>
+										<tr>
+											<th class="text-right">岗位备注说明：</th>
+											<td colspan="3">$!list.remark</td>
+										</tr>
+										<tr>
+											<th class="text-right">学校其他限制条件：</th>
+											<td colspan="3">$!list.otherLimit</td>
+										</tr>
+										<tr>
+											<th class="text-right">岗位限制条件：</th>
+											<td colspan="3">
+												#if($!list.isLimitAge == '1')
+												年龄：$!list.limitAge岁 #if($!list.limitAgeConditition == '>=')及以上; #else 及以下 ;#end
+											#end
+												#if($!list.isLimitEducation == '1')
+													学历：$!list.limitEducationText #if($!list.limitEducationConditition == '>=')及以上; #else 及以下; #end
+												#end
+												#if($!list.isLimitEdu == '1')
+													教育类型：$!list.limitEduText #if($!list.limitEduConditition == '>=')及以上; #else 及以下; #end
+												#end
+												#if($!list.isLimitDegree == '1')
+													学位：$!list.limitDegreeText #if($!list.limitDegreeConditition == '>=')及以上; #else 及以下; #end
+												#end
+												专业：
+												#foreach($!item in $!list.positionDomains)
+													$!item.domainName
+												#end
+                                                ;
+												#if($!list.isLimitRecruit == '1')
+													招聘对象：
+													#if($!list.limitRecruit != '0')
+														$!list.limitRecruitText;
+													#elseif($!list.limitRecruit == '0')
+														全部
+													#end
+												#end
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</dd>
+						#end
+					</dl>
+				</form>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 操作按钮 S-->
+            <div class="text-center pagesBox">
+				#if($!planApply.isNoticePub == 0)
+                <button class="btn btn-primary btn-sm" type="button" onclick="planApplyCheck()">审批结果发布</button>
+				#end
+                <button class="btn btn-default btn-sm" type="button" onclick="javascript:history.back();">返回</button>
+            </div>
+            <!-- 操作按钮 E-->
+    	</div>
+    	<!-- context内容 E-->
+		#parse("/common/foot.vm")
+	</div>
+	<!-- Main内容模块 E-->
+</body>
+</html>

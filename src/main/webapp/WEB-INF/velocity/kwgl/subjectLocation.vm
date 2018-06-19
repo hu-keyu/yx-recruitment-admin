@@ -1,0 +1,36 @@
+#parse("/common/head-js+css.vm")
+<div class="dialog dialog-manage">
+    <div class="table-content">
+            #if($lbsList.size()>0)
+           
+                 #if($labsNum>0)
+               <table class="table">
+                    <thead>
+                        <tr>
+                            <th>试室名称</th>
+                            <th>岗位数量</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       #foreach( $vo in $lbsList )
+                        <tr> 
+                           <td>${vo.labsName}</td> <td>${vo.labsRealnum}</td>
+                        </tr>
+                        #end
+                    </tbody>
+                </table>
+                #else
+                 <div align="center">
+                     <br>
+                     <b><font size="3">试室还未发布!</font></b>
+                     </div>   
+                #end
+                #else
+                 <div align="center">
+                     <br>
+                     <b><font size="3">暂无数据!</font></b>
+                     </div>   
+                #end
+                
+    </div>
+</div>

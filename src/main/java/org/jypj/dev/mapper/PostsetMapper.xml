@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.PostsetDao" >
+
+	<resultMap id="BaseResultMap" type="org.jypj.dev.entity.Postset" >
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="POST_CODE" property="postCode" jdbcType="VARCHAR" />
+		<result column="POST_NAME" property="postName" jdbcType="VARCHAR" />
+		<result column="SUBJECT" property="subject" jdbcType="VARCHAR" />
+		<result column="IS_ART" property="isArt" jdbcType="DECIMAL" />
+		<result column="POST_CATEGORY" property="postCategory" jdbcType="VARCHAR" />
+		<result column="SEQ" property="seq" jdbcType="DECIMAL" />
+		<result column="SUMMARY" property="summary" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_AGE" property="isLimitAge" jdbcType="VARCHAR" />
+		<result column="LIMIT_AGE" property="limitAge" jdbcType="DECIMAL" />
+		<result column="LIMIT_AGE_CONDITITION" property="limitAgeConditition" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_EDUCATION" property="isLimitEducation" jdbcType="VARCHAR" />
+		<result column="LIMIT_EDUCATION" property="limitEducation" jdbcType="VARCHAR" />
+		<result column="LIMIT_EDUCATION_CONDITITION" property="limitEducationConditition" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_EDU" property="isLimitEdu" jdbcType="VARCHAR" />
+		<result column="LIMIT_EDU" property="limitEdu" jdbcType="VARCHAR" />
+		<result column="LIMIT_EDU_CONDITITION" property="limitEduConditition" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_DEGREE" property="isLimitDegree" jdbcType="VARCHAR" />
+		<result column="LIMIT_DEGREE" property="limitDegree" jdbcType="VARCHAR" />
+		<result column="LIMIT_DEGREE_CONDITITION" property="limitDegreeConditition" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_PROFESSION" property="isLimitProfession" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_RECRUIT" property="isLimitRecruit" jdbcType="VARCHAR" />
+		<result column="LIMIT_RECRUIT" property="limitRecruit" jdbcType="VARCHAR" />
+		<result column="IS_EDUCATION_STUDENT" property="isEducationStudent" jdbcType="VARCHAR" />
+		<result column="OTHER_LIMIT" property="otherLimit" jdbcType="VARCHAR" />
+		<result column="CREATETIME" property="createtime" jdbcType="DATE" />
+		<result column="MODIFYTIME" property="modifytime" jdbcType="DATE" />
+		<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+		<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="ISZZ" property="iszz" jdbcType="VARCHAR" />
+		<result column="SUBJECTTEXT" property="subjectText" jdbcType="VARCHAR" />
+		<collection property="specialtys" ofType="org.jypj.dev.entity.Specialty">
+			<id column="SPECIALTY_ID" property="id" jdbcType="VARCHAR" />
+			<result column="SPECIALTY_CODE" property="code" jdbcType="VARCHAR" />
+			<result column="SPECIALTY_NAME" property="name" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+	  ID,POST_CODE,POST_NAME,SUBJECT,IS_ART,POST_CATEGORY,SEQ,SUMMARY,IS_LIMIT_AGE,LIMIT_AGE,LIMIT_AGE_CONDITITION,IS_LIMIT_EDUCATION,LIMIT_EDUCATION,LIMIT_EDUCATION_CONDITITION,IS_LIMIT_EDU,LIMIT_EDU,LIMIT_EDU_CONDITITION,IS_LIMIT_DEGREE,LIMIT_DEGREE,LIMIT_DEGREE_CONDITITION,IS_LIMIT_PROFESSION,IS_LIMIT_RECRUIT,LIMIT_RECRUIT,IS_EDUCATION_STUDENT,OTHER_LIMIT,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,REMARK,ISZZ
+	</sql>
+
+	<insert id="savePostsetByField" parameterType="org.jypj.dev.entity.Postset" >
+		insert into recruit_postset
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		ID,
+	   <if test="postCode != null" >
+		POST_CODE,
+	   </if>
+	   <if test="postName != null" >
+		POST_NAME,
+	   </if>
+	   <if test="subject != null" >
+		SUBJECT,
+	   </if>
+	   <if test="isArt != null" >
+		IS_ART,
+	   </if>
+	   <if test="postCategory != null" >
+		POST_CATEGORY,
+	   </if>
+	   <if test="seq != null" >
+		SEQ,
+	   </if>
+	   <if test="summary != null" >
+		SUMMARY,
+	   </if>
+	   <if test="isLimitAge != null" >
+		IS_LIMIT_AGE,
+	   </if>
+	   <if test="limitAge != null" >
+		LIMIT_AGE,
+	   </if>
+	   <if test="limitAgeConditition != null" >
+		LIMIT_AGE_CONDITITION,
+	   </if>
+	   <if test="isLimitEducation != null" >
+		IS_LIMIT_EDUCATION,
+	   </if>
+	   <if test="limitEducation != null" >
+		LIMIT_EDUCATION,
+	   </if>
+	   <if test="limitEducationConditition != null" >
+		LIMIT_EDUCATION_CONDITITION,
+	   </if>
+	   <if test="isLimitEdu != null" >
+		IS_LIMIT_EDU,
+	   </if>
+	   <if test="limitEdu != null" >
+		LIMIT_EDU,
+	   </if>
+	   <if test="limitEduConditition != null" >
+		LIMIT_EDU_CONDITITION,
+	   </if>
+	   <if test="isLimitDegree != null" >
+		IS_LIMIT_DEGREE,
+	   </if>
+	   <if test="limitDegree != null" >
+		LIMIT_DEGREE,
+	   </if>
+	   <if test="limitDegreeConditition != null" >
+		LIMIT_DEGREE_CONDITITION,
+	   </if>
+	   <if test="isLimitProfession != null" >
+	    IS_LIMIT_PROFESSION,
+	   </if>
+	   <if test="isLimitRecruit != null" >
+		IS_LIMIT_RECRUIT,
+	   </if>
+	   <if test="limitRecruit != null" >
+		LIMIT_RECRUIT,
+	   </if>
+	   <if test="isEducationStudent != null" >
+		IS_EDUCATION_STUDENT,
+	   </if>
+	   <if test="otherLimit != null" >
+		OTHER_LIMIT,
+	   </if>
+	   <if test="createtime != null" >
+		CREATETIME,
+	   </if>
+	   <if test="modifytime != null" >
+		MODIFYTIME,
+	   </if>
+	   <if test="createuser != null" >
+		CREATEUSER,
+	   </if>
+	   <if test="modifyuser != null" >
+		MODIFYUSER,
+	   </if>
+	   <if test="remark != null" >
+		REMARK,
+	   </if>
+	   <if test="iszz != null" >
+		ISZZ,
+	   </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			#{id,jdbcType=VARCHAR}，
+		  <if test="postCode != null" >
+			#{postCode,jdbcType=VARCHAR},
+		  </if>
+		  <if test="postName != null" >
+			#{postName,jdbcType=VARCHAR},
+		  </if>
+		  <if test="subject != null" >
+			#{subject,jdbcType=VARCHAR},
+		  </if>
+		  <if test="isArt != null" >
+			#{isArt,jdbcType=DECIMAL},
+		  </if>
+		  <if test="postCategory != null" >
+			#{postCategory,jdbcType=VARCHAR},
+		  </if>
+		  <if test="seq != null" >
+			#{seq,jdbcType=DECIMAL},
+		  </if>
+		  <if test="summary != null" >
+			#{summary,jdbcType=VARCHAR},
+		  </if>
+		  <if test="isLimitAge != null" >
+			#{isLimitAge,jdbcType=VARCHAR},
+		  </if>
+		  <if test="limitAge != null" >
+			#{limitAge,jdbcType=DECIMAL},
+		  </if>
+		  <if test="limitAgeConditition != null" >
+			#{limitAgeConditition,jdbcType=VARCHAR},
+		  </if>
+		  <if test="isLimitEducation != null" >
+			#{isLimitEducation,jdbcType=VARCHAR},
+		  </if>
+		  <if test="limitEducation != null" >
+			#{limitEducation,jdbcType=VARCHAR},
+		  </if>
+		  <if test="limitEducationConditition != null" >
+			#{limitEducationConditition,jdbcType=VARCHAR},
+		  </if>
+		  <if test="isLimitEdu != null" >
+			#{isLimitEdu,jdbcType=VARCHAR},
+		  </if>
+		  <if test="limitEdu != null" >
+			#{limitEdu,jdbcType=VARCHAR},
+		  </if>
+		  <if test="limitEduConditition != null" >
+			#{limitEduConditition,jdbcType=VARCHAR},
+		  </if>
+		  <if test="isLimitDegree != null" >
+			#{isLimitDegree,jdbcType=VARCHAR},
+		  </if>
+		  <if test="limitDegree != null" >
+			#{limitDegree,jdbcType=VARCHAR},
+		  </if>
+		  <if test="limitDegreeConditition != null" >
+			#{limitDegreeConditition,jdbcType=VARCHAR},
+		  </if>
+		  <if test="isLimitProfession != null" >
+			#{isLimitProfession,jdbcType=VARCHAR},
+		  </if>
+		  <if test="isLimitRecruit != null" >
+			#{isLimitRecruit,jdbcType=VARCHAR},
+		  </if>
+		  <if test="limitRecruit != null" >
+			#{limitRecruit,jdbcType=VARCHAR},
+		  </if>
+		  <if test="isEducationStudent != null" >
+			#{isEducationStudent,jdbcType=VARCHAR},
+		  </if>
+		  <if test="otherLimit != null" >
+			#{otherLimit,jdbcType=VARCHAR},
+		  </if>
+		  <if test="createtime != null" >
+			#{createtime,jdbcType=DATE},
+		  </if>
+		  <if test="modifytime != null" >
+			#{modifytime,jdbcType=DATE},
+		  </if>
+		  <if test="createuser != null" >
+			#{createuser,jdbcType=VARCHAR},
+		  </if>
+		  <if test="modifyuser != null" >
+			#{modifyuser,jdbcType=VARCHAR},
+		  </if>
+		  <if test="remark != null" >
+			#{remark,jdbcType=VARCHAR},
+		  </if>
+		  <if test="iszz != null" >
+			#{iszz,jdbcType=VARCHAR},
+		  </if>
+		</trim>
+	</insert>
+
+	<insert id="savePostset" parameterType="org.jypj.dev.entity.Postset" >
+		insert into recruit_postset (
+		ID,
+		POST_CODE,
+		POST_NAME,
+		SUBJECT,
+		IS_ART,
+		POST_CATEGORY,
+		SEQ,
+		SUMMARY,
+		IS_LIMIT_AGE,
+		LIMIT_AGE,
+		LIMIT_AGE_CONDITITION,
+		IS_LIMIT_EDUCATION,
+		LIMIT_EDUCATION,
+		LIMIT_EDUCATION_CONDITITION,
+		IS_LIMIT_EDU,
+		LIMIT_EDU,
+		LIMIT_EDU_CONDITITION,
+		IS_LIMIT_DEGREE,
+		LIMIT_DEGREE,
+		LIMIT_DEGREE_CONDITITION,
+		IS_LIMIT_PROFESSION,
+		IS_LIMIT_RECRUIT,
+		LIMIT_RECRUIT,
+		IS_EDUCATION_STUDENT,
+		OTHER_LIMIT,
+		CREATETIME,
+		MODIFYTIME,
+		CREATEUSER,
+		MODIFYUSER,
+		 REMARK,
+		 ISZZ
+		)
+		values (
+		#{id,jdbcType=VARCHAR},
+		#{postCode,jdbcType=VARCHAR},
+		#{postName,jdbcType=VARCHAR},
+		#{subject,jdbcType=VARCHAR},
+		#{isArt,jdbcType=DECIMAL},
+		#{postCategory,jdbcType=VARCHAR},
+		#{seq,jdbcType=DECIMAL},
+		#{summary,jdbcType=VARCHAR},
+		#{isLimitAge,jdbcType=VARCHAR},
+		#{limitAge,jdbcType=DECIMAL},
+		#{limitAgeConditition,jdbcType=VARCHAR},
+		#{isLimitEducation,jdbcType=VARCHAR},
+		#{limitEducation,jdbcType=VARCHAR},
+		#{limitEducationConditition,jdbcType=VARCHAR},
+		#{isLimitEdu,jdbcType=VARCHAR},
+		#{limitEdu,jdbcType=VARCHAR},
+		#{limitEduConditition,jdbcType=VARCHAR},
+		#{isLimitDegree,jdbcType=VARCHAR},
+		#{limitDegree,jdbcType=VARCHAR},
+		#{limitDegreeConditition,jdbcType=VARCHAR},
+		#{isLimitProfession,jdbcType=VARCHAR},
+		#{isLimitRecruit,jdbcType=VARCHAR},
+		#{limitRecruit,jdbcType=VARCHAR},
+		#{isEducationStudent,jdbcType=VARCHAR},
+		#{otherLimit,jdbcType=VARCHAR},
+		#{createtime,jdbcType=DATE},
+		#{modifytime,jdbcType=DATE},
+		#{createuser,jdbcType=VARCHAR},
+		#{modifyuser,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},
+		#{iszz,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<delete id="deletePostsetById" parameterType="java.lang.String" >
+		delete from recruit_postset
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="deletePostsetByObject" parameterType="org.jypj.dev.entity.Postset" >
+		delete from recruit_postset
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<update id="updatePostsetByField" parameterType="org.jypj.dev.entity.Postset" >
+		update recruit_postset
+		<set >
+		 <if test="id != null" >
+		 ID=#{id,jdbcType=VARCHAR},
+		 </if>
+		 <if test="postCode != null" >
+		 POST_CODE=#{postCode,jdbcType=VARCHAR},
+		 </if>
+		 <if test="postName != null" >
+		 POST_NAME=#{postName,jdbcType=VARCHAR},
+		 </if>
+		 <if test="subject != null" >
+		 SUBJECT=#{subject,jdbcType=VARCHAR},
+		 </if>
+		 <if test="isArt != null" >
+		 IS_ART=#{isArt,jdbcType=DECIMAL},
+		 </if>
+		 <if test="postCategory != null" >
+		 POST_CATEGORY=#{postCategory,jdbcType=VARCHAR},
+		 </if>
+		 <if test="seq != null" >
+		 SEQ=#{seq,jdbcType=DECIMAL},
+		 </if>
+		 <if test="summary != null" >
+		 SUMMARY=#{summary,jdbcType=VARCHAR},
+		 </if>
+		 <if test="isLimitAge != null" >
+		 IS_LIMIT_AGE=#{isLimitAge,jdbcType=VARCHAR},
+		 </if>
+		 <if test="limitAge != null" >
+		 LIMIT_AGE=#{limitAge,jdbcType=DECIMAL},
+		 </if>
+		 <if test="limitAgeConditition != null" >
+		 LIMIT_AGE_CONDITITION=#{limitAgeConditition,jdbcType=VARCHAR},
+		 </if>
+		 <if test="isLimitEducation != null" >
+		 IS_LIMIT_EDUCATION=#{isLimitEducation,jdbcType=VARCHAR},
+		 </if>
+		 <if test="limitEducation != null" >
+		 LIMIT_EDUCATION=#{limitEducation,jdbcType=VARCHAR},
+		 </if>
+		 <if test="limitEducationConditition != null" >
+		 LIMIT_EDUCATION_CONDITITION=#{limitEducationConditition,jdbcType=VARCHAR},
+		 </if>
+		 <if test="isLimitEdu != null" >
+		 IS_LIMIT_EDU=#{isLimitEdu,jdbcType=VARCHAR},
+		 </if>
+		 <if test="limitEdu != null" >
+		 LIMIT_EDU=#{limitEdu,jdbcType=VARCHAR},
+		 </if>
+		 <if test="limitEduConditition != null" >
+		 LIMIT_EDU_CONDITITION=#{limitEduConditition,jdbcType=VARCHAR},
+		 </if>
+		 <if test="isLimitDegree != null" >
+		 IS_LIMIT_DEGREE=#{isLimitDegree,jdbcType=VARCHAR},
+		 </if>
+		 <if test="limitDegree != null" >
+		 LIMIT_DEGREE=#{limitDegree,jdbcType=VARCHAR},
+		 </if>
+		 <if test="limitDegreeConditition != null" >
+		 LIMIT_DEGREE_CONDITITION=#{limitDegreeConditition,jdbcType=VARCHAR},
+		 </if>
+		 <if test="isLimitProfession != null" >
+		 IS_LIMIT_PROFESSION=#{isLimitProfession,jdbcType=VARCHAR},
+		 </if>
+		 <if test="isLimitRecruit != null" >
+		 IS_LIMIT_RECRUIT=#{isLimitRecruit,jdbcType=VARCHAR},
+		 </if>
+		 <if test="limitRecruit != null" >
+		 LIMIT_RECRUIT=#{limitRecruit,jdbcType=VARCHAR},
+		 </if>
+		 <if test="isEducationStudent != null" >
+		 IS_EDUCATION_STUDENT=#{isEducationStudent,jdbcType=VARCHAR},
+		 </if>
+		 <if test="otherLimit != null" >
+		 OTHER_LIMIT=#{otherLimit,jdbcType=VARCHAR},
+		 </if>
+		 <if test="createtime != null" >
+		 CREATETIME=#{createtime,jdbcType=DATE},
+		 </if>
+		 <if test="modifytime != null" >
+		 MODIFYTIME=#{modifytime,jdbcType=DATE},
+		 </if>
+		 <if test="createuser != null" >
+		 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+		 </if>
+		 <if test="modifyuser != null" >
+		 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+		 </if>
+		 <if test="remark != null" >
+		 REMARK=#{remark,jdbcType=VARCHAR},
+		 </if>
+		 <if test="iszz != null" >
+		 ISZZ=#{iszz,jdbcType=VARCHAR}
+		 </if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updatePostset" parameterType="org.jypj.dev.entity.Postset" >
+		update recruit_postset
+		<set >
+		 ID=#{id,jdbcType=VARCHAR},
+		 POST_CODE=#{postCode,jdbcType=VARCHAR},
+		 POST_NAME=#{postName,jdbcType=VARCHAR},
+		 SUBJECT=#{subject,jdbcType=VARCHAR},
+		 IS_ART=#{isArt,jdbcType=DECIMAL},
+		 POST_CATEGORY=#{postCategory,jdbcType=VARCHAR},
+		 SEQ=#{seq,jdbcType=DECIMAL},
+		 SUMMARY=#{summary,jdbcType=VARCHAR},
+		 IS_LIMIT_AGE=#{isLimitAge,jdbcType=VARCHAR},
+		 LIMIT_AGE=#{limitAge,jdbcType=DECIMAL},
+		 LIMIT_AGE_CONDITITION=#{limitAgeConditition,jdbcType=VARCHAR},
+		 IS_LIMIT_EDUCATION=#{isLimitEducation,jdbcType=VARCHAR},
+		 LIMIT_EDUCATION=#{limitEducation,jdbcType=VARCHAR},
+		 LIMIT_EDUCATION_CONDITITION=#{limitEducationConditition,jdbcType=VARCHAR},
+		 IS_LIMIT_EDU=#{isLimitEdu,jdbcType=VARCHAR},
+		 LIMIT_EDU=#{limitEdu,jdbcType=VARCHAR},
+		 LIMIT_EDU_CONDITITION=#{limitEduConditition,jdbcType=VARCHAR},
+		 IS_LIMIT_DEGREE=#{isLimitDegree,jdbcType=VARCHAR},
+		 LIMIT_DEGREE=#{limitDegree,jdbcType=VARCHAR},
+		 LIMIT_DEGREE_CONDITITION=#{limitDegreeConditition,jdbcType=VARCHAR},
+		 IS_LIMIT_PROFESSION=#{isLimitProfession,jdbcType=VARCHAR},
+		 IS_LIMIT_RECRUIT=#{isLimitRecruit,jdbcType=VARCHAR},
+		 LIMIT_RECRUIT=#{limitRecruit,jdbcType=VARCHAR},
+		 IS_EDUCATION_STUDENT=#{isEducationStudent,jdbcType=VARCHAR},
+		 OTHER_LIMIT=#{otherLimit,jdbcType=VARCHAR},
+		 CREATETIME=#{createtime,jdbcType=DATE},
+		 MODIFYTIME=#{modifytime,jdbcType=DATE},
+		 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+		 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+		 REMARK=#{remark,jdbcType=VARCHAR},
+		 ISZZ=#{iszz,jdbcType=VARCHAR}
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectPostsetById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		SELECT
+		r.*,
+		(SELECT t.TEXT FROM sys_dictionary t WHERE 1=1 and t.code='xklb' and t.VALUE=r.SUBJECT) as subjecttext,
+		rs.ID as SPECIALTY_ID,
+		rs.CODE AS SPECIALTY_CODE,
+		rs.NAME AS SPECIALTY_NAME
+		from recruit_postset r
+		left join RECRUIT_POST_SPECIALTY s on r.ID=s.POST_ID
+		left join RECRUIT_SPECIALTY rs on s.SPECIALTY_ID=rs.CODE
+		WHERE r.id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		select
+		r.*,
+		s.text subjectText
+		from recruit_postset r
+		LEFT JOIN SYS_DICTIONARY s ON s.value=r.subject
+		where 1=1
+		AND s.code='xklb'
+		<if test="_parameter.containsKey('postName')">
+			AND POST_NAME LIKE CONCAT(CONCAT('%', #{postName,jdbcType=VARCHAR}), '%')
+		</if>
+		ORDER BY seq
+	</select>
+
+	<select id="selectOnePageByPostset" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Postset" >
+		select
+		<include refid="Base_Column_List" />
+		from recruit_postset
+		where 1=1
+		 <if test="id != null and id !='' ">
+		  and ID=#{id,jdbcType=VARCHAR}
+		 </if>
+		 <if test="postCode != null and postCode !='' ">
+		  and POST_CODE=#{postCode,jdbcType=VARCHAR}
+		 </if>
+		 <if test="postName != null and postName !='' ">
+		  and POST_NAME=#{postName,jdbcType=VARCHAR}
+		 </if>
+		 <if test="subject != null and subject !='' ">
+		  and SUBJECT=#{subject,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isArt != null and isArt !='' ">
+		  and IS_ART=#{isArt,jdbcType=DECIMAL}
+		 </if>
+		 <if test="postCategory != null and postCategory !='' ">
+		  and POST_CATEGORY=#{postCategory,jdbcType=VARCHAR}
+		 </if>
+		 <if test="seq != null and seq !='' ">
+		  and SEQ=#{seq,jdbcType=DECIMAL}
+		 </if>
+		 <if test="summary != null and summary !='' ">
+		  and SUMMARY=#{summary,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitAge != null and isLimitAge !='' ">
+		  and IS_LIMIT_AGE=#{isLimitAge,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitAge != null and limitAge !='' ">
+		  and LIMIT_AGE=#{limitAge,jdbcType=DECIMAL}
+		 </if>
+		 <if test="limitAgeConditition != null and limitAgeConditition !='' ">
+		  and LIMIT_AGE_CONDITITION=#{limitAgeConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitEducation != null and isLimitEducation !='' ">
+		  and IS_LIMIT_EDUCATION=#{isLimitEducation,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEducation != null and limitEducation !='' ">
+		  and LIMIT_EDUCATION=#{limitEducation,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEducationConditition != null and limitEducationConditition !='' ">
+		  and LIMIT_EDUCATION_CONDITITION=#{limitEducationConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitEdu != null and isLimitEdu !='' ">
+		  and IS_LIMIT_EDU=#{isLimitEdu,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEdu != null and limitEdu !='' ">
+		  and LIMIT_EDU=#{limitEdu,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEduConditition != null and limitEduConditition !='' ">
+		  and LIMIT_EDU_CONDITITION=#{limitEduConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitDegree != null and isLimitDegree !='' ">
+		  and IS_LIMIT_DEGREE=#{isLimitDegree,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitDegree != null and limitDegree !='' ">
+		  and LIMIT_DEGREE=#{limitDegree,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitDegreeConditition != null and limitDegreeConditition !='' ">
+		  and LIMIT_DEGREE_CONDITITION=#{limitDegreeConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitRecruit != null and isLimitRecruit !='' ">
+		  and IS_LIMIT_RECRUIT=#{isLimitRecruit,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitRecruit != null and limitRecruit !='' ">
+		  and LIMIT_RECRUIT=#{limitRecruit,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isEducationStudent != null and isEducationStudent !='' ">
+		  and IS_EDUCATION_STUDENT=#{isEducationStudent,jdbcType=VARCHAR}
+		 </if>
+		 <if test="otherLimit != null and otherLimit !='' ">
+		  and OTHER_LIMIT=#{otherLimit,jdbcType=VARCHAR}
+		 </if>
+		 <if test="createtime != null and createtime !='' ">
+		  and CREATETIME=#{createtime,jdbcType=DATE}
+		 </if>
+		 <if test="modifytime != null and modifytime !='' ">
+		  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+		 </if>
+		 <if test="createuser != null and createuser !='' ">
+		  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+		 </if>
+		 <if test="modifyuser != null and modifyuser !='' ">
+		  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+		 </if>
+		 <if test="remark != null and remark !='' ">
+		  and REMARK=#{remark,jdbcType=VARCHAR}
+		 </if>
+		 <if test="iszz != null and iszz !='' ">
+		  and ISZZ=#{iszz,jdbcType=VARCHAR}
+		 </if>
+	</select>
+
+	<select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		select r.*,(SELECT t.TEXT FROM sys_dictionary t WHERE 1=1 and t.code='xklb' and t.VALUE=SUBJECT) as subjecttext,
+			rs.ID as SPECIALTY_ID,rs.CODE AS SPECIALTY_CODE,rs.NAME AS SPECIALTY_NAME 
+			from recruit_postset r 
+			left join RECRUIT_POST_SPECIALTY s on r.ID=s.POST_ID 
+			left join RECRUIT_SPECIALTY rs on s.SPECIALTY_ID=rs.CODE 
+		where 1=1 
+		<if test="projectId !=null and projectId !='' and planApplyId !=null and planApplyId !='' ">
+			and r.ID not in (select STATION_ID from school_position where PROJECT_ID=#{projectId,jdbcType=VARCHAR} and PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR})
+		</if>
+		order by r.POST_NAME asc,r.CREATETIME desc
+	</select>
+
+	<select id="selectAllByPostset" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Postset" >
+		select
+		<include refid="Base_Column_List" />
+		from recruit_postset
+		where 1=1
+		 <if test="id != null and id !='' ">
+		  and ID=#{id,jdbcType=VARCHAR}
+		 </if>
+		 <if test="postCode != null and postCode !='' ">
+		  and POST_CODE=#{postCode,jdbcType=VARCHAR}
+		 </if>
+		 <if test="postName != null and postName !='' ">
+		  and POST_NAME=#{postName,jdbcType=VARCHAR}
+		 </if>
+		 <if test="subject != null and subject !='' ">
+		  and SUBJECT=#{subject,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isArt != null and isArt !='' ">
+		  and IS_ART=#{isArt,jdbcType=DECIMAL}
+		 </if>
+		 <if test="postCategory != null and postCategory !='' ">
+		  and POST_CATEGORY=#{postCategory,jdbcType=VARCHAR}
+		 </if>
+		 <if test="seq != null and seq !='' ">
+		  and SEQ=#{seq,jdbcType=DECIMAL}
+		 </if>
+		 <if test="summary != null and summary !='' ">
+		  and SUMMARY=#{summary,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitAge != null and isLimitAge !='' ">
+		  and IS_LIMIT_AGE=#{isLimitAge,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitAge != null and limitAge !='' ">
+		  and LIMIT_AGE=#{limitAge,jdbcType=DECIMAL}
+		 </if>
+		 <if test="limitAgeConditition != null and limitAgeConditition !='' ">
+		  and LIMIT_AGE_CONDITITION=#{limitAgeConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitEducation != null and isLimitEducation !='' ">
+		  and IS_LIMIT_EDUCATION=#{isLimitEducation,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEducation != null and limitEducation !='' ">
+		  and LIMIT_EDUCATION=#{limitEducation,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEducationConditition != null and limitEducationConditition !='' ">
+		  and LIMIT_EDUCATION_CONDITITION=#{limitEducationConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitEdu != null and isLimitEdu !='' ">
+		  and IS_LIMIT_EDU=#{isLimitEdu,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEdu != null and limitEdu !='' ">
+		  and LIMIT_EDU=#{limitEdu,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEduConditition != null and limitEduConditition !='' ">
+		  and LIMIT_EDU_CONDITITION=#{limitEduConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitDegree != null and isLimitDegree !='' ">
+		  and IS_LIMIT_DEGREE=#{isLimitDegree,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitDegree != null and limitDegree !='' ">
+		  and LIMIT_DEGREE=#{limitDegree,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitDegreeConditition != null and limitDegreeConditition !='' ">
+		  and LIMIT_DEGREE_CONDITITION=#{limitDegreeConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitRecruit != null and isLimitRecruit !='' ">
+		  and IS_LIMIT_RECRUIT=#{isLimitRecruit,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitRecruit != null and limitRecruit !='' ">
+		  and LIMIT_RECRUIT=#{limitRecruit,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isEducationStudent != null and isEducationStudent !='' ">
+		  and IS_EDUCATION_STUDENT=#{isEducationStudent,jdbcType=VARCHAR}
+		 </if>
+		 <if test="otherLimit != null and otherLimit !='' ">
+		  and OTHER_LIMIT=#{otherLimit,jdbcType=VARCHAR}
+		 </if>
+		 <if test="createtime != null and createtime !='' ">
+		  and CREATETIME=#{createtime,jdbcType=DATE}
+		 </if>
+		 <if test="modifytime != null and modifytime !='' ">
+		  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+		 </if>
+		 <if test="createuser != null and createuser !='' ">
+		  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+		 </if>
+		 <if test="modifyuser != null and modifyuser !='' ">
+		  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+		 </if>
+		 <if test="remark != null and remark !='' ">
+		  and REMARK=#{remark,jdbcType=VARCHAR}
+		 </if>
+		 <if test="remark != null and remark !='' ">
+		  and ISZZ=#{iszz,jdbcType=VARCHAR}
+		 </if>
+	</select>
+
+	<select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		select
+		<include refid="Base_Column_List" />
+		from recruit_postset
+		where 1=1
+	</select>
+
+	<select id="selectObjectByPostset" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Postset" >
+		select
+		<include refid="Base_Column_List" />
+		from recruit_postset
+		where 1=1
+		 <if test="id != null and id !='' ">
+		  and ID=#{id,jdbcType=VARCHAR}
+		 </if>
+		 <if test="postCode != null and postCode !='' ">
+		  and POST_CODE=#{postCode,jdbcType=VARCHAR}
+		 </if>
+		 <if test="postName != null and postName !='' ">
+		  and POST_NAME=#{postName,jdbcType=VARCHAR}
+		 </if>
+		 <if test="subject != null and subject !='' ">
+		  and SUBJECT=#{subject,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isArt != null and isArt !='' ">
+		  and IS_ART=#{isArt,jdbcType=DECIMAL}
+		 </if>
+		 <if test="postCategory != null and postCategory !='' ">
+		  and POST_CATEGORY=#{postCategory,jdbcType=VARCHAR}
+		 </if>
+		 <if test="seq != null and seq !='' ">
+		  and SEQ=#{seq,jdbcType=DECIMAL}
+		 </if>
+		 <if test="summary != null and summary !='' ">
+		  and SUMMARY=#{summary,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitAge != null and isLimitAge !='' ">
+		  and IS_LIMIT_AGE=#{isLimitAge,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitAge != null and limitAge !='' ">
+		  and LIMIT_AGE=#{limitAge,jdbcType=DECIMAL}
+		 </if>
+		 <if test="limitAgeConditition != null and limitAgeConditition !='' ">
+		  and LIMIT_AGE_CONDITITION=#{limitAgeConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitEducation != null and isLimitEducation !='' ">
+		  and IS_LIMIT_EDUCATION=#{isLimitEducation,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEducation != null and limitEducation !='' ">
+		  and LIMIT_EDUCATION=#{limitEducation,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEducationConditition != null and limitEducationConditition !='' ">
+		  and LIMIT_EDUCATION_CONDITITION=#{limitEducationConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitEdu != null and isLimitEdu !='' ">
+		  and IS_LIMIT_EDU=#{isLimitEdu,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEdu != null and limitEdu !='' ">
+		  and LIMIT_EDU=#{limitEdu,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitEduConditition != null and limitEduConditition !='' ">
+		  and LIMIT_EDU_CONDITITION=#{limitEduConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitDegree != null and isLimitDegree !='' ">
+		  and IS_LIMIT_DEGREE=#{isLimitDegree,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitDegree != null and limitDegree !='' ">
+		  and LIMIT_DEGREE=#{limitDegree,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitDegreeConditition != null and limitDegreeConditition !='' ">
+		  and LIMIT_DEGREE_CONDITITION=#{limitDegreeConditition,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isLimitRecruit != null and isLimitRecruit !='' ">
+		  and IS_LIMIT_RECRUIT=#{isLimitRecruit,jdbcType=VARCHAR}
+		 </if>
+		 <if test="limitRecruit != null and limitRecruit !='' ">
+		  and LIMIT_RECRUIT=#{limitRecruit,jdbcType=VARCHAR}
+		 </if>
+		 <if test="isEducationStudent != null and isEducationStudent !='' ">
+		  and IS_EDUCATION_STUDENT=#{isEducationStudent,jdbcType=VARCHAR}
+		 </if>
+		 <if test="otherLimit != null and otherLimit !='' ">
+		  and OTHER_LIMIT=#{otherLimit,jdbcType=VARCHAR}
+		 </if>
+		 <if test="createtime != null and createtime !='' ">
+		  and CREATETIME=#{createtime,jdbcType=DATE}
+		 </if>
+		 <if test="modifytime != null and modifytime !='' ">
+		  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+		 </if>
+		 <if test="createuser != null and createuser !='' ">
+		  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+		 </if>
+		 <if test="modifyuser != null and modifyuser !='' ">
+		  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+		 </if>
+		 <if test="remark != null and remark !='' ">
+		  and REMARK=#{remark,jdbcType=VARCHAR}
+		 </if>
+		 <if test="iszz != null and iszz !='' ">
+		  and ISZZ=#{iszz,jdbcType=VARCHAR}
+		 </if>
+	</select>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		DELETE FROM recruit_postset
+		WHERE id IN
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 通过岗位id,查询学科id -->
+   <select id="selectXKIDByGanweiId" resultType="string" parameterType="java.util.Map" >
+		select sd.id as subject from recruit_postset rp
+	    left join  SYS_DICTIONARY sd  on sd.value=rp.SUBJECT
+	    where  sd.code='xklb' 
+	    <if test="ganweiIds != null and ganweiIds !=''">
+    	and rp.id in
+		<foreach collection="ganweiIds" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		group by sd.id
+    </if>
+		
+	</select>
+	
+	<select id="selectByCode" resultMap="BaseResultMap">
+		SELECT * FROM recruit_postset
+		WHERE POST_CODE = #{code,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectByName" resultMap="BaseResultMap">
+		SELECT * FROM recruit_postset
+		WHERE POST_NAME = #{name,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByCodeAndId" parameterType="map" resultMap="BaseResultMap">
+		SELECT * FROM recruit_postset
+		WHERE POST_CODE = #{code,jdbcType=VARCHAR}
+		AND id <![CDATA[<>]]> #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByNameAndId" parameterType="map" resultMap="BaseResultMap">
+		SELECT * FROM recruit_postset
+		WHERE POST_NAME = #{name,jdbcType=VARCHAR}
+		AND id <![CDATA[<>]]> #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectAllPostset" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from recruit_postset
+	</select>
+
+</mapper>

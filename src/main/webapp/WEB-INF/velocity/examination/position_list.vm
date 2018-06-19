@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+#parse("/common/head-meta.vm")
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">	
+$(document).ready(function(){
+
+        getFprofess();
+
+        $(document).on("click","input[name = chkItem]:checkbox",function(){
+            checkProfess($(this));
+        });
+
+        $(document).on("dblclick","label.profess",function(){
+            var text=$.trim($(this).text());
+            var code=$(this).attr("code");
+            delete profess[code];
+            $(this).parent("li").remove();
+            $("#professTable").find("input:checkbox."+code).prop("checked", false);
+            //有一个没选中，全选就不选中
+            if($("#chkAll").is(":checked")){
+                $("#chkAll").prop("checked", false);
+            }
+        });
+
+        $("#chkAll").click(function(){
+            $("input[name = chkItem]:checkbox").each(function(index,e){
+                if($("#chkAll").is(":checked")){
+                    $(e).prop("checked", true);
+                }else{
+                    $(e).prop("checked", false);
+                }
+                checkProfess($(e));
+            });
+        });
+
+    });
+
+    function checkProfess($dom){
+        var code=$dom.attr("class");
+        var text=$dom.attr("text");
+        if($dom.is(":checked")){//选中
+            if(!profess[code]){
+                profess[code]=text;
+                $("#chosedProfess").append("<li><label class='profess "+code+"' code='"+code+"'>"+text+"&nbsp;&nbsp;&nbsp;</label></li>");
+            }
+            //每个选项都选中就将全选选中
+            var chklen=$("input[name = chkItem]:checkbox:checked").size();
+            if($("input[name = chkItem]:checkbox").size() == chklen){
+                $("#chkAll").prop("checked", true);
+            }
+        }else{//未选中
+            delete profess[code];
+            $("#chosedProfess").find("label."+code).parent("li").remove();
+            //有一个没选中，全选就不选中
+            if($("#chkAll").is(":checked")){
+                $("#chkAll").prop("checked", false);
+            }
+        }
+    }
+
+    var profess={};
+    var limitProfession=$(window.parent.document).contents().find("#professCode").val();
+    var limitProfessionText=$(window.parent.document).contents().find("#professText").val();
+	
+//$(window.parent.document).find("#layui-layer-iframe1 iframe").contents().find("#testType option:selected").val();
+    //获取岗位类别
+    function getFprofess() {
+        var zylx = $("#zylx").val();
+		var fProfess=$("#fProfess").val();
+		var itemsId = $("#itemsId").val();
+		var testType = $("#testType").val();
+        if (!zylx&&!itemsId&&!fProfess&&!testType) {
+            return;
+        }
+        
+        $.ajax({
+            url : '${link.contextPath}/dg/examItemsInfo/examLimit?zylx='+zylx+'&itemsId='+itemsId+'&testType='+testType+'&fProfess='+fProfess,
+            type : 'post',
+            async: false,
+            cache : false,
+            dataType : 'json',
+            success : function(data) {
+                if (data.speciaList.length > 0) {
+                    joinData(data.speciaList);
+                } else {
+                    $("#professTable").html("");
+                    //$("#fProfess").empty();
+                    //$("#fProfess").prepend("<option value=''>--请选择--</option>");
+                }
+                checkData();
+            }
+        });
+    }
+	
+	//获取岗位类别
+    function getSearch() {
+		if($.isEmptyObject(profess)){
+			limitProfession="";
+			limitProfessionText="";
+		}
+		var itemsId = $("#itemsId").val();
+		var jobName = $("#jobName").val();
+		var testType = $("#testType").val();
+        if (!jobName&&!itemsId&&!testType) {
+            return;
+        }
+        
+        $.ajax({
+            url : '${link.contextPath}/dg/examItemsInfo/examLimit?itemsId='+itemsId+'&testType='+testType+'&jobName='+encodeURI(encodeURI(jobName)),
+            type : 'post',
+            async: false,
+            cache : false,
+            dataType : 'json',
+            success : function(data) {
+                if (data.speciaList.length > 0) {
+                    joinData(data.speciaList);
+                } else {
+                    $("#professTable").html("");
+                }
+                checkData();
+            }
+        });
+    }
+
+
+
+    function joinData(speciaList){
+        $("#professTable").html("");
+        var insertHtml="";
+        var len=speciaList.length % 4;
+        for (var i = 0; i < speciaList.length; i++) {
+            insertHtml=insertHtml+ "<td class='text-left'><label><input type='checkbox' name='chkItem' class='"+speciaList[i].positionId+"' text='"+speciaList[i].positionName+"'>" + speciaList[i].positionName + "</label></td>";
+            if ((i+1) % 4 == 0) {
+                $("#professTable").append("<tr>"+insertHtml+"</tr>");
+                insertHtml="";
+            }
+        }
+        insertHtml="";
+        //有余数时
+        for (var i = speciaList.length-len; i <= speciaList.length-1; i++) {
+            insertHtml=insertHtml+ "<td class='text-left'><label><input type='checkbox' name='chkItem' class='"+speciaList[i].positionId+"' text='"+speciaList[i].positionName+"'>" +speciaList[i].positionName + "</label></td>";
+            if(i == speciaList.length-1){
+                $("#professTable").append("<tr>"+insertHtml+"</tr>");
+            }
+        }
+    }
+	
+	//清空
+    function clearData(){
+        profess={};
+		limitProfession="";
+		limitProfessionText="";
+        $("#chkAll").prop("checked", false);
+        $("input[name = chkItem]:checkbox").prop("checked", false);
+        $("#chosedProfess").find("li").remove();
+    }
+	
+	//重置
+	function resetData(){
+		$("#zylx").val("");
+		$("#fProfess").val("");
+		getFprofess();
+    }
+
+    function checkData(){
+		
+        var professText=[];
+        var professCode=[];
+		
+        if(!$.isEmptyObject(profess)){
+            for(var i in profess){
+                professCode.push(i);
+                professText.push(profess[i]);
+            }
+            limitProfession=professCode.join(",");
+            limitProfessionText=professText.join(",");
+        }
+        if(limitProfession && limitProfessionText){
+			if(typeof limitProfession!='string'){
+                var limitProfessions=limitProfession;
+                var limitProfessionTexts=limitProfessionText;
+            }else{
+                var limitProfessions=limitProfession.split(",");
+                var limitProfessionTexts=limitProfessionText.split(",");
+            }
+			for(var i=0;i<limitProfessions.length;i++){
+                var $dom=$("input[name = chkItem]:checkbox."+limitProfessions[i]);
+                if($dom.length){
+                        $dom.prop("checked", true);
+                    //每个选项都选中就将全选选中
+                    var chklen=$("input[name = chkItem]:checkbox:checked").size();
+                    if($("input[name = chkItem]:checkbox").size() == chklen){
+                        $("#chkAll").prop("checked", true);
+                    }
+                }else{
+                    $("#chkAll").prop("checked", false);
+                }
+                if(!profess[limitProfessions[i]]){
+                    profess[limitProfessions[i]]=limitProfessionTexts[i];
+                    $("#chosedProfess").append("<li><label class='profess "+limitProfessions[i]+"' code='"+limitProfessions[i]+"'>"+limitProfessionTexts[i]+"&nbsp;&nbsp;&nbsp;</label></li>");
+                }
+            }
+        }
+    }
+</script>
+
+</head>
+	 <!-- 岗位选择 S-->
+    <div class="dialog dialog-select">
+        <!-- 条件搜索 S-->
+        <form class="form-inline border-left-none border-right-none" onsubmit="return false;">
+			<input type="hidden" name="itemsId" id="itemsId" value="${themeId}"/>
+			<input type="hidden" name="testType" id="testType" value="${testType}"/>
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-left">
+                    <li>
+                        <span>查找对象：</span>
+                        <input class="input" type="text" name="jobName" id="jobName">
+                    </li>
+                    <li>
+                        <a class="btn btn-default" href="javascript:void(0);" onclick="getSearch()">搜索</a>
+                    </li>
+                </ul>
+            </div>
+            <hr>
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-left">
+                    <li>
+                        <span>岗位类别：</span>
+                        <select class="select"  name="zylx" id="zylx" onChange="getFprofess();">
+							<option value="">请选择</option>
+                           #foreach($list in $gwlxdics)
+							<option value="$!list.value">$!list.text</option>
+						   #end
+                        </select>
+                    </li>
+                    <li>
+                        <span>学科类型：</span>
+                        <select class="select" name="fProfess" id="fProfess" onChange="getFprofess();">
+							<option value="">请选择</option>
+                             #foreach($list in $xklxdics)
+								<option value="$!list.value">$!list.text</option>
+							 #end
+                        </select>
+                    </li>
+                    <li>
+                    	<button class="btn btn-primary btn-sm" type="button" onclick="resetData();">重置</button>
+                	</li>
+                </ul>
+               <!-- <ul class="pull-right">
+                    <li>
+                        <button class="btn btn-primary btn-sm" >确定</button>
+                        <button class="btn btn-default btn-sm" >取消</button>
+                    </li>
+                </ul>-->
+            </div>
+        </form>
+        <!-- 条件搜索 E-->
+        <div class="table-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-left" colspan="4">
+                            <label><input type="checkbox" id="chkAll">全选</label>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="grid-h-130 overflow">
+                <table class="table">
+                    <tbody id="professTable">
+                       
+                    </tbody>
+                </table>
+            </div>
+            <div class="selectedBox">
+                <div class="title"><strong>已选择专业</strong>（提示：双击名称可删除）<ul class="pull-right">
+                <li>
+                    <button class="btn btn-primary btn-sm" type="button" onclick="clearData();">清空</button>
+                </li>
+            </ul>
+				</div>
+                <div class="listbox">
+                    <ul class="clearfix" id="chosedProfess"></ul>
+                </div>
+            </div>
+			
+        </div>
+    </div>
+    <!-- 岗位选择 E-->
+
+</html>

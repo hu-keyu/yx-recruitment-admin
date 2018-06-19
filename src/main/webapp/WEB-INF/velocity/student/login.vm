@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>东莞招聘——学生报名</title>
+    <!-- 公共重置CSS -->
+    <link href="${link.contextPath}/static/css/common.css" rel="stylesheet">
+    <link href="${link.contextPath}/static/css/login.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1474956227_0993266.css">
+    <!-- 样式美化CSS -->
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="${link.contextPath}/static/js/jquery-1.9.1.min.js"></script>
+    <script src="${link.contextPath}/static/js/jquery-form.js"></script>
+    <!-- 97日历控件 -->
+    <script src="${link.contextPath}/static/lib/My97DatePicker/WdatePicker.js"></script>
+    <!-- 弹出层控件 http://layer.layui.com/ -->
+	<script src="${link.contextPath}/static/lib/layui/layui.js" type="text/javascript"></script>
+	<script src="${link.contextPath}/static/lib/jqPaginator/jqPaginator-1.2.0.min.js" type="text/javascript"></script>
+	<script src="${link.contextPath}/static/lib/nice-validator/jquery.validator.js?local=zh-CN" type="text/javascript"></script>
+    <!-- 项目公共JS -->
+    <script src="${link.contextPath}/static/js/zh-common.js"></script>
+    <script src="${link.contextPath}/static/js/jquery.cookie.js"></script>
+	<script src="${link.contextPath}/static/js/security.js" ></script>
+</head>
+<body class="bj">
+<!-- <div class="fixedLogo">
+    <img src="${link.contextPath}/static/images/logo-1.png" alt="">
+</div>
+<div class="fixBox">
+    <div class="title">
+        <strong>用户登录</strong>
+        <span>LOGIN</span>
+    </div>
+    <div>
+    <span>$!msg</span>
+    </div>
+    <form  method="post" id="formLogin" accept-charset="utf-8" data-validator-option="{timely:2, focusCleanup:true}">
+        <div class="form-group">
+            <i class="icon"></i>
+            <input  type="text"
+                    tabindex="1"
+                    name="identityCard"
+                    id="identityCard"
+                    data-rule="required;identityCard;" 
+                    data-rule-identityCard = "[/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/, '请输入正确的身份证号码']"
+                    placeholder="身份证">
+        </div>
+        <div class="form-group">
+            <i class="icon"></i>
+            <input type="password" tabindex="2" name="password" id="password"
+            data-rule="required;password;" 
+            data-rule-password = "[/^[a-zA-Z]\w{5,17}$/, '请输入正确的密码']"
+            placeholder="密码">
+        </div>
+        <div class="form-group2">
+            <input type="text" tabindex="3" name="verifyCode" placeholder="请输入验证码" 
+            data-rule="required;">
+            <img src="${link.contextPath}/dg/studentApplyInfo/getValidateCode" onclick="changeCode(this);" alt="">
+        </div>
+        <div class="forgetBox">
+            <label><input type="checkbox" id="rememberMe" value="">记住密码</label>
+            <a href="#this" title="">忘记密码？</a>
+        </div>
+        <div class="btnBox">${link.contextPath}/dg/studentApplyInfo/register?type=1
+            <a href="javascript:void(0)" title="" onclick="login()">登录</a>
+            <a href="javascript:void(0)" onclick="register();" title="">报名注册</a>
+        </div>
+    </form>
+</div> -->
+
+<div class="login" style="width: 600px;height:250px;">
+    <h1>东莞教育局学生报名系统<sup>V2016</sup></h1>
+    <div class="web_qr_login clearfix" style="display: block; height: 235px;">    
+        <!--登录-->
+        <div class="web_login pull-left" style="width:350px;padding-bottom: 0;">
+            <div class="login-box" style="border-right: 1px solid #ddd;">
+                <div class="login_form" style="margin-top: 15px;width: 280px;">
+                     <form class="loginForm" action="${link.contextPath}/dg/studentApplyInfo/loginVerify" method="post" id="formLogin" accept-charset="utf-8">
+                        <input type="hidden" name="did" value="0">
+                        <input type="hidden" name="to" value="log">
+                        <div class="uinArea">
+                            <label style="width: 80px" class="input-tips" for="u">身份证号：</label>
+                            <div class="inputOuter">
+                                <input type="text" tabindex="1" ms-duplex="username" 
+                                 name="identityCard"
+			                    id="identityCard"
+			                    data-rule="required;identityCard;" 
+			                    data-rule-identityCard = "[/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/, '请输入正确的身份证号码']" 
+                                 placeholder="请输入身份证号" class="inputstyle">
+                            </div>
+                        </div>
+                        <div class="pwdArea">
+                            <label style="width: 80px" class="input-tips text-right" for="p">密码：</label>
+                            <div class="inputOuter">
+                                <input type="password" tabindex="2" ms-duplex="password" 
+                                name="password" id="password"
+					            data-rule="required;password;" 
+					            data-rule-password = "[/^[a-zA-Z]\w{5,17}$/, '请输入正确的密码']"
+                                placeholder="密码" class="inputstyle">
+                            </div>
+                        </div>
+                        <div class="forgetBox" style="padding-left: 75px;">
+                            <label><input type="checkbox" id="rememberMe" value="">记住密码</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="#this" title="" onclick="verifySecret()">忘记密码？</a>
+                        </div>
+                        <div class="clearfix" style="padding-left:75px;margin-top:20px;">
+                            <input type="submit" id="login" value="登 录" style="width:95px;margin-right: 10px;" class="button_blue">
+                            <input type="button" id="register" value="报名注册" style="width:95px;" class="button_red">
+                        </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+        <!--登录end-->
+        <div class="pull-right">
+            <div style="width: 250px; padding: 15px;">
+                <h2 class="text-center" style="color: #4a88d8"><strong>招聘公告</strong></h2>
+                <p class="break_word" style="height:160px;margin:10px 0 0 0;overflow-y:auto;color: #666;">$!notice.content</p>
+				<a class="ellipsis" style="width:220px;margin-top:10px;color:red;text-decoration: underline;" href="${link.contextPath}/dg/studentInfo/timingexcel" title="东莞市教育局公开招聘2017年公办普通中小学（面向毕业生）和中职专业课教师时间安排表">东莞市教育局公开招聘2017年公办普通中小学（面向毕业生）和中职专业课教师时间安排表
+				</a>
+            </div>
+        </div>
+    </div>
+    <a style="font-size: 12px;
+              position: absolute;
+              bottom: -30px;
+              text-align: center;
+              width: 100%;
+              color: #fff;" target="_blank" href="${link.contextPath}/static/html/browerDown.html" title="">◆&nbsp;建议使用高版本谷歌、火狐等浏览器</a>
+</div>
+
+
+<script>
+$(document).ready(function(){
+var options = {
+        url:'${link.contextPath}/dg/studentApplyInfo/loginVerify',   
+        type:'post',                    
+        data:$("#formLogin").serialize(),
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        success:function(data){
+        	var jso = $.parseJSON(data);
+        	console.log(jso.flag);
+        	if (!jso.flag) {
+        		layer.alert(jso.msg, {icon: 1});
+        		return false;
+        	} else {
+        		layer.msg(jso.msg, {
+				  icon: 1,
+				  time: 1000 
+				}, function(){
+					window.location.href = '${link.contextPath}/dg/studentApplyInfo/registerIndex?type=' + jso.sInfo.studentType + "&studentId=" + jso.sInfo.id;
+				});
+        	}
+        }
+     };
+     
+     //读取cookies
+ 	if (readCookie("flag") == "true") {
+        $("#rememberMe").attr("checked", true);
+        $("#identityCard").val(readCookie("identityCard"));
+        $("#password").val(readCookie("password"));
+    } else {
+        $("#rememberMe").attr("checked", false);
+        $("#identityCard").val('');
+        $("#password").val('');
+    }
+     
+     $('#formLogin').on('valid.form', function(){
+		 if($("#rememberMe").is(":checked")){
+		 	createCookie('flag','true',7);
+		 	createCookie('identityCard',$("#identityCard").val(),7);
+		 	createCookie('password',$("#password").val(),7);
+		 } else {
+		 	createCookie('flag','false',0);
+		 	createCookie('identityCard',$("#identityCard").val(),0);
+		 	createCookie('password',$("#password").val(),0);
+		 }
+       	$("#formLogin").ajaxSubmit(options);
+	  });
+                 
+    	$("#register").on('click',function(){
+	    	//验证是否到报名时间
+	    	$.ajax({
+	    			url : '${link.contextPath}/dg/studentApplyInfo/verifyRegister',
+	    			type : 'post',
+	    			async: false,
+	    			cache : false,
+	    			dataType : 'json',
+	    			success : function(data) {
+	    				console.log(data.flag);
+			           	if (!data.flag) {
+							var opt={}
+	                		layer.alert(data.msg, data.title?{title:data.title,icon: 0}:{icon: 0});
+	                		return false;
+	                	}
+	    				window.location.href = '${link.contextPath}/dg/studentApplyInfo/register?type=1';
+	    			}
+	    		});
+
+    	});
+});
+
+	function changeCode(dom) {
+		$(dom).attr("src", "${link.contextPath}/dg/studentApplyInfo/getValidateCode?random=" + Math.random() * 10);
+	}
+			
+			
+    $('#formLogin').validator({
+        formClass:'n-yellow',
+        msgClass: "n-bottom",
+        msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>'
+    });
+    
+    //回答密保问题;
+var count = 0;     
+var secretList = new Array();
+function verifySecret() {
+	var identityCard = $("#identityCard").val();
+	//需要先输入登录账号
+	if (!identityCard) {
+        layer.alert('请先输入您的登录账号！');
+        return false;
+	}
+	//用户是否存在
+	 $.ajax({  
+        url: "${link.contextPath}/dg/studentApplyInfo/isExistSid",  
+        type: "post",
+        data: {"identityCard":identityCard},
+        dataType:"json",  
+        success: function(data){
+        	if (!data.flag) {
+		        layer.alert(data.msg);
+        		return false;
+        	} else {
+        		layer.open({
+			        id:'layui-layer-iframe2',
+			        type: 2,
+			        title:['重置密码', 'font-weight:600'],
+			        content:['${link.contextPath}/dg/studentInfo/verifyforgetSecret?sid=' + data.sid,'yes'],
+			        btn: ['确定','取消'],
+			        shadeClose:false,
+			        fix:true,
+			        area: ['500px','500px'],
+			        move: false,
+			        yes: function(index, layero){
+			            verify(data.sid);
+			        }
+			    }); 
+        	}
+    	}
+    });
+	
+}
+    
+    //验证
+function verify(_sid) {
+	if (_sid == '') {
+        layer.alert("请输入登录账号！");
+		return false;
+	}
+    var _path = $(window.parent.document).find("#layui-layer-iframe2 iframe").contents().find("input[name='answer']");
+    $(_path).each(
+        function(){
+            if ($(this).val().length > 100) {
+                count = -1;
+            } else {
+                secretList.push({questionCode:$(this).prev().val(),answer:$(this).val(),studentId:_sid});
+            }
+        }
+    );
+    var jsonStr = JSON.stringify(secretList);
+    if (count == -1) {
+        layer.alert('回答的问题过长！');
+        return false;
+    }
+    
+    $.ajax({  
+        type: "POST",  
+        url: "${link.contextPath}/dg/studentInfo/forgetPass",  
+        data: jsonStr,
+        dataType:"json",  
+        contentType : 'application/json;charset=utf-8', 
+        success: function(data){
+            if (data.flag == true) {
+                layer.msg(data.msg, {
+                      icon: 1,
+                      time: 1000
+                    },function(){
+                        layui.use(['layer'], function(){
+                            layer.open({
+                            	id:'layui-layer-iframe3',
+                                type: 2,
+                                title:['重置密码', 'font-weight:600'],
+                                content:['${link.contextPath}/dg/studentInfo/getForgetpass','yes'],
+                                btn: ['确定','取消'],
+                                shadeClose:false,
+                                fix:true,
+                                area: ['500px','500px'],
+                                move: false,
+                                yes: function(index, layero){
+                                	var newpassConf = $(window.parent.document).find("#layui-layer-iframe3 iframe").contents().find("#newpassConf").val();
+                                	var newpass = $(window.parent.document).find("#layui-layer-iframe3 iframe").contents().find("#newpass").val();
+                                	
+                                	//正则匹配
+                                	if (newpassConf == '') {
+			                    		layer.alert("请输入密码！", {icon: 1});
+			                    		return false;
+                                	}
+                                	if (newpass == '') {
+			                    		layer.alert("请输入密码！", {icon: 1});
+			                    		return false;
+                                	}
+                                	
+	                              	if (!isPassword(newpass) || !isPassword(newpassConf)) {
+			                    		layer.alert("输入的密码格式不正确！", {icon: 1});
+			                    		return false;
+                                	}
+                    				$.ajax({
+						    			url : '${link.contextPath}/dg/studentInfo/saveForgetPass',
+						    			type : 'post',
+						    			async: false,
+						    			cache : false,
+						    			data:{"newpassConf":newpassConf,"newpass":newpass,"sid":_sid},
+						    			dataType : 'json',
+						    			success : function(data) {
+											console.log(data.msg);
+											if (!data.flag) {
+					                    		layer.alert(data.msg, {icon: 1});
+					                    		return false;
+					                    	} else {
+					                    		layer.msg(data.msg, {
+												  icon: 1,
+												  time: 1000 
+												}, function(){
+													layer.closeAll();
+												});
+					                    	}
+						    			}
+						    		});
+                                }
+                            });
+                            
+                        });
+                    });
+            } else {
+                layer.alert(data.msg);
+            }
+            secretList = new Array();
+        }
+    });  
+}
+    
+
+function isPassword(obj){
+    var reg = /^[a-zA-Z]\w{5,17}$/; 
+    return reg.test(obj);
+}   
+    
+    
+    
+</script>
+</body>
+</html>

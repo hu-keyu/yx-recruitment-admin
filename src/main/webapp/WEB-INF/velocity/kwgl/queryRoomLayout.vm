@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>试室查询</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+	      var itemsId;
+		  var  labid;
+		  var kaodian;
+		  var nyr;
+       
+       function selectSubject()
+       {
+          $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/selectSubject',
+                data : {
+                    "nyr" :$("#ryn").val(),
+                },
+                success: function (data) {
+                       var opstr="<span>招聘项目：</span><select class='select' id='themeid' name='themeid' onchange='selectThemeRoom()'><option value=''>请选择</option>";
+                       for(i=0;i<data.length;i++)
+                       {
+                               if(data[i].theme.length>20)
+                        {
+                        tempname=data[i].theme.substring(0,19)+"...";
+                        }else
+                        {
+                         tempname=data[i].theme;
+                        }
+                        opstr=opstr+"<option title='"+data[i].theme+"' value='"+data[i].id+"'>"+tempname+"</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#themeidDiv").html(opstr);
+                }  
+            });  
+       }
+       
+       //获取招聘主题的考点
+		function selectThemeRoom() {
+		   if(typeof($("#themeid").val())=='undefined')
+		    {
+		      layer.msg('主题不能为空!', {icon: 2});
+		      return;
+		    }
+            $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/selectThemeRoom',
+                data : {
+                    "itemsId" :$("#themeid").val(),
+                    "bsType":'2'
+                },
+                success: function (data) {
+                       var opstr="<span>考点：</span><select class='select' id='kaodian' name='kaodian' onchange='selectLabs()'><option value=''>请选择</option>";
+                       var tempname;
+                       for(i=0;i<data.length;i++)
+                       {
+                          if(data[i].testName.length>20)
+                        {
+                        tempname=data[i].testName.substring(0,19)+"...";
+                        }else
+                        {
+                         tempname=data[i].testName;
+                        }
+                        opstr=opstr+"<option title='"+data[i].testName+"' value='"+data[i].id+"'>"+tempname+"</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#kaodianDiv").html(opstr);
+                }  
+            });  
+        }
+          //获取附加试室信息
+        function selectLabs()
+        {
+            $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/selectLabs',
+                data : {
+                    "itemsId" :$("#themeid").val(),
+                     "kaodian" :$("#kaodian").val()
+                },
+                success: function (data) {
+                       var opstr="<span>试室：</span><select class='select' id='layout1' name='layout1'><option value=''>请选择</option>";
+                       for(i=0;i<data.length;i++)
+                       {
+                        opstr=opstr+"<option value='"+data[i].id+"'>"+data[i].labsName+"</option>";
+                       }
+                       $("#labsdiv").html(opstr);
+                }  
+            });  
+        }
+        function query(type)
+        {
+       var flag= checkData(type);
+       if(!flag)
+       {
+         return;
+       }
+        layer.open({
+	            type: 2,
+	            title: '',
+	            shadeClose: true,
+	            shade: 0.8,
+	            area: ['1000px', '700px'],        
+	            content: "${link.contextPath}/dg/examSubjectInfo/queryRoomLayoutByType?itemsId="+itemsId+"&kaodian="+kaodian+"&nyr="+nyr+"&type="+type+"&labid="+labid
+	            });
+    
+        }
+        function checkData(type)
+        {
+           itemsId=$("#themeid").val();//主题类型
+		   labid=$("#layout1").val();
+		   kaodian=$("#kaodian").val();//考点id
+		   nyr=$("#ryn").val();
+		  if(nyr=="" || nyr=='undefined')
+		  {
+		  layer.msg('年份不能为空!', {icon: 2});
+		  return false;
+		  }
+		  if(itemsId=="" || itemsId=='undefined')
+		  {
+		  layer.msg('招聘项目不能为空!', {icon: 2});
+		  return false;
+		  }
+		   if(kaodian=="" || kaodian=='undefined')
+		  {
+		  layer.msg('考点不能为空!', {icon: 2});
+		  return false;
+		  }
+		  
+		  if(type=='4'||type=='5'||type=='6'||type=='7')
+		  {
+		 if(labid=="" || labid=='undefined')
+		  {
+		  layer.msg('试室不能为空!', {icon: 2});
+		  return false;
+		  }
+		  }
+		
+		  return true;
+        }
+        
+    </script>
+</head>
+<body>
+     #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+            <!-- 条件搜索 S-->
+            <form class="form-inline">
+				<div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>年份：</span>
+                            <select class="select" id="ryn" onchange="selectSubject()">
+                              <option value="">请选择</option>
+                              #foreach( $vo in $dateList )
+                              <option value="$vo">$vo</option>
+                                #end
+                            </select>
+                        </li>
+                         <li>
+                              <span id="themeidDiv">
+                            </span>
+                        </li>
+                         <li>
+                            <span id="kaodianDiv">
+                            </span>
+                        </li>
+                           <li>
+                            <span id="labsdiv">
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content">
+                <div class="mt10 p15 text-center">
+					<button class="btn btn-default btn-lg" onclick="query('1')">试室位置</button>
+		    		<button class="btn btn-default btn-lg" onclick="query('2')">学科分布</button>
+		      		<button class="btn btn-default btn-lg" onclick="query('3')">试卷袋数</button>
+		    		<button class="btn btn-default btn-lg" onclick="query('4')">试室确认</button>
+		    		<button class="btn btn-default btn-lg" onclick="query('5')">试室名门贴</button>
+		    		<button class="btn btn-default btn-lg" onclick="query('6')">座位表门贴</button>
+		    		<button class="btn btn-default btn-lg" onclick="query('7')">桌贴</button>
+			    </div>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+                <div id="pagination" class="pull-right pages"></div>
+            </div>
+            <!-- 分页+全选模块 E-->
+        </div>
+        <!-- context内容 E-->
+        #parse("/common/foot.vm")
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

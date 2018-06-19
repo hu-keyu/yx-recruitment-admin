@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.TestStudentInfoDao">
+
+	<resultMap id="BaseResultMap" type="org.jypj.dev.entity.StudentInfo">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="EMPLOY_ITEMS_ID" property="employItemsId" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="SEX" property="sex" jdbcType="VARCHAR" />
+		<result column="IDENTITY_CARD" property="identityCard" jdbcType="VARCHAR" />
+		<result column="BIRTHDAY" property="birthday" jdbcType="DATE" />
+		<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="NATION_CODE" property="nationCode" jdbcType="VARCHAR" />
+		<result column="NATIVE_PLACE" property="nativePlace" jdbcType="VARCHAR" />
+		<result column="ORIGIN_PLACE" property="originPlace" jdbcType="VARCHAR" />
+		<result column="FAMILY_REGISTER" property="familyRegister" jdbcType="VARCHAR" />
+		<result column="BIRTH_CONTROL" property="birthControl" jdbcType="VARCHAR" />
+		<result column="HEALTHY" property="healthy" jdbcType="VARCHAR" />
+		<result column="POLITICAL_STATUS" property="politicalStatus" jdbcType="VARCHAR" />
+		<result column="PHOTO_ATT_ID" property="photoAttId" jdbcType="VARCHAR" />
+		<result column="CERTI_TYPE" property="certiType" jdbcType="VARCHAR" />
+		<result column="EXPERTISE_CODE" property="expertiseCode" jdbcType="VARCHAR" />
+		<result column="HONOR_CODE" property="honorCode" jdbcType="VARCHAR" />
+		<result column="TEACHING_SUBJECT" property="teachingSubject" jdbcType="VARCHAR" />
+		<result column="PUBLIC_OFFICE" property="publicOffice" jdbcType="VARCHAR" />
+		<result column="CONTRACT_TEACHER" property="contractTeacher" jdbcType="VARCHAR" />
+		<result column="ATTACHED_UNITS" property="attachedUnits" jdbcType="VARCHAR" />
+		<result column="FREE_STUDENT" property="freeStudent" jdbcType="VARCHAR" />
+		<result column="PROFESSIONAL_COURSE" property="professionalCourse" jdbcType="VARCHAR" />
+		<result column="MANDARIN_SCORE" property="mandarinScore" jdbcType="VARCHAR" />
+		<result column="EDUCATION_SCORE" property="educationScore" jdbcType="VARCHAR" />
+		<result column="PSYCHOLOGY_SCORE" property="psychologyScore" jdbcType="VARCHAR" />
+		<result column="PHONE_NUMBER" property="phoneNumber" jdbcType="VARCHAR" />
+		<result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR" />
+		<result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+		<result column="RESUME" property="resume" jdbcType="VARCHAR" />
+		<result column="WORK_EXPERIENCE" property="workExperience" jdbcType="VARCHAR" />
+		<result column="STUDENT_TYPE" property="studentType" jdbcType="VARCHAR" />
+		<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+		<result column="CTIME" property="ctime" jdbcType="DATE" />
+		<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+		<result column="MTIME" property="mtime" jdbcType="DATE" />
+		<result column="TICKETNUM" property="ticketnum" jdbcType="VARCHAR" />
+		<result column="POST_NAME" property="postName" jdbcType="VARCHAR" />
+		<result column="APPLY_STATUS" property="applyStatus" jdbcType="VARCHAR" />
+		<result column="STATUS_TEXT" property="statustext" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID,EMPLOY_ITEMS_ID,NAME,SEX,IDENTITY_CARD,BIRTHDAY,PASSWORD,NATION_CODE,NATIVE_PLACE,ORIGIN_PLACE,FAMILY_REGISTER,BIRTH_CONTROL,HEALTHY,POLITICAL_STATUS,PHOTO_ATT_ID,CERTI_TYPE,EXPERTISE_CODE,HONOR_CODE,TEACHING_SUBJECT,PUBLIC_OFFICE,CONTRACT_TEACHER,ATTACHED_UNITS,FREE_STUDENT,PROFESSIONAL_COURSE,MANDARIN_SCORE,EDUCATION_SCORE,PSYCHOLOGY_SCORE,PHONE_NUMBER,CONTACT_PHONE,ADDRESS,RESUME,WORK_EXPERIENCE,STUDENT_TYPE,CREATE_USER,CTIME,MODIFY_USER,MTIME,TICKETNUM
+	</sql>
+
+	<insert id="saveStudentInfo" parameterType="org.jypj.dev.entity.StudentInfo">
+		insert into student_info (
+		ID,
+		EMPLOY_ITEMS_ID,
+		NAME,
+		SEX,
+		IDENTITY_CARD,
+		BIRTHDAY,
+		PASSWORD,
+		NATION_CODE,
+		NATIVE_PLACE,
+		ORIGIN_PLACE,
+		FAMILY_REGISTER,
+		BIRTH_CONTROL,
+		HEALTHY,
+		POLITICAL_STATUS,
+		PHOTO_ATT_ID,
+		CERTI_TYPE,
+		EXPERTISE_CODE,
+		HONOR_CODE,
+		TEACHING_SUBJECT,
+		PUBLIC_OFFICE,
+		CONTRACT_TEACHER,
+		ATTACHED_UNITS,
+		FREE_STUDENT,
+		PROFESSIONAL_COURSE,
+		MANDARIN_SCORE,
+		EDUCATION_SCORE,
+		PSYCHOLOGY_SCORE,
+		PHONE_NUMBER,
+		CONTACT_PHONE,
+		ADDRESS,
+		RESUME,
+		WORK_EXPERIENCE,
+		STUDENT_TYPE,
+		CREATE_USER,
+		CTIME,
+		MODIFY_USER,
+		MTIME,
+		TICKETNUM
+		)
+		values (
+		#{id,jdbcType=VARCHAR},
+		#{employItemsId,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{sex,jdbcType=VARCHAR},
+		#{identityCard,jdbcType=VARCHAR},
+		#{birthday,jdbcType=DATE},
+		#{password,jdbcType=VARCHAR},
+		#{nationCode,jdbcType=VARCHAR},
+		#{nativePlace,jdbcType=VARCHAR},
+		#{originPlace,jdbcType=VARCHAR},
+		#{familyRegister,jdbcType=VARCHAR},
+		#{birthControl,jdbcType=VARCHAR},
+		#{healthy,jdbcType=VARCHAR},
+		#{politicalStatus,jdbcType=VARCHAR},
+		#{photoAttId,jdbcType=VARCHAR},
+		#{certiType,jdbcType=VARCHAR},
+		#{expertiseCode,jdbcType=VARCHAR},
+		#{honorCode,jdbcType=VARCHAR},
+		#{teachingSubject,jdbcType=VARCHAR},
+		#{publicOffice,jdbcType=VARCHAR},
+		#{contractTeacher,jdbcType=VARCHAR},
+		#{attachedUnits,jdbcType=VARCHAR},
+		#{freeStudent,jdbcType=VARCHAR},
+		#{professionalCourse,jdbcType=VARCHAR},
+		#{mandarinScore,jdbcType=VARCHAR},
+		#{educationScore,jdbcType=VARCHAR},
+		#{psychologyScore,jdbcType=VARCHAR},
+		#{phoneNumber,jdbcType=VARCHAR},
+		#{contactPhone,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{resume,jdbcType=VARCHAR},
+		#{workExperience,jdbcType=VARCHAR},
+		#{studentType,jdbcType=VARCHAR},
+		#{createUser,jdbcType=VARCHAR},
+		#{ctime,jdbcType=DATE},
+		#{modifyUser,jdbcType=VARCHAR},
+		#{mtime,jdbcType=DATE},
+		#{ticketnum,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<delete id="deleteTestStudentInfo" parameterType="java.lang.String">
+		delete from student_info
+		where CREATE_USER = #{createUser,jdbcType=VARCHAR}
+	</delete>
+
+</mapper>

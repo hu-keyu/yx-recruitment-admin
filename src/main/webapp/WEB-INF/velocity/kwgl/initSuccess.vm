@@ -1,0 +1,7 @@
+#parse("/common/head-js+css.vm")
+
+    <div align="center">
+          
+          <b><font size="10">数据初始化成功!</font></b>
+ 
+</div>

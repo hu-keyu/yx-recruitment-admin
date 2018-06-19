@@ -1,0 +1,96 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+	var sloadindex;
+	function enabled(id,projectId){
+		$.ajax({
+			url : '${link.contextPath}/dg/position/enabledPosition',
+			type : 'post',
+			data:{"id":id,"projectId":projectId},
+			async: false,
+			cache : false,
+			dataType : 'json',
+			beforeSend: function(){
+                sloadindex = layer.load(0, {
+                	shade: [0.3,'#fff']
+                });
+            },
+			success : function(data) {
+				if(data.flag == 'success'){
+					alert(data.msg);
+					window.location.reload();
+				}else{
+    				layer.close(sloadindex);
+					layer.msg(data.msg, {icon: 2});
+				}
+			}
+		});
+	}
+	
+	function cancel(id,projectId,stationId){
+		parent.layer.confirm('取消岗位后审核通过的考生需要补报其他岗位，再次启用岗位后，审核通过的人员将不存在，确认要取消该岗位吗?', {icon: 3, title:'提示'}, function(index){
+			$.ajax({
+    			url : '${link.contextPath}/dg/position/cancelPosition',
+    			type : 'post',
+    			data:{"id":id,"projectId":projectId,"stationId":stationId},
+    			async: false,
+    			cache : false,
+    			dataType : 'json',
+				beforeSend: function(){
+                    sloadindex = layer.load(0, {
+                    	shade: [0.3,'#fff']
+                    });
+                },
+    			success : function(data) {
+    				if(data.flag == 'success'){
+    					alert(data.msg);
+    					window.location.reload();
+    				}else{
+        				layer.close(sloadindex);
+						layer.msg(data.msg, {icon: 2});
+    				}
+    			}
+    		});	
+        	parent.layer.close(index);
+        });
+	}
+</script>
+<!-- 岗位管理 S-->
+<div class="dialog dialog-manage">
+    <div class="table-content">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>岗位名称</th>
+                    <th>上报人数</th>
+                    <th>审批人数</th>
+                    <th>报名人数</th>
+                    <th>招录比例</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!list in $!positions)
+    				<tr>
+                        <td>$!list.postName</td>
+                        <td>$!list.subjectPlanCount</td>
+                        <td>$!list.subjectApproveCount</td>
+                        <td>$!list.applyCount</td>
+                        <td>
+							#if($!list.enterCondition == '1' || $!list.enterCondition == '2')
+    							1:$!list.interviewEnterpPropo
+							#end
+						</td>
+                        <td>
+							#if($!list.status == '1')
+    							<a class="btn btn-primary" href="javascript:void(0);" onclick="cancel('$!list.id','$!list.projectId','$!list.stationId'),'';" title="取消">取消</a>
+							#else
+    							<a class="btn btn-default" href="javascript:void(0);" onclick="enabled('$!list.id','$!list.projectId');" title="启用">启用</a>
+							#end
+                        </td>
+                    </tr>
+				#end
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 岗位管理 E-->

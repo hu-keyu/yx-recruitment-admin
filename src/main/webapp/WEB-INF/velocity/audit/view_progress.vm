@@ -1,0 +1,66 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+	var applyStatus='$!studentApplyInfo.applyStatus';
+	$(document).ready(function(){
+		tdAddClass(applyStatus);
+	});
+	
+	function tdAddClass(index){
+		index=parseInt(index);
+		$("table.stepBox td").each(function(i,e){
+			var sequence =$(e).attr("index");
+			sequence=parseInt(sequence);
+			if(sequence <= index){
+				$(e).addClass("active");
+			}
+		});
+	}
+</script>
+<!-- 步骤 S-->
+<div class="dialog dialog-step">
+    <table class="stepBox">
+        <tbody>
+            <tr>
+                <td index="6">
+                    <span>注册报名</span>
+                    <i class="iconfont icon-jiantou"></i>
+                    <p>$!date.format('yyyy-MM-dd',$!notice.registerStart)~$!date.format('yyyy-MM-dd',$!notice.registerEnd)</p>
+                </td>
+                <td index="7">
+                    <span>单位面试</span>
+                    <i class="iconfont icon-jiantou"></i>
+                    <p>$!date.format('yyyy-MM-dd',$!notice.interviewStart)~$!date.format('yyyy-MM-dd',$!notice.interviewEnd)</p>
+                </td>
+                <td index="8">
+                    <span>统一笔试</span>
+                    <i class="iconfont icon-jiantou"></i>
+                    <p>$!date.format('yyyy-MM-dd',$!notice.writtenStart)~$!date.format('yyyy-MM-dd',$!notice.writtenEnd)</p>
+                </td>
+                <td index="9">
+                    <span>统一试讲</span>
+                    <i class="iconfont icon-jiantou"></i>
+                    <p>$!date.format('yyyy-MM-dd',$!notice.lectureStart)~$!date.format('yyyy-MM-dd',$!notice.lectureEnd)</p>
+                </td>
+            </tr>
+            <tr>
+                <td index="10">
+                    <span>体验</span>
+                    <i class="iconfont icon-jiantou"></i>
+                    <p>$!date.format('yyyy-MM-dd',$!notice.bodyexamStart)~$!date.format('yyyy-MM-dd',$!notice.bodyexamEnd)</p>
+                </td>
+                <td index="11">
+                    <span>考察</span>
+                    <i class="iconfont icon-jiantou"></i>
+                    <p>$!date.format('yyyy-MM-dd',$!notice.lookStart)~$!date.format('yyyy-MM-dd',$!notice.lookEnd)</p>
+                </td>
+                <td index="12">
+                    <span>公示</span>
+                    <i class="iconfont icon-jiantou"></i>
+                    <p>$!date.format('yyyy-MM-dd',$!notice.showStart)~$!date.format('yyyy-MM-dd',$!notice.showEnd)</p>
+                </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- 步骤 E-->

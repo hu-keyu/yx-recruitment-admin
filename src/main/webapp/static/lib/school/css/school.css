@@ -1,0 +1,155 @@
+/***********************************index=0************************************************/
+
+.provinceSchool0,
+.provinceSchool1,
+.provinceSchool2,
+.provinceSchool3 {
+    display: none;
+    position: absolute;
+    width: 530px;
+    height: auto;
+    border: 1px solid #2553a0;
+    background-color: #fff;
+    z-index: 99999;
+}
+
+.provinceSchool0 .title,
+.provinceSchool1 .title,
+.provinceSchool2 .title,
+.provinceSchool3 .title {
+    width: 100%;
+    height: 30px;
+    background: #2553a0;
+    cursor: move;
+}
+
+.provinceSchool0 .title span,
+.provinceSchool1 .title span,
+.provinceSchool2 .title span,
+.provinceSchool3 .title span {
+    margin-left: 10px;
+    font-weight: 600;
+    color: #FFF;
+    line-height: 30px;
+}
+
+.provinceSchool0 .proSelect0,
+.provinceSchool1 .proSelect1,
+.provinceSchool2 .proSelect2,
+.provinceSchool3 .proSelect3 {
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    margin: auto;
+}
+
+.provinceSchool0 .proSelect0 select,
+.provinceSchool1 .proSelect1 select,
+.provinceSchool2 .proSelect2 select,
+.provinceSchool3 .proSelect3 select {
+    width: 136px;
+}
+
+.provinceSchool0 .proSelect0 span,
+.provinceSchool1 .proSelect1 span,
+.provinceSchool2 .proSelect2 span,
+.provinceSchool3 .proSelect3 span {
+    padding-left: 10px;
+}
+
+.provinceSchool0 .proSelect0 input,
+.provinceSchool1 .proSelect1 input,
+.provinceSchool2 .proSelect2 input,
+.provinceSchool3 .proSelect3 input {
+    display: none;
+}
+
+.provinceSchool0 .schoolList0,
+.provinceSchool1 .schoolList1,
+.provinceSchool2 .schoolList2,
+.provinceSchool3 .schoolList3 {
+    width: 520px;
+    height: 180px;
+    margin: auto;
+    overflow-y: auto;
+}
+
+.provinceSchool0 .schoolList0 ul,
+.provinceSchool1 .schoolList1 ul,
+.provinceSchool2 .schoolList2 ul,
+.provinceSchool3 .schoolList3 ul {
+    width: 510px;
+    clear: both;
+}
+
+.provinceSchool0 .schoolList0 ul span.entertext,
+.provinceSchool1 .schoolList1 ul span.entertext,
+.provinceSchool2 .schoolList2 ul span.entertext,
+.provinceSchool3 .schoolList3 ul span.entertext {
+    display: block;
+    height: 180px;
+    font: normal 16px/180px 'microsoft yahei';
+    color: #999;
+}
+
+.provinceSchool0 .schoolList0 ul li,
+.provinceSchool1 .schoolList1 ul li,
+.provinceSchool2 .schoolList2 ul li,
+.provinceSchool3 .schoolList3 ul li {
+    float: left;
+    text-align: center;
+    width: 160px;
+    margin: 5px;
+    height: 25px;
+    line-height: 25px;
+    cursor: pointer;
+    background: #fafafa;
+    border-radius: 3px;
+}
+
+.provinceSchool0 .schoolList0 ul li.DoubleWidthLi,
+.provinceSchool1 .schoolList1 ul li.DoubleWidthLi,
+.provinceSchool2 .schoolList2 ul li.DoubleWidthLi,
+.provinceSchool3 .schoolList3 ul li.DoubleWidthLi {
+    overflow: hidden;
+}
+
+.provinceSchool0 .schoolList0 ul li:hover,
+.provinceSchool1 .schoolList1 ul li:hover,
+.provinceSchool2 .schoolList2 ul li:hover,
+.provinceSchool3 .schoolList3 ul li:hover {
+    background: #72B9D7;
+    color: #fff;
+}
+
+.provinceSchool0 .button,
+.provinceSchool1 .button,
+.provinceSchool2 .button,
+.provinceSchool3 .button {
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.provinceSchool0 .button button,
+.provinceSchool1 .button button,
+.provinceSchool2 .button button,
+.provinceSchool3 .button button {
+    height: 30px;
+    margin: 0 5px;
+    padding: 2px 15px;
+    background: #2553a0;
+    border: none;
+    color: #FFF;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.provinceSchool0 .button button:hover,
+.provinceSchool1 .button button:hover,
+.provinceSchool2 .button button:hover,
+.provinceSchool3 .button button:hover {
+    background: #2b66ca;
+}

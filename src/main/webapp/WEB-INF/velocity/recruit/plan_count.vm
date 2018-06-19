@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+#parse("/common/head-meta.vm")
+<title>东莞招聘</title> #parse("/common/head-js+css.vm")
+</head>
+<body>
+	#parse("/common/topMenu.vm")
+	#parse("/common/leftTemplate.vm")
+	<!-- Main内容模块 S-->
+	<div class="content-wrapper">
+		<!-- context内容 S-->
+    	<div class="content">
+            <!-- table切换 S-->
+            <div class="tabChange">
+                <ul class="clearfix">
+                    <li class="active"><a href="#this" title="审批">审批</a></li>
+                    <li><a href="#this" title="汇总">汇总</a></li>
+                </ul>
+            </div>
+            <!-- table切换 E-->
+            <!-- 条件搜索 S-->
+            <form class="form-inline">
+                <div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>年份：</span>
+                            <select class="select">
+                                <option value="">2014</option>
+                                <option value="">2015</option>
+                                <option value="">2016</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span>招聘主题：</span>
+                            <select class="select">
+                                <option value="">春季招聘</option>
+                                <option value="">夏季招聘</option>
+                                <option value="">秋季季招聘</option>
+                                <option value="">冬季招聘</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span>单位代码：</span>
+                            <input class="input" type="text" name="" placeholder="请输入单位代码">
+                        </li>
+                        <li>
+                            <button class="btn btn-primary btn-sm" type="submit">查找</button>
+                            <button class="btn btn-default btn-sm" type="submit">清空</button>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+            <!-- 条件搜索 E-->
+            <!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>岗位代码</th>
+                            <th>岗位名称</th>
+                            <th>是否艺术类</th>
+                            <th>学科</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>东莞演示学校A</td>
+                            <td>中学语文教师（毕业生）</td>
+                            <td>4</td>
+                            <td>3</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+                <div class="pull-right pages">
+                    <a class="disabled" href="#this" title="">上一页</a>
+                    <a class="active" href="#this" title="">1</a>
+                    <a href="#this" title="">2</a>
+                    <a href="#this" title="">3</a>
+                    <a href="#this" title="">下一页</a>
+                </div>
+            </div>
+            <!-- 分页+全选模块 E-->
+        </div>
+    	<!-- context内容 E-->
+		#parse("/common/foot.vm")
+	</div>
+	<!-- Main内容模块 E-->
+</body>
+</html>

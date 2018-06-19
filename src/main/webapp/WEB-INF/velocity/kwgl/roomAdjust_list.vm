@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>试室编排</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+	$(document).ready(function () {  
+		$("#jkh").hide();
+        });
+	   function selectSubject()
+       {
+          $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/selectSubject',
+                data : {
+                    "nyr" :$("#ryn").val(),
+                },
+                success: function (data) {
+                       var opstr="<span>招聘项目：</span><select class='select' id='themeid' name='themeid' onchange='selectThemeRoom()'><option value=''>请选择</option>";
+                       
+                       for(i=0;i<data.length;i++)
+                       {
+                        var tempname;
+                        if(data[i].theme.length>20)
+                        {
+                        tempname=data[i].theme.substring(0,19)+"...";
+                        }else
+                        {
+                         tempname=data[i].theme;
+                        }
+                        opstr=opstr+"<option title='"+data[i].theme+"' value='"+data[i].id+"'>"+tempname+"</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#themeidDiv").html(opstr);
+                }  
+            });  
+       }
+       
+       //获取附近题的考点
+		function selectThemeRoom() {
+		 		    if(typeof($("#themeid").val())=='undefined')
+		    {
+		      layer.msg('主题不能为空!', {icon: 2});
+		      return;
+		    }
+            $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/selectThemeRoom',
+                data : {
+                    "itemsId" :$("#themeid").val(),
+                    "bsType":'2'
+                },
+                success: function (data) {
+                       var opstr="<span>考点：</span><select class='select' id='kaodian' name='kaodian' onchange='selectSecondRoom()'><option value=''>请选择</option>";
+                       var tempname;
+                       for(i=0;i<data.length;i++)
+                       {
+                          if(data[i].testName.length>20)
+                        {
+                        tempname=data[i].testName.substring(0,19)+"...";
+                        }else
+                        {
+                         tempname=data[i].testName;
+                        }
+                        opstr=opstr+"<option title='"+data[i].testName+"' value='"+data[i].id+"'>"+tempname+"</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#kaodianDiv").html(opstr);
+                }  
+            });  
+        }
+         //获取附加试室信息
+        function selectSecondRoom()
+        {
+            $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/selectSecondRoom',
+                data : {
+                    "itemsId" :$("#themeid").val(),
+                    "kaodian":$("#kaodian").val()
+                },
+                success: function (data) {
+                       var opstr="<span>附加试室1：</span><select class='select' id='layout1' name='layout1'><option value=''>请选择</option>";
+                       for(i=0;i<data.length;i++)
+                       {
+                        opstr=opstr+"<option value='"+data[i].id+"'>"+data[i].labsName+"</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       var opstr1="<span>附加试室2：</span><select class='select' id='layout2' name='layout2' ><option value=''>请选择</option>";
+                       for(i=0;i<data.length;i++)
+                       {
+                        opstr1=opstr1+"<option value='"+data[i].id+"'>"+data[i].labsName+"</option>";
+                       }
+                       opstr1=opstr1+"</select>";
+                       $("#jkh").show();
+                       $("#lalyoutDiv1").html(opstr);
+                       $("#lalyoutDiv2").html(opstr1);
+                }  
+            });  
+        }
+        
+        function query()
+		{
+		   $(".table tbody tr").remove();//清空列表 
+		   ryn=$("#ryn").val();//年份
+		   itemsId=$("#themeid").val();//主题类型
+		   kaodian=$("#kaodian").val();//考点id
+		   var layoutRoom1=$("#layout1").val();
+		  if(ryn=="")
+		  {
+		  layer.msg('年份不能为空!', {icon: 2});
+		  return;
+		  }
+		  if(itemsId=="")
+		  {
+		  layer.msg('招聘项目不能为空!', {icon: 2});
+		  return;
+		  }
+		  if(kaodian=="")
+		  {
+		  layer.msg('考点不能为空!', {icon: 2});
+		  return;
+		  }
+		  if(layoutRoom1=="")
+		  {
+		  layer.msg('请选择附加试室1!', {icon: 2});
+		  return;
+		  }
+		  $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/queryRoomStudent',
+                data : {
+                    "itemsId" :itemsId,
+                    "labsid" :$("#layout1").val()
+                },
+                success: function (data) {
+                var insertHtml="";
+                for(i=0;i<data.length;i++)
+                {
+                   insertHtml=insertHtml+'<tr>'+
+                                                "<td><input type='checkbox' name='labsbox' value='"+data[i].sutid+"'></td>"+
+                                                '<td>'+data[i].name+'</td>'+
+                                                '<td>'+data[i].ganWeiName+'</td>'+
+                                                '<td>'+data[i].sex+'</td>'+
+                                                '<td>'+data[i].card+'</td>'+
+                                                '<td>'+data[i].kaodianName+'</td>'+
+                                                '<td>'+data[i].labsName+'</td>'+
+                                            '</tr>';
+                }
+				$(".table tbody").append(insertHtml);//将返回的数据追加到表格
+                }  
+            }); 
+		}
+		//批量调整
+		function batchAdjust()
+		{
+		    var arrs=new Array();
+            $("input:checkbox[name='labsbox']:checked").each(function() { 
+             arrs.push($(this).val());
+            });
+            if(arrs.length==0)
+            {
+             layer.msg("请选择数据项!", {icon: 2});
+             return;
+            }
+             var sutidStr=arrs.join(",");
+            var toLabsid=$("#layout2").val();
+            var fromLabsid=$("#layout1").val();
+            
+            if(toLabsid==fromLabsid)
+            {
+             layer.msg("同一试室无法调整!", {icon: 2});
+             return;
+            }
+          if(toLabsid=="")
+		  {
+		  layer.msg('请选择附加试室2!', {icon: 2});
+		  return;
+		  }
+		    layer.confirm("是否要进行调整？", function (index) {
+		    $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/batchAdjust',
+                data : {
+                    "itemsId" :itemsId,
+                    "kaodian":kaodian,
+                    "sutidStr":  sutidStr,
+                    "toLabsid":toLabsid,
+                    "fromLabsid":fromLabsid
+                },
+                success: function (data) {
+		         if(data.msg=='success')
+		         {
+		           layer.msg("调整成功!", {icon: 1});
+		           query();
+		         }else if(data.msg=='error')
+		         {
+		         layer.msg("程序发生未知错误!", {icon: 2});
+		         }else
+		         {
+		           layer.msg(data.msg, {icon: 2});
+		         }
+                }  
+            });  
+           
+        });
+		}
+		
+    </script>
+</head>
+<body>
+     #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+            <!-- 条件搜索 S-->
+            <form class="form-inline">
+				<div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>年份：</span>
+                            <select class="select" id="ryn" onchange="selectSubject()">
+                              <option value="">请选择</option>
+                              #foreach( $vo in $dateList )
+                              <option value="$vo">$vo</option>
+                                #end
+                            </select>
+                        </li>
+                         <li>
+                            <span id="themeidDiv">
+                            </span>
+                        </li>
+                         <li>
+                            <span id="kaodianDiv">
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <hr/>
+                  <div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span id="lalyoutDiv1">
+                            </span>
+                        </li>
+                          
+                          <li id="jkh">
+                          >>>>>
+                          </li>
+                         
+                         <li>
+                            <span id="lalyoutDiv2">
+                            </span>
+                        </li>
+                          <li>
+                           <input type="button" value="查询" onclick="query()" class="btn btn-primary btn-sm"/>
+                        </li>
+                          <li>
+                           <input type="button" value="批量调整" onclick="batchAdjust()" class="btn btn-primary btn-sm"/>
+                        </li>
+                         
+                    </ul>
+                </div>
+            </form>
+              
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>姓名</th>
+                            <th>岗位名称</th>
+                            <th>性别</th>
+                            <th>身份证号</th>
+                            <th>考点</th>
+                            <th>试室</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+                <div id="pagination" class="pull-right pages"></div>
+            </div>
+            <!-- 分页+全选模块 E-->
+        </div>
+        <!-- context内容 E-->
+        #parse("/common/foot.vm")
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

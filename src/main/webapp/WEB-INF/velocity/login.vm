@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>东莞教育局招聘系统</title>
+    #parse("/common/head-js+css.vm")
+    <link href="${link.contextPath}/static/css/common.css" rel="stylesheet">
+    <link href="${link.contextPath}/static/css/login.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1474956227_0993266.css">
+</head>
+<body class="bj" ms-controller="main">
+
+<div class="login" style="height: 250px;">
+	<h1>东莞教育局招聘系统<sup>V2016</sup></h1>
+    <!-- <div class="loginTitle">
+         <div class="switch" id="switch">
+         	<a style="margin: 0 auto;" class="switch_btn_focus" href="javascript:void(0);" tabindex="7">快速登录</a>
+     			<a class="switch_btn" id="switch_login" href="javascript:void(0);" tabindex="8">快速注册</a>
+     			<div class="switch_bottom" style="position: absolute; width: 70px; left: 0px;"></div>
+         </div>
+     </div>    --> 
+    <div class="web_qr_login" style="display: block; height: 235px;">    
+        <!--登录-->
+        <div class="web_login">
+        	<div class="login-box">
+				<div class="login_form" style="margin-top:20px;">
+					<form action="" name="loginform" accept-charset="utf-8" class="loginForm">
+						<input type="hidden" name="did" value="0">
+		                <input type="hidden" name="to" value="log">
+		                <div class="uinArea">
+			                <label class="input-tips" for="u">帐号：</label>
+			                <div class="inputOuter">
+			                    <input type="text" tabindex="1" ms-duplex="username" placeholder="用户名" class="inputstyle">
+			                </div>
+		                </div>
+		                <div class="pwdArea">
+			                <label class="input-tips" for="p">密码：</label> 
+			                <div class="inputOuter">
+			                    <input type="password" tabindex="2" ms-duplex="password" placeholder="密码" class="inputstyle">
+			                </div>
+		                </div>
+		                <!-- <div class="forgetBox" style="padding-left: 50px;">
+                                <label><input type="checkbox" style="vertical-align: middle;" id="rememberMe" value="">&nbsp;记住密码</label>
+                            </div> -->
+                        <div class="clearfix" style="padding-left:50px;margin-top:15px;">
+                            <input ms-click="checkUser()" type="button" value="登 录" style="width:95px;margin-right: 10px;" class="button_blue">
+                            <!-- <input type="button" id="register" value="报名注册" style="width:95px;" class="button_red"> -->
+                        </div>
+	              </form>
+	            </div>
+        	</div>
+        </div>
+        <!--登录end-->
+	</div>
+</div>
+
+<script>
+	var vm;
+	avalon.ready(function(){
+		vm = avalon.define({
+			$id:"main",
+			username:"",
+			password:"",
+			errmsg:"",
+			resetUser:function(){
+				vm.username='';
+				vm.password='';
+			}
+		});
+		avalon.scan();
+	});
+	
+	function checkUser(){
+		var data={loginname:vm.$model.username,password:vm.$model.password};
+			$.ajax({
+				type: 'post',
+				url: '${link.contextPath}/login/checkUser',
+				data:data,
+				dataType: "json",
+				timeout: 10000,
+				success: function(data) {
+					if(data.code==0){
+						window.location.href="${link.contextPath}/dg/index/main?topMenu=menu";
+					}else if(data.code==-1){
+						alert("用户名不存在");
+					}else{
+						alert("密码不正确");
+					}
+					
+				}
+		});
+
+	}
+</script>
+</body>
+</html>

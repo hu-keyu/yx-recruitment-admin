@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+</head>
+<body>
+    #parse("/common/topMenu.vm")
+    #parse("/common/leftTemplate.vm")
+<!-- Main内容模块 S-->
+<div class="content-wrapper">
+    <div class="content">
+    <!-- table表单模块 S-->
+    <form class="table-content" method="post" id="input_form">
+        <table class="formTable">
+            <caption>招聘主题发布</caption>
+            <tbody>
+            <tr>
+                <th class="text-right" width="10%"><span class="flag">*</span>招聘主题：</th>
+                <td><input class="input" type="text" name="theme" value="${theme.theme}"></td>
+            </tr>
+            <tr>
+                <th class="text-right" width="10%"><span class="flag">*</span>上报截止时间：</th>
+                <td>
+                    <input id="d4313_0" name="reportEndTime"  class="input Wdate" type="text" name="reportEndTime"
+                           onfocus="WdatePicker({minDate:'1990-09-10',dateFmt:'yyyy-MM-dd 23:59',maxDate:'2020-12-20'})" value="$date.format("yyyy-MM-dd HH:mm",${theme.reportEndTime})"/>
+                </td>
+            </tr>
+            <tr>
+                <th class="text-right" width="10%"><span class="flag">*</span>详细内容：</th>
+                <td>
+                    <textarea class="textarea" rows="5" name="content">$!{theme.content}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <th class="text-right" width="10%"><span class="flag">*</span>岗位计划上报单位：</th>
+                <td>
+                    <input class="input" type="text" name="" id="eduNames" value="$!{eduNames}" readonly>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <!-- table表单模块 E-->
+    <div class="text-center pagesBox">
+        <button onclick="javascript:history.back();" class="btn btn-default btn-sm" type="button">取消</button>
+    </div>
+    </div>
+</div>
+<!-- context内容 E-->
+
+<!-- footer S-->
+<div class="page-footer">
+    <div class="page-footer-inner">
+        2016 © Metronic by keenthemes.
+    </div>
+</div>
+<!-- footer E-->
+</div>
+<!-- Main内容模块 E-->
+</body>
+</html>

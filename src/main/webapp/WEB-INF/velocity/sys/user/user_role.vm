@@ -1,0 +1,62 @@
+#parse("/common/head-js+css.vm")
+    <script>
+	$(document).ready(function(){
+        $("#input_form").validator({
+            formClass:'n-yellow',
+            msgClass: "n-bottom",
+            msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+            timely:3,
+            focusInvalid:true,
+            focusCleanup:true,
+            stopOnError:false,
+            rules: {
+                // 使用正则表达式定义规则
+                postcode: [/^\d{3}$/, '请输入3位数字'],
+            },
+            fields: {},
+            valid: function(form){
+                url='${link.contextPath}/dg/user/saveUserRole';
+                //表单验证通过，提交表单
+                $.post(url, $(form).serialize()).done(function(data){
+                    parent.layer.msg(data.msg, {icon: 1});
+                    if(data.success){
+                        window.parent.layer.closeAll();
+                    }
+                });
+            }
+        });
+    })
+	
+	function sure(){
+	 $("#input_form").submit();
+	}
+    </script>
+	
+	<div class="dialog">
+    <form class="table-content" method="post" id="input_form">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right" width="15%">登录名：</th>
+						<input class="input" type="hidden" name="id" value="${user.id}">
+                        <td><input class="input" type="text" name="loginName" readonly value="$!{user.loginName}" /></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="15%">用户名称：</th>
+                        <td><input class="input" type="text" name="userName" readonly value="$!{user.userName}" /></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="15%">用户角色：</th>
+                        <td class="layui-input-inline">
+							<select class="select grid-120 first" name="roleIds" id="roleIds">
+                                <option value="">== 请选择 ==</option>
+                                #foreach($list in $roleList)
+                                    <option value="$!list.id" #if($!userRole.roleId == $!list.id) selected #end>$!list.roleName</option>
+                                #end
+                            </select>
+						</td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+	</div>

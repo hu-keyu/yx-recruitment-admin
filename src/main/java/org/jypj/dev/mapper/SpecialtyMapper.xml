@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.SpecialtyDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.Specialty" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="CODE" property="code" jdbcType="VARCHAR" />
+	<result column="NAME" property="name" jdbcType="VARCHAR" />
+	<result column="TYPE" property="type" jdbcType="VARCHAR" />
+	<result column="STOREY" property="storey" jdbcType="DECIMAL" />
+	<result column="PID" property="pid" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,CODE,NAME,TYPE,STOREY,PID
+  </sql>
+  
+   <insert id="saveSpecialtyByField" parameterType="org.jypj.dev.entity.Specialty" >
+    insert into recruit_specialty
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="code != null" >
+    CODE,
+   </if>
+   <if test="name != null" >
+    NAME,
+   </if>
+   <if test="type != null" >
+    TYPE,
+   </if>
+   <if test="storey != null" >
+    STOREY,
+   </if>
+   <if test="pid != null" >
+    PID,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="storey != null" >
+        #{storey,jdbcType=DECIMAL},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveSpecialty" parameterType="org.jypj.dev.entity.Specialty" >
+    insert into recruit_specialty (
+	ID,
+	CODE,
+	NAME,
+	TYPE,
+	STOREY,
+	 PID
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{code,jdbcType=VARCHAR},
+	#{name,jdbcType=VARCHAR},
+	#{type,jdbcType=VARCHAR},
+	#{storey,jdbcType=DECIMAL},
+	#{pid,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteSpecialtyById" parameterType="java.lang.String" >
+    delete from recruit_specialty
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteSpecialtyByObject" parameterType="org.jypj.dev.entity.Specialty" >
+    delete from recruit_specialty
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateSpecialtyByField" parameterType="org.jypj.dev.entity.Specialty" >
+    update recruit_specialty
+    <set >
+  	 <if test="newId != null" >
+  	 ID=#{newId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="code != null" >
+  	 CODE=#{code,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="name != null" >
+  	 NAME=#{name,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="type != null" >
+  	 TYPE=#{type,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="storey != null" >
+  	 STOREY=#{storey,jdbcType=DECIMAL},
+  	 </if>
+     <if test="pid != null" >
+  	 PID=#{pid,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateSpecialty" parameterType="org.jypj.dev.entity.Specialty" >
+    update recruit_specialty
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 CODE=#{code,jdbcType=VARCHAR},
+	 NAME=#{name,jdbcType=VARCHAR},
+	 TYPE=#{type,jdbcType=VARCHAR},
+	 STOREY=#{storey,jdbcType=DECIMAL},
+	 PID=#{pid,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectSpecialtyById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_specialty
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <select id="getSpecialListByLv" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_specialty
+    where CODE LIKE CONCAT(#{keySpecial}, '%') AND length(CODE) = #{keyLength,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select * from (select t.id,t.code,t.name,t.type,t.storey,t.pid as firstSbjid, f.code as firstSbjCode,f.name as firstSbjName, ff.id as secondSbjId,ff.code as secondSbjCode,ff.name as secondSbjName 
+	from recruit_specialty t 
+	join recruit_specialty f on t.pid=f.id and t.storey='3'
+	join recruit_specialty ff on f.pid=ff.id and f.storey='2' where 1=1 
+	union 
+	select t.id,t.code,t.name,t.type,t.storey,t.pid as firstSbjid, f.code as firstSbjCode,f.name as firstSbjName, '' as secondSbjId,'' as secondSbjCode,'' as secondSbjName
+	from recruit_specialty t 
+	join recruit_specialty f on t.pid=f.id and t.storey='2' where 1=1 
+	union 
+	select t.id,t.code,t.name,t.type,t.storey,t.pid as firstSbjid, '' as firstSbjCode, '' as firstSbjName, '' as secondSbjId, '' as secondSbjCode, '' as secondSbjName
+	from recruit_specialty t where t.storey='1'
+	) t where 1=1 and storey = #{storey,jdbcType=INTEGER}
+	<if test="storey == 1">
+		and code = #{firstSbjCode,jdbcType=VARCHAR}
+	</if>
+	<if test="storey == 2">
+		<choose>
+			<when test="secondSbjCode != null and secondSbjCode !='' ">
+				and code like CONCAT(CONCAT('%', #{secondSbjCode,jdbcType=VARCHAR}), '%')
+			</when>
+			<otherwise>
+				<if test="firstSbjCode != null and firstSbjCode !='' ">
+					and code like CONCAT(CONCAT('%', #{firstSbjCode,jdbcType=VARCHAR}), '%')
+				</if>
+			</otherwise>
+		</choose>
+	</if>
+	<if test="storey == 3">
+		<choose>
+			<when test="secondSbjCode != null and secondSbjCode !='' ">
+				and code like CONCAT(CONCAT('%', #{secondSbjCode,jdbcType=VARCHAR}), '%')
+			</when>
+			<otherwise>
+				<if test="firstSbjCode != null and firstSbjCode !='' ">
+					and code like CONCAT(CONCAT('%', #{firstSbjCode,jdbcType=VARCHAR}), '%')
+				</if>
+			</otherwise>
+		</choose>
+	</if>
+	<if test="name != null and name !='' ">
+		and name like CONCAT(CONCAT('%', #{name,jdbcType=VARCHAR}), '%')
+	</if>
+	and type = #{type,jdbcType=VARCHAR}
+	order by code
+  </select> 
+  
+   <select id="selectByKeyword" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from recruit_specialty
+    where storey = #{storey,jdbcType=VARCHAR} and
+    (name like concat(concat('%',#{keyProfess}),'%') or code like concat(concat('%',#{keyProfess}),'%'))
+    and type = #{type,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="selectOnePageBySpecialty" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Specialty" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_specialty
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="code != null and code !='' ">
+	  and CODE=#{code,jdbcType=VARCHAR}
+	 </if>
+	 <if test="name != null and name !='' ">
+	  and NAME=#{name,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="storey != null and storey !='' ">
+	  and STOREY=#{storey,jdbcType=DECIMAL}
+	 </if>
+	 <if test="pid != null and pid !='' ">
+	  and PID=#{pid,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_specialty
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllBySpecialty" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Specialty" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_specialty
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="code != null and code !='' ">
+	  and CODE=#{code,jdbcType=VARCHAR}
+	 </if>
+	 <if test="name != null and name !='' ">
+	  and NAME=#{name,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="storey != null and storey !='' ">
+	  and STOREY=#{storey,jdbcType=DECIMAL}
+	 </if>
+	 <if test="pid != null and pid !='' ">
+	  and PID=#{pid,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_specialty
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectBySpecialty" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Specialty" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_specialty
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="code != null and code !='' ">
+	  and CODE=#{code,jdbcType=VARCHAR}
+	 </if>
+	 <if test="name != null and name !='' ">
+	  and NAME=#{name,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="storey != null and storey !='' ">
+	  and STOREY=#{storey,jdbcType=DECIMAL}
+	 </if>
+	 <if test="pid != null and pid !='' ">
+	  and PID=#{pid,jdbcType=VARCHAR}
+	 </if>
+  </select>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        DELETE FROM recruit_specialty
+        WHERE id IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findListByStorey" resultMap="BaseResultMap">
+        SELECT * FROM recruit_specialty
+        WHERE STOREY=#{storey,jdbcType=INTEGER}
+        order by code
+    </select>
+    
+    <select id="selectByName" resultMap="BaseResultMap">
+        select * from recruit_specialty
+        WHERE name LIKE CONCAT(CONCAT('%', #{name,jdbcType=VARCHAR}), '%')
+        ORDER BY code
+    </select>
+  
+  	<select id="selectByStoreyAndCode" resultMap="BaseResultMap" parameterType="map">
+  		select * from recruit_specialty
+  		where code like CONCAT(CONCAT('%', #{code,jdbcType=VARCHAR}), '%')
+  		and STOREY=#{storey,jdbcType=INTEGER} 
+  		order by code
+  	</select>	
+  	
+  	<select id="selectFirstByType" resultMap="BaseResultMap">
+  		select * from recruit_specialty
+  		where TYPE=#{type,jdbcType=VARCHAR}
+  		and STOREY='1' 
+  		order by code
+  	</select>
+  	
+</mapper>

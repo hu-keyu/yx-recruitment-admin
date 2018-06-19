@@ -1,0 +1,530 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+	$(document).ready(function(){
+		if(flag && flag === 'add'){
+    		initPosition();
+		}
+		
+		$(".chbox").click(function(){
+			if(!$(this).is(":checked")){
+				var $select=$(this).parents("td").find(".grid-120");
+				$select.val("");
+			}
+		});
+		
+		//专业要求
+		$("#isLimitProfession").click(function(){
+			if(!$(this).is(":checked")){
+				$("#limitProfessionText").text("");
+				$("#limitProfession").val("");
+				limitProfessionText="";
+				limitProfession="";
+			}
+		});
+				
+		//学历、教育类型、学位
+		$("select.first").bind("change",function(){
+			var $checkbox=$(this).parent("td").find("input[type='checkbox']");
+			var $select=$(this).parent("td").find("select.second");
+			if($(this).val()){
+				if(!$checkbox.is(":checked")){
+    				$checkbox.prop("checked", true);
+				}
+			}else{
+				if(!$select.val() && $checkbox.is(":checked")){
+					$checkbox.prop("checked", false);
+				}
+			}
+		});
+		$("select.second").bind("change",function(){
+			var $checkbox=$(this).parent("td").find("input[type='checkbox']");
+			var $select=$(this).parent("td").find("select.first");
+			if($(this).val()){
+				if(!$checkbox.is(":checked")){
+    				$checkbox.prop("checked", true);
+				}
+			}else{
+				if(!$select.val() && $checkbox.is(":checked")){
+					$checkbox.prop("checked", false);
+				}
+			}
+		});
+		
+		//招聘对象
+		$("#").bind("change",function(){
+			var $checkbox=$(this).parent("td").find("input[type='checkbox']");
+			if($(this).val() && !$checkbox.is(":checked")){
+				$checkbox.prop("checked", true);
+			}
+		});
+		
+		//岗位
+		$("#station").bind("change",function(){
+			var stationVal=$(this).val();
+			if(stationVal){
+				if(initPositionData){
+    				var professText=[];
+                	var professCode=[];
+					$.each(initPositionData,function(index,e){
+    					if(stationVal == e.id){
+    						//年龄
+    						if(e.isLimitAge && e.isLimitAge=='1'){
+    							$("input[name='isLimitAgeHidden']").prop("checked", true);
+    							$("input[name='limitAgeHidden']").val(e.limitAge);
+    							$("select[name='limitAgeCondititionHidden']").val(e.limitAgeConditition);	
+								$("input[name='isLimitAge']").val(e.isLimitAge);
+    							$("input[name='limitAge']").val(e.limitAge);
+    							$("input[name='limitAgeConditition']").val(e.limitAgeConditition);
+    						}else{
+								$("input[name='isLimitAgeHidden']").prop("checked", false);
+    							$("input[name='limitAgeHidden']").val("");
+    							$("select[name='limitAgeCondititionHidden']").val("");	
+								$("input[name='isLimitAge']").val("");
+    							$("input[name='limitAge']").val("");
+    							$("input[name='limitAgeConditition']").val("");
+    						}
+    						//学历
+    						if(e.isLimitEducation && e.isLimitEducation=='1'){
+    							$("input[name='isLimitEducation']").prop("checked", true);
+    							$("select[name='limitEducation']").val(e.limitEducation);
+    							$("select[name='limitEducationConditition']").val(e.limitEducationConditition);
+    						}else{
+    							$("input[name='isLimitEducation']").prop("checked", false);
+    							$("select[name='limitEducation']").val("");
+    							$("select[name='limitEducationConditition']").val("");
+    						}
+    						//教育类型
+    						if(e.isLimitEdu && e.isLimitEdu=='1'){
+    							$("input[name='isLimitEdu']").prop("checked", true);
+    							$("select[name='limitEdu']").val(e.limitEdu);
+    							$("select[name='limitEduConditition']").val(e.limitEduConditition);
+    						}else{
+    							$("input[name='isLimitEdu']").prop("checked", false);
+    							$("select[name='limitEdu']").val("");
+    							$("select[name='limitEduConditition']").val("");
+    						}
+    						//学位
+    						if(e.isLimitDegree && e.isLimitDegree=='1'){
+    							$("input[name='isLimitDegree']").prop("checked", true);
+    							$("select[name='limitDegree']").val(e.limitDegree);
+    							$("select[name='limitDegreeConditition']").val(e.limitDegreeConditition);
+    						}else{
+    							$("input[name='isLimitDegree']").prop("checked", false);
+    							$("select[name='limitDegree']").val("");
+    							$("select[name='limitDegreeConditition']").val("");
+    						}
+    						//专业要求
+    						if(e.isLimitProfession && e.isLimitProfession=='1'){
+    							$("input[name='isLimitProfession']").prop("checked", true);
+								$("#limitProfessionText").text(e.limitProfessionText);
+								$("#limitProfession").val(e.limitProfession);
+								professCode.push(e.limitProfession);
+                                professText.push(e.limitProfessionText);
+    						}else{
+    							$("input[name='isLimitProfession']").prop("checked", false);
+								$("#limitProfessionText").text("");
+								$("#limitProfession").val("");
+								limitProfessionText="";
+								limitProfession="";
+    						}	
+    						//招聘对象
+    						if(e.isLimitRecruit && e.isLimitRecruit=='1'){
+    							$("input[name='isLimitRecruitHidden']").prop("checked", true);
+    							$("select[name='limitRecruit']").val(e.limitRecruit);
+								$("input[name='isLimitRecruit']").val(e.isLimitRecruit);
+    						}else{
+    							$("input[name='isLimitRecruitHidden']").prop("checked", false);
+    							$("select[name='limitRecruit']").val("");
+								$("input[name='isLimitRecruit']").val("");
+    						}
+    						//东莞生源免费师范生
+    						if(e.isEducationStudent && e.isEducationStudent=='1'){
+    							$("input[name='isEducationStudent']").prop("checked", true);
+    						}else{
+    							$("input[name='isEducationStudent']").prop("checked", false);
+    						}
+    						//岗位备注说明
+    						if(e.otherLimit){
+    							$("textarea[name='remark']").text(e.otherLimit);
+    						}else{
+    							$("textarea[name='remark']").text("");
+    						}
+							//科目名称
+							if(e.subjectText){
+								$("#subjectText").text(e.subjectText);
+							}else{
+								$("#subjectText").text("");
+							}
+    					}
+    				});
+					limitProfessionText=professText.join(",");
+                	limitProfession=professCode.join(",");
+    			}
+			}else{
+				//年龄
+				$("input[name='isLimitAgeHidden']").prop("checked", false);
+    			$("input[name='limitAgeHidden']").val("");
+    			$("select[name='limitAgeCondititionHidden']").val("");
+				$("input[name='isLimitAge']").val("");
+				$("input[name='limitAge']").val("");
+				$("input[name='limitAgeConditition']").val("");
+				//学历
+				$("input[name='isLimitEducation']").prop("checked", false);
+    			$("select[name='limitEducation']").val("");
+    			$("select[name='limitEducationConditition']").val("");
+				//教育类型
+				$("input[name='isLimitEdu']").prop("checked", false);
+    			$("select[name='limitEdu']").val("");
+    			$("select[name='limitEduConditition']").val("");
+				//学位
+				$("input[name='isLimitDegree']").prop("checked", false);
+    			$("select[name='limitDegree']").val("");
+    			$("select[name='limitDegreeConditition']").val("");
+				//专业要求
+				$("input[name='isLimitProfession']").prop("checked", false);
+				$("#limitProfessionText").text("");
+				$("#limitProfession").val("");
+				limitProfessionText="";
+				limitProfession="";
+				//招聘对象
+				$("input[name='isLimitRecruitHidden']").prop("checked", false);
+    			$("select[name='limitRecruit']").val("");
+				$("input[name='isLimitRecruit']").val("");
+				//东莞生源免费师范生
+				$("input[name='isEducationStudent']").prop("checked", false);
+				//岗位备注说明
+				$("textarea[name='remark']").text("");
+				//科目名称
+				$("#subjectText").text("");
+			}
+		});
+		
+		var url="";
+		if(flag && flag === 'add'){
+    		url="${link.contextPath}/dg/position/savePosition";
+		}else if(flag && flag === 'edit'){
+			url="${link.contextPath}/dg/position/updatePosition";
+		}
+		var sloadindex;
+		$("#input_form").validator({
+			formClass:'n-yellow',
+            msgClass: 'n-bottom',
+            msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+			timely:3,
+			focusInvalid:true,
+			focusCleanup:true,
+			stopOnError:false,
+			fields: {
+		    	stationIdHidden: "岗位名称:required",
+				subjectHour:{
+					rule: "科目课时: required;integer(+);length(1~3)",
+		    		msg:{
+						integer:"科目课时只能填写正整数",
+						length:"科目课时只能填写1到3位正整数"
+					}
+				},
+				subjectCount:{
+					rule: "本岗位应设人数: required;integer(+);length(1~3)",
+		    		msg:{
+						integer:"本岗位应设人数只能填写正整数",
+						length:"本岗位应设人数只能填写1到3位正整数"
+					}
+				},
+				subjectCurrentCount:{
+					rule: "本岗位现有人数: required;integer(+);length(1~3)",
+		    		msg:{
+						integer:"本岗位现有人数只能填写正整数",
+						length:"本岗位现有人数只能填写1到3位正整数"
+					}
+				},
+				subjectVacancyCount:{
+					rule: "本岗位空缺人数: required;integer(+);length(1~3)",
+		    		msg:{
+						integer:"本岗位空缺人数只能填写正整数",
+						length:"本岗位空缺人数只能填写1到3位正整数"
+					}
+				},
+				subjectPlanCount:{
+					rule: "本岗位计划招聘人数: required;integer(+);length(1~3)",
+		    		msg:{
+						integer:"本岗位计划招聘人数只能填写正整数",
+						length:"本岗位计划招聘人数只能填写1到3位正整数"
+					}
+				},
+				/**limitAge:{
+					rule: "年龄: required(#isLimitAge:checked);integer(+);length(1~2)",
+		    		msg:{
+						integer:"年龄只能填写正整数",
+						length:"年龄只能填写1到2位正整数"
+					}
+				},
+				limitAgeConditition:"年龄限制条件:required(#isLimitAge:checked)",**/
+				limitEducation:"学历:required(#isLimitEducation:checked)",
+				limitEducationConditition:"学历限制条件:required(#isLimitEducation:checked)",
+				limitEdu:"教育类型:required(#isLimitEdu:checked)",
+				limitEduConditition:"教育类型限制条件:required(#isLimitEdu:checked)",
+				limitDegree:"学位:required(#isLimitDegree:checked)",
+				limitDegreeConditition:"学位限制条件:required(#isLimitDegree:checked)",
+				limitProfessionText:"专业要求:required(#isLimitProfession:checked)",
+				remark:"length(~100)",
+				otherLimit:"length(~100)"
+		    },
+		    valid: function(form){
+		        //表单验证通过，提交表单
+				$.ajax({
+                	url : url,
+    				data : $(form).serialize(),
+                	type : 'post',
+                	async: false,
+                	cache : false,
+                	dataType : 'json',
+                	beforeSend: function(){
+                        sloadindex = parent.layer.load(0, {
+                        	shade: [0.3,'#fff']
+                        });
+                    },
+    				success : function(data) {
+                		if(data.flag == 'success'){
+    						alert(data.msg);
+        					window.parent.layer.closeAll();
+        	        	}else{
+    						parent.layer.close(sloadindex);
+    						parent.layer.msg(data.msg, {icon: 2});
+        					return;
+        				}
+                	}
+                });
+		    }
+		});
+	});
+	
+	var initPositionData;
+	var flag='$!flag';
+	var themeId='$!themeId';
+	var planApplyId='$!planApplyId';
+	
+	function initPosition(){
+		$.ajax({
+			url : '${link.contextPath}/dg/position/initPosition',
+			type : 'post',
+			data:{"themeId":themeId,"planApplyId":planApplyId},
+			async: false,
+			cache : false,
+			dataType : 'json',
+			success : function(data) {
+				initPositionData=data;
+			}
+		});
+	}
+	
+	function cancel(){
+		window.parent.layer.closeAll();
+	}
+	
+	function setStationId(stationId){
+		$("#stationId").val(stationId);
+	}
+	
+	var limitProfessionText='$!position.limitProfessionText';
+	var limitProfession='$!position.limitProfession';
+	function chooseProfession(){
+		layer.open({
+        	id:"layui-layer-iframe1",
+			type: 2,
+        	title:['专业选择', 'font-weight:600'],
+        	content:['${link.contextPath}/dg/position/professSelect','yes'],
+        	btn: ['确定', '取消'],
+        	shadeClose:false,
+        	fix:true,
+        	area: ['800px','400px'],
+        	move: true,
+        	yes: function(index, layero){
+				var professText=[];
+				var professCode=[];
+				var profess=$("#layui-layer-iframe1 iframe")[0].contentWindow.profess;
+				for(var i in profess){
+					professCode.push(i);
+					professText.push(profess[i]);
+				}
+				$("#limitProfessionText").text(professText);
+				$("#limitProfession").val(professCode);	
+				limitProfessionText=professText.join(",");
+				limitProfession=professCode.join(",");
+				if(limitProfession && limitProfessionText){
+					$("#isLimitProfession").prop("checked", true);
+					layer.msg("专业添加成功！", {icon: 1});
+				}else{
+					$("#isLimitProfession").prop("checked", false);
+				}
+				layer.close(index);
+        	}
+        });
+	}
+</script>
+<!-- 添加岗位 S-->
+<div class="dialog dialog-post">
+    <div class="table-content">
+        <form method="post" id="input_form">
+    		<input type="hidden" name="projectId" id="themeId" value="${themeId}"/>
+    		<input type="hidden" name="planApplyId" id="planApplyId" value="${planApplyId}"/>
+			<input type="hidden" name="id" value="$!position.id"/>
+			<input type="hidden" name="status" value="$!position.status"/>
+			<input type="hidden" name="schoolId" value="$!position.schoolId"/>
+    		<table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-center" colspan="1" rowspan="13" width="35px">拟招聘岗位对应学科情况</td>
+                        <th class="text-right"><span class="flag">*</span>岗位名称：</th>
+                        <td>
+							<select class="select" name="stationIdHidden" onchange="setStationId(this.value);" id="station" #if($!position.id) disabled #end>
+                                <option value="" #if($!position.stationId == '') selected #end>--请选择--</option>
+    							#foreach($!list in $!postsets)
+    								<option value="$!list.id" #if($!position.stationId == $!list.id) selected #end>$!list.postName</option>
+								#end
+                            </select>
+							<input type="hidden" name="stationId" id="stationId" value="$!position.stationId"/>
+                        </td>
+                        <th class="text-right">科目名称：</th>
+                        <td id="subjectText">$!position.subjectText</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>科目课时：</th>
+                        <td>
+                            <input class="input" type="text" name="subjectHour" value="$!position.subjectHour">
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>本岗位应设人数：</th>
+                        <td>
+                            <input class="input" type="text" name="subjectCount" value="$!position.subjectCount">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>本岗位现有人数：</th>
+                        <td>
+                            <input class="input" type="text" name="subjectCurrentCount" value="$!position.subjectCurrentCount">
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>本岗位空缺人数：</th>
+                        <td>
+                            <input class="input" type="text" name="subjectVacancyCount" value="$!position.subjectVacancyCount">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>本岗位计划招聘人数：</th>
+                        <td>
+                            <input class="input" type="text" name="subjectPlanCount" value="$!position.subjectPlanCount">
+                        </td>
+                        <th class="text-right"></th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" rowspan="9">岗位限制条件：</th>
+                        <td colspan="3">
+                            <label><input type="checkbox" class="chbox" disabled="disabled" id="isLimitAge" name="isLimitAgeHidden" value="1" #if($!position.isLimitAge == '1') checked #end>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</label>
+                            <input class="input grid-120 limitAge" disabled="disabled" type="text" name="limitAgeHidden" value="$!position.limitAge">&nbsp;岁
+							<select class="select grid-120 limitAge" disabled="disabled" name="limitAgeCondititionHidden" id="limitAgeConditition">
+                                <option value="" #if($!position.limitAgeConditition == '') selected #end>--请选择--</option>
+								<option value=">=" #if($!position.limitAgeConditition == '>=') selected #end>及以上</option>
+								<option value="<=" #if($!position.limitAgeConditition == '<=') selected #end>及以下</option>
+                            </select>
+							<input type="hidden" name="isLimitAge" value="$!position.isLimitAge"/>
+							<input type="hidden" name="limitAge" value="$!position.limitAge"/>
+							<input type="hidden" name="limitAgeConditition" value="$!position.limitAgeConditition"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" class="chbox" name="isLimitEducation" id="isLimitEducation" value="1" #if($!position.isLimitEducation == '1') checked #end>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;历：</label>
+                            <select class="select grid-120 first" name="limitEducation">
+                                <option value="" #if($!position.limitEducation == '') selected #end>--请选择--</option>
+                                #foreach($list in $xllxDics)
+									<option value="$!list.value" #if($!position.limitEducation == $!list.value) selected #end>$!list.text</option>
+								#end
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <select class="select grid-120 second" name="limitEducationConditition" id="limitEducationConditition">
+                                <option value="" #if($!position.limitEducationConditition == '') selected #end>--请选择--</option>
+								<option value=">=" #if($!position.limitEducationConditition == '>=') selected #end>及以上</option>
+								<option value="<=" #if($!position.limitEducationConditition == '<=') selected #end>及以下</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" class="chbox" name="isLimitEdu" id="isLimitEdu" value="1" #if($!position.isLimitEdu == '1') checked #end>教育类型：</label>
+                            <select class="select grid-120 first" name="limitEdu">
+                                <option value="" #if($!position.limitEdu == '') selected #end>--请选择--</option>
+                                #foreach($list in $jylxDics)
+									<option value="$!list.value" #if($!position.limitEdu == $!list.value) selected #end>$!list.text</option>
+								#end
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <select class="select grid-120 second" name="limitEduConditition" id="limitEduConditition">
+                                <option value="" #if($!position.limitEduConditition == '') selected #end>--请选择--</option>
+								<option value=">=" #if($!position.limitEduConditition == '>=') selected #end>及以上</option>
+								<option value="<=" #if($!position.limitEduConditition == '<=') selected #end>及以下</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" class="chbox" name="isLimitDegree" id="isLimitDegree" value="1" #if($!position.isLimitDegree == '1') checked #end>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：</label>
+                            <select class="select grid-120 first" name="limitDegree">
+                                <option value="" #if($!position.limitDegree == '') selected #end>--请选择--</option>
+								#foreach($list in $xwlxDics)
+									<option value="$!list.value" #if($!position.limitDegree == $!list.value) selected #end>$!list.text</option>
+								#end
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <select class="select grid-120 second" name="limitDegreeConditition" id="limitDegreeConditition">
+                                <option value="" #if($!position.limitDegreeConditition == '') selected #end>--请选择--</option>
+								<option value=">=" #if($!position.limitDegreeConditition == '>=') selected #end>及以上</option>
+                                <option value="<=" #if($!position.limitDegreeConditition == '<=') selected #end>及以下</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="clearfix">
+                                <input class="btn btn-primary pull-right" type="button" onclick="chooseProfession();" value="选择"/>
+                                <label><input type="checkbox" name="isLimitProfession" id="isLimitProfession" value="1" #if($!position.isLimitProfession == '1') checked #end>专业要求：</label>
+                            </div>
+                            <textarea class="textarea mt10" rows="5" name="limitProfessionText" readOnly id="limitProfessionText">$!position.limitProfessionText</textarea>
+							<input type="hidden" id="limitProfession" name="limitProfession" value="$!position.limitProfession"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" name="isLimitRecruitHidden" disabled="disabled" value="1" #if($!position.isLimitRecruit == '1') checked #end>招聘对象：</label>
+                            <select class="select grid-120" name="limitRecruit">
+								<option value="0" #if($!position.limitRecruit == '0') selected #end>全部</option>
+								#foreach($list in $bylxDics)
+									<option value="$!list.value" #if($!position.limitRecruit == $!list.value) selected #end>$!list.text</option>
+								#end
+                            </select>
+							<input type="hidden" name="isLimitRecruit" value="$!position.isLimitRecruit"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" name="isEducationStudent" value="1" #if($!position.isEducationStudent == '1') checked #end>要求东莞生源免费师范生</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                        	<div class="clearfix">
+                            	<label>岗位备注说明：</label>
+                            </div>
+                            <textarea class="textarea mt10" rows="5" name="remark">$!position.remark</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                        	<div class="clearfix">
+                            	<label>学校其他限制条件：</label>
+                            </div>
+                            <textarea class="textarea mt10" rows="5" name="otherLimit">$!position.otherLimit</textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+			<input style="display: none;" id="submitBtn" type="submit"></input>
+		</form>
+    </div>
+</div>
+<!-- 添加岗位 E-->

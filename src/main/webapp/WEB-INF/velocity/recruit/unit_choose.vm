@@ -1,0 +1,235 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        getUnit();
+
+        $(document).on("click","input[name = chkItem]:checkbox",function(){
+            checkUnit($(this));
+        });
+
+        $(document).on("dblclick","label.unit",function(){
+            var text=$.trim($(this).text());
+            var code=$(this).attr("code");
+            delete unit[code];
+            $(this).parent("li").remove();
+            $("#unitTable").find("input:checkbox."+code).prop("checked", false);
+            //有一个没选中，全选就不选中
+            if($("#chkAll").is(":checked")){
+                $("#chkAll").prop("checked", false);
+            }
+        });
+
+        $("#chkAll").click(function(){
+            $("input[name = chkItem]:checkbox").each(function(index,e){
+                if($("#chkAll").is(":checked")){
+                    $(e).prop("checked", true);
+                }else{
+                    $(e).prop("checked", false);
+                }
+                checkUnit($(e));
+            });
+        });
+
+    });
+
+    function checkUnit($dom){
+        var code=$dom.attr("class");
+        var text=$dom.attr("text");
+        if($dom.is(":checked")){//选中
+            if(!unit[code]){
+                unit[code]=text;
+                $("#chosedUnit").append("<li><label class='unit "+code+"' code='"+code+"'>"+text+"&nbsp;&nbsp;&nbsp;</label></li>");
+            }
+            //每个选项都选中就将全选选中
+            var chklen=$("input[name = chkItem]:checkbox:checked").size();
+            if($("input[name = chkItem]:checkbox").size() == chklen){
+                $("#chkAll").prop("checked", true);
+            }
+        }else{//未选中
+            delete unit[code];
+            $("#chosedUnit").find("label."+code).parent("li").remove();
+            //有一个没选中，全选就不选中
+            if($("#chkAll").is(":checked")){
+                $("#chkAll").prop("checked", false);
+            }
+        }
+    }
+
+    var unit={};
+    var limitUnition=window.parent.unitCode;
+    var limitUnitionText=window.parent.unitText;
+
+    //获取单位
+    function getUnit() {
+        $.ajax({
+            url : '${link.contextPath}/dg/theme/getUnit',
+            type : 'post',
+            async: false,
+            cache : false,
+            dataType : 'json',
+            success : function(data) {
+                if (data.length > 0) {
+                    var unitList = data;
+                    joinData(data);
+                } else {
+                    $("#unitTable").html("");
+                }
+                checkData();
+            }
+        });
+    }
+
+    function joinData(speciaList){
+        $("#unitTable").html("");
+        var insertHtml="";
+        var len=speciaList.length % 4;
+        for (var i = 0; i < speciaList.length; i++) {
+            insertHtml=insertHtml+ "<td class='text-left'><label><input type='checkbox' name='chkItem' class='"+speciaList[i].id+"' text='"+speciaList[i].text+"'>" + speciaList[i].text + "</label></td>";
+            if ((i+1) % 4 == 0) {
+                $("#unitTable").append("<tr>"+insertHtml+"</tr>");
+                insertHtml="";
+            }
+        }
+        insertHtml="";
+        //有余数时
+        for (var i = speciaList.length-len; i <= speciaList.length-1; i++) {
+            insertHtml=insertHtml+ "<td class='text-left'><label><input type='checkbox' name='chkItem' class='"+speciaList[i].id+"' text='"+speciaList[i].text+"'>" + speciaList[i].text + "</label></td>";
+            if(i == speciaList.length-1){
+                $("#unitTable").append("<tr>"+insertHtml+"</tr>");
+            }
+        }
+    }
+
+    function clearData(){
+        limitUnition="" ;
+        limitUnitionText="" ;
+        unit={};
+        $("#chkAll").prop("checked", false);
+        $("input[name = chkItem]:checkbox").prop("checked", false);
+        $("#chosedUnit").find("li").remove();
+    }
+
+    function checkData(){
+        var unitText=[];
+        var unitCode=[];
+        if(!$.isEmptyObject(unit)){
+            for(var i in unit){
+                unitCode.push(i);
+                unitText.push(unit[i]);
+            }
+            limitUnition=unitCode.join(",");
+            limitUnitionText=unitText.join(",");
+        }
+        if(limitUnition && limitUnitionText){
+            if(typeof limitUnition!='string'){
+                var limitUnitions=limitUnition;
+                var limitUnitionTexts=limitUnitionText
+            }else{
+                var limitUnitions=limitUnition.split(",");
+                var limitUnitionTexts=limitUnitionText.split(",");
+            }
+            console.info(limitUnitions);
+            for(var i=0;i<limitUnitions.length;i++){
+                var $dom=$("input[name = chkItem]:checkbox."+limitUnitions[i]);
+                if($dom.length){
+                    $dom.prop("checked", true);
+                    //每个选项都选中就将全选选中
+                    var chklen=$("input[name = chkItem]:checkbox:checked").size();
+                }
+                if(!unit[limitUnitions[i]]){
+                    unit[limitUnitions[i]]=limitUnitionTexts[i];
+                    $("#chosedUnit").append("<li><label class='unit "+limitUnitions[i]+"' code='"+limitUnitions[i]+"'>"+limitUnitionTexts[i]+"&nbsp;&nbsp;&nbsp;</label></li>");
+                }
+            }
+            if($("input[name = chkItem]:checkbox").size() == chklen){
+                $("#chkAll").prop("checked", true);
+            }else{
+                $("#chkAll").prop("checked", false);
+            }
+        }
+    }
+
+    function searchSpe() {
+        if($.isEmptyObject(unit)){
+            limitUnition="";
+            limitUnitionText="";
+        }
+        var name = $("#name").val() ;
+        $("#unitTable").html('');
+        $.ajax({
+            url : '${link.contextPath}/dg/theme/getUnit',
+            type : 'post',
+            async: false,
+            cache : false,
+            dataType : 'json',
+            data :{"name":name},
+            success : function(data) {
+                if (data.length > 0) {
+                    joinData(data);
+                }else{
+                    $("#unitTable").html("");
+                }
+                checkData();
+            }
+        });
+    }
+
+</script>
+<!-- 岗位选择 S-->
+<div class="dialog dialog-select">
+    <!-- 条件搜索 S-->
+    <form class="form-inline border-left-none border-right-none" name="form1">
+        <div class="clearfix item-group">
+            <ul class="clearfix pull-left">
+                <li>
+                    <span>查找对象：</span>
+                    <input class="input" type="text" name="name" id="name">
+                </li>
+                <li>
+                    <a onclick="searchSpe();" class="btn btn-primary btn-sm" href="javascript:void(0);">搜索</a>
+                </li>
+            </ul>
+        </div>
+        <hr>
+    </form>
+    <!-- 条件搜索 E-->
+    <div class="table-content">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="text-left" colspan="4">
+                    <label><input type="checkbox" id="chkAll">全选</label>
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <div class="grid-h-130 overflow">
+            <table class="table" >
+                <tbody id="unitTable">
+                <!--
+                    <tr>
+                        <td class="text-left"><label><input type="checkbox" name="">A01哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A02哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A03哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A04哲学</label></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left"><label><input type="checkbox" name="">A05哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A06哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A07哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A08哲学</label></td>
+                    </tr>
+                    -->
+                </tbody>
+            </table>
+        </div>
+        <div class="selectedBox">
+            <div class="title"><strong>已选择单位</strong>（提示：双击名称可删除）</strong></div>
+            <div class="listbox">
+                <ul class="clearfix" id="chosedUnit"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 岗位选择 E-->

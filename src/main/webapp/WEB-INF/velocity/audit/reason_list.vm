@@ -1,0 +1,182 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+	$(document).ready(function () {
+		queryData();
+    });
+	
+	function queryData() {
+		var $serializeForm=$("#list_form").serialize();
+		$.ajax({
+            type: "POST",
+            dataType: "json",
+            url: '${link.contextPath}/dg/auditReason/selectAllReason',
+            data : $serializeForm,
+            success: function (data) {
+                if (data) {
+                    /*获取数据总行数*/
+    	            $("#totalCounts").val(data.total);
+					$("#currentPage").val(data.currentPage);
+                    /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/  
+                    if(parseInt($("#totalCounts").val()) == 0) {  
+                    	$("#totalCounts").val(1);
+                    }
+					if(parseInt($("#currentPage").val()) == 0) {  
+                    	$("#currentPage").val(1);
+                    }
+                    /*生成表和套用css样式*/  
+                    data = data.rows;//获取筛选后的内容 
+                    $(".table tbody tr").remove();//清空列表 
+                    $.each(data, function (index, e) {
+						var insertHtml='<tr>';
+								var reason=e.reason;
+    							if(getLength(reason) > 60){
+    								reason=substr(reason,60);
+    							}
+								insertHtml+='<td>'+e.order+'</td>';
+                          		insertHtml+='<td title="'+e.reason+'">'+reason+'</td>';
+								insertHtml+='<td>'+
+												'<a class="btn btn-default" onclick="edit(\''+e.id+'\');" href="javascript:void(0);" title="修改">修改</a>&nbsp;'+
+												'<a class="btn btn-primary" onclick="del(\''+e.id+'\');" href="javascript:void(0);" title="删除">删除</a>&nbsp;'+
+											'</td>';
+								insertHtml+='</tr>';
+						$(".table tbody").append(insertHtml);//将返回的数据追加到表格
+                    });
+                    /*生成分页标签*/
+                    paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));  
+                }
+            }
+        });
+    }
+	
+	function paginator(pageIndex, pageSize, totalCount) {
+    	$.jqPaginator('#pagination', {
+    		totalCounts: totalCount,
+    		pageSize: pageSize,
+    	    currentPage: pageIndex,
+    	    visiblePages: 7,
+    		first:'<a class="first">首页</a>',
+    	    prev: '<a class="prev">上一页</a>',
+    	    next: '<a class="next">下一页</a>',
+    		last: '<a class="last：">末页</a>',
+    	    page: '<a class="page">{{page}}</a>',
+    	    onPageChange: function (num, type) {
+    	    	if (type === 'change' && num !== parseInt($("#currentPage").val())) {  
+                    $("#currentPage").val(num);//点击改变页码时，同步model中的页码  
+                    queryData();//重新生成新表
+                }
+    	    }
+    	});
+    }
+		
+	function edit(id){
+		parent.layer.open({
+        	type: 2,
+        	title:['原因修改', 'font-weight:600'],
+			content:['${link.contextPath}/dg/auditReason/gotoReason?id='+id,'yes'],
+			btn:['确定','取消'],
+        	shadeClose:false,
+        	fix:true,
+        	area: ['430px','350px'],
+        	maxWidth:474,
+        	move: false,
+        	yes: function(index, layero){
+        		var body = parent.layer.getChildFrame('body', index);
+                body.find("#submitBtn").click();
+			},
+			end: function(){
+		    	queryData();
+		    }
+        });
+	}
+	
+	function addReason(){
+		parent.layer.open({
+        	type: 2,
+        	title:['原因新增', 'font-weight:600'],
+			content:['${link.contextPath}/dg/auditReason/gotoReason','yes'],
+			btn:['确定','取消'],
+        	shadeClose:false,
+        	fix:true,
+        	area: ['430px','350px'],
+        	maxWidth:474,
+        	move: false,
+        	yes: function(index, layero){
+        		var body = parent.layer.getChildFrame('body', index);
+                body.find("#submitBtn").click();
+			},
+			end: function(){
+		    	queryData();
+		    }
+        });
+	}
+	
+	var sloadindex;
+	function del(id){
+		if(!id){
+			layer.msg("请选择记录后再删除！", {icon: 2});
+			return;
+		}
+		layer.confirm('您确定要删除选中的记录吗?', {icon: 3, title:'提示'}, function(index){
+			$.ajax({
+    			url : '${link.contextPath}/dg/auditReason/deleteReason',
+    			type : 'post',
+    			data:{"id":id},
+    			async: false,
+    			cache : false,
+    			dataType : 'json',
+				beforeSend: function(){
+                    sloadindex = parent.layer.load(0, {
+                    	shade: [0.3,'#fff']
+                    });
+                },
+    			success : function(data) {
+    				parent.layer.close(sloadindex);
+					if(data.flag == 'success'){
+    					alert(data.msg);
+						queryData();
+    				}else{
+        				layer.msg(data.msg, {icon: 2});
+    				}
+    			}
+    		});
+			layer.close(index);
+        });
+	}
+</script>
+<div class="dialog dialog-manage">
+    <div class="table-content">
+        <!-- 条件搜索 S-->
+        <form class="form-inline" id="list_form">
+			<input type="hidden" id="currentPage" name="currentPage" value="1"/>
+			<input type="hidden" id="pageSize" name="pageSize" value="10"/>
+			<input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+			<div class="clearfix item-group">
+				<ul class="clearfix pull-right">
+                	<li>
+						<a onclick="addReason();" class="pull-right btn btn-default btn-sm" href="javascript:void(0);" title="新增">新增</a>
+                	</li>
+                </ul>
+            </div>
+        </form>
+        <!-- 条件搜索 E-->
+		<!-- table表单模块 S-->
+        <div class="table-content">
+            <table class="table">
+                <thead>
+                    <tr>
+						<th>序号</th>
+                        <th>不通过原因</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <!-- table表单模块 E-->
+        <!-- 分页+全选模块 S-->
+        <div class="clearfix pagesBox">
+            <div id="pagination" class="pull-right pages"></div>
+        </div>
+        <!-- 分页+全选模块 E-->
+    </div>
+</div>

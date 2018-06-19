@@ -1,0 +1,58 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+
+    function sure() {
+        $("#input_form").submit();
+    }
+
+    $(document).ready(function(){
+        $("#input_form").validator({
+            formClass:'n-yellow',
+            msgClass: "n-bottom",
+            msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+            timely:3,
+            focusInvalid:true,
+            focusCleanup:true,
+            stopOnError:false,
+            fields: {
+                remark: "注意事项内容:required; length(1~500)"
+            },
+            valid: function(form){
+                url='${link.contextPath}/dg/notice/editAttention';
+                //表单验证通过，提交表单
+                $.post(url, $(form).serialize()).done(function(data){
+                    parent.layer.msg(data.msg, {icon: 1});
+                    if(data.success){
+                        window.parent.layer.closeAll();
+                    }
+                });
+            }
+         });
+    })
+
+</script>
+<!-- 注意事项新增 S-->
+<div class="dialog dialog-info">
+    <div class="table-content">
+        <form method="post" id="input_form">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right"><span class="flag"></span>注意事项名称：</th>
+                        <td>
+                            <input class="input" type="hidden" name="id" value="$!{attention.id}">
+                            <input class="input" type="text" name="reason" value="$!{attention.reason}" readonly="readonly">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag"></span>注意事项内容：</th>
+                        <td>
+                            <textarea class="textarea" type="text" name="remark">$!{attention.remark}</textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+<!-- 注意事项新增 E-->

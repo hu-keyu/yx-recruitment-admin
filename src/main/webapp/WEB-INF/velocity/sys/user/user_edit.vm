@@ -1,0 +1,122 @@
+#parse("/common/head-js+css.vm")
+    <script>
+        $(document).ready(function(){
+        $("#input_form").validator({
+            formClass:'n-yellow',
+            msgClass: "n-bottom",
+            msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+            timely:3,
+            focusInvalid:true,
+            focusCleanup:true,
+            stopOnError:false,
+            rules: {
+                // 使用正则表达式定义规则
+                postcode: [/^\d{3}$/, '请输入3位数字'],
+            },
+            fields: {
+                loginName: "登录名称必选:required;length(1~20)",
+                userName: "用户姓名必填:required;length(1~20)",
+				userType: "用户类型必填:required"
+            },
+            valid: function(form){
+                url='${link.contextPath}/dg/user/add';
+                //表单验证通过，提交表单
+                $.post(url, $(form).serialize()).done(function(data){
+                    parent.layer.msg(data.msg, {icon: 1});
+                    if(data.success){
+                        window.parent.layer.closeAll();
+                    }
+                });
+            }
+        });
+    })
+	
+	function sure(){
+		var userType = $("#userType").val();
+    	var dept = $("#selectDepart").val();
+    	if((userType == '000' || userType == '002') && dept == ''){
+    		parent.layer.msg('用户类型为教育局用户或者单位用户时，请选择单位', {icon: 2});
+    		return;
+    	}
+	    var loginName = $("#loginName").val();
+		var id = $("#id").val();
+	    $.ajax({
+            type: 'post',
+            url: '${link.contextPath}/dg/user/isRepeat',
+            dataType: "json",
+            data: {loginName : loginName, id: id},
+            success: function(data) {
+                if(data.success){
+                    $("#input_form").submit();
+                }else{
+                    parent.layer.msg('登录名不能重复,保存失败！', {icon: 2});
+                    return false ;
+                }
+            }
+        });
+	}
+	
+	function setOrgOrSch(){
+		var userType = $("#userType").val();
+		var dept = $("#selectDepart").val();
+		if(userType == ''){
+			$("#selectDepart").val('');
+			return;
+		}else{
+			if(userType == '000'){
+				$("#orginId").val(dept);
+				$("#schoolId").val('');
+			}
+			if(userType == '002'){
+				$("#orginId").val('');
+				$("#schoolId").val(dept);
+			}
+			if(userType == '999'){
+				$("#orginId").val('');
+				$("#schoolId").val('');
+			}
+		}
+	}
+    </script>
+	
+	<div class="dialog">
+        <form class="table-content" method="post" id="input_form" onsubmit="return false;">
+			<input class="input" type="hidden" id="orginId" name="orginId" value="$!{user.orginId}" />
+			<input class="input" type="hidden" id="schoolId" name="schoolId" value="$!{user.schoolId}" />
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right" width="18%"><span class="flag">*</span>登录名：</th>
+						<input class="input" type="hidden" id="id" name="id" value="${user.id}">
+                        <td><input class="input" type="text" id="loginName" name="loginName" value="$!{user.loginName}" /></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="18%"><span class="flag">*</span>用户名称：</th>
+                        <td><input class="input" type="text" id="userName" name="userName" value="$!{user.userName}" /></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="18%"><span class="flag">*</span>用户类型：</th>
+                        <td class="layui-input-inline">
+							 <select  class="select" name="userType" id="userType" onchange="setOrgOrSch()">
+								#foreach($list in $codeMap.get("usertype"))
+                                    <option value="$!list.value" #if($!{user.userType} == $!list.value) selected #end>$!list.text</option>
+                                #end
+							 </select>
+						</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="18%">单位：</th>
+						 <td class="layui-input-inline">
+                          <select class="select" name="selectDepart" id="selectDepart" onchange="setOrgOrSch()">
+							<option value="" #if($!{user.orginId} == '') selected #elseif ($!{user.schoolId} == '') selected #end>== 请选择 ==</option>
+							 #foreach($list in $codeMap.get("dwdm"))
+                                <option value="$!list.id" #if($!{user.orginId} == $!list.id) selected #elseif ($!{user.schoolId} == $!list.id) selected #end>$!list.text</option>
+                            #end
+                          </select>
+						</td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+</div>
+

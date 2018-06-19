@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>试室编排详情</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+			var studentData;
+			$(document).ready(function () {  
+		        $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/queryLayoutDetail',
+                data : {
+                    "itemsId" :parent.itemsId,
+                    "kaodian":parent.kaodian
+                },
+                success: function (data) {
+                     //初始化话列表，及select选项
+                       var optionData=data.labs;
+                       var opstr="<span>试室：</span><select class='select' id='labsid' name='labsid' onchange='queryLabsStudent()'>";
+                       for(i=0;i<optionData.length;i++)
+                       {
+                        opstr=opstr+"<option value='"+optionData[i].id+"'>"+optionData[i].labsName+"</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#labsListDiv").html(opstr);
+                       
+                      //初始化列表
+                      loadTable(data.labsStudent);
+                }  
+            });  
+		     
+            });
+            function exportExcel(type)
+            {
+              var labvalue=$("#labsid").val();
+              if(labvalue==null)
+              {
+                 layer.msg("请选择试室号", {icon: 2});
+                 return;
+              }
+              window.location.href="${link.contextPath}/dg/examSubjectInfo/exportExcel?itemsId="+parent.itemsId+"&kaodian="+parent.kaodian+"&type="+type+"&labid="+$("#labsid").val();
+            }
+            function queryLabsStudent()
+            {
+                $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/queryLayoutDetail',
+                data : {
+                    "itemsId" :parent.itemsId,
+                    "kaodian":parent.kaodian,
+                    "labid":$("#labsid").val()
+                },
+                success: function (data) {
+                  loadTable(data.labsStudent);
+                }  
+            });  
+            }
+            function loadTable(data)
+            {
+                $(".table tbody tr").remove();//清空列表 
+                var insertHtml="";
+                for(i=0;i<data.length;i++)
+                {
+                   insertHtml=insertHtml+'<tr>'+
+                                                '<td>'+data[i].kaodianName+'</td>'+
+                                                '<td>'+data[i].labsName+'</td>'+
+                                                '<td>'+data[i].ganWeiName+'</td>'+
+                                                '<td>'+data[i].name+'</td>'+
+                                                '<td>'+data[i].sex+'</td>'+
+                                                '<td>'+data[i].card+'</td>'+
+                                                '<td>'+data[i].testCardNum+'</td>'+
+                                            '</tr>';
+                }
+			$(".table tbody").append(insertHtml);//将返回的数据追加到表格
+            }
+           
+    </script>
+</head>
+<body>
+        <!-- context内容 S-->
+        <div class="content">
+            <!-- 条件搜索 S-->
+            <form class="form-inline">
+				<div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span id="labsListDiv">
+                            </span>
+                        </li>
+                          <li>
+                           <input type="button" value="座位表门贴导出" class="btn btn-primary btn-sm" onclick="exportExcel('1')"/>
+                        </li>
+                          <li>
+                           <input type="button" value="桌贴导出" class="btn btn-primary btn-sm" onclick="exportExcel('2')"/>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>考点</th>
+                            <th>试室</th>
+                            <th>岗位名称</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>身份证号</th>
+                            <th>准考证号</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

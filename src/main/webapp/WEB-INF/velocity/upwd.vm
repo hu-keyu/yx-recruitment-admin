@@ -1,0 +1,88 @@
+#parse("/common/head-js+css.vm")
+<div class="dialog dialog-cause">
+        <div class="table-content p15">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right" width="20%">旧密码：</th>
+                        <td>
+                            <input class="input" type="password" name="" id="oldPwdId">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="20%">新密码：</th>
+                        <td>
+                            <input class="input" type="password" name="" id="newPwd">
+                        </td>
+                    </tr>
+                      <tr>
+                        <th class="text-right" width="20%">确认密码：</th>
+                        <td>
+                            <input class="input" type="password" name="" id="againNewPwd">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" id="isupdate"  value="">
+</div>
+<script type="text/javascript">
+   
+    function getupdateValue()
+    {
+     return $("#isupdate").val();
+    }
+    function sureForm()
+    {
+       var oldPwdId=$("#oldPwdId").val();
+       var newPwd=$("#newPwd").val();
+       var againNewPwd=$("#againNewPwd").val();
+       if(oldPwdId=='')
+       {
+        parent.layer.msg('旧密码不能为空!');
+        return;
+       }
+        if(newPwd=='')
+       {
+        parent.layer.msg('新密码不能为空!');
+        return;
+       }
+        if(againNewPwd=='')
+       {
+        parent.layer.msg('确认密码不能为空!');
+        return;
+       }
+       if(newPwd!=againNewPwd)
+       {
+        parent.layer.msg('两次密码输入不一样!');
+        return;
+       }
+        if(oldPwdId==newPwd)
+       {
+        parent.layer.msg('新密码不能与当前密码一样!');
+        return;
+       }
+       $("#isupdate").val("true");
+        $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/index/updpassword',
+                async: false,
+                data : {
+                    "newPwd" :newPwd,
+                    "oldPwd":oldPwdId
+                },
+                success: function (data) {
+                      if(data.msg=='error')
+                      {
+                        $("#isupdate").val("");
+                        parent.layer.msg('旧密码输入错误!');
+                        
+                      }else
+                      {
+                         parent.layer.msg('修改成功!');
+                      }
+                }  
+            });  
+    }
+</script>

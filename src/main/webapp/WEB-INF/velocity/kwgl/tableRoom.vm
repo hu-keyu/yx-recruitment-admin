@@ -1,0 +1,155 @@
+#parse("/common/head-js+css.vm")
+<div class="dialog dialog-post">
+    <div class="table-content">
+         #if($type !='7')
+        <table class="text-center seatPlaceTitle" style="margin-bottom: -1px;">
+            <caption>${kaodianName}-${labname}试室</caption>
+            <thead>
+                <tr>
+                    <th width="10%">市名：</th>
+                    <td width="15%">东莞市</td>
+                    <th width="10%">县区：</th>
+                    <td width="15%">东莞市区</td>
+                    <th width="10%">监考人：</th>
+                    <td width="15%">${person}</td>
+                </tr>
+                <tr>
+               		<th>应考人数：</th>
+                    <td>${kaodianNum}</td>
+                    <th>考试时间：</th>
+                    <td colspan="3">${timeStr}</td>
+                </tr>
+            </thead>
+        </table>
+        <table class="seatPlace text-center">
+            <tbody>
+                #set( $indexvar = 0)
+                #foreach($data in $dataMap.entrySet())
+                 <tr>
+                #set( $indexvar = $indexvar + 1)
+                #if($indexvar !=  8)
+                
+                    #foreach( $vo in $data.value )
+                       #if($vo.name !='')
+                    <td width="25%">
+                        <p>
+                               #if($vo.imageStr)
+                            <img src="$vo.imageStr" width="100" height="100" alt="">
+                             #else
+                                 <img src="${link.contextPath}/static/images/default.jpg" width="100" height="100" alt="">
+                             #end
+                        </p>
+                           #if($type =='4')
+                            <p>
+                           ${vo.card} 
+                           </p>
+                           #end
+                        <p>${vo.testCardNum}</p>
+                        <p>
+                            <span>${vo.seatNum}</span>
+                            <span>${vo.name}</span>
+                        </p>
+                    </td>
+                     #else
+                    <td width="25%"></td>
+                     #end
+                     #end
+                #end  
+                
+                 #if($indexvar ==  8)
+                    <td width="25%">
+                    </td>
+                    #foreach( $vo in $data.value )
+                     #if($vo.name !='')
+                    <td width="25%">
+                        <p>
+                              #if($vo.imageStr)
+                            <img src="$vo.imageStr" width="100" height="100" alt="">
+                             #else
+                                 <img src="${link.contextPath}/static/images/default.jpg" width="100" height="100" alt="">
+                             #end
+                        </p>
+                          #if($type =='4')
+                            <p>
+                           ${vo.card} 
+                           </p>
+                           #end
+                        <p>${vo.testCardNum}</p>
+                        <p>
+                            <span>${vo.seatNum}</span>
+                            <span>${vo.name}</span>
+                        </p>
+                    </td>
+                    #else
+                      <td width="25%"></td>                    
+                    #end
+                     #end
+                      <td width="25%"></td>
+                   #end  
+               
+               
+                     </tr>
+                 #end
+            </tbody>
+        </table>
+           #else
+           <table class="text-center seatPlaceTitle" style="margin-bottom: -1px;">
+            <caption>${kaodianName}-${labname}试室</caption>
+        </table>
+        <table class="seatPlace text-center">
+            <tbody>
+                #set( $indexvar = 0)
+                #foreach($data in $dataMap.entrySet())
+                 <tr>
+                #set( $indexvar = $indexvar + 1)
+                #if($indexvar !=  8)
+                
+                    #foreach( $vo in $data.value )
+                       #if($vo.name !='')
+                    <td width="25%">
+                        <p>
+                           ${vo.card} 
+                        </p>
+                      
+                        <p>${vo.testCardNum}</p>
+                        <p>
+                            <span>${vo.seatNum}</span>
+                            <span>${vo.name}</span>
+                        </p>
+                    </td>
+                     #else
+                    <td width="25%"></td>
+                     #end
+                     #end
+                #end  
+                
+                 #if($indexvar ==  8)
+                    <td width="25%">
+                    </td>
+                    #foreach( $vo in $data.value )
+                     #if($vo.name !='')
+                    <td width="25%">
+                         <p>
+                           ${vo.card} 
+                        </p>
+                      
+                        <p>${vo.testCardNum}</p>
+                        <p>
+                            <span>${vo.seatNum}</span>
+                            <span>${vo.name}</span>
+                        </p>
+                    </td>
+                    #else
+                      <td width="25%"></td>                    
+                    #end
+                     #end
+                      <td width="25%"></td>
+                   #end  
+                     </tr>
+                 #end
+            </tbody>
+        </table>
+           
+           #end
+    </div>
+</div>

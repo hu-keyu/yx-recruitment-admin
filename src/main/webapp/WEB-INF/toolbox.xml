@@ -1,0 +1,14 @@
+<toolbox>
+<tool>
+<key>link</key>
+<scope>request</scope>
+<class>org.apache.velocity.tools.view.LinkTool</class>
+</tool>
+<tool>
+<key>dateTool</key>
+<scope>application</scope>
+<class>org.apache.velocity.tools.generic.DateTool</class>
+</tool>
+</toolbox>
+
+<!-- <td>$!dateTool.format('yyyy-MM-dd HH:mm:ss',$!list.sendTime)</td>  时间格式转换-->

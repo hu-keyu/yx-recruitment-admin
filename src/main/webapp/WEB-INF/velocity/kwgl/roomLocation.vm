@@ -1,0 +1,31 @@
+#parse("/common/head-js+css.vm")
+<div class="dialog dialog-manage">
+    <div class="table-content">
+           #if($lbsList.size()>0)
+           #foreach( $vo in $lbsList )
+           <table class="formTable" style='margin-top:15px'>
+           <tbody>
+           <tr>
+           <th class="text-right" width="30%">试室名称：</th>
+    	   <td>$vo.labsName</td>
+		   </tr>
+            <tr>
+            <th class="text-right">试室位置：</th>
+    		<td>$vo.labsAddr</td>
+            </tr>
+            <tr>
+            <th class="text-right">职位：</th>
+    		<td>$vo.postId</td>
+    		</tr>
+            </tbody>
+          </table>
+           #end
+           #else
+          <div align="center">
+          <br>
+          <b><font size="3">暂无数据!</font></b>
+          </div>              
+           #end
+           
+    </div>
+</div>

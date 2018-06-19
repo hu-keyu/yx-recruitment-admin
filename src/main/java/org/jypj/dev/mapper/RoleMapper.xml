@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.RoleDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.Role" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+	<result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+	<result column="ROLE_TYPE" property="roleType" jdbcType="VARCHAR" />
+	<result column="DESCRIBE" property="describe" jdbcType="VARCHAR" />
+	<result column="SORT_ORDER" property="sortOrder" jdbcType="DECIMAL" />
+	<result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+	<result column="MODIFY_DATE" property="modifyDate" jdbcType="DATE" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,ROLE_NAME,ROLE_CODE,ROLE_TYPE,DESCRIBE,SORT_ORDER,CREATE_DATE,MODIFY_DATE,CREATE_USER,MODIFY_USER
+  </sql>
+  
+   <insert id="saveRoleByField" parameterType="org.jypj.dev.entity.Role" >
+    insert into eims_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="roleName != null" >
+    ROLE_NAME,
+   </if>
+   <if test="roleCode != null" >
+    ROLE_CODE,
+   </if>
+   <if test="roleType != null" >
+    ROLE_TYPE,
+   </if>
+   <if test="describe != null" >
+    DESCRIBE,
+   </if>
+   <if test="sortOrder != null" >
+    SORT_ORDER,
+   </if>
+   <if test="createDate != null" >
+    CREATE_DATE,
+   </if>
+   <if test="modifyDate != null" >
+    MODIFY_DATE,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCode != null" >
+        #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        #{roleType,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="sortOrder != null" >
+        #{sortOrder,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=DATE},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveRole" parameterType="org.jypj.dev.entity.Role" >
+    insert into eims_role (
+	ID,
+	ROLE_NAME,
+	ROLE_CODE,
+	ROLE_TYPE,
+	DESCRIBE,
+	SORT_ORDER,
+	CREATE_DATE,
+	MODIFY_DATE,
+	CREATE_USER,
+	 MODIFY_USER
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{roleName,jdbcType=VARCHAR},
+	#{roleCode,jdbcType=VARCHAR},
+	#{roleType,jdbcType=VARCHAR},
+	#{describe,jdbcType=VARCHAR},
+	#{sortOrder,jdbcType=DECIMAL},
+	sysdate,
+	sysdate,
+	#{createUser,jdbcType=VARCHAR},
+	#{modifyUser,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteRoleById" parameterType="java.lang.String" >
+    delete from eims_role
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteRoleByObject" parameterType="org.jypj.dev.entity.Role" >
+    delete from eims_role
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+    <delete id="deleteRoleByIds">
+    delete from EIMS_ROLE
+    where ID in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+     #{id,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+  
+  <update id="updateRoleByField" parameterType="org.jypj.dev.entity.Role" >
+    update eims_role
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="roleName != null" >
+  	 ROLE_NAME=#{roleName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="roleCode != null" >
+  	 ROLE_CODE=#{roleCode,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="roleType != null" >
+  	 ROLE_TYPE=#{roleType,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="describe != null" >
+  	 DESCRIBE=#{describe,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="sortOrder != null" >
+  	 SORT_ORDER=#{sortOrder,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="createDate != null" >
+  	 CREATE_DATE=#{createDate,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyDate != null" >
+  	 MODIFY_DATE=#{modifyDate,jdbcType=DATE},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateRole" parameterType="org.jypj.dev.entity.Role" >
+    update eims_role
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 ROLE_NAME=#{roleName,jdbcType=VARCHAR},
+	 ROLE_CODE=#{roleCode,jdbcType=VARCHAR},
+	 ROLE_TYPE=#{roleType,jdbcType=VARCHAR},
+	 DESCRIBE=#{describe,jdbcType=VARCHAR},
+	 SORT_ORDER=#{sortOrder,jdbcType=DECIMAL},
+	 CREATE_DATE=sysdate,
+	 MODIFY_DATE=sysdate,
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectRoleById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role
+    where 1=1 
+    <if test="roleName != null and roleName !='' ">
+	  and ROLE_NAME like '%'||#{roleName,jdbcType=VARCHAR}||'%'
+	 </if>
+	 <if test="roleCode != null and roleCode !='' ">
+	  and ROLE_CODE=#{roleCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleType != null and roleType !='' ">
+	  and ROLE_TYPE=#{roleType,jdbcType=VARCHAR}
+	 </if>
+	 order by SORT_ORDER,ROLE_CODE,ROLE_NAME
+  </select> 
+  
+  <select id="selectOnePageByRole" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Role" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role
+    where 1=1 
+	 <if test="roleName != null and roleName !='' ">
+	  and ROLE_NAME=#{roleName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleCode != null and roleCode !='' ">
+	  and ROLE_CODE=#{roleCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleType != null and roleType !='' ">
+	  and ROLE_TYPE=#{roleType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="describe != null and describe !='' ">
+	  and DESCRIBE=#{describe,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sortOrder != null and sortOrder !='' ">
+	  and SORT_ORDER=#{sortOrder,jdbcType=DECIMAL}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role
+    where 1=1 
+	 <if test="roleName != null and roleName !='' ">
+	  and ROLE_NAME=#{roleName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleCode != null and roleCode !='' ">
+	  and ROLE_CODE=#{roleCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userId != null and userId !='' ">
+	  and ID in(select role_id from eims_user_role where user_id=#{userId,jdbcType=VARCHAR})
+	 </if>
+	 <if test="loginName != null and loginName !='' ">
+	  and ID in(select role_id from eims_user_role t, eims_user ut where t.user_id=ut.id and ut.login_name=#{loginName,jdbcType=VARCHAR})
+	 </if>
+  </select> 
+  
+   <select id="selectAllByRole" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Role" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleName != null and roleName !='' ">
+	  and ROLE_NAME=#{roleName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleCode != null and roleCode !='' ">
+	  and ROLE_CODE=#{roleCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleType != null and roleType !='' ">
+	  and ROLE_TYPE=#{roleType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="describe != null and describe !='' ">
+	  and DESCRIBE=#{describe,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sortOrder != null and sortOrder !='' ">
+	  and SORT_ORDER=#{sortOrder,jdbcType=DECIMAL}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByRole" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Role" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleName != null and roleName !='' ">
+	  and ROLE_NAME=#{roleName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleCode != null and roleCode !='' ">
+	  and ROLE_CODE=#{roleCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleType != null and roleType !='' ">
+	  and ROLE_TYPE=#{roleType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="describe != null and describe !='' ">
+	  and DESCRIBE=#{describe,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sortOrder != null and sortOrder !='' ">
+	  and SORT_ORDER=#{sortOrder,jdbcType=DECIMAL}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+   <select id="selectRepeatRoleByCode" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Role" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role
+    where 1=1  
+    and ROLE_CODE=#{roleCode,jdbcType=VARCHAR}
+    <if test="id != null and id !='' ">
+	  and ID &lt;&gt; #{id,jdbcType=VARCHAR}
+	</if>
+	<if test="id == null">
+	  and ID is not null 
+	</if>
+   </select> 
+</mapper>

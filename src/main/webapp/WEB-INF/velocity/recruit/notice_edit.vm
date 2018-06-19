@@ -1,0 +1,498 @@
+#parse("/common/head-js+css.vm")
+
+<script type="text/javascript">
+
+    $(function(){
+
+        var enterCondition = '${notice.enterCondition}' ;
+        if(enterCondition=='2'){
+            $(".score").hide() ;
+            $(".score input").attr("disabled",true) ;
+            $(".score input").val("") ;
+        }
+        if(enterCondition=='3'){
+            $(".propo").hide() ;
+            $(".propo input").attr("disabled",true) ;
+            $(".propo input").val("") ;
+        }
+
+        $("#enterCondition").bind("change",function(){
+            if($(this).val()==1){
+                $(".propo").show() ;
+                $(".propo input").attr('disabled',false) ;
+                $(".score").show() ;
+                $(".score input").attr('disabled',false) ;
+            }
+            if($(this).val()==2){
+                $(".propo").show() ;
+                $(".propo input").attr('disabled',false) ;
+                $(".score").hide() ;
+                $(".score input").attr("disabled",true) ;
+                $(".score input").val("") ;
+            }
+            if($(this).val()==3){
+                $(".propo").hide() ;
+                $(".propo input").attr("disabled",true) ;
+                $(".score").show() ;
+                $(".score input").removeAttr('disabled',false) ;
+                $(".propo input").val("") ;
+            }
+        });
+
+        var isPublish = '${notice.isPublish}'
+        if(isPublish==1){
+            //已经发布了则禁用页面部分功能
+            $("[forbid=forbid]").attr("disabled", "false");
+        }
+
+
+    })
+
+    function sure(){
+		var flag = true ;
+        if($("#d1").val()>$("#d2").val()){
+            layer.msg("结束日期必须在开始日期之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d1").val()>$("#d3").val()){
+            layer.msg("补报开始时间必须在流程开始时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d3").val()>$("#d4").val()){
+            layer.msg("补报结束时间必须在补报开始时间之后！", {icon: 1});
+            flag = false ;
+        }
+		if($("#d1").val()>$("#d5").val()){
+            layer.msg("注册报名开始时间必须在整个流程开始时间之后！", {icon: 2});
+            flag = false ;
+        }
+        if($("#d5").val()>$("#d2").val()){
+            layer.msg("注册报名结束时间必须在整个流程结束时间之前！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d5").val()>$("#d6").val()){
+            layer.msg("注册报名结束时间必须在注册报名开始时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d6").val()>$("#d7").val()){
+            layer.msg("单位面试开始时间必须在注册报名结束时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d7").val()>$("#d8").val()){
+            layer.msg("单位面试结束时间必须在单位面试开始时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d8").val()>$("#d9").val()){
+            layer.msg("统一笔试开始时间必须在单位面试结束时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d9").val()>$("#d10").val()){
+            layer.msg("统一笔试结束时间必须在统一笔试开始时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d10").val()>$("#d11").val()){
+            layer.msg("统一试讲开始时间必须在统一笔试结束时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d11").val()>$("#12").val()){
+            layer.msg("统一试讲结束时间必须在统一试讲开始时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d12").val()>$("#d13").val()){
+            layer.msg("体检开始时间必须在统一试讲结束时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d13").val()>$("#d14").val()){
+            layer.msg("体检开始时间必须在体检结束时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d14").val()>$("#d15").val()){
+            layer.msg("考察开始时间必须在体检结束时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d15").val()>$("#d16").val()){
+            layer.msg("考察结束时间必须在考察开始时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d16").val()>$("#d17").val()){
+            layer.msg("公示开始时间必须在考察结束时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d17").val()>$("#d18").val()){
+            layer.msg("公示结束时间必须在公示开始时间之后！", {icon: 1});
+            flag = false ;
+        }
+        if($("#d18").val()>$("#d2").val()){
+            layer.msg("公示结束时间必须在项目结束时间之前！", {icon: 1});
+            flag = false ;
+        }
+        var isright = true ;
+        if($("#enterCondition").val()==1){
+            $("[score=score]").each(function () {
+                if($(this).val()==""){
+                    layer.msg("分数必填！", {icon: 2});
+                    isright = false ;
+                    flag = false ;
+                };
+            })
+            $("[propo=propo]").each(function () {
+                if($(this).val()==""){
+                    layer.msg("录取比例必填！", {icon: 2});
+                    isright = false ;
+                    flag = false ;
+                };
+            })
+        }
+        if($("#enterCondition").val()==2){
+            $("[propo=propo]").each(function () {
+                if($(this).val()==""){
+                    layer.msg("录取比例必填！", {icon: 2});
+                    isright = false ;
+                    flag = false ;
+                };
+            })
+        }
+        if($("#enterCondition").val()==3){
+            $("[score=score]").each(function () {
+                if($(this).val()==""){
+                    layer.msg("分数必填！", {icon: 2});
+                    isright = false ;
+                    flag = false ;
+                };
+            })
+        }
+        if($("#content").val().length>1000){
+            layer.msg("招聘公告正文内容长度不能超过1000个字符！", {icon: 2});
+            flag = false ;
+        }
+		if(!$("#slidePlane").is(":hidden")){
+			if($("#stopTitle").val().length==0){
+                layer.msg("暂停提示信息标题不能为空！", {icon: 2});
+                flag = false ; 
+        	}
+			if($("#stopContent").val().length==0){
+            	layer.msg("暂停提示信息内容不能为空！", {icon: 2});
+            	flag = false ; 
+        	}
+		}
+        return flag ;
+    }
+
+    $(document).ready(function(){
+        $("#input_form").validator({
+            formClass:'n-yellow',
+            msgClass: "n-bottom",
+            msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+            timely:3,
+            focusInvalid:true,
+            focusCleanup:true,
+            stopOnError:false,
+            rules: {
+                // 使用正则表达式定义规则
+                postcode: [/^\d{3}$/, '请输入3位数字'],
+            },
+            fields: {
+                themeId: "项目名称必选:required",
+                startTime: "开始时间必填:required",
+                endTime: "结束时间必填:required",
+                enterCondition: "录取形式必填:required",
+                reportStart: "补报开始时间必填:required",
+                reportEnd:"补报结束时间必填:required",
+                registerStart:"注册报名开始时间必填:required",
+                registerEnd:"注册报名结束时间必填:required",
+                interviewStart:"面试开始时间必填:required",
+                interviewEnd:"面试结束时间必填:required",
+                writtenStart:"笔试开始时间必填:required",
+                writtenEnd:"笔试开始时间必填:required",
+                lectureStart:"试讲开始时间必填:required",
+                lectureEnd:"试讲结束时间必填:required",
+                bodyexamStart:"体检开始时间必填:required",
+                bodyexamEnd:"体检结束时间必填:required",
+                lookStart:"考察开始时间必填:required",
+                lookEnd:"考察结束时间必填:required",
+                showStart:"公示开始时间必填:required",
+                showEnd:"公示结束时间必填:required",
+                interviewEnterPropo:"integer[+1]; range[1~100]",
+                interviewEnterLine:"integer[+1]; range[1~100]",
+                writtenEnterPropo:"integer[+1]; range[1~100]",
+                writtenEnterLine:"integer[+1]; range[1~100]",
+                lectureEnterPropo:"integer[+1]; range[1~100]",
+                lectureEnterLine:"integer[+1]; range[1~100]",
+				stopTitle:"暂停提示信息标题:length(1~20)",
+				stopContent:"暂停提示信息内容:length(1~100)"
+            },
+            valid: function(form){
+                url='${link.contextPath}/dg/notice/add';
+                //表单验证通过，提交表单
+                $.post(url, $(form).serialize()).done(function(data){
+                    parent.layer.msg(data.msg, {icon: 1});
+                    if(data.success){
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.window.location.reload();
+                        //parent.layer.close(index); //再执行关闭
+                    }
+                });
+            }
+        });
+
+    })
+
+
+
+
+</script>
+
+<!-- 编辑招聘 S-->
+<div class="dialog dialog-edit" >
+    <div class="table-content">
+        <form method="post" id="input_form">
+            <table class="formTable">
+                <tbody>
+                <tr>
+                    <th class="text-right"><span class="flag">*</span>项目名称：</th>
+                    <td colspan="3">
+                        <input type="hidden" value="${notice.id}" name="id">
+                        <select class="select" name="themeId" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+                            #foreach($!list in $!themeList)
+                                <option value="$!list.id" #if($!notice.themeId == $!list.id) selected #end title="$!list.theme">
+                                    #if($!list.theme)
+                                        #if($!list.theme.length()>25)
+                                            $!list.theme.substring(0,25) ...
+                                        #else
+                                            $!list.theme
+                                        #end
+                                    #end
+                                </option>
+                            #end
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-right"><span class="flag">*</span>开始日期：</th>
+                    <td>
+                        <input id="d1" class="input Wdate" forbid="forbid" type="text" name="startTime" value="$!date.format("yyyy-MM-dd HH:mm",${notice.startTime})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 00:00',maxDate:'2020-12-20'})"/>
+                    </td>
+                    <th class="text-right"><span class="flag">*</span>结束日期：</th>
+                    <td>
+                        <input id="d2" class="input Wdate" forbid="forbid" type="text" name="endTime" value="$!date.format("yyyy-MM-dd HH:mm",${notice.endTime})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 23:59',maxDate:'2020-12-20'})"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-right"><span class="flag">*</span>录取形式：</th>
+                    <td>
+                        <select  class="select" name="enterCondition" id="enterCondition">
+                            <option value="1" #if($!notice.enterCondition == '1') selected #end>按比例和分数线</option>
+                            <option value="2" #if($!notice.enterCondition == '2') selected #end>按比例</option>
+                            <option value="3" #if($!notice.enterCondition == '3') selected #end>按分数线</option>
+                        </select>
+                    </td>
+                    <th class="text-right"><span class="flag">*</span>是否发布：</th>
+                    <td>
+                        <select class="select" name="isPublish" value="${notice.isPublish}" forbid="forbid">
+                            <option value="0" #if($!notice.isPublish == '0') selected #end>否</option>
+                            <option value="1" #if($!notice.isPublish == '1') selected #end>是</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-right">补报开始日期：</th>
+                    <td>
+                        <input id="d3" class="input Wdate" type="text" name="reportStart" value="$!date.format("yyyy-MM-dd HH:mm",${notice.reportStart})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 00:00',maxDate:'2020-12-20'})"/>
+                    </td>
+                    <th class="text-right">补报结束日期：</th>
+                    <td>
+                        <input id="d4" class="input Wdate" type="text" name="reportEnd" value="$!date.format("yyyy-MM-dd HH:mm",${notice.reportEnd})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 23:59',maxDate:'2020-12-20'})"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-right">公告状态：</th>
+                    <td colspan="3">
+                        <input style="display: none" type="checkbox" #if($!notice.stop == 1) checked="true" #end  name="stop" value="1" id="checkbox-11-1"/><label for="checkbox-11-1"></label>
+                        <div id="slidePlane" #if($!notice.stop == 1) style="display: none" #end>
+                            <div class="mt10">
+                                <input class="input" type="text" name="stopTitle" id="stopTitle" placeholder="请输入提示信息标题..." value="$!{notice.stopTitle}"/>
+                            </div>
+                            <div class="mt10">
+                                <textarea class="textarea" rows="2" name="stopContent" id="stopContent" placeholder="请输入提示信息内容...">$!{notice.stopContent}</textarea>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(document).on('click','#checkbox-11-1',function(){
+                                $('#slidePlane').slideToggle();
+                            });
+                        </script>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table mt10">
+                <thead>
+                <tr>
+                    <th>步骤名称</th>
+                    <th>开始日期</th>
+                    <th>结束日期</th>
+                    <th>名单是否发布</th>
+                    <th>成绩是否发布</th>
+                    <th class="propo">录取比例</th>
+                    <th class="score">录取分数线</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <span class="step">注册报名</span>
+                    </td>
+                    <td>
+                        <input id="d5" class="input grid-150 Wdate" forbid="forbid" type="text" name="registerStart" value="$!date.format("yyyy-MM-dd HH:mm",${notice.registerStart})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 00:00',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>
+                        <input id="d6" class="input grid-150 Wdate" forbid="forbid" type="text" name="registerEnd" value="$!date.format("yyyy-MM-dd HH:mm",${notice.registerEnd})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 23:59',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="step">单位面试</span>
+                    </td>
+                    <td>
+                        <input id="d7" class="input grid-150 Wdate" forbid="forbid" type="text" name="interviewStart" value="$!date.format("yyyy-MM-dd HH:mm",${notice.interviewStart})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 00:00',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>
+                        <input id="d8" class="input grid-150 Wdate" forbid="forbid" type="text" name="interviewEnd" value="$!date.format("yyyy-MM-dd HH:mm",${notice.interviewEnd})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 23:59',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>#if($!notice.interviewListPublish == '1') 是 #else 否 #end</td>
+                    <td></td>
+                    <td class="propo">
+                        1：<input class="input text-center grid-40" type="text" name="interviewEnterPropo" value="${notice.interviewEnterPropo}" propo="propo">
+                    </td>
+                    <td class="score">
+                        <input class="input text-center grid-60" type="text" name="interviewEnterLine" value="${notice.interviewEnterLine}" score="score">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="step">统一笔试</span>
+                    </td>
+                    <td>
+                        <input id="d9" class="input grid-150 Wdate" forbid="forbid" type="text" name="writtenStart" value="$!date.format("yyyy-MM-dd HH:mm",${notice.writtenStart})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 00:00',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>
+                        <input id="d10" class="input grid-150 Wdate" forbid="forbid" type="text" name="writtenEnd" value="$!date.format("yyyy-MM-dd HH:mm",${notice.writtenEnd})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 23:59',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>#if($!notice.writtenListPublish == '1') 是 #else 否 #end</td>
+                    <td>#if($!notice.writtenScorePublish == '1') 是#else 否 #end</td>
+                    <td class="propo">
+                        1：<input class="input text-center grid-40" type="text" name="writtenEnterPropo" value="${notice.writtenEnterPropo}" propo="propo">
+                    </td>
+                    <td class="score">
+                        <input class="input text-center grid-60" type="text" name="writtenEnterLine" value="${notice.writtenEnterLine}" score="score">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="step">统一试讲</span>
+                    </td>
+                    <td>
+                        <input id="d11" class="input grid-150 Wdate" forbid="forbid" type="text" name="lectureStart" value="$!date.format("yyyy-MM-dd HH:mm",${notice.lectureStart})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 00:00',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>
+                        <input id="d12" class="input grid-150 Wdate" forbid="forbid" type="text" name="lectureEnd" value="$!date.format("yyyy-MM-dd HH:mm",${notice.lectureEnd})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 23:59',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>普:#if($!notice.lectureListPublishNor == '1') 是 #else 否 #end&nbsp;&nbsp;&nbsp;艺:#if($!notice.lectureListPublishArt == '1') 是 #else 否 #end</td>
+                    <td>普:#if($!notice.lectureScorePublishNor == '1') 是 #else 否 #end&nbsp;&nbsp;&nbsp;艺:#if($!notice.lectureScorePublishArt == '1') 是 #else 否#end</td>
+                    <td class="propo">
+                        1：<input class="input text-center grid-40" type="text" name="lectureEnterPropo" value="${notice.lectureEnterPropo}" propo="propo">
+                    </td>
+                    <td class="score">
+                        <input class="input text-center grid-60" type="text" name="lectureEnterLine" value="${notice.lectureEnterLine}" score="score">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="step">体检</span>
+                    </td>
+                    <td>
+                        <input id="d13" class="input grid-150 Wdate" forbid="forbid" type="text" name="bodyexamStart" value="$!date.format("yyyy-MM-dd HH:mm",${notice.bodyexamStart})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 00:00',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>
+                        <input id="d14" class="input grid-150 Wdate" forbid="forbid" type="text" name="bodyexamEnd" value="$!date.format("yyyy-MM-dd HH:mm",${notice.bodyexamEnd})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 23:59',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>#if($!notice.bodyexamListPublish == '1') 是 #else 否 #end</td>
+                    <td>#if($!notice.bodyexamScorePublish == '1') 是 #else 否 #end</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="step">考察</span>
+                    </td>
+                    <td>
+                        <input id="d15" class="input grid-150 Wdate" forbid="forbid" type="text" name="lookStart" value="$!date.format("yyyy-MM-dd HH:mm",${notice.lookStart})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 00:00',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>
+                        <input id="d16" class="input grid-150 Wdate" forbid="forbid" type="text" name="lookEnd" value="$!date.format("yyyy-MM-dd HH:mm",${notice.lookEnd})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 23:59',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>#if($!notice.lookListPublish == '1') 是 #else 否 #end</td>
+                    <td>#if($!notice.lookScorePublish == '1') 是 #else 否#end</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="step">公示</span>
+                    </td>
+                    <td>
+                        <input id="d17" class="input grid-150 Wdate" forbid="forbid" type="text" name="showStart" value="$!date.format("yyyy-MM-dd HH:mm",${notice.showStart})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 00:00',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>
+                        <input id="d18" class="input grid-150 Wdate" forbid="forbid" type="text" name="showEnd" value="$!date.format("yyyy-MM-dd HH:mm",${notice.showEnd})"
+                               onfocus="WdatePicker({minDate:'2016-10-30',dateFmt:'yyyy-MM-dd 23:59',maxDate:'2020-12-20'})" />
+                    </td>
+                    <td>#if($!notice.showListPublish == '1') 是#else 否#end</td>
+                    <td>#if($!notice.showScorePublish == '1') 是 #else 否 #end</td>
+                    <td colspan="2"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="selectedBox">
+                <div class="title"><strong>岗位信息</strong>——<span>(招聘岗位及招聘人数)</span></div>
+                <div class="listbox">
+                    <ul class="clearfix">
+                        #if($positions.size()==0)
+                            <li>尚未有学校申报！</li>
+                        #else
+                            #foreach($!list in $!positions)
+                                <li>$!{list.postName} &nbsp;<strong class="red">$!{list.subjectApproveCount}</strong>&nbsp;人、</li>
+                            #end
+                        #end
+                    </ul>
+                </div>
+            </div>
+            <div class="selectedBox">
+                <div class="title"><strong>招聘公告正文</strong></div>
+                <textarea class="textarea border-none align-middle" rows="3" name="content" id="content">$!{notice.content}</textarea>
+            </div>
+			<input style="display: none;" id="submitBtn" type="submit"></input>
+        </form>
+    </div>
+</div>
+<!-- 编辑招聘 E-->

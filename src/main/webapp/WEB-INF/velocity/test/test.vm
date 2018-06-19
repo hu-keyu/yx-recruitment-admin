@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+</head>
+<body ms-controller="test">
+	<form id="studentForm" action="${link.contextPath}/test/students/save" method="post" >
+		<table border="1">
+			<tr >
+				<td style="width:20%;">
+					选择主题
+                </td>
+				<td style="width:80%;">
+					<select id="employItemsId" name="employItemsId" ms-duplex="stuData.employItemsId">
+						#foreach($theme in $themes)
+						<option value="${theme.id}" #if($foreach.index == 0)selected="selected"#end>${theme.theme}</option>
+						#end
+                    </select>
+					<input type="hidden" id="applyStatus" name="applyStatus" ms-attr-value="stuData.applyStatus"/>
+                </td>
+            </tr>
+			<tr >
+				<td >
+					考生姓名前缀
+                </td>
+				<td >
+					<input id="name" name="name" type="text" ms-duplex="stuData.name"/>
+                </td>
+            </tr>
+			<tr >
+				<td >
+					循环次数
+                </td>
+				<td >
+					<input id="count" name="count" type="text" ms-duplex="stuData.count" />
+                </td>
+            </tr>
+			<tr >
+				<td >
+					招聘岗位
+                </td>
+				<td >
+					#foreach($postset in $postsets)
+					<input type="checkbox" id="applyJobIds" name="applyJobIds" value="${postset.id}" ms-duplex="stuData.applyJobIds"/>${postset.postName}
+					#end
+                </td>
+            </tr>
+			<tr >
+				<td >
+					招聘单位
+                </td>
+				<td >
+					#foreach($dictionary in $dictionaries)
+					<input type="checkbox" id="applyDepIds" name="applyDepIds" value="${dictionary.id}" ms-duplex="stuData.applyDepIds"/>${dictionary.text}
+					#end
+                </td>
+            </tr>
+			<tr >
+				<td >
+					是否东莞生源免费师范生
+                </td>
+				<td >
+					<input type="checkbox" id="freeStudents" name="freeStudents" value="1" ms-duplex="stuData.freeStudents"/>是
+					<input type="checkbox" id="freeStudents" name="freeStudents" value="0" ms-duplex="stuData.freeStudents"/>否
+                </td>
+            </tr>
+			<tr >
+				<td >
+					是否报考中职专业课的岗位
+                </td>
+				<td >
+					<input type="checkbox" id="professionalCourses" name="professionalCourses" value="1" ms-duplex="stuData.professionalCourses"/>是
+					<input type="checkbox" id="professionalCourses" name="professionalCourses" value="0" ms-duplex="stuData.professionalCourses"/>否
+                </td>
+            </tr>
+			<tr >
+				<td colspan="2">
+					<button type="submit">保存</button>
+					<button id="delTest" type="button">删除测试数据</button>
+					<button type="reset">重置</button>
+					<span>{{msg}}</span>
+                </td>
+            </tr>
+        </table>
+    </form> 
+	<br /><br />
+    <form id="employForm" action="${link.contextPath}/test/students/updateemploy" method="post" >
+        <table border="1">
+            <tr>
+				<td style="width:20%;">
+					选择主题
+                </td>
+				<td style="width:80%;">
+					<select id="employItemsId" name="employItemsId" ms-duplex="employData.employItemsId">
+						#foreach($theme in $themes)
+						<option value="${theme.id}" #if($foreach.index == 0)selected="selected"#end>${theme.theme}</option>
+						#end
+                    </select>
+                </td>
+			</tr>
+			<tr>
+				<td style="width:20%;">
+					是否通过面试
+                </td>
+				<td style="width:80%;">
+					<select id="isEmploy" name="isEmploy" ms-duplex="employData.isEmploy">
+						<option value="1">是</option>
+						<option value="0">否</option>
+                    </select>
+                </td>
+			</tr>
+			<tr >
+				<td colspan="2">
+					<button type="submit">确定变更</button>
+                </td>
+            </tr>
+		</table>
+	</form>
+</body>
+<script>
+var vm;
+$(function(){
+	var stuData={
+    	employItemsId:"${themes.get(0).id}",
+    	name:"张三",
+    	count:"100",
+    	applyJobIds:[],
+    	applyDepIds:[],
+    	applyStatus : "7",
+    	freeStudents : ["0"],//是否东莞生源免费师范生{0:否,1:是} 
+    	professionalCourses : ["0"]//是否报考中职专业课的岗位{0:否,1:是}
+    }
+	var employData={
+		employItemsId : "",
+		isEmploy : "0"
+	}
+    
+    vm = avalon.define({
+    	$id: "test",
+    	stuData : stuData,
+		employData : employData,
+    	msg:""
+    });
+    
+    $("#studentForm").ajaxForm({
+    	success:function(data){
+    		console.log(data);
+    		alert(data.msg);
+    	}
+    });
+	
+    $("#delTest").click(function(){
+    	$.ajax({
+    		type:"post",
+    		url:"${link.contextPath}/test/students/delete",
+    		success:function(data){
+    			console.log(data);
+    			alert(data.msg);
+    		}
+    	});
+    });
+	
+	 $("#employForm").ajaxForm({
+    	success:function(data){
+    		console.log(data);
+    		alert(data.msg);
+    	}
+    });
+});
+</script>
+</html>

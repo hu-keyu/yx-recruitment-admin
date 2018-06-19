@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.AttachementDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.Attachement" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="EMPLOY_ITEMS_ID" property="employItemsId" jdbcType="VARCHAR" />
+	<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+	<result column="PATH" property="path" jdbcType="VARCHAR" />
+	<result column="UPLOAD_DATE" property="uploadDate" jdbcType="DATE" />
+	<result column="REAL_NAME" property="realName" jdbcType="VARCHAR" />
+	<result column="FILE_TYPE" property="fileType" jdbcType="VARCHAR" />
+	<result column="UPLOAD_OBJECT" property="uploadObject" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+	<result column="MODULE_TYPE" property="moduleType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,EMPLOY_ITEMS_ID,STUDENT_ID,PATH,UPLOAD_DATE,REAL_NAME,FILE_TYPE,UPLOAD_OBJECT,CREATE_USER,CTIME,MODIFY_USER,MTIME,MODULE_TYPE
+  </sql>
+  
+   <insert id="saveAttachementByField" parameterType="org.jypj.dev.entity.Attachement" >
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+    	SELECT SYS_GUID() FROM DUAL
+  	</selectKey>
+    
+    insert into upload_attachment_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="employItemsId != null" >
+    EMPLOY_ITEMS_ID,
+   </if>
+   <if test="studentId != null" >
+    STUDENT_ID,
+   </if>
+   <if test="path != null" >
+    PATH,
+   </if>
+    UPLOAD_DATE,
+   <if test="realName != null" >
+    REAL_NAME,
+   </if>
+   <if test="fileType != null" >
+    FILE_TYPE,
+   </if>
+   <if test="uploadObject != null" >
+    UPLOAD_OBJECT,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+    CTIME,
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+    MTIME,
+   <if test="moduleType != null" >
+    MODULE_TYPE,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="employItemsId != null" >
+        #{employItemsId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+        sysdate,
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null" >
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadObject != null" >
+        #{uploadObject,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+        sysdate,
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+        sysdate,
+      <if test="moduleType != null" >
+        #{moduleType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveAttachement" parameterType="org.jypj.dev.entity.Attachement" >
+    insert into upload_attachment_info (
+	ID,
+	EMPLOY_ITEMS_ID,
+	STUDENT_ID,
+	PATH,
+	UPLOAD_DATE,
+	REAL_NAME,
+	FILE_TYPE,
+	UPLOAD_OBJECT,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	MTIME,
+	MODULE_TYPE
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{employItemsId,jdbcType=VARCHAR},
+	#{studentId,jdbcType=VARCHAR},
+	#{path,jdbcType=VARCHAR},
+	#{uploadDate,jdbcType=DATE},
+	#{realName,jdbcType=VARCHAR},
+	#{fileType,jdbcType=VARCHAR},
+	#{uploadObject,jdbcType=VARCHAR},
+	#{createUser,jdbcType=VARCHAR},
+	sysdate,
+	#{modifyUser,jdbcType=VARCHAR},
+	sysdate,
+	#{moduleType,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteAttachementById" parameterType="java.lang.String" >
+    delete from upload_attachment_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteAttachementByObject" parameterType="org.jypj.dev.entity.Attachement" >
+    delete from upload_attachment_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateAttachementByField" parameterType="org.jypj.dev.entity.Attachement" >
+    update upload_attachment_info
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="employItemsId != null" >
+  	 EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="studentId != null" >
+  	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="path != null" >
+  	 PATH=#{path,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="uploadDate != null" >
+  	 UPLOAD_DATE=#{uploadDate,jdbcType=DATE},
+  	 </if>
+  	 <if test="realName != null" >
+  	 REAL_NAME=#{realName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="fileType != null" >
+  	 FILE_TYPE=#{fileType,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="uploadObject != null" >
+  	 UPLOAD_OBJECT=#{uploadObject,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="ctime != null" >
+  	 CTIME=#{ctime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="mtime != null" >
+  	 MTIME=sysdate,
+  	 </if>
+  	 <if test="moduleType != null" >
+  	 MODULE_TYPE=#{moduleType,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateAttachement" parameterType="org.jypj.dev.entity.Attachement" >
+    update upload_attachment_info
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR},
+	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+	 PATH=#{path,jdbcType=VARCHAR},
+	 UPLOAD_DATE=#{uploadDate,jdbcType=DATE},
+	 REAL_NAME=#{realName,jdbcType=VARCHAR},
+	 FILE_TYPE=#{fileType,jdbcType=VARCHAR},
+	 UPLOAD_OBJECT=#{uploadObject,jdbcType=VARCHAR},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MTIME=sysdate,
+	 MODULE_TYPE=#{moduleType,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectAttachementById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from upload_attachment_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from upload_attachment_info
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageByAttachement" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Attachement" >
+    select 
+    <include refid="Base_Column_List" />
+    from upload_attachment_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="path != null and path !='' ">
+	  and PATH=#{path,jdbcType=VARCHAR}
+	 </if>
+	 <if test="uploadDate != null and uploadDate !='' ">
+	  and UPLOAD_DATE=#{uploadDate,jdbcType=DATE}
+	 </if>
+	 <if test="realName != null and realName !='' ">
+	  and REAL_NAME=#{realName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="fileType != null and fileType !='' ">
+	  and FILE_TYPE=#{fileType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="uploadObject != null and uploadObject !='' ">
+	  and UPLOAD_OBJECT=#{uploadObject,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from upload_attachment_info
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByAttachement" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Attachement" >
+    select 
+    <include refid="Base_Column_List" />
+    from upload_attachment_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="path != null and path !='' ">
+	  and PATH=#{path,jdbcType=VARCHAR}
+	 </if>
+	 <if test="uploadDate != null and uploadDate !='' ">
+	  and UPLOAD_DATE=#{uploadDate,jdbcType=DATE}
+	 </if>
+	 <if test="realName != null and realName !='' ">
+	  and REAL_NAME=#{realName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="fileType != null and fileType !='' ">
+	  and FILE_TYPE=#{fileType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="uploadObject != null and uploadObject !='' ">
+	  and UPLOAD_OBJECT=#{uploadObject,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from upload_attachment_info
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByAttachement" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Attachement" >
+    select 
+    <include refid="Base_Column_List" />
+    from upload_attachment_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="path != null and path !='' ">
+	  and PATH=#{path,jdbcType=VARCHAR}
+	 </if>
+	 <if test="uploadDate != null and uploadDate !='' ">
+	  and UPLOAD_DATE=#{uploadDate,jdbcType=DATE}
+	 </if>
+	 <if test="realName != null and realName !='' ">
+	  and REAL_NAME=#{realName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="fileType != null and fileType !='' ">
+	  and FILE_TYPE=#{fileType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="uploadObject != null and uploadObject !='' ">
+	  and UPLOAD_OBJECT=#{uploadObject,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+  
+</mapper>

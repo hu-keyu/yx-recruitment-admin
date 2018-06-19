@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+		$(document).ready(function () {  
+			getProject();
+        });
+		
+		function queryData() {
+			var $serializeForm=$("#list_form").serialize();
+			//getProject();
+			var ryn = $("#ryn").val();
+			var themeid = $("#themeid").val();
+			if (!ryn||!themeid) { 
+			 	$("#tablist tr").remove();//清空列表
+    			return;
+    		}
+			$.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examItemsInfo/examItemsInfoList',
+                data : $serializeForm,
+                success: function (data) {
+                    if (data) {  
+						/*获取数据总行数*/
+                        $("#totalCounts").val(data.total);
+						$("#currentPage").val(data.currentPage);
+                        /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/
+                        if (parseInt($("#totalCounts").val()) == 0) {
+                            $("#totalCounts").val(1);
+                        }
+						if(parseInt($("#currentPage").val()) == 0) {  
+                        	$("#currentPage").val(1);
+                        }
+                        /*生成表和套用css样式*/
+                        data = data.rows;//获取筛选后的内容
+                        $("#tablist tr").remove();//清空列表
+						var newDate = new Date();
+                        $.each(data, function (index, e) {
+							var kaodianNum="";
+							switch(e.kaodianNum){
+								case null : kaodianNum="0";break;
+								case undefined : ticketNum="0";break;
+								default:kaodianNum=e.kaodianNum;
+							}
+							if(e.type=='3')
+							{
+							 kaodianNum="-";
+							}
+							var insertHtml='<tr>'+
+                                                '<td>'+'<input class="js_select" onclick="setselectAll()" type="checkbox" name="itemsInfo[${(index)!}].check" value="'+e.id+'">'+'</td>'+
+                                                '<td>'+e.testNum+'</td>'+
+                                                '<td>'+e.testName+'</td>'+
+                                                '<td>'+
+												new Date(e.startTime).format("yyyy-MM-dd hh:mm")
+												+'</td>'+
+                                                '<td>'+
+												new Date(e.endTime).format("yyyy-MM-dd hh:mm")
+												+'</td>'+
+												'<td>'+e.testAddr+'</td>'+
+												'<td>'+kaodianNum+'</td>'+
+											    '<td><a class="btn btn-warning" href="javascript:void(0);" onclick="updateItems('+"'"+e.id+"'"+');">修改</a>'+
+											      ' <a class="btn btn-warning" href="javascript:void(0);" onclick="detailInfo('+"'"+e.id+"'"+');">查看</a></td>'+
+                                            '</tr>';
+							$("#tablist").append(insertHtml);//将返回的数据追加到表格
+                        });
+                        /*生成分页标签*/
+                        paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));  
+                    }  
+                }  
+            });  
+        }
+		
+		function paginator(pageIndex, pageSize, totalCount) {
+        	$.jqPaginator('#pagination', {
+        		totalCounts: totalCount,
+        		pageSize: pageSize,
+        	    currentPage: pageIndex,
+        	    visiblePages: 7,
+        		first:'<a class="first">首页</a>',
+        	    prev: '<a class="prev">上一页</a>',
+        	    next: '<a class="next">下一页</a>',
+        		last: '<a class="last：">末页</a>',
+        	    page: '<a class="page">{{page}}</a>',
+        	    onPageChange: function (num, type) {
+					$("input[name='delAllbox']").attr("checked",false); 
+        	    	if (type === 'change' && num !== parseInt($("#currentPage").val())) {  
+                        $("#currentPage").val(num);//点击改变页码时，同步model中的页码  
+                        //将checked
+                         queryData();//重新生成新表
+                    }
+        	    }
+        	});
+        }
+		function updateItems(id){
+			var themeId=$('#themeid option:selected') .val();
+			var themeName=$('#themeid option:selected') .text();
+			if(themeId==''||themeId==null){
+				alert("请先选择招聘项目！");
+				return;
+			}
+			//异步检查
+			$.ajax({
+        			url : '${link.contextPath}/dg/examItemsInfo/checkThemeTime',
+        			type : 'post',
+        			async: false,
+        			cache : false,
+        			data:{"themeId":themeId,"id":id},
+        			dataType : 'json',
+        			success : function(data) {
+    					if(data.msg=='success'){
+                       layer.open({
+                id:'layui-layer-iframe1',
+            	type: 2,
+            	title:['更新考点', 'font-weight:600'],
+            	content:['${link.contextPath}/dg/examItemsInfo/addItems?themeId='+themeId+'&themeName='+encodeURI(encodeURI(themeName))+'&id='+id,'yes'],
+            	btn:['确定','取消'],
+                yes:function(index,layero){
+                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                    iframeWin.sure();
+                },
+            	shadeClose:false,
+            	fix:true,
+            	area: ['800px','500px'],
+            	move: false,
+				end: function(){
+		    		queryData();
+		    	}
+            });
+        				}else{
+    						layer.msg(data.msg, {icon: 2});
+    					}
+        			}
+        		});
+			
+			
+			
+		}
+		
+		function deletes(){
+		    var themeId=$('#themeid option:selected') .val();
+			var inlist = $("input[type='checkbox'][name*=check]:checked");
+            if(inlist.length==0){
+            	alert("请至少选择一个要删除的考点！") ;
+            	return false;
+           	}
+		    layer.confirm('确定要删除添加的考点信息?', {
+            	btn: ['确定','取消']
+            }, function(){
+    		    var itemIds=''; 
+    		    $('input[type="checkbox"][name*=check]:checked').each(function(){ 
+                    itemIds+=$(this).val()+','; 
+    				//if(itemIds.length>0){
+            			//itemIds=itemIds.split(",") ;
+            		//}
+    				s=itemIds.substring(0,itemIds.length-1);
+    				
+                }); 
+            	$.ajax({
+        			url : '${link.contextPath}/dg/examItemsInfo/deleteExamItemsInfo',
+        			type : 'post',
+        			async: false,
+        			cache : false,
+        			data:{"ids":s,"themeId":themeId,"testType":$("#typeid").val()},
+        			dataType : 'json',
+        			success : function(data) {
+						layer.close();
+    					if(data.flag=='success'){
+							layer.msg(data.msg, {icon: 1});
+    						queryData();
+        				}else{
+    						layer.msg(data.msg, {icon: 2});
+    					}
+        			}
+        		});
+            });
+		}
+		
+		function addItems(){
+			var themeId=$('#themeid option:selected') .val();
+			var themeName=$('#themeid option:selected') .text();
+			var typeid=$('#typeid option:selected') .val();
+		
+			if(themeId==''||themeId==null){
+				layer.msg("请先选择招聘项目！", {icon: 2});
+				return;
+			}
+			if(typeid==''||typeid==null){
+			    layer.msg("请先选择考试类型！", {icon: 2});
+				return;
+			}
+			//异步检查
+			$.ajax({
+        			url : '${link.contextPath}/dg/examItemsInfo/checkThemeTime',
+        			type : 'post',
+        			async: false,
+        			cache : false,
+        			data:{"themeId":themeId,"testType":typeid},
+        			dataType : 'json',
+        			success : function(data) {
+    					if(data.msg=='success'){
+                           layer.open({
+                id:'layui-layer-iframe1',
+            	type: 2,
+            	title:['新增考点', 'font-weight:600'],
+            	content:['${link.contextPath}/dg/examItemsInfo/addItems?themeId='+themeId+'&testType='+typeid+'&themeName='+encodeURI(encodeURI(themeName)),'yes'],
+				btn:['确定','取消'],
+                yes:function(index,layero){
+                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                    iframeWin.sure();
+                },
+            	shadeClose:false,
+            	fix:true,
+            	area: ['800px','500px'],
+            	move: false,
+            	end: function(){
+					$("#professText").val("");
+					$("#professCode").val("");
+					queryData();
+		    	}
+            });						
+        				}else{
+    						layer.msg(data.msg, {icon: 2});
+    					}
+        			}
+        		});
+	   }
+
+       function addPOS(){
+    	   	var professText =$(window.parent.document).find("#layui-layer-iframe1 iframe").contents().find("#limitProfessionText").text();
+    	   	var professCode =$(window.parent.document).find("#layui-layer-iframe1 iframe").contents().find("#limitProfession").val();
+            var themeid = $("#themeid").val();
+    		$("#professText").val(professText);
+    		$("#professCode").val(professCode);
+            var testType = $(window.parent.document).find("#layui-layer-iframe1 iframe").contents().find("#testType option:selected").val();
+            layer.open({
+                id:'layui-layer-iframe2',
+                type: 2,
+                title:['岗位选择（一个考点最多可选择50个岗位）', 'font-weight:600'],
+                content:['${link.contextPath}/dg/examItemsInfo/positionList?themeId='+themeid+'&testType='+testType],
+                btn: ['确定', '取消'],
+                shadeClose:true,
+                fix:true,
+                area: ['800px','500px'],
+                move: false,
+                yes: function(index,layero){
+                     professText=[];
+                     professCode=[];
+                    var profess=$("#layui-layer-iframe2 iframe")[0].contentWindow.profess;
+                    for(var i in profess){
+                        professCode.push(i);
+                        professText.push(profess[i]);
+                    }
+					if(professCode.length<=50&&professText.length<=50){
+                        $(window.parent.document).find("#layui-layer-iframe1 iframe").contents().find("#limitProfessionText").text(professText);
+                        $(window.parent.document).find("#layui-layer-iframe1 iframe").contents().find("#limitProfession").val(professCode);
+                        $(window.parent.document).find("#layui-layer-iframe3 iframe").contents().find("#limitProfessionText").text(professText);
+                        $(window.parent.document).find("#layui-layer-iframe3 iframe").contents().find("#limitProfession").val(professCode);
+        				$("#professText").val(professText);
+        				$("#professCode").val(professCode);
+    					if($("#professCode").val()!=null&&$("#professCode").val()!=""&&$("#professText").val()!=null&&$("#professText").val()!=""){
+                        	layer.msg("限制岗位添加成功！", {icon: 1});
+    						layer.close(index);
+    					}else{
+    						layer.msg("至少选择一个限制岗位！", {icon: 2});
+    					}
+					}else{
+						layer.msg("一次最多只能选择50个限制岗位！", {icon: 2});
+					}
+					
+                    
+                }
+            });
+        }
+
+	//获取招聘项目
+	function getProject() {
+		var ryn = $("#ryn").val();
+		//alert(ryn);
+		if (!ryn) {
+    		$("#themeid").empty();
+            $("#themeid").prepend("<option value=''>请选择</option>");
+			$("#tablist tr").remove();//清空列表
+    		return;
+		}
+		$("#themeid").empty();
+        $("#themeid").prepend("<option value=''>请选择</option>");
+		//$("#positionid").empty();
+       	//$("#positionid").prepend("<option value=''>请选择</option>");
+		
+		$.ajax({
+            	url : '${link.contextPath}/dg/scoreEnterInformation/selectProject?ryn=' + ryn,
+            	type : 'post',
+            	async: false,
+            	cache : false,
+            	dataType : 'json',
+            	success : function(data) {
+            		if (data.themeList.length > 0) {
+	    				var themeList = data.themeList;
+						for (var i = 0; i < themeList.length; i++) {
+							var id = themeList[i].id;
+							var name = themeList[i].theme;
+							if(getLength(name) > 12){
+    							name=substr(name,12);
+    						}
+							$("#themeid").append("<option title='"+themeList[i].theme+"' value='" + id + "'>" + name + "</option>");
+						}
+						//getPosition();
+						queryData();
+            		} else {
+            			$("#themeid").empty();
+            			$("#themeid").prepend("<option value=''>请选择</option>");
+						$("#tablist tr").remove();//清空列表
+            		}
+            	}
+            });
+	}
+	
+	//获取岗位
+	function getPosition() {
+		var themeid = $("#themeid").val();
+		var year = $("#ryn").val();
+		alert(themeid);
+		if (!themeid) {
+			return;
+		}
+		
+		$("#positionid").empty();
+       	//$("#positionid").prepend("<option value=''>请选择</option>");
+		$.ajax({
+            	url : '${link.contextPath}/dg/scoreEnterInformation/selectPosition?themeid=' + themeid+'&year='+year,
+            	type : 'post',
+            	async: false,
+            	cache : false,
+            	dataType : 'json',
+            	success : function(data) {
+            		if (data.positionList.length > 0) {
+	    				var positionList = data.positionList;
+						for (var i = 0; i < positionList.length; i++) {
+							var id = positionList[i].stationId;
+							var name = positionList[i].postName;
+							$("#positionid").append("<option value='" + id + "'>" + name + "</option>");
+						}
+            		}else {
+            			$("#positionid").empty();
+            			$("#positionid").prepend("<option value=''>请选择</option>");
+						$("#tablist tr").remove();//清空列表
+            		}
+            	}
+            });
+	}
+	
+	function detailInfo(id)
+	{
+	        
+	        layer.open({
+                id:'layui-layer-iframe2',
+                type: 2,
+                title:['考点详情', 'font-weight:600'],
+                content:['${link.contextPath}/dg/examItemsInfo/queryDetailInfo?id='+id+"&themeId="+$('#themeid option:selected') .val()],
+                shadeClose:true,
+                fix:true,
+                area: ['800px','500px'],
+                move: false
+              
+            });
+	}
+	
+    </script>
+</head>
+<body>
+	 #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+   <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+            <!-- 条件搜索 S-->
+
+             <form class="form-inline" id="list_form" onsubmit="return false;">
+				<input type="hidden" id="currentPage" name="currentPage" value="1"/>
+				<input type="hidden" id="pageSize" name="pageSize" value="20"/>
+				<input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+				<input type="hidden" id="professText" name="professText" value=""/>
+				<input type="hidden" id="professCode" name="professCode" value=""/>
+                <div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>年份：</span>
+                             <select class="select" id="ryn" name="condition['year']" onchange="getProject();">
+								<option value="">请选择</option>
+                              #foreach( $vo in $nyrdics )
+                              <option value="$vo">$vo</option>
+                              #end
+                            </select>
+                        </li>
+                        <li>
+                            <span>招聘项目：</span>
+                            <select class="select" name="condition['projectId']" onchange="queryData();" id="themeid">
+								<option value="">请选择</option>
+                              <!--#foreach( $vo in $themelist )
+								<option value="$vo.id">$vo.theme</option>
+                              #end-->
+                            </select>
+                        </li>
+                        <li>
+                            <span>考试类型：</span>
+                             <select class="select" id="typeid" name="condition['testType']" onchange="queryData();">
+                                <option value="">请选择</option>
+								#foreach( $vo in $kslxdics )
+									#if($vo.value == '2'||$vo.value == '3')
+										<option value="$vo.value">$vo.text</option>
+									#end
+                                #end
+                            </select>
+                        </li>
+                    </ul>
+                    <ul class="clearfix pull-right">
+                        <li>
+							<button onclick="addItems();" class="btn btn-primary btn-sm" type="button">新增</button>
+                            <input id="addPos" onclick="addPOS();" type="hidden" value=""/>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="50">选择</th>
+                            <th>考点编号</th>
+                            <th>考点名称</th>
+                            <th>考点开始时间</th>
+                            <th>考点结束时间</th>
+                            <th>考点地址</th>
+                            <th>试室数</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablist">
+                    </tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+                <div class="pull-left checkAllBox">
+                    <label><input class="js_selectAll" onclick="selectAll(this)" type="checkbox" name="delAllbox" value="">全选</label>
+                    <span class="handle"><!--<a href="#this" title="删除">删除</a>--> 
+					<button class="btn btn-default btn-sm" onclick="deletes()">删除</button></span>
+                </div>
+                <div id="pagination" class="pull-right pages"></div>
+            </div>
+            <!-- 分页+全选模块 E-->
+    	</div>
+    	<!-- context内容 E-->
+
+    	<!-- footer S-->
+		<div class="page-footer">
+		    <div class="page-footer-inner">
+		        2016 © Metronic by keenthemes.
+		    </div>
+		</div>
+		<!-- footer E-->
+    </div>
+    <!-- Main内容模块 E-->
+	 
+</body>
+</html>

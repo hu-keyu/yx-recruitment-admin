@@ -1,0 +1,275 @@
+body,html{width:100%;height:100%}.bj{background-image:url("../images/bj.jpg");background-position:center center;background-repeat:no-repeat;background-size:cover}.fixBox-1{position:fixed;width:650px;height:300px;padding: 30px;/* background-color: rgba(170,220,255,0.2);box-shadow: 0 0 20px 0 rgba(0,0,0,0.2); */border-radius: 10px;margin:auto;top:0;left:0;bottom:0;right:0}.select-box{margin:40px auto}.select-box select{width:100%;height:50px;padding:0 20px;font-size:24px;line-height:50px;/* background-color:#eaeaea; */border:2px solid #fff;border-radius:10px}.btn-Box a{display:inline-block;*display:inline;*zoom:1;width:200px;padding:13px;margin:0 20px;font-size:24px;font-weight:600;color:#fff;border:2px solid #fff;border-radius:8px;text-align:center}.fixedLogo{width:100%;height:80px;padding:20px 50px;background:#00416f}.fixedLogo img{height:100%}.fixBox{position:fixed;top:0;right:0;bottom:0;left:0;width:530px;height:360px;margin:auto;padding:0px 90px;border-radius:10px;background-color:#fff;background-color:#fff;background-image:url("../images/login-flag.png");background-position:380px 260px;background-repeat:no-repeat;box-shadow:0 0 5px 0 rgba(255,255,255,0.5)}.fixBox .title{margin-top:30px;margin-bottom:30px}.fixBox .title strong{font-size:26px}.fixBox .title span{padding-left:15px;margin-left:15px;font-size:24px;line-height:18px;color:#7f8385;border-left:1px solid #ddd}.fixBox .form-group{position:relative;z-index:1;padding:5px;padding-left:35px;margin-top:10px;margin-bottom:10px;border:1px solid #2553a0;border-radius:3px}.fixBox .form-group .icon{position:absolute;top:5px;left:5px;display:block;width:30px;height:30px;background-image:url("../images/login-icon.png");background-repeat:no-repeat;background-position:3px 5px}.fixBox .form-group input{width:100%;padding:3px;font-size:18px;font-weight:600;color:#666;line-height:18px;border:none;outline:none}.fixBox .form-group2 input[type="text"]{width:187px;padding:8px;font-size:18px;font-weight:600;color:#999;line-height:18px;outline:none;border:1px solid #2553a0;border-radius:3px}.fixBox .form-group2 img{margin-left:10px;vertical-align:top}.fixBox .forgetBox{padding-top:10px;padding-bottom:10px;font-size:14px;color:#444;font-weight:600px}.fixBox .forgetBox a{margin-left:30px}.fixBox .btnBox{margin-left:-5px;margin-right:-5px;zoom:1}.fixBox .btnBox a{display:inline-block;*display:inline;*zoom:1;width:168px;margin-left:5px;margin-right:5px;padding:8px;font-size:18px;color:#fff;background:#3a63a9;border-radius:5px;vertical-align:middle;text-align:center}
+/*# sourceMappingURL=login.css.map */
+html {
+	
+}
+body {
+	font-family:"Microsoft Yahei";
+	font-size:12px;
+	margin:0;
+background: #fff url(../images/1.jpg) 50% 0 no-repeat;}
+ul {
+	padding:0;
+	margin:0;
+}
+ul li {
+	list-style-type:none;
+}
+a {
+	text-decoration:none;
+}
+a:hover {
+	text-decoration:underline;
+}
+.cl{ clear: both;}
+input[type="text"]:focus, input[type="password"]:focus {
+	outline:none;
+}
+input::-ms-clear {
+	display:none;
+}
+.login {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 999;
+	width:370px;
+	height: 295px;
+	margin:auto;
+	border:2px solid #eee;
+	border-bottom:none;
+}
+.loginTitle {
+	height:50px;
+	border-bottom:1px solid #e2e2e2;
+	position:relative;
+	font-family:"Microsoft Yahei";
+}
+.loginTitle .switch {
+	height:45px;
+	position:absolute;
+	left:60px;
+	bottom:0;
+	font-size:16px;
+}
+.loginTitle .switch #switch_qlogin {
+	margin-right:85px;
+}
+.loginTitle .switch .switch_btn {
+	color:#999;
+	display:inline-block;
+	height:45px;
+	line-height:45px;
+	outline:none;
+	*hide-focus:expression(this.hideFocus=true);
+}
+.loginTitle .switch .switch_btn_focus {
+	color:#333;
+	display:inline-block;
+	height:45px;
+	line-height:45px;
+	outline:none;
+	*hide-focus:expression(this.hideFocus=true);
+}
+.loginTitle .switch .switch_btn:hover {
+	color:#333;
+	text-decoration:none;
+}
+.loginTitle .switch .switch_btn_focus:hover {
+	text-decoration:none;
+}
+#switch_bottom {
+	position:absolute;
+	bottom:-1px;_bottom:-2px;
+	border-bottom:2px solid #848484;
+}
+
+.web_login {
+	width:370px;
+	position:relative;
+}
+#web_login{_left:60px;*left:0;}
+.web_login .login_form {
+	width:272px;
+	margin:0 auto;
+}
+.web_login .reg_form {
+	width:300px;
+	margin:0 auto;
+}
+.web_login .input-tips {
+	float:left;
+	margin-top:10px;
+	width:50px;
+	height:42px;
+	font-size:16px;
+	line-height:42px;
+	font-family:"Hiragino Sans GB", "Microsoft Yahei";
+}
+.web_login .input-tips2 {
+	float:left;
+	text-align:right;
+	padding-right:10px;
+	width:75px;
+	height:30px;
+	font-size:16px;
+	margin-top:10px;
+	clear:both;
+	line-height:30px;
+	font-family:"Hiragino Sans GB", "Microsoft Yahei";
+}
+.web_login .inputOuter {
+	width:200px;
+	height:42px;
+	margin-top:10px;
+	float:left;
+	
+}
+.web_login .inputOuter2 {
+	width:200px;
+	margin-top:6px;margin-top:5px\9;
+	float:left;
+	
+}
+.web_login .inputstyle {
+	width:200px;
+	height:38px;
+	padding-left:5px;
+	line-height:30px;line-height:38px;
+	border:1px solid #D7D7D7;
+	background:#fff;
+	color:#333;border-radius:2px;
+	font-family:Verdana, Tahoma, Arial;
+	font-size:16px;
+	ime-mode:disabled;
+}
+.web_login input.inputstyle2:focus,.web_login input.inputstyle:focus{border:1px solid #198BD4;box-shadow:0 0 2px #198BD4;}
+.web_login .inputstyle2 {
+	width:200px;
+	height:34px;
+	padding-left:5px;
+	line-height:34px;
+	border:1px solid #D7D7D7;
+	background:#fff;
+	color:#333;border-radius:2px;
+	font-family:Verdana, Tahoma, Arial;
+	font-size:16px;
+	ime-mode:disabled;
+}
+.web_login .uinArea {
+	height:55px;
+	position:relative;
+	z-index:10;
+}
+.web_login .pwdArea {
+	height:55px;
+	margin-bottom:10px;
+	position:relative;
+	z-index:3;
+}
+.web_qr_login {
+	position:relative;
+	
+	overflow:hidden;
+}
+
+.cue {
+	height:40px;
+	line-height:40px;
+	font-size:14px;
+	border:1px #CCCCCC solid;
+	margin-top:10px;margin-bottom:5px;
+	text-align:center;
+	font-family:"Hiragino Sans GB", "Microsoft Yahei";
+}
+.login {
+	background-color:#ffffff;
+}
+
+h1{
+	width: 100%;
+	position: absolute;
+	top: -85px;
+	text-align:center;
+	color:#4a88d8;
+	font-size:35px;
+	font-weight: bold;
+	text-shadow: 0px 1px 1px #fff;
+}
+h1 sup{
+    font-size: 18px;
+    font-style: normal;
+    position: absolute;
+    margin-left: 10px;
+}
+.login {border:0;padding:5px 0;
+background: #fff;
+-webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, .3);
+box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, .3);}
+
+.web_login{padding-bottom:20px;}
+
+.jianyi{color:#fff;text-align:center;margin-top:25px;color:#B3B8C4;}
+.reg_form li {
+height: 55px;
+}
+.cue {
+margin-top: 15px;
+margin-bottom: 10px;border:1px solid #eee;border-radius:3px;
+}
+.web_login input.inputstyle2:focus, .web_login input.inputstyle:focus {
+border: 1px solid #5796f;
+box-shadow: 0 0 0;
+}
+.web_login .reg_form {
+width: 300px;
+margin: 0 auto;
+}
+.web_login .inputstyle2 {border-radius:2px;width:210px;}
+.web_login .input-tips2 {
+padding-right: 5px;
+width: 80px;_width: 75px;_font-size:12px;}
+.button_blue
+{
+	display:inline-block;
+	float:left;
+	height:41px;border-radius:4px;
+	background:#2795dc;border:none;cursor:pointer;
+	border-bottom:3px solid #0078b3;*border-bottom:none;
+	color:#fff;
+	font-size:16px;padding:0 10px;*width:140px;
+	text-align:center;outline:none;font-family: "Microsoft Yahei",Arial, Helvetica, sans-serif;
+}
+.button_red
+{
+	display:inline-block;
+	float:left;
+	height:41px;border-radius:4px;
+	background:#e04040;border:none;cursor:pointer;
+	border-bottom:3px solid #ad3939;*border-bottom:none;
+	color:#fff;
+	font-size:16px;padding:0 10px;*width:140px;
+	text-align:center;outline:none;font-family: "Microsoft Yahei",Arial, Helvetica, sans-serif;
+}
+input.button_blue:hover
+{
+	background:#0081c1;
+	border-bottom:3px solid #006698;*border-bottom:none;
+	color:#fff;
+	text-decoration:none;
+}
+input.button_red:hover
+{
+	background:#ca3838;
+	border-bottom:3px solid #ad3939;*border-bottom:none;
+	color:#fff;
+	text-decoration:none;
+}
+a.zcxy {text-decoration: underline;line-height:58px;margin-left:15px;color: #959ca8;}
+.web_login .login_form {margin-top:30px;}
+.web_login .uinArea {
+height: 60px;}
+.loginTitle .switch{left:70px;}
+

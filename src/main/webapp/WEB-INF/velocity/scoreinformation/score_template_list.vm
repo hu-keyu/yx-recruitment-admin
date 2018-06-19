@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+		$(document).ready(function () {  
+			$("#checkAll").click(function(){
+				if($(this).is(":checked")){
+					$("input[name='chk']:enabled").prop("checked", true);
+				}else{
+					$("input[name='chk']:enabled").prop("checked", false);
+				}
+			});
+			
+			$(document).on("click","input[name='chk']:enabled",function(){
+				if($("input[name='chk']:enabled:checked").length == $("input[name='chk']:enabled").length){
+					$("#checkAll").prop("checked", true);
+				}else{
+					$("#checkAll").prop("checked", false);
+				}
+    	    });
+        });
+		
+		function exportTemplate(){
+			var projectId='$!projectId';
+			var positionid='$!positionid';
+			var testType='$!testType';
+			if(!projectId){
+				layer.msg("招聘项目为空无法导出模板！", {icon: 2});	
+				return;
+			}
+			
+			if(!testType){
+				layer.msg("考试类型为空无法导出模板！", {icon: 2});	
+				return;
+			}
+			var kname = document.getElementById('chkname');
+			var pos = document.getElementById('chkpos');
+			var chkname = "";
+			var chkpos = "";
+			if(kname.checked&&(!pos.checked)){
+				chkname="1";
+				chkpos = "";
+			}else if(pos.checked&&(!kname.checked)){
+				chkname="";
+				chkpos = "1";
+			}else if((!kname.checked)&&(!pos.checked)){
+				chkname="";
+				chkpos ="";
+			}else if(kname.checked&&pos.checked){
+				chkname="1";
+				chkpos ="1";
+			}
+			window.location.href="${link.contextPath}/dg/scoreGradeWriten/exportInterviewTemplate?projectId="
+								 +projectId+"&testType="+testType+"&chkname="+chkname+"&chkpos="+chkpos;
+		}	
+    </script>
+</head>
+<body>
+     #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+    		<form class="form-inline" onsubmit="return false;">
+                <div class="clearfix item-group">
+                    <ul class="clearfix pull-right">
+						<li>请选择模板的数据格式：
+							<select class="select grid-120">
+    							<option value="1">EXCEL文件</option>
+                            </select></li>
+                        <li>
+                            <a class="btn btn-primary btn-sm" onclick="exportTemplate();" href="javascript:void(0);" title="导出模板">导出模板</a>
+                        </li>
+						<li>
+                            <a class="btn btn-warning btn-sm" onclick="window.history.go(-1);" href="javascript:void(0);" title="返回">返回</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+			<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+							<th><label><input type="checkbox" id="checkAll"/>全选</label></th>
+    						<th>字段名称</th>
+                            <th>字段说明</th>
+                            <th>字段范例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<tr>
+                            <td><label><input type="checkbox" disabled name="chk" checked/></label></td>
+    						<td>准考证号</td>
+                            <td>字符型，限长 25 个字符</td>
+                            <td>如：2014110010001</td>
+                        </tr>
+						<tr>
+                            <td><label><input type="checkbox" id="chkname" name="chk" value="2"/></label></td>
+    						<td>姓名</td>
+                            <td>字符型，限长 30 个字符</td>
+                            <td></td>
+                        </tr>
+						<tr>
+                            <td><label><input type="checkbox" id="chkpos" name="chk" value="1"/></label></td>
+    						<td>岗位名称</td>
+                            <td>字符型，限长 60 个字符 </td>
+                            <td>如：小学数学。</td>
+                        </tr>
+						<tr>
+                            <td><label><input type="checkbox" disabled name="chk" checked/></label></td>
+    						<td>成绩</td>
+                            <td>字符型，限长 10 个字符</td>
+                            <td>体检和考察输入通过或未通过，其他情况输入分数，如：98.50</td>
+                        </tr>
+					</tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+        </div>
+        <!-- context内容 E-->
+        #parse("/common/foot.vm")
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

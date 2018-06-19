@@ -1,0 +1,35 @@
+<!-- 左侧日历+天气+个人信息 S-->
+<div class="main-sidebar">
+    <div class="sidebar">
+        <!-- 个人信息 S-->
+        <div class="userInfo">
+            <div class="pic">
+                <em style="background-image: url(${link.contextPath}/static/images/default.jpg);filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='${link.contextPath}/static/images/default.jpg',  sizingMethod='scale');"></em>         
+            </div>
+            <div class="info">
+                <h3>${user.userName}</h3>
+                <p>当前账号：<br/>${user.loginName}</p>
+            </div>
+        </div>
+        <!-- 个人信息 E-->
+        <!-- 日历 S-->
+        <div class="title">
+            <i class="iconfont">&#xe60c;</i>
+            <span class="text">日历</span>
+        </div>
+        <hr>
+        <div id="calendar" class="calendar"></div>
+        <!-- 日历 E-->
+        <!-- 天气 S-->
+        <div class="title">
+            <i class="iconfont">&#xe60d;</i>
+            <span class="text">天气</span>
+        </div>
+        <hr>
+        <div class="weather">
+            <iframe id="a" name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=149" width="210" height="360" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+        </div>
+        <!-- 天气 E-->
+    </div>
+</div>
+<!-- 左侧日历+天气+个人信息 E-->

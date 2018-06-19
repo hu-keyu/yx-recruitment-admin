@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>东莞招聘——学生报名</title>
+<!-- 公共重置CSS -->
+<link href="${link.contextPath}/static/css/common.css" rel="stylesheet">
+<link href="${link.contextPath}/static/css/student.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1474956227_0993266.css">
+<!-- 样式美化CSS -->
+<!--[if lt IE 9]>
+<script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+##<script src="${link.contextPath}/static/js/jquery-1.9.1.min.js"></script>
+<script src="${link.contextPath}/static/js/jquery-1.11.2.min.js"></script>
+<script src="${link.contextPath}/static/js/jquery-form.js"></script>
+<!-- 97日历控件 -->
+<script src="${link.contextPath}/static/lib/My97DatePicker/WdatePicker.js"></script>
+<!-- 弹出层控件 http://layer.layui.com/ -->
+<script src="${link.contextPath}/static/lib/layui/layui.js" type="text/javascript"></script>
+<!-- layui控件 http://layer.layui.com/ -->
+<link href="${link.contextPath}/static/lib/layui/css/layui.css" rel="stylesheet" type="text/css">
+<script src="${link.contextPath}/static/lib/layui/layui.js" type="text/javascript"></script>
+<script src="${link.contextPath}/static/lib/jqPaginator/jqPaginator-1.2.0.min.js" type="text/javascript"></script>
+<script src="${link.contextPath}/static/lib/nice-validator/jquery.validator.js?local=zh-CN" type="text/javascript"></script>
+<!-- 项目公共JS -->
+<script src="${link.contextPath}/static/js/zh-common.js"></script>
+
+<script>
+//给input框赋值文件名
+function setFileName(_this){
+    var _val = _this.value,
+    fileName = getFileName(_val).replace(/'/g,"");
+    $(_this).parents('.layui-upload-button').siblings('.fileName').find("a").text(fileName);
+}
+//获取上传文件名;
+function getFileName(o){
+    var pos = o.lastIndexOf("\\");
+    return o.substring(pos+1);  
+}
+
+
+
+var imgExt = 'jpg|png|gif';
+var notImgExt = 'jpg|png|gif|doc|docx|rar|pdf';
+$(document).ready(function(){
+	$(".uploadFile").each(function(){
+		var _path = $(".smallImg",this).attr("src");
+		if (_path) {
+			$(this).find(".fileSp").css("display","none");
+			$(this).find(".smallImg").css('display','inline-block');
+		}
+		if ('$!isEdit' == '1') {
+				//文件类型判断
+				if ('$!studentApplyInfo.cerAchRealName' != '') {
+					var _fileName = '$!studentApplyInfo.cerAchRealName';
+					var _fileExt = getExt(_fileName);
+					if (_fileExt == '2') {
+						$("#cerAchFile").css("display","inline-block");
+						$("#cerAchImg").css("display","none");
+					}
+				}
+				
+				if ('$!studentApplyInfo.graRecomRealName' != '') {
+					var _fileName = '$!studentApplyInfo.graRecomRealName';
+					var _fileExt = getExt(_fileName);
+					if (_fileExt == '2') {
+						$("#graRecomFile").css("display","inline-block");
+						$("#graRecomImg").css("display","none");
+					}
+				}
+				
+				if ('$!studentApplyInfo.studyWorkRealName' != '') {
+					var _fileName = '$!studentApplyInfo.studyWorkRealName';
+					var _fileExt = getExt(_fileName);
+					if (_fileExt == '2') {
+						$("#studyWorkFile").css("display","inline-block");
+						$("#studyWorkImg").css("display","none");
+					}
+				}
+			}
+	
+
+	});
+	//身份证
+	layuiUpload('idcard','layer-idCard','idcardAttId','idcardRealName','idcardUrlPath','images',imgExt);
+	//教师资格证  可以上传非图片
+	layuiUpload('jszgz','layer-cerAch','cerAchAttId','cerAchRealName','cerAchUrlPath','file',notImgExt);
+	//毕业证书或就业推荐表
+	layuiUpload('byzs','layer-graRec','graRecomAttId','graRecomRealName','graRecomUrlPath','file',notImgExt);
+	//学历鉴定证明
+	layuiUpload('xljd','layer-acaQua','acaQuaAttId','acaQuaRealName','acaQuaUrlPath','images',imgExt);
+	//学位证书
+	layuiUpload('xwzs','layer-bac','bacAttId','bacRealName','bacUrlPath','images',imgExt);
+	//学位鉴定证明
+	layuiUpload('xwjdzm','layer-bacQua','bacQuaAttId','bacQuaRealName','bacQuaUrlPath','images',imgExt);
+	//计划生育证明
+	layuiUpload('jhsyz','layer-famPlan','famPlanAttId','famPlanRealName','famPlanUrlPath','images',imgExt);
+	//个人学习和工作情况总结
+	layuiUpload('grxxgz','layer-studyWork','studyWorkAttId','studyWorkRealName','studyWorkUrlPath','file',notImgExt);
+	//暂缓就业协议书（已办理暂缓就业手续的毕业生必须提供）
+	layuiUpload('zhjy','layer-suspendEmp','suspendEmpAttId','suspendEmpRealName','suspendEmpUrlPath','images',imgExt);
+	//国外留学归来有关材料（国外留学归来人员必须提供）
+	layuiUpload('lxzm','layer-abroadStudy','abroadStudyAttId','abroadStudyRealName','abroadStudyUrlPath','images',imgExt);
+	//毕业成绩单
+	layuiUpload('bycjd','layer-transcript','transcriptAttId','transcriptRealName','transcriptUrlPath','images',imgExt);
+	//心理学成绩
+	layuiUpload('xlxcjd','layer-cerPsy','cerPsyAttId','cerPsyRealName','cerPsyUrlPath','images',imgExt);
+	//普通话成绩
+	layuiUpload('pthcjd','layer-cerMan','cerManAttId','cerManRealName','cerManUrlPath','images',imgExt);
+	//教育学成绩
+	layuiUpload('jyxcj','layer-cerPed','cerPedAttId','cerPedRealName','cerPedUrlPath','images',imgExt);
+	//教育教学能力测试
+	layuiUpload('jyjxnl','layer-cerAbi','cerAbiAttId','cerAbiRealName','cerAbiUrlPath','images',imgExt);
+	//教育实习证明
+	layuiUpload('jysxzm','layer-cerShip','cerShipAttId','cerShipRealName','cerShipUrlPath','images',imgExt);
+	
+});
+
+
+var extArray = new Array(".PNG",".GIF",".JPG",".JPEG");
+var notImgExtArray = new Array(".DOC",".DOCX",".PDF",".RAR");//可以上传非图片文件
+//获取文件类型
+function getExt(_fileName) {
+    var extStart = _fileName.lastIndexOf(".");
+	var ext = _fileName.substring(extStart,_fileName.length).toUpperCase();
+	//是否包含在这几种图片类型
+	var findImgExt = $.inArray(ext, extArray);
+	//是否包含在这几种非图片类型
+	var findNotImgExt = $.inArray(ext, notImgExtArray);
+	if (findImgExt > -1) {
+		return '1';//图片
+	} else if(findNotImgExt > -1) {
+		return '2';//非图片
+	} else {
+		return '0';//其他
+	}
+}
+
+
+
+var isImg = true;
+function layuiUpload(elemId, divId, hidId, hidName, hidUrl, _fileType, _fileExt) {
+	layui.use('upload', function(){
+    layui.upload({
+        elem:'#' + elemId,
+        url:'${link.contextPath}/dg/file/upload?attId=' + $("#" + hidId).val(),
+        method:'post',
+        before:function(input){
+            var extStart = input.value.lastIndexOf(".");
+			var ext = input.value.substring(extStart,input.value.length).toUpperCase();
+			console.log(ext);
+			//是否包含在这几种图片类型
+        	var findImgExt = $.inArray(ext, extArray);
+        	//是否包含在这几种非图片类型
+
+        	var findNotImgExt = $.inArray(ext, notImgExtArray);
+        	console.log(findNotImgExt);
+        	console.log(findImgExt);
+        	if ((elemId == 'jszgz' || elemId == 'byzs' || elemId == 'grxxgz') && findNotImgExt == -1 && findImgExt == -1) {
+				layer.alert("图片限于png,gif,jpeg,jpg格式，<br/>非图片文件格式限于.doc,.docx,.pdf,.rar", {icon: 1});
+				return false;
+        	} else if (elemId != 'jszgz' && elemId == 'byzs' && elemId == 'grxxgz' && findImgExt != -1){
+				layer.alert("图片限于png,gif,jpeg,jpg格式！", {icon: 1});
+				return false;
+        	}
+        	
+        	if (findNotImgExt > -1) {
+        		isImg = false;
+        	}
+        	
+        	if (findImgExt > -1) {
+        		isImg = true;
+        	}
+			layer.load(1);
+        },
+        success:function(res,input){
+			if(res.error!=0){
+				layer.alert(res.message, {icon: 1});
+            	layer.closeAll('loading');
+				return;
+			}
+			//图片
+			if (isImg) {
+				$("#" + divId).css('display','inline-block');
+				$("#" + divId).find(".smallImg").css('display','inline-block');
+	            $("#" + divId).find(".smallImg").attr({
+	        		'layer-src':res.avo.data[0].path,
+	        		'src':res.avo.data[0].path,
+	        		//'alt':res.avo.data[0].alt,
+	        		//'title':res.avo.data[0].alt
+	        	});
+				$("#" + divId).find(".bigImg").attr({
+	        		'src':res.avo.data[0].path,
+	        		//'alt':res.avo.data[0].alt,
+	        		//'title':res.avo.data[0].alt
+	        	});
+	        	$("#" + divId).find(".fileSp").hide();
+			} else {
+				$("#" + divId).find(".smallImg").hide();
+				$("#" + divId).css('display','inline-block');
+				$("#" + divId).find(".fileSp").css('display','inline-block');
+				var fileNameStr = res.avo.data[0].realName;
+				console.log(fileNameStr);
+				if (res.avo.data[0].realName.length > 11) {
+					fileNameStr = fileNameStr.substring(0,11) + '...';
+				}
+				$("#" + divId).find(".fileSp").attr('title',res.avo.data[0].realName);
+				$("#" + divId).find(".fileSp").text(fileNameStr);
+				$("#" + divId).find(".fileSp").attr("href",res.avo.data[0].path);
+			}
+        	
+            $("#" + hidId).val(res.avo.data[0].id);
+            $("#" + hidName).val(res.avo.data[0].realName);
+            $("#" + hidUrl).val(res.avo.data[0].path);
+            layer.closeAll('loading');
+            return;
+        },
+        type:_fileType,
+        ext:_fileExt
+    });
+});
+}
+
+function clickIMG(divId){
+	console.log(divId);
+	layer.open({
+		type: 1,
+		title: false,
+		closeBtn: 0,
+		area: 'auto',
+		maxWidth:"800",
+		shadeClose: true,
+		offset:'auto',
+		move:'.layui-layer-content',
+		content: $('#' + divId).find('.bigImg')
+	});
+}
+
+</script>
+</head>
+<body>
+<!-- 顶部导航 S-->
+<div class="header">
+	<!-- top S-->
+	<div class="top clearfix">
+        <div class="grid-1190 m-auto">
+            <!-- 导航模块 S-->
+            <div class="navList pull-left">
+                <ul class="clearfix">
+                    <li class="default" title="$!theme.theme">$!theme.noticeSubstr</li>
+                </ul>
+            </div>
+            <!-- 导航模块 E-->
+            <!-- 操作导航 S-->
+            <div class="handleList pull-right">
+                <ul class="clearfix">
+                </ul>
+            </div>
+            <!-- 操作导航 E-->
+        </div>
+	</div>
+	<!-- top E-->
+	<!-- 二级菜单 S-->
+	<!--
+    <div class="menuList">
+    	<ul class="clearfix grid-1190 m-auto">
+		<li class="active">
+				<a href="${link.contextPath}/dg/studentApplyInfo/registerIndex?studentId=$!studentApplyInfo.studentId&type=$!sInfo.studentType">基本信息</a>
+			</li>
+			<li>
+				<a href="${link.contextPath}/dg/studentApplyInfo/applyPosition">申请岗位</a>
+			</li>
+			<li>
+				<a href="${link.contextPath}/dg/studentApplyInfo/profileConfirm?type=2">现场资料确认</a>
+			</li>
+			<li>
+				<a href="${link.contextPath}/dg/studentApplyInfo/profileConfirm?type=1">单位面试信息</a>
+			</li>
+			<li>
+				<a href="${link.contextPath}/dg/studentApplyInfo/interviewNotice">面试通知书</a>
+			</li>
+			<li>
+				<a href="${link.contextPath}/dg/studentApplyInfo/writtenNotice">笔试通知书</a>
+			</li>
+            <li>
+                <a href="${link.contextPath}/dg/studentApplyInfo/talkNotice">试讲通知书</a>
+            </li>
+            <li>
+                <a href="${link.contextPath}/dg/studentApplyInfo/admissionTicket">准考证打印</a>
+            </li>
+            <li>
+                <a href="${link.contextPath}/dg/studentApplyInfo/recruitProgress">招聘进度查询</a>
+            </li>
+		</ul>
+    </div>
+    -->
+    <!-- 二级菜单 E-->
+</div>
+<!-- 顶部导航 E-->
+<!-- Main内容模块 S-->
+<div class="content-wrapper grid-1190 m-auto" style="padding-top: 45px;">
+<form id="applyForm">
+	<input type="hidden" name="id" value="$!studentApplyInfo.id" />
+	<!-- 招聘项目id-->
+	<input type="hidden" name="employItemsId" value="$!studentApplyInfo.employItemsId" />
+	<!-- 应聘考生的id-->
+	<input type="hidden" name="studentId" value="$!studentApplyInfo.studentId" />
+	<!-- 招聘岗位id-->
+	<input type="hidden" name="applyJobId" value="$!studentApplyInfo.applyJobId" />
+		<!-- 招聘岗位名称-->
+	<input type="hidden" name="applyJobName" value="$!studentApplyInfo.applyJobName" />
+	<!--招聘单位id-->
+	<input type="hidden" name="applyDepId" value="$!studentApplyInfo.applyDepId" />
+		<!--招聘单位名称-->
+	<input type="hidden" name="applyDeptName" value="$!studentApplyInfo.applyDeptName" />
+	<!-- context内容 S-->
+	<div class="content">
+        <!-- 步骤 S-->
+        <div class="sub-nav">
+            <ul>
+                <li class="nav nav-current"><span>第一步：填写基本信息</span></li>
+                <li></li>
+                <li class="nav nav-current"><span>第二步：选择报考岗位</span></li>
+                <li></li>
+                <li class="nav nav-current"><span>第三步：提交申请</span></li>
+            </ul>
+        </div>
+        <!-- 步骤 E-->
+		<!-- table表单模块 S-->
+        <div class="table-content">
+            <table class="dg-zp-dt">
+                <tbody>
+                    <tr>
+                        <th class="text-right" width="15%">申请信息：</th>
+                        <td>申请报考$!studentApplyInfo.applyDeptName</td>
+                        
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="15%">岗位名称（岗位代码）：</th>
+                        <td>$!studentApplyInfo.applyJobName</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="15%">单位名称（单位代码）：</th>
+                        <td>$!studentApplyInfo.applyDeptName</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="15%">限制条件：</th>
+                        <td>$!studentApplyInfo.posCondition</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right" width="20%"><span class="flag">*</span>身份证：</th>
+                        <td width="30%">
+			                <input id="idcard" onchange="setFileName(this)" class="layui-upload-file" type="file" name="fileAtt" />
+			                <input name="idcardAttId" id="idcardAttId" type="hidden" value="$!studentApplyInfo.idcardAttId" />
+			                <input name="idcardUrlPath" id="idcardUrlPath" type="hidden" value="$!studentApplyInfo.idcardUrlPath" />
+			                <input name="idcardRealName" id="idcardRealName" type="hidden" value="$!studentApplyInfo.idcardRealName" />
+					        <div id="layer-idCard" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-idCard');" layer-src="$!studentApplyInfo.idcardUrlPath" src="$!studentApplyInfo.idcardUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.idcardUrlPath">
+					        </div>
+					        
+                        </td>
+            			#if($!sInfo.certiType != '0')
+						<th class="text-right" width="20%"><span class="flag">*</span>教师资格证：</th>
+                        <td width="30%">
+			                <input onchange="setFileName(this)" id="jszgz" class="layui-upload-file" type="file" name="fileAtt" />
+			                <input name="cerAchAttId" id="cerAchAttId" type="hidden" value="$!studentApplyInfo.cerAchAttId" />
+			                <input name="cerAchUrlPath" id="cerAchUrlPath" type="hidden" value="$!studentApplyInfo.cerAchUrlPath" />
+			                <input name="cerAchRealName" id="cerAchRealName" type="hidden" value="$!studentApplyInfo.cerAchRealName" />
+							<div id="layer-cerAch" class="uploadFile">
+								 <img id="cerAchImg" class="smallImg" onclick="clickIMG('layer-cerAch');" layer-src="$!studentApplyInfo.cerAchUrlPath" src="$!studentApplyInfo.cerAchUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.cerAchUrlPath">
+	 							 <a target="_blank" id="cerAchFile" class="fileSp red" href="#if('$!studentApplyInfo.cerAchUrlPath' != '') ${link.contextPath}/dg/planApply/downloadFile?fileId=$!studentApplyInfo.cerAchAttId #else $!studentApplyInfo.cerAchUrlPath #end" title="$!studentApplyInfo.cerAchRealName">
+								 #if($!studentApplyInfo.cerAchRealName.length()>10) $!studentApplyInfo.cerAchRealName.substring(0,10)...
+								 #else
+								 $!studentApplyInfo.cerAchRealName
+								 #end</a>
+					        </div>
+                        </td>
+						#else
+						<th class="text-right" width="20%"><span class="flag">*</span>教育学成绩单：</th>
+						<td width="30%">
+			                <input onchange="setFileName(this)" id="jyxcj" class="layui-upload-file" type="file" name="fileAtt" />
+			                <input name="cerPedAttId" id="cerPedAttId" type="hidden" value="$!studentApplyInfo.cerPedAttId" />
+			                <input name="cerPedUrlPath" id="cerPedUrlPath" type="hidden" value="$!studentApplyInfo.cerPedUrlPath" />
+			                <input name="cerPedRealName" id="cerPedRealName" type="hidden" value="$!studentApplyInfo.cerPedRealName" />
+							<div id="layer-cerPed" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-cerPed');" layer-src="$!studentApplyInfo.cerPedUrlPath" src="$!studentApplyInfo.cerPedUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.cerPedUrlPath">
+					        </div>
+                        </td>
+                        #end
+					</tr>
+					#if($!sInfo.certiType == '0')
+					<tr>
+						<th class="text-right" width="20%"><span class="flag">*</span>心理学成绩单：</th>
+						<td width="30%">
+			                <input onchange="setFileName(this)" id="xlxcjd" class="layui-upload-file" type="file" name="fileAtt" />
+			                <input name="cerPsyAttId" id="cerPsyAttId" type="hidden" value="$!studentApplyInfo.cerPsyAttId" />
+			                <input name="cerPsyUrlPath" id="cerPsyUrlPath" type="hidden" value="$!studentApplyInfo.cerPsyUrlPath" />
+			                <input name="cerPsyRealName" id="cerPsyRealName" type="hidden" value="$!studentApplyInfo.cerPsyRealName" />
+							<div id="layer-cerPsy" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-cerPsy');" layer-src="$!studentApplyInfo.cerPsyUrlPath" src="$!studentApplyInfo.cerPsyUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.cerPsyUrlPath">
+					        </div>
+                        </td>
+						<th class="text-right" width="20%"><span class="flag">*</span>普通话成绩单：</th>
+						<td width="30%">
+			                <input onchange="setFileName(this)" id="pthcjd" class="layui-upload-file" type="file" name="fileAtt" />
+			                <input name="cerManAttId" id="cerManAttId" type="hidden" value="$!studentApplyInfo.cerManAttId" />
+			                <input name="cerManUrlPath" id="cerManUrlPath" type="hidden" value="$!studentApplyInfo.cerManUrlPath" />
+			                <input name="cerManRealName" id="cerManRealName" type="hidden" value="$!studentApplyInfo.cerManRealName" />
+					        <div id="layer-cerMan" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-cerMan');" layer-src="$!studentApplyInfo.cerManUrlPath" src="$!studentApplyInfo.cerManUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.cerManUrlPath">
+					        </div>
+                        </td>
+					</tr>
+					<!--教育教学能力测试  教育实习证明 -->
+					<tr>
+						<th class="text-right" width="20%">#if($!sInfo.teachingAbilityScore)<span class="flag">*</span>#end 教育教学能力测试：</th>
+						<td width="30%">
+			                <input onchange="setFileName(this)" id="jyjxnl" class="layui-upload-file" type="file" name="fileAtt" />
+			                <input name="cerAbiAttId" id="cerAbiAttId" type="hidden" value="$!studentApplyInfo.cerAbiAttId" />
+			                <input name="cerAbiRealName" id="cerAbiRealName" type="hidden" value="$!studentApplyInfo.cerAbiRealName" />
+			                <input name="cerAbiUrlPath" id="cerAbiUrlPath" type="hidden" value="$!studentApplyInfo.cerAbiUrlPath" />
+							<div id="layer-cerAbi" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-cerAbi');" layer-src="$!studentApplyInfo.cerAbiUrlPath" src="$!studentApplyInfo.cerAbiUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.cerAbiUrlPath">
+					        </div>
+                        </td>
+						<th class="text-right" width="20%">#if($!sInfo.internshipCertification == "1")<span class="flag">*</span>#end 教育实习证明：</th>
+						<td width="30%">
+			                <input onchange="setFileName(this)" id="jysxzm" class="layui-upload-file" type="file" name="fileAtt" />
+			                <input name="cerShipAttId" id="cerShipAttId" type="hidden" value="$!studentApplyInfo.cerShipAttId" />
+			                <input name="cerShipRealName" id="cerShipRealName" type="hidden" value="$!studentApplyInfo.cerShipRealName" />
+			                <input name="cerShipUrlPath" id="cerShipUrlPath" type="hidden" value="$!studentApplyInfo.cerShipUrlPath" />
+					        <div id="layer-cerShip" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-cerShip');" layer-src="$!studentApplyInfo.cerShipUrlPath" src="$!studentApplyInfo.cerShipUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.cerShipUrlPath">
+					        </div>
+                        </td>
+					</tr>
+					#end
+                    <tr>
+                        <th class="text-right" width="20%"><span class="flag">*</span>毕业证书或就业推荐表或其他证明：</th>
+                        <td width="30%">
+			                <input id="byzs" onchange="setFileName(this)" class="layui-upload-file" type="file" name="fileAtt" />
+			                <input name="graRecomAttId" id="graRecomAttId" type="hidden" value="$!studentApplyInfo.graRecomAttId" />
+			                <input name="graRecomRealName" id="graRecomRealName" type="hidden" value="$!studentApplyInfo.graRecomRealName" />
+			                <input name="graRecomUrlPath" id="graRecomUrlPath" type="hidden" value="$!studentApplyInfo.graRecomUrlPath" />
+							<div id="layer-graRec" class="uploadFile">
+								 <img id="graRecomImg" class="smallImg" onclick="clickIMG('layer-graRec');" layer-src="$!studentApplyInfo.graRecomUrlPath" src="$!studentApplyInfo.graRecomUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.graRecomUrlPath">
+								 <a target="_blank" id="graRecomFile" class="fileSp red" href="#if('$!studentApplyInfo.graRecomUrlPath' != '') ${link.contextPath}/dg/planApply/downloadFile?fileId=$!studentApplyInfo.graRecomAttId #else $!studentApplyInfo.graRecomUrlPath #end" title="$!studentApplyInfo.graRecomRealName">
+								 #if($!studentApplyInfo.graRecomRealName.length()>10) $!studentApplyInfo.graRecomRealName.substring(0,10)...
+								 #else
+								 $!studentApplyInfo.graRecomRealName
+								 #end</a>
+					        </div>
+                        </td>
+                        <th class="text-right" width="20%">学历鉴定证明：</th> 
+                        <td width="30%">
+			                <input id="xljd" onchange="setFileName(this)" class="layui-upload-file" type="file" name="fileAtt">
+			                <input name="acaQuaAttId" id="acaQuaAttId" type="hidden" value="$!studentApplyInfo.acaQuaAttId"/>
+			                <input name="acaQuaRealName" id="acaQuaRealName" type="hidden" value="$!studentApplyInfo.acaQuaRealName"/>
+			                <input name="acaQuaUrlPath" id="acaQuaUrlPath" type="hidden" value="$!studentApplyInfo.acaQuaUrlPath"/>
+							<div id="layer-acaQua" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-acaQua');" layer-src="$!studentApplyInfo.acaQuaUrlPath" src="$!studentApplyInfo.acaQuaUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.acaQuaUrlPath">
+					        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="20%">学位证书：</th>
+                        <td width="30%">
+			                <input id="xwzs" onchange="setFileName(this)" class="layui-upload-file" type="file" name="fileAtt">
+			                <input name="bacAttId" id="bacAttId" type="hidden" value="$!studentApplyInfo.bacAttId"/>
+			                <input name="bacRealName" id="bacRealName" type="hidden" value="$!studentApplyInfo.bacRealName"/>
+			                <input name="bacUrlPath" id="bacUrlPath" type="hidden" value="$!studentApplyInfo.bacUrlPath"/>
+							<div id="layer-bac" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-bac');" layer-src="$!studentApplyInfo.bacUrlPath" src="$!studentApplyInfo.bacUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.bacUrlPath">
+					        </div>
+                        </td>
+                        <th class="text-right" width="20%">学位鉴定证明：</th> 
+                        <td width="30%">
+					        <input id="xwjdzm" onchange="setFileName(this)" class="layui-upload-file" type="file" name="fileAtt">
+					        <input name="bacQuaAttId" id="bacQuaAttId" type="hidden" value="$!studentApplyInfo.bacQuaAttId"/>
+					        <input name="bacQuaRealName" id="bacQuaRealName" type="hidden" value="$!studentApplyInfo.bacQuaRealName"/>
+					        <input name="bacQuaUrlPath" id="bacQuaUrlPath" type="hidden" value="$!studentApplyInfo.bacQuaUrlPath"/>
+							<div id="layer-bacQua" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-bacQua');" layer-src="$!studentApplyInfo.bacQuaUrlPath" src="$!studentApplyInfo.bacQuaUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.bacQuaUrlPath">
+					        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="20%">#if($!{sInfo.birthControl} == "1")<span class="flag">*</span>#end 计划生育处罚证明：</th>
+                        <td width="30%">
+			                <input id="jhsyz" onchange="setFileName(this)" class="layui-upload-file" type="file" name="fileAtt" />
+			                <input name="famPlanAttId" id="famPlanAttId" type="hidden" value="$!studentApplyInfo.famPlanAttId" />
+			                <input name="famPlanRealName" id="famPlanRealName" type="hidden" value="$!studentApplyInfo.famPlanRealName" />
+			                <input name="famPlanUrlPath" id="famPlanUrlPath" type="hidden" value="$!studentApplyInfo.famPlanUrlPath" />
+							<div id="layer-famPlan" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-famPlan');" layer-src="$!studentApplyInfo.famPlanUrlPath" src="$!studentApplyInfo.famPlanUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.famPlanUrlPath">
+					        </div>
+                        </td>
+                        <th class="text-right" width="20%"><span class="flag">*</span>个人学习和工作情况总结：</th> 
+                        <td width="30%">
+					        <input id="grxxgz" onchange="setFileName(this)" class="layui-upload-file" type="file" name="fileAtt" />
+					        <input name="studyWorkAttId" id="studyWorkAttId" type="hidden" value="$!studentApplyInfo.studyWorkAttId"  />
+					        <input name="studyWorkRealName" id="studyWorkRealName" type="hidden" value="$!studentApplyInfo.studyWorkRealName"  />
+					        <input name="studyWorkUrlPath" id="studyWorkUrlPath" type="hidden" value="$!studentApplyInfo.studyWorkUrlPath"  />
+							<div id="layer-studyWork" class="uploadFile">
+								 <img id="studyWorkImg" class="smallImg" onclick="clickIMG('layer-studyWork');" layer-src="$!studentApplyInfo.studyWorkUrlPath" src="$!studentApplyInfo.studyWorkUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.studyWorkUrlPath">
+					 			 <a target="_blank" id="studyWorkFile" class="fileSp red" href="#if('$!studentApplyInfo.studyWorkUrlPath' != '') ${link.contextPath}/dg/planApply/downloadFile?fileId=$!studentApplyInfo.studyWorkAttId #else $!studentApplyInfo.studyWorkUrlPath #end" title="$!studentApplyInfo.studyWorkRealName">
+								 #if($!studentApplyInfo.studyWorkRealName.length()>10) $!studentApplyInfo.studyWorkRealName.substring(0,10)...
+								 #else
+								 $!studentApplyInfo.studyWorkRealName
+								 #end</a>
+					        </div>
+                        </td>
+                    </tr>
+                    #if($!sInfo.hasSimilar == '1')
+                    <tr>
+                        <th class="text-right" width="20%"><span class="flag">*</span>毕业成绩单：</th>
+                        <td width="30%">
+				                <input id="bycjd" onchange="setFileName(this)" class="layui-upload-file" type="file" name="fileAtt" />
+				                <input name="transcriptAttId" id="transcriptAttId" type="hidden" value="$!studentApplyInfo.transcriptAttId" />
+				                <input name="transcriptRealName" id="transcriptRealName" type="hidden" value="$!studentApplyInfo.transcriptRealName" />
+				                <input name="transcriptUrlPath" id="transcriptUrlPath" type="hidden" value="$!studentApplyInfo.transcriptUrlPath" />
+								<div id="layer-transcript" class="uploadFile">
+    								 <img class="smallImg" onclick="clickIMG('layer-transcript');" layer-src="$!studentApplyInfo.transcriptUrlPath" src="$!studentApplyInfo.transcriptUrlPath">
+    								 <img class="bigImg" src="$!studentApplyInfo.transcriptUrlPath">
+    					        </div>
+						    </div>
+                        </td>
+                    </tr>
+                    #end
+                    <tr>
+                        <th class="text-right" rowspan="2">其他材料：</th>
+                        <th>#if($!math.sub($date.yyyy,1) == $!date.format('yyyy',$!seInfo.eduGraduateTime))<span class="flag">*</span>#end
+							暂缓就业协议书（已办理暂缓就业手续的毕业生必须提供）：</th>
+                        <td colspan="2">
+			                <input id="zhjy" onchange="setFileName(this)" class="layui-upload-file" type="file" name="fileAtt">
+			                <input name="suspendEmpAttId" id="suspendEmpAttId" type="hidden" value="$!studentApplyInfo.suspendEmpAttId" />
+			                <input name="suspendEmpRealName" id="suspendEmpRealName" type="hidden" value="$!studentApplyInfo.suspendEmpRealName" />
+			                <input name="suspendEmpUrlPath" id="suspendEmpUrlPath" type="hidden" value="$!studentApplyInfo.suspendEmpUrlPath" />
+							<div id="layer-suspendEmp" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-suspendEmp');" layer-src="$!studentApplyInfo.suspendEmpUrlPath" src="$!studentApplyInfo.suspendEmpUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.suspendEmpUrlPath">
+					        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>国外留学归来有关材料（国外留学归来人员必须提供）：</th>
+                        <td colspan="2">
+					        <input id="lxzm" onchange="setFileName(this)" class="layui-upload-file" type="file" name="fileAtt">
+					        <input name="abroadStudyAttId" id="abroadStudyAttId" type="hidden" value="$!studentApplyInfo.abroadStudyAttId" />
+					        <input name="abroadStudyRealName" id="abroadStudyRealName" type="hidden" value="$!studentApplyInfo.abroadStudyRealName" />
+					        <input name="abroadStudyUrlPath" id="abroadStudyUrlPath" type="hidden" value="$!studentApplyInfo.abroadStudyUrlPath" />
+							<div id="layer-abroadStudy" class="uploadFile">
+								 <img class="smallImg" onclick="clickIMG('layer-abroadStudy');" layer-src="$!studentApplyInfo.abroadStudyUrlPath" src="$!studentApplyInfo.abroadStudyUrlPath">
+								 <img class="bigImg" src="$!studentApplyInfo.abroadStudyUrlPath">
+					        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <p>填写申请理由：<span class="pull-right" style="color:red;padding-right:250px;font-size : 12px">温馨提示：考生报考资料一经提交，不能修改任何资料，提交前请仔细检查保存的数据和填写数据是否一致，如因漏填或错填导致报考不成功，后果自负。<span></p>
+                            <textarea id="applyReason" class="textarea" rows="5" name="applyReason">$!studentApplyInfo.applyReason</textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- table表单模块 E-->
+        <!-- 操作按钮 S-->
+        <div class="text-center pagesBox">
+        #if($!applyStatus == '1' || $!applyStatus == '5' || $!applyStatus == '4')
+        	<button class="btn btn-primary btn-sm" id="saveApply" type="button">保存</button>
+            <button class="btn btn-primary btn-sm" id="submitApply" type="button">提交申请</button>
+        #end
+            <button class="btn btn-default btn-sm" type="button" id="goback">返回</button>
+        </div>
+        <!-- 操作按钮 E-->
+	</div>
+	<!-- context内容 E-->
+		</form>
+</div>
+<!-- Main内容模块 E-->
+
+<script>
+    var _saveOptions = {
+        url:'${link.contextPath}/dg/studentInfo/applyProfileSave',   
+        type:'post',                    
+        data:$("#applyForm").serialize(),
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        success:function(data){
+        	var jso = $.parseJSON(data);
+        	console.log(jso);
+        	layer.msg(jso.msg, {
+			  icon: 1,
+			  time: 2000 //2秒关闭（如果不配置，默认是3秒）
+			}, function(){
+				if (jso.code === 'false') {
+					return;
+		    	}
+	    		var url = '${link.contextPath}/dg/studentApplyInfo/registerIndex?studentId=$!studentApplyInfo.studentId&type=$!sInfo.studentType';
+	    		window.location.href = url;
+			}); 
+        	
+        }
+     };
+     
+     var _submitOptions = {
+        url:'${link.contextPath}/dg/studentInfo/applyProfileSubmit',   
+        type:'post',                    
+        data:$("#applyForm").serialize(),
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        success:function(data){
+        	var jso = $.parseJSON(data);
+        	console.log(jso);
+        	layer.msg(jso.msg, {
+			  icon: 1,
+			  time: 2000 //2秒关闭（如果不配置，默认是3秒）
+			}, function(){
+				if (jso.code === 'false') {
+					return;
+		    	}
+	    		var url = '${link.contextPath}/dg/studentApplyInfo/registerIndex?studentId=$!studentApplyInfo.studentId&type=$!sInfo.studentType';
+	    		window.location.href = url;
+			}); 
+        	
+        }
+     };
+                 
+    $(document).ready(function () {
+    		//提交表单
+	       $('#submitApply').on('click',function(){
+	       		saveOrSubmit('submit');
+  			});
+  			
+  			//保存表单
+	       $('#saveApply').on('click',function(){
+	       		saveOrSubmit('save');
+  			});
+  			
+  			
+       		$('#goback').on('click',function(){
+	       		window.location.href = "${link.contextPath}/dg/studentApplyInfo/choosePosition";
+  			});
+  	});
+  	
+  	
+  	function saveOrSubmit(_operation) {
+  		//先用jq校验必填项
+   		//身份证
+   		if ($("#idcardAttId").val() === '') {
+   			layer.alert("请上传身份证附件！", {icon: 1});
+   			return false;
+   		}
+   		
+		#if($!sInfo.certiType != '0')
+   		//教师资格证
+   		if ($("#cerAchAttId").val() === '') {
+   			layer.alert("请上传教师资格证！", {icon: 1});
+   			return false;
+   		}
+		
+		#else
+		//教育学成绩单
+   		if ($("#cerPedAttId").val() === '') {
+   			layer.alert("请上传教育学成绩单！", {icon: 1});
+   			return false;
+   		}
+		
+		//心理学成绩单
+   		if ($("#cerPsyAttId").val() === '') {
+   			layer.alert("请上传心理学成绩单！", {icon: 1});
+   			return false;
+   		}
+		
+		//普通话成绩单
+   		if ($("#cerManAttId").val() === '') {
+   			layer.alert("请上传普通话成绩单！", {icon: 1});
+   			return false;
+   		}
+		
+		#if($!sInfo.teachingAbilityScore)
+		//教育教学能力测试
+   		if ($("#cerAbiAttId").val() === '') {
+   			layer.alert("请上传教育教学能力测试！", {icon: 1});
+   			return false;
+   		}
+		#end
+		
+		#if($!sInfo.internshipCertification=="1")
+		//教育实习证明
+   		if ($("#cerShipAttId").val() === '') {
+   			layer.alert("请上传教育实习证明！", {icon: 1});
+   			return false;
+   		}
+		#end
+		
+		#end
+   		
+   		//毕业证书或就业推荐表
+   		if ($("#graRecomAttId").val() === '') {
+   			layer.alert("请上传毕业证书或就业推荐表！", {icon: 1});
+   			return false;
+   		}
+   		
+		
+		#if($!{sInfo.birthControl} == "1")
+   		//计划生育证明
+   		if ($("#famPlanAttId").val() === '') {
+   			layer.alert("请上传计划生育处罚证明！", {icon: 1});
+   			return false;
+   		}
+		#end
+   		
+   		//个人学习情况以及工作总结
+   		if ($("#studyWorkAttId").val() === '') {
+   			layer.alert("请上传个人学习情况以及工作总结！", {icon: 1});
+   			return false;
+   		}
+		
+		#if($!math.sub($date.yyyy,1) == $!date.format('yyyy',$!seInfo.eduGraduateTime))
+   		if ($("#suspendEmpAttId").val() === '') {
+   			layer.alert("请上传暂缓就业协议书！", {icon: 1});
+   			return false;
+   		}
+		#end
+   		
+		//毕业成绩单
+   		if ($!sInfo.hasSimilar == '1' && ($("#transcriptAttId").val() === '')) {
+   			layer.alert("请上传毕业成绩单！", {icon: 1});
+   			return false;
+   		}
+   		
+   		if ($("#applyReason").val().length > 500) {
+   			layer.alert("申请理由限制长度为500！", {icon: 1});
+   			return false;
+   		}
+   		if (_operation == 'save') {
+   			$("#applyForm").ajaxSubmit(_saveOptions);	
+   		}
+		
+		if (_operation == 'submit') {
+			layer.confirm('提交前请仔细检查保存的数据和填写数据是否一致，如因漏填或错填导致报考不成功，后果自负。其他问题请联系教育局。<br/>确认提交请点确定按钮', {
+			  	btn: ['确定','取消']
+			}, function(){
+					$.ajax({
+	    			url : '${link.contextPath}/dg/studentApplyInfo/verifySignUp',
+	    			type : 'post',
+	    			async: false,
+	    			cache : false,
+	    			data:{"recId":'$!studentApplyInfo.employItemsId'},
+	    			dataType : 'json',
+	    			success : function(data) {
+	    				console.log(data.flag);
+			           	if (!data.flag) {
+							var opt={}
+	                		layer.alert(data.msg, data.title?{title:data.title,icon: 0}:{icon: 0});
+	                		return false;
+	                	}
+	                	//公告没有暂停
+	                	$("#applyForm").ajaxSubmit(_submitOptions);	
+	    			}
+    			});
+			}, function(){
+				
+			});
+		}
+  	}
+		  
+	
+</script>
+</body>
+</html>

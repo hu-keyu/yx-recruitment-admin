@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.SecurityQueInfoDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.SecurityQueInfo" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+	<result column="QUESTION_CODE" property="questionCode" jdbcType="VARCHAR" />
+	<result column="QUESTIONS" property="questions" jdbcType="VARCHAR" />
+	<result column="ANSWER" property="answer" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,STUDENT_ID,QUESTION_CODE,QUESTIONS,ANSWER,CREATE_USER,CTIME,MODIFY_USER,MTIME
+  </sql>
+  
+   <insert id="saveSecurityQueInfoByField" parameterType="org.jypj.dev.entity.SecurityQueInfo" >
+    insert into security_question_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="studentId != null" >
+    STUDENT_ID,
+   </if>
+   <if test="questionCode != null" >
+    QUESTION_CODE,
+   </if>
+   <if test="questions != null" >
+    QUESTIONS,
+   </if>
+   <if test="answer != null" >
+    ANSWER,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="ctime != null" >
+    CTIME,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+   <if test="mtime != null" >
+    MTIME,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionCode != null" >
+        #{questionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="questions != null" >
+        #{questions,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=DATE},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        #{mtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveSecurityQueInfo" parameterType="org.jypj.dev.entity.SecurityQueInfo" >
+    insert into security_question_info (
+	ID,
+	STUDENT_ID,
+	QUESTION_CODE,
+	QUESTIONS,
+	ANSWER,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	 MTIME
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{studentId,jdbcType=VARCHAR},
+	#{questionCode,jdbcType=VARCHAR},
+	#{questions,jdbcType=VARCHAR},
+	#{answer,jdbcType=VARCHAR},
+	#{createUser,jdbcType=VARCHAR},
+	sysdate,
+	#{modifyUser,jdbcType=VARCHAR},
+	sysdate
+	)
+  </insert>
+  
+  <delete id="deleteSecurityQueInfoById" parameterType="java.lang.String" >
+    delete from security_question_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteSecurityQueInfoByObject" parameterType="org.jypj.dev.entity.SecurityQueInfo" >
+    delete from security_question_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateSecurityQueInfoByField" parameterType="org.jypj.dev.entity.SecurityQueInfo" >
+    update security_question_info
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="studentId != null" >
+  	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="questionCode != null" >
+  	 QUESTION_CODE=#{questionCode,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="questions != null" >
+  	 QUESTIONS=#{questions,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="answer != null" >
+  	 ANSWER=#{answer,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="ctime != null" >
+  	 CTIME=#{ctime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="mtime != null" >
+  	 MTIME=#{mtime,jdbcType=DATE}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  	<update id="updateMultiSecret" parameterType="list">
+		<foreach collection="list" item="item" index="index" open="begin" close="end;" separator="" >
+ 		update security_question_info sqi
+			 <set>
+			 sqi.answer=#{item.answer,jdbcType=VARCHAR},
+			 sqi.mtime=sysdate
+		    </set>
+    	where sqi.student_id = #{item.studentId,jdbcType=VARCHAR} 
+    	and sqi.question_code = #{item.questionCode,jdbcType=VARCHAR};
+       </foreach>
+	</update>  
+	
+  
+  <update id="updateSecurityQueInfo" parameterType="org.jypj.dev.entity.SecurityQueInfo" >
+    update security_question_info
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+	 QUESTION_CODE=#{questionCode,jdbcType=VARCHAR},
+	 QUESTIONS=#{questions,jdbcType=VARCHAR},
+	 ANSWER=#{answer,jdbcType=VARCHAR},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 CTIME=#{ctime,jdbcType=DATE},
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MTIME=#{mtime,jdbcType=DATE}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectSecurityQueInfoById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from security_question_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from security_question_info
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageBySecurityQueInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.SecurityQueInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from security_question_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="questionCode != null and questionCode !='' ">
+	  and QUESTION_CODE=#{questionCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="questions != null and questions !='' ">
+	  and QUESTIONS=#{questions,jdbcType=VARCHAR}
+	 </if>
+	 <if test="answer != null and answer !='' ">
+	  and ANSWER=#{answer,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from security_question_info
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllBySecurityQueInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.SecurityQueInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from security_question_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="questionCode != null and questionCode !='' ">
+	  and QUESTION_CODE=#{questionCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="questions != null and questions !='' ">
+	  and QUESTIONS=#{questions,jdbcType=VARCHAR}
+	 </if>
+	 <if test="answer != null and answer !='' ">
+	  and ANSWER=#{answer,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from security_question_info
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectBySecurityQueInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.SecurityQueInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from security_question_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="questionCode != null and questionCode !='' ">
+	  and QUESTION_CODE=#{questionCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="questions != null and questions !='' ">
+	  and QUESTIONS=#{questions,jdbcType=VARCHAR}
+	 </if>
+	 <if test="answer != null and answer !='' ">
+	  and ANSWER=#{answer,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+  
+</mapper>

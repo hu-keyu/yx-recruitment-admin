@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+    <script type="text/javascript">
+
+        function editReason(id){
+            var title="注意事项维护" ;
+            var url='${link.contextPath}/dg/notice/attentionEditPage?id='+id ;
+            layer.open({
+                type: 2,
+                title:[title, 'font-weight:600'],
+                content:[url,'yes'],
+                btn: ['确定', '取消'],
+                shadeClose:false,
+                fix:true,
+                area: ['750px','580px'],
+                maxWidth:474,
+                move: false,
+                yes: function(index, layero){
+                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                    iframeWin.sure();
+                },
+                end: function(){
+                    window.location.reload();
+                }
+            });
+        }
+        
+    </script>
+</head>
+<body>
+    #parse("/common/topMenu.vm")
+    #parse("/common/leftTemplate.vm")
+<!-- Main内容模块 S-->
+<div class="content-wrapper">
+    <!-- context内容 S-->
+    <div class="content">
+        <!-- 条件搜索 S-->
+        <form class="form-inline">
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-right">
+                    <li>
+                        <button onclick="history.back()" class="btn btn-default btn-sm" type="button">返回</button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <!-- 条件搜索 E-->
+        <!-- table表单模块 S-->
+        <div class="table-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>注意事项名称</th>
+                        <th>注意事项内容</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    #foreach($list in $reasons)
+                        <tr>
+                            <td>$!{list.reason}</td>
+                            <td title="$!list.remark">
+                                #if($!list.remark)
+                                    #if($!list.remark.length()>50)
+                                        $!list.remark.substring(0,50) ...
+                                    #else
+                                        $!list.remark
+                                    #end
+                                #end
+                            </td>
+                            <td>
+                                <a onclick="editReason('$!{list.id}');" class="btn btn-warning" href="javascript:void(0)" title="编辑">编辑</a>
+                            </td>
+                        </tr>
+                    #end
+                </tbody>
+            </table>
+        </div>
+        <!-- table表单模块 E-->
+    </div>
+    <!-- context内容 E-->
+
+    <!-- footer S-->
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2016 © Metronic by keenthemes.
+        </div>
+    </div>
+    <!-- footer E-->
+</div>
+<!-- Main内容模块 E-->
+</body>
+</html>

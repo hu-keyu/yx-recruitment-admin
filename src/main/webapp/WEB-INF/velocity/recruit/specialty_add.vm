@@ -1,0 +1,331 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+
+    	 $(document).ready(function () {
+		 	$("#yjin [prefix=prefix]").html("A");
+			$("#prefix").val("A") ;
+		 	initTable();
+    		initFirstData();
+         });
+    
+    	function initFirstData(){
+            var type=$("#type").val();
+            if(type){
+                $("#firstSbjCode").html("");
+                $.ajax({
+                    url : '${link.contextPath}/dg/specialty/selectFirstByType',
+                    type : 'post',
+                    data:{"type":type},
+                    async: false,
+                    cache : false,
+                    dataType : 'json',
+                    success : function(data) {
+                        if(data.length){
+                            var insertHtml="<option value=''>--请选择--</option>";
+                            $.each(data,function(index,e){
+                                if(e.name.length>20){
+                                    var name1 = e.name.substring(0,10)+"..." ;
+                                }else {
+                                    var name1 = e.name ;
+                                }
+                                insertHtml+='<option value="'+e.code+'" title="'+e.name+'">'+name1+'</option>';
+                            });
+                            $("#firstSbjCode").append(insertHtml);
+                        }else{
+                            $("#firstSbjCode").append('<option value="">--请选择--</option>');
+                        }
+                    }
+                });
+            }else{
+                $("#firstSbjCode").html('<option value="">--请选择--</option>');
+            }
+        }
+		
+		
+		function initScondData(){
+            var firstSbjCode=$("#firstSbjCode").val();
+            if(firstSbjCode){
+                $("#secondSbjCode").html("");
+                $.ajax({
+                    url : '${link.contextPath}/dg/specialty/selectSecondByFirstSbjCode',
+                    type : 'post',
+                    data:{"code":firstSbjCode},
+                    async: false,
+                    cache : false,
+                    dataType : 'json',
+                    success : function(data) {
+                        if(data.length){
+                            var insertHtml="<option value=''>--请选择--</option>";
+                            $.each(data,function(index,e){
+                                if(e.name.length>20){
+                                    var name1 = e.name.substring(0,10)+"..." ;
+                                }else {
+                                    var name1 = e.name ;
+                                }
+                                insertHtml+='<option value="'+e.code+'" title="'+e.name+'">'+name1+'</option>';
+                            });
+                            $("#secondSbjCode").append(insertHtml);
+                        }else{
+                            $("#secondSbjCode").append('<option value="">--请选择--</option>');
+                        }
+                    }
+                });
+            }else{
+                $("#secondSbjCode").html('<option value="">--请选择--</option>');
+            }
+        }
+	 
+		
+		function initTable(){
+			var storey = $("#storey").val() ;
+			if(storey==1){
+				$("#yjin").show();
+				$("[yjse=yjse]").hide();
+				$("[ejse=ejse]").hide();
+				$("#ejin").hide();
+				$("#sjin").hide();
+                changeType() ;
+			}
+			if(storey==2){
+                $("[yjse=yjse]").val("") ;
+				$("[yjse=yjse]").show();
+				$("#ejin").show();
+				$("[ejse=ejse]").hide();
+				$("#yjin").hide();
+				$("#sjin").hide();
+                changeYjse() ;
+			}
+			if(storey==3){
+                $("[yjse=yjse]").val("") ;
+                $("[ejse=ejse]").val("") ;
+				$("[yjse=yjse]").show();
+				$("[ejse=ejse]").show();
+				$("#sjin").show();
+				$("#yjin").hide();
+				$("#ejin").hide();
+                changeYjse() ;
+                changeEjse() ;
+			}
+		}
+
+		function changeType(){
+			if($("#type").val()==1){
+				$("#yjin [prefix=prefix]").html("A");
+				$("#prefix").val("A") ;
+			}
+			if($("#type").val()==2){
+				$("#yjin [prefix=prefix]").html("B");
+				$("#prefix").val("B") ;
+			}
+			if($("#type").val()==3){
+				$("#yjin [prefix=prefix]").html("C");
+				$("#prefix").val("C") ;
+			}
+			if($("#type").val()==4){
+				$("#yjin [prefix=prefix]").html("D");
+				$("#prefix").val("D") ;
+			}
+			$("#yjin").show();
+			$("[yjse=yjse]").hide();
+			$("[ejse=ejse]").hide();
+			$("#ejin").hide();
+			$("#sjin").hide();
+			$("#storey").val(1);
+		}
+		
+		function changeYjse(){
+			var storey = $("#storey").val() ;
+			if(storey==2){
+				//if($("#firstSbjCode").val()){
+					$("#ejin [prefix=prefix]").html($("#firstSbjCode").val());
+					$("#prefix").val($("#firstSbjCode").val()) ;
+				//}
+			}if(storey==3){
+                $("#sjin [prefix=prefix]").html($("#secondSbjCode").val());
+                $("#prefix").val($("#secondSbjCode").val()) ;
+            }
+		}
+		
+		function changeEjse(){
+			var storey = $("#storey").val() ;
+			if(storey==3){
+				//if($("#secondSbjCode").val()){
+					$("#sjin [prefix=prefix]").html($("#secondSbjCode").val());
+					$("#prefix").val($("#secondSbjCode").val()) ;
+				//}
+			}
+		}
+		
+		
+		function sure(){
+			var reg = /^\d{2}$/
+			var regu = /^[ ]+$/
+			var flag = true ;
+			var storey = $("#storey").val() ;
+			if(storey==1){
+				if(!reg.test($("#code1").val())){
+					layer.msg("一级学科代码请填写两位数字！", {icon: 2});
+					flag = false ;
+				}
+				if($("#name1").val()==''||regu.test($("#name1").val())){
+					layer.msg("请填写一级学科名称！", {icon: 2});
+					flag = false ;
+				}
+				if($("#name1").length>50){
+    				layer.msg("一级学科名称不能超过五十个字符！", {icon: 2});
+    				flag = false ;
+    			}
+			}
+			if(storey==2){
+				if(!reg.test($("#code2").val())){
+					layer.msg("二级学科代码请填写两位数字！", {icon: 2});
+					flag = false ;
+				}
+				if($("#firstSbjCode").val()==''){
+					layer.msg("请选择一级学科！", {icon: 2});
+				}
+				if($("#name2").val()==''||regu.test($("#name2").val())){
+					layer.msg("请填写二级学科名称！", {icon: 2});
+					flag = false ;
+				}
+				if($("#name2").length>50){
+    				layer.msg("二级学科名称不能超过五十个字符！", {icon: 2});
+    				flag = false ;
+    			}
+			}
+			if(storey==3){
+				if(!reg.test($("#code3").val())){
+					layer.msg("专业代码请填写两位数字！", {icon: 2});
+					flag = false ;
+				}
+				if($("#firstSbjCode").val()==''){
+					layer.msg("请选择一级学科！", {icon: 2});
+                    flag = false ;
+				}
+				if($("#secondSbjCode").val()==''){
+					layer.msg("请选择二级学科！", {icon: 2});
+                    flag = false ;
+				}
+				if($("#name3").val()==''||regu.test($("#name3").val())){
+					layer.msg("请填写专业名称！", {icon: 2});
+					flag = false ;
+				}
+				if($("#name3").length>50){
+    				layer.msg("专业名称不能超过五十个字符！", {icon: 2});
+    				flag = false ;
+    			}
+			}
+			return flag ;
+		}
+		
+	$(document).ready(function(){
+        $("#input_form").validator({
+            formClass:'n-yellow',
+            msgClass: "n-bottom",
+            msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+            timely:3,
+            focusInvalid:true,
+            focusCleanup:true,
+            stopOnError:false,
+            rules: {
+                // 使用正则表达式定义规则
+                postcode: [/^\d{2}$/, '请输入3位数字'],
+            },
+            fields: {
+				
+            },
+            valid: function(form){
+                url='${link.contextPath}/dg/specialty/add';
+                //表单验证通过，提交表单
+                $.post(url, $(form).serialize()).done(function(data){
+                    if(data.success){
+						parent.layer.msg(data.msg, {icon: 1});
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.window.location.reload();
+                        //parent.layer.close(index); //再执行关闭
+                    }else{
+						parent.layer.msg(data.msg, {icon: 2});
+					}
+                });
+            }
+        });
+
+    })
+
+</script>
+<!-- 专业新增 S-->
+<div class="dialog dialog-info" >
+    <div class="table-content">
+        <form method="post" id="input_form">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right">专业类型：</th>
+                        <td>
+                            <select class="select" name="type" id="type" onchange="initFirstData();changeType();">
+                                <option value="1">研究生</option>
+                                <option value="2">本科</option>
+                                <option value="3">高职高专</option>
+                            </select>
+                        </td>
+                        <th class="text-right">新增种类：</th>
+                        <td>
+                            <select class="select" name="storey" id="storey" onchange="initTable();">
+                                <option value="1">一级学科</option>
+                                <option value="2">二级学科</option>
+                                <option value="3">专业</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" yjse="yjse">一级学科：</th>
+                        <td>
+                            <select class="select" yjse="yjse" name="firstSbjCode" id="firstSbjCode" onchange="initScondData();changeYjse();">
+                                <option value=''>== 请选择 ==</option>
+                            </select>
+                        </td>
+                        <th class="text-right" ejse="ejse">二级学科：</th>
+                        <td>
+                            <select class="select" ejse="ejse" name="secondSbjCode" id="secondSbjCode" onchange="changeEjse();">
+                                <option value=''>== 请选择 ==</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="yjin">
+                        <th class="text-right">一级学科代码：</th>
+                        <td>
+                            <span prefix="prefix"></span><input style="margin-left:10px;" class="input grid-150" type="text" id="code1" name="code1">
+                        </td>
+                        <th class="text-right">一级学科名称：</th>
+                        <td>
+                            <input class="input" type="text" name="name1" id="name1">
+                        </td>
+                    </tr>
+					<tr id="ejin">
+                        <th class="text-right">二级学科代码：</th>
+                        <td>
+                            <span prefix="prefix"></span><input style="margin-left:10px;" class="input grid-150" type="text" id="code2" name="code2">
+                        </td>
+                        <th class="text-right" >二级学科名称：</th>
+                        <td>
+                            <input class="input" type="text" id="name2" name="name2">
+                        </td>
+                    </tr>
+					<tr id="sjin">
+                        <th class="text-right">专业代码：</th>
+                        <td>
+                            <span prefix="prefix"></span><input style="margin-left:10px;" class="input grid-150"  type="text" id="code3" name="code3">
+                        </td>
+                        <th class="text-right zyin">专业名称：</th>
+                        <td>
+                            <input class="input" type="text" id="name3" name="name3">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+			<input type="hidden" name="prefix" id="prefix" />
+			<input style="display: none;" id="submitBtn" type="submit"></input>
+        </form>
+    </div>
+</div>
+<!-- 专业新增 E-->

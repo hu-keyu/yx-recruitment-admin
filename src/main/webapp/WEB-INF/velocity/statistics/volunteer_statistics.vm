@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+		var sloadindex;
+		$(document).ready(function () {  
+			getProject();
+        });
+		function queryData() {
+			
+			
+			//alert('dddd');
+			var $serializeForm=$("#input_form").serialize();
+			var url='${link.contextPath}/dg/volunteerStatistics/volunteerStatisticsSearch';
+			//alert($serializeForm);
+			$.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: url,
+                data : $serializeForm,
+                /*
+				beforeSend: function(){
+                    sloadindex = layer.load(0, {
+                    	shade: [0.3,'#fff']
+                    });
+                },*/
+                success: function (data) {
+                    if (data) {  
+                        /*获取数据总行数*/
+                        $("#totalCounts").val(data.total);
+						$("#currentPage").val(data.currentPage);
+                        /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/
+                        if (parseInt($("#totalCounts").val()) == 0) {
+                            $("#totalCounts").val(1);
+                        }
+						if(parseInt($("#currentPage").val()) == 0) {  
+                        	$("#currentPage").val(1);
+                        }
+						$("#ryn").val($!nowYear);  
+                        data = data.rows;//获取筛选后的内容 
+                        $("#tabinput tr").remove();//清空列表 
+                        console.log(data);
+                        $.each(data, function (index, e) {
+						var insertHtml='<tr>'+'<td>' + e.applyDepName + '</td>' +
+                                            '<td>'+ e.postName +'</td>'+
+                                            '<td>'+ e.hasSubmit +'</td>'+
+											'<td>'+ e.notPassByJYJ +'</td>'+
+											'<td>'+ e.waitAuditByJYJ +'</td>'+
+											'<td>'+ e.hasPass +'</td>'+
+                                        '</tr>';
+						$("#tabinput").append(insertHtml);//将返回的数据追加到表格
+                        });
+                        /*生成分页标签*/
+                       paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));  
+                    }  
+                    //layer.close(sloadindex);
+                }  
+            });  
+        }
+        
+		
+		function paginator(pageIndex, pageSize, totalCount) {
+        	$.jqPaginator('#pagination', {
+        		totalCounts: totalCount,
+        		pageSize: pageSize,
+        	    currentPage: pageIndex,
+        	    visiblePages: 7,
+        		first:'<a class="first">首页</a>',
+        	    prev: '<a class="prev">上一页</a>',
+        	    next: '<a class="next">下一页</a>',
+        		last: '<a class="last：">末页</a>',
+        	    page: '<a class="page">{{page}}</a>',
+        	    onPageChange: function (num, type) {
+        	    	if (type === 'change' && num !== parseInt($("#currentPage").val())) {  
+                        $("#currentPage").val(num);//点击改变页码时，同步model中的页码  
+                        queryData();//重新生成新表
+                    }
+        	    }
+        	});
+        }
+		
+		
+		
+		function clearSearch(){
+            $("#schoolidHid").val("");
+            $("#schoolid").val("");
+            queryData() ;
+        }
+		
+		function searchFunc(){
+            $("#schoolidHid").val($("#schoolid").val());
+            $("#currentPage").val("1");
+            queryData();
+        }
+        
+        
+		//获取招聘项目
+    	function getProject() {
+    		var ryn = $("#ryn").val();
+    		if (!ryn) {
+    			//alert("false");
+    			return;
+    		}
+    		$("#themeid").empty();
+    		$("#positionid").empty();
+    		$.ajax({
+            	url : '${link.contextPath}/dg/scoreEnterInformation/selectProject?ryn=' + ryn,
+            	type : 'post',
+            	async: false,
+            	cache : false,
+            	dataType : 'json',
+            	success : function(data) {
+            		if (data.themeList.length > 0) {
+	    				var themeList = data.themeList;
+						for (var i = 0; i < themeList.length; i++) {
+							var id = themeList[i].id;
+							var name = themeList[i].theme;
+							var theme = name;
+							if(getLength(name) > 12){
+    							name=substr(name,12);
+    						}
+							$("#themeid").append("<option value='" + id + "' title='" + theme + "'>" + name + "</option>");
+						}
+						getPosition();
+            		} else {
+            			$("#themeid").empty();
+            			$("#themeid").prepend("<option value=''>== 请选择 ==</option>");
+            		}
+            	}
+          });
+    	}
+    	
+    	//获取岗位
+    	function getPosition() {
+    		var themeid = $("#themeid").val();
+    		var year = $("#ryn").val();
+    		if (!themeid) {
+    			//alert("false");
+    			return;
+    		}
+    		$("#positionid").empty();
+    		$.ajax({
+                	url : '${link.contextPath}/dg/scoreEnterInformation/selectPosition?themeid=' + themeid+'&year='+year,
+                	type : 'post',
+                	async: false,
+                	cache : false,
+                	dataType : 'json',
+                	success : function(data) {
+                		if (data.positionList.length > 0) {
+    	    				var positionList = data.positionList;
+    	    				$("#positionid").append("<option value=''>全部 </option>");
+    						for (var i = 0; i < positionList.length; i++) {
+    							var id = positionList[i].id;
+    							var name = positionList[i].postName;
+    							$("#positionid").append("<option value='" + id + "'>" + name + "</option>");
+    						}
+                		}else {
+                			$("#positionid").empty();
+                			$("#positionid").prepend("<option value=''>全部</option>");
+                		}
+            			queryData();
+
+                	}
+                });
+    	}
+    </script>
+</head>
+<body>
+	 #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+   <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+            <!-- 条件搜索 S-->
+             <form class="form-inline" id="input_form">
+				<input type="hidden" id="currentPage" name="currentPage" value="1"/>
+				<input type="hidden" id="pageSize" name="pageSize" value="20"/>
+				<input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+                <div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>年份：</span>
+                            <select class="select" id="ryn" name="condition['year']" onchange="getProject();">
+								#foreach( $vo in $nyrdics )
+                              <option value="$vo">$vo</option>
+                                #end
+                            </select>
+                        </li>
+                        <li>
+                            <span>招聘项目：</span>
+                            <select class="select grid-120"  id="themeid" name="condition['projectId']" onchange="getPosition();">
+								<!--#foreach( $vo in $themelist )
+                              <option value="$vo.id" title="$vo.theme">$vo.theme</option>
+								#end-->
+                            </select>
+                        </li>
+						 <li>
+                            <span>招聘岗位：</span>
+                            <select class="select" name="condition['postId']" id="positionid" onchange="queryData();">
+                            </select>
+                        </li>
+			 			<li>
+                            <input class="input" type="text" id="schoolid" placeholder="输入招聘单位">
+                            <input class="input" type="hidden" id="schoolidHid" name="condition['schoolName']" placeholder="输入招聘单位">
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="searchFunc();">查询</a>
+                            <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="clearSearch();">清空</a>
+                        </li>
+                    </ul>
+                </div>
+ </form>           
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>单位名称</th>
+                            <th>岗位名称</th>
+                            <th>报考填报人数</th>
+							<th>教育局审核不通过人数</th>
+							<th>教育局未审核人数</th>
+                            <th>报考通过人数</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabinput">
+                    </tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+                <div id="pagination" class="pull-right pages"></div>
+            </div>
+            <!-- 分页+全选模块 E-->
+    	</div>
+    	<!-- context内容 E-->
+    	<!-- footer S-->
+		<div class="page-footer">
+		    <div class="page-footer-inner">
+		        2016 © Metronic by keenthemes.
+		    </div>
+		</div>
+		<!-- footer E-->
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+#parse("/common/head-meta.vm")
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">	
+
+</script>		
+	 <!-- 考点信息维护 S-->
+    <div class="dialog dialog-info">
+        <div class="table-content">
+			<form method="post" id="input_form" onsubmit="return false;">
+    		<input type="hidden" name="projectId" id="themeId" value="${themeId}"/>
+			<input type="hidden" name="testType" value="${testType}"/>
+			<input type="hidden" name="id" value="$!examItemsInfo.id"/>
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right">招聘项目：</th>
+                        <td>
+							<input class="input" type="text" name="projectName" value="$!themeName"  title="$!themeNameTitle" readOnly>
+							
+                        </td>
+                        <th class="text-right"><span class="flag"></span>考试类型：</th>
+                        <td>
+                            <select class="select" name="type" id="testType" value="$!examItemsInfo.type">
+							
+								   #if($examItemsInfo.type == '2')
+                                    <option value="2"  #if($!examItemsInfo.type == '2') selected #end>统一笔试</option>
+                                   #end
+                                    #if($examItemsInfo.type == '3')
+                                    <option value="3"  #if($!examItemsInfo.type == '3') selected #end>统一试讲</option>
+								    #end
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag"></span>考点编号：</th>
+                        <td>
+                            <input class="input" type="text" name="testNum" value="$!examItemsInfo.testNum" readOnly>
+					
+                        </td>
+                        <th class="text-right"><span class="flag"></span>考点名称：</th>
+                        <td>
+                            <input class="input" type="text" name="testName"  value="$!examItemsInfo.testName" readOnly>
+							<div class="Validform_checktip"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag"></span>开始时间：</th>
+                        <td>
+							<input id="startWdate" name="startTime" readonly="readonly" class="input Wdate" type="text"  value="$!date.format('yyyy-MM-dd HH:mm:ss',$!examItemsInfo.startTime)"/>
+
+                        </td>
+                        <th class="text-right"><span class="flag"></span>结束时间：</th>
+                        <td>
+                            <input id="endWdate" name="endTime" readonly="readonly" class="input Wdate" type="text"  value="$!date.format('yyyy-MM-dd HH:mm:ss',$!examItemsInfo.endTime)"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag"></span>考点地址：</th>
+                        <td>
+                            <input class="input" type="text" name="testAddr" value="$!examItemsInfo.testAddr" readonly="readonly" >
+                        </td>
+                        <th class="text-right">试室数</th>
+                        <td>
+                            #if($examItemsInfo.testName)
+                        	#if($examItemsInfo.type=='2')
+                        	#if($examItemsInfo.KaodianNum)
+                            $examItemsInfo.KaodianNum
+                            #else
+                            (根据编排后自动计算)
+                            #end
+                            #end
+                            #if($examItemsInfo.type=='3')
+                            -
+                            #end
+                            #end
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag"></span>限制岗位：</th>
+                        <td colspan="3">
+                            <textarea class="textarea" rows="5" id="limitProfessionText" readOnly>$!examItemsInfo.permisGw</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">交通环境：</th>
+                        <td colspan="3">
+                            <textarea class="textarea mt10" rows="5" name="sign" readonly="readonly"  >$!examItemsInfo.sign</textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+			</form>
+        </div>
+    </div>
+    <!-- 考点信息维护 E-->
+
+</html>

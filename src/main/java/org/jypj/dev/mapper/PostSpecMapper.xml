@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.PostSpecDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.PostSpec" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="POST_ID" property="postId" jdbcType="VARCHAR" />
+	<result column="SPECIALTY_ID" property="specialtyId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,POST_ID,SPECIALTY_ID
+  </sql>
+  
+   <insert id="savePostSpecByField" parameterType="org.jypj.dev.entity.PostSpec" >
+    insert into recruit_post_specialty
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="postId != null" >
+    POST_ID,
+   </if>
+   <if test="specialtyId != null" >
+    SPECIALTY_ID,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="specialtyId != null" >
+        #{specialtyId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="savePostSpec" parameterType="org.jypj.dev.entity.PostSpec" >
+    insert into recruit_post_specialty (
+	ID,
+	POST_ID,
+	 SPECIALTY_ID
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{postId,jdbcType=VARCHAR},
+	#{specialtyId,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deletePostSpecById" parameterType="java.lang.String" >
+    delete from recruit_post_specialty
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deletePostSpecByObject" parameterType="org.jypj.dev.entity.PostSpec" >
+    delete from recruit_post_specialty
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updatePostSpecByField" parameterType="org.jypj.dev.entity.PostSpec" >
+    update recruit_post_specialty
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="postId != null" >
+  	 POST_ID=#{postId,jdbcType=VARCHAR},
+  	 </if>
+     <if test="specialtyId != null" >
+  	 SPECIALTY_ID=#{specialtyId,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updatePostSpec" parameterType="org.jypj.dev.entity.PostSpec" >
+    update recruit_post_specialty
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 POST_ID=#{postId,jdbcType=VARCHAR},
+	 SPECIALTY_ID=#{specialtyId,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectPostSpecById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_post_specialty
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_post_specialty
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageByPostSpec" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.PostSpec" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_post_specialty
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="specialtyId != null and specialtyId !='' ">
+	  and SPECIALTY_ID=#{specialtyId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_post_specialty
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByPostSpec" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.PostSpec" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_post_specialty
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="specialtyId != null and specialtyId !='' ">
+	  and SPECIALTY_ID=#{specialtyId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_post_specialty
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByPostSpec" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.PostSpec" >
+    select
+      <include refid="Base_Column_List" />
+      from recruit_post_specialty
+      where 1=1
+      <if test="id != null and id !='' ">
+          and ID=#{id,jdbcType=VARCHAR}
+      </if>
+      <if test="postId != null and postId !='' ">
+          and POST_ID=#{postId,jdbcType=VARCHAR}
+      </if>
+      <if test="specialtyId != null and specialtyId !='' ">
+          and SPECIALTY_ID=v
+      </if>
+  </select>
+
+    <insert id="saveBatch" parameterType="list">
+        INSERT INTO recruit_post_specialty(ID,POST_ID,SPECIALTY_ID)
+        <foreach collection="list" item="item" index="index" open="(" separator="union all" close=")" >
+            select
+            sys_guid(),#{item.postId,jdbcType=VARCHAR},#{item.specialtyId,jdbcType=VARCHAR}
+            from dual
+        </foreach>
+    </insert>
+    
+    <delete id="deleteByPostsetId">
+      DELETE FROM recruit_post_specialty
+      WHERE
+      POST_ID=#{postId,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="selectCountBySpecialty" resultType="java.lang.Integer">
+      SELECT count(id) FROM recruit_post_specialty where SPECIALTY_ID = #{specialty,jdbcType=VARCHAR}
+    </select>
+</mapper>

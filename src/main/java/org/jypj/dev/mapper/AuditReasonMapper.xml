@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.AuditReasonDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.AuditReason" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="REASON" property="reason" jdbcType="VARCHAR" />
+	<result column="ORDER_NUM" property="order" jdbcType="DECIMAL" />
+	<result column="OWNERID" property="ownerid" jdbcType="VARCHAR" />
+	<result column="TYPE" property="type" jdbcType="VARCHAR" />
+	<result column="CREATETIME" property="createtime" jdbcType="DATE" />
+	<result column="MODIFYTIME" property="modifytime" jdbcType="DATE" />
+	<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+	<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+	<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,REASON,ORDER_NUM,OWNERID,TYPE,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,REMARK
+  </sql>
+  
+   <insert id="saveAuditReasonByField" parameterType="org.jypj.dev.entity.AuditReason" >
+    insert into school_audit_reason
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="reason != null" >
+    ORDER_NUM,
+   </if>
+   <if test="order != null" >
+    ORDER,
+   </if>
+   <if test="ownerid != null" >
+    OWNERID,
+   </if>
+   <if test="type != null" >
+    TYPE,
+   </if>
+   <if test="createtime != null" >
+    CREATETIME,
+   </if>
+   <if test="modifytime != null" >
+    MODIFYTIME,
+   </if>
+   <if test="createuser != null" >
+    CREATEUSER,
+   </if>
+   <if test="modifyuser != null" >
+    MODIFYUSER,
+   </if>
+   <if test="remark != null" >
+    REMARK,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="order != null" >
+        #{order,jdbcType=DECIMAL},
+      </if>
+      <if test="ownerid != null" >
+        #{ownerid,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyuser != null" >
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveAuditReason" parameterType="org.jypj.dev.entity.AuditReason" >
+    insert into school_audit_reason (
+	ID,
+	REASON,
+	ORDER_NUM,
+	OWNERID,
+	TYPE,
+	CREATETIME,
+	MODIFYTIME,
+	CREATEUSER,
+	MODIFYUSER,
+	 REMARK
+	)
+	values (
+	sys_guid(),
+	#{reason,jdbcType=VARCHAR},
+	#{order,jdbcType=DECIMAL},
+	#{ownerid,jdbcType=VARCHAR},
+	#{type,jdbcType=VARCHAR},
+	sysdate,
+	sysdate,
+	#{createuser,jdbcType=VARCHAR},
+	#{modifyuser,jdbcType=VARCHAR},
+	#{remark,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteAuditReasonById" parameterType="java.lang.String" >
+    delete from school_audit_reason
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteAuditReasonByObject" parameterType="org.jypj.dev.entity.AuditReason" >
+    delete from school_audit_reason
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateAuditReasonByField" parameterType="org.jypj.dev.entity.AuditReason" >
+    update school_audit_reason
+    <set >
+  	 <if test="reason != null" >
+  	 REASON=#{reason,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="order != null" >
+  	 ORDER_NUM=#{order,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="ownerid != null" >
+  	 OWNERID=#{ownerid,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="type != null" >
+  	 TYPE=#{type,jdbcType=VARCHAR},
+  	 </if>
+  	 MODIFYTIME=sysdate,
+  	 <if test="createuser != null" >
+  	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="modifyuser != null" >
+  	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="remark != null" >
+  	 REMARK=#{remark,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateAuditReason" parameterType="org.jypj.dev.entity.AuditReason" >
+    update school_audit_reason
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 REASON=#{reason,jdbcType=VARCHAR},
+	 ORDER_NUM=#{order,jdbcType=DECIMAL},
+	 OWNERID=#{ownerid,jdbcType=VARCHAR},
+	 TYPE=#{type,jdbcType=VARCHAR},
+	 CREATETIME=#{createtime,jdbcType=DATE},
+	 MODIFYTIME=#{modifytime,jdbcType=DATE},
+	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+	 REMARK=#{remark,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectAuditReasonById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_audit_reason
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_audit_reason
+    where 1=1 
+    <if test="ownerId !=null and ownerId !='' ">
+    	and OWNERID=#{ownerId,jdbcType=VARCHAR}
+    </if>
+    <if test="type !=null and type !='' ">
+    	and TYPE=#{type,jdbcType=VARCHAR}
+    </if>
+    order by ORDER_NUM asc,CREATETIME desc,id asc
+  </select> 
+  
+  <select id="selectOnePageByAuditReason" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.AuditReason" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_audit_reason
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="reason != null and reason !='' ">
+	  and REASON=#{reason,jdbcType=VARCHAR}
+	 </if>
+	 <if test="order != null and order !='' ">
+	  and ORDER_NUM=#{order,jdbcType=DECIMAL}
+	 </if>
+	 <if test="ownerid != null and ownerid !='' ">
+	  and OWNERID=#{ownerid,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_audit_reason
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByAuditReason" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.AuditReason" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_audit_reason
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="reason != null and reason !='' ">
+	  and REASON=#{reason,jdbcType=VARCHAR}
+	 </if>
+	 <if test="order != null and order !='' ">
+	  and ORDER_NUM=#{order,jdbcType=DECIMAL}
+	 </if>
+	 <if test="ownerid != null and ownerid !='' ">
+	  and OWNERID=#{ownerid,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+	 order by ORDER_NUM asc,CREATETIME desc
+  </select>
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_audit_reason
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByAuditReason" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.AuditReason" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_audit_reason
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="reason != null and reason !='' ">
+	  and REASON=#{reason,jdbcType=VARCHAR}
+	 </if>
+	 <if test="order != null and order !='' ">
+	  and ORDER_NUM=#{order,jdbcType=DECIMAL}
+	 </if>
+	 <if test="ownerid != null and ownerid !='' ">
+	  and OWNERID=#{ownerid,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+	
+	<select id="selectAllAttention" resultMap="BaseResultMap">
+		SELECT * FROM school_audit_reason
+		WHERE type = '3'
+		ORDER BY ORDER_NUM
+	</select>
+  
+</mapper>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+
+<script>
+
+    function add(status) {
+        var theme = $("#theme").val() ;
+        var time = $("#reportEndTime").val() ;
+        var content = $("#content").val() ;
+        var eduNames = $("#eduNames").val() ;
+        if(theme==""){
+            layer.msg("主题名称不可为空", {icon: 2});
+            return false ;
+        }
+        if(theme.length>120){
+            layer.msg("主题名称长度不能超过120字符", {icon: 2});
+            return false ;
+        }
+        if(time==""){
+            layer.msg("上报截止时间不可为空", {icon: 2});
+            return false ;
+        }
+        if(content==""){
+            layer.msg("详细内容不可为空", {icon: 2});
+            return false ;
+        }
+        if(content.length>500){
+            layer.msg("详细内容长度不可超过500字符", {icon: 2});
+            return false ;
+        }
+        if(eduNames==""){
+            layer.msg("上报单位不可为空", {icon: 2});
+            return false ;
+        }
+        $("#status").val(status)
+        var $input_form=$(document).find("#input_form");
+        $.ajax({
+            url : '${link.contextPath}/dg/theme/add',
+            type : 'post',
+            async: false,
+            cache : false,
+            data:$input_form.serialize(),
+            dataType : 'json',
+            success : function(data) {
+                if(data.success){
+                    window.location.href="${link.contextPath}/dg/theme/index" ;
+                }
+                layer.msg(data.msg, {icon: 1});
+            }
+        });
+    }
+
+    var unitText = "";
+    var unitCode = "";
+    function choose(){
+        layer.open({
+            id:'layui-layer-iframe1',
+            type: 2,
+            title:['选择单位', 'font-weight:600'],
+            content:['${link.contextPath}/dg/theme/unitChoose'],
+            btn: ['确定', '取消'],
+            shadeClose:true,
+            fix:true,
+            area: ['750px','580px'],
+            move: false,
+            yes: function(index, layero){
+                unitText=[];
+                unitCode=[];
+                //var body = layer.getChildFrame('body', index);
+                var unit=$("#layui-layer-iframe1 iframe")[0].contentWindow.unit;
+                for(var i in unit){
+                    unitCode.push(i);
+                    unitText.push(unit[i]);
+                }
+                $("#eduNames").val(unitText);
+                $("#eduIds").val(unitCode);
+                if(unitCode.length>0){
+                    layer.msg("单位添加成功！", {icon: 1});
+                }
+                layer.close(index);
+            },
+        })
+    }
+    
+    
+
+</script>
+</head>
+<body>
+    #parse("/common/topMenu.vm")
+    #parse("/common/leftTemplate.vm")
+<!-- Main内容模块 S-->
+<div class="content-wrapper">
+    <!-- context内容 S-->
+    <div class="content">
+        <!-- table表单模块 S-->
+        <form class="table-content" method="post" id="input_form">
+            <table class="formTable">
+                <caption>招聘主题发布</caption>
+                <tbody>
+                    <tr>
+                        <th class="text-right" width="10%"><span class="flag">*</span>招聘主题：</th>
+                        <td><input class="input" type="text" name="theme" id="theme"></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="10%"><span class="flag">*</span>上报截止时间：</th>
+                        <td>
+                            <input id="reportEndTime" name="reportEndTime"  class="input Wdate" type="text" readonly="readonly"
+                               onfocus="WdatePicker({minDate:'$!{dates}',dateFmt:'yyyy-MM-dd 23:59',maxDate:'2020-12-20'})" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="10%"><span class="flag">*</span>详细内容：</th>
+                        <td>
+                            <textarea class="textarea" rows="5" name="content" id="content"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="10%"><span class="flag">*</span>岗位计划上报单位：</th>
+                        <td>
+                            <input class="input" type="text" name="" id="eduNames" readonly>
+                            <input class="input" type="hidden" name="eduIds" id="eduIds">
+                            <input id="status" class="input" type="hidden" name="status" value="0">
+                            <a onclick="choose();" class="btn btn-primary btn-sm mt10" href="javascript:void(0);" title="选择">选择</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <!-- table表单模块 E-->
+        <!-- 操作按钮 S-->
+        <div class="text-center pagesBox">
+            <button onclick="add(0)" class="btn btn-primary btn-sm" type="button">保存</button>
+            <button onclick="add(1)" class="btn btn-primary btn-sm" type="button">发布</button>
+            <button onclick="javascript:history.back();" class="btn btn-default btn-sm" type="button">取消</button>
+        </div>
+    <!-- 操作按钮 E-->
+    </div>
+    <!-- context内容 E-->
+
+    <!-- footer S-->
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2016 © Metronic by keenthemes.
+        </div>
+    </div>
+    <!-- footer E-->
+</div>
+<!-- Main内容模块 E-->
+</body>
+</html>

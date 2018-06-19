@@ -1,0 +1,371 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $(".chbox").click(function(){
+            if(!$(this).is(":checked")){
+                var $select=$(this).parents("td").find(".grid-120");
+                $select.val("");
+            }
+        });
+
+        //专业要求
+        $("#isLimitProfession").click(function(){
+            if(!$(this).is(":checked")){
+                $("#limitProfessionText").text("");
+                $("#limitProfession").val("");
+            }
+        });
+
+
+        //年龄
+        $("input.limitAge").bind("blur",function(){
+            var $checkbox=$(this).parent("td").find("input[type='checkbox']");
+            var $select=$(this).parent("td").find("select.grid-120");
+            if($(this).val()){
+                if(!$checkbox.is(":checked")){
+                        $checkbox.prop("checked", true);
+                }
+            }else{
+                if(!$select.val() && $checkbox.is(":checked")){
+                        $checkbox.prop("checked", false);
+                }
+            }
+        });
+
+        $("select.limitAge").bind("change",function(){
+            var $checkbox=$(this).parent("td").find("input[type='checkbox']");
+            var $input=$(this).parent("td").find("input.grid-120");
+            if($(this).val()){
+                if(!$checkbox.is(":checked")){
+                        $checkbox.prop("checked", true);
+                }
+            }else{
+                if(!$input.val() && $checkbox.is(":checked")){
+                        $checkbox.prop("checked", false);
+                }
+            }
+        });
+
+        //学历、教育类型、学位
+        $("select.first").bind("change",function(){
+            var $checkbox=$(this).parent("td").find("input[type='checkbox']");
+            var $select=$(this).parent("td").find("select.second");
+            if($(this).val()){
+                if(!$checkbox.is(":checked")){
+                        $checkbox.prop("checked", true);
+                }
+            }else{
+                if(!$select.val() && $checkbox.is(":checked")){
+                        $checkbox.prop("checked", false);
+                }
+            }
+        });
+
+        $("select.second").bind("change",function(){
+            var $checkbox=$(this).parent("td").find("input[type='checkbox']");
+            var $select=$(this).parent("td").find("select.first");
+            if($(this).val()){
+                if(!$checkbox.is(":checked")){
+                        $checkbox.prop("checked", true);
+                }
+            }else{
+                if(!$select.val() && $checkbox.is(":checked")){
+                        $checkbox.prop("checked", false);
+                }
+            }
+        });
+
+        $("#input_form").validator({
+            formClass:'n-yellow',
+            msgClass: "n-bottom",
+            msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+            timely:3,
+            focusInvalid:true,
+            focusCleanup:true,
+            stopOnError:false,
+            rules: {
+                // 使用正则表达式定义规则
+                postcode: [/^\d{3}$/, '请输入3位数字'],
+            },
+            fields: {
+                postCode:{
+                    rule: 'required;postcode',
+                    msg:{
+                        integer:"岗位代码只能填写正整数",
+                        length:"岗位代码只能填写1到3位正整数"
+                    }
+                },
+                postName: "岗位名称:required;length(1~16)",
+                subject:"学科:required",
+                isArt:"是否艺术类:required",
+                postCategory:"岗位类别:required",
+                seq: {
+                    rule: "排序号: required;integer(+);length(1~3)",
+                    msg:{
+                        integer:"排序号只能填写正整数",
+                        length:"排序号只能填写1到3位正整数"
+                    }
+                },
+                summary:"简介: length(0~300)",
+                limitAge:{
+                    rule: "年龄: required(#isLimitAge:checked);integer(+);length(1~2)",
+                    msg:{
+                        integer:"年龄只能填写正整数",
+                        length:"年龄只能填写1到2位正整数"
+                    }
+                },
+                limitAgeConditition:"年龄限制条件:required(#isLimitAge:checked)",
+                limitEducation:"学历:required(#isLimitEducation:checked)",
+                limitEducationConditition:"学历限制条件:required(#isLimitEducation:checked)",
+                limitEdu:"教育类型:required(#isLimitEdu:checked)",
+                limitEduConditition:"教育类型限制条件:required(#isLimitEdu:checked)",
+                limitDegree:"学位:required(#isLimitDegree:checked)",
+                limitDegreeConditition:"学位限制条件:required(#isLimitDegree:checked)",
+                limitProfessionText:"专业要求:required(#isLimitProfession:checked)",
+				otherLimit:"学校其他限制条件:length(0~100)"
+            },
+            valid: function(form){
+                url='${link.contextPath}/dg/postset/add';
+                //表单验证通过，提交表单
+                $.post(url, $(form).serialize()).done(function(data){
+                    parent.layer.msg(data.msg, {icon: 1});
+                    if(data.success){
+                        parent.window.location.reload();
+                        //window.parent.layer.closeAll();
+                    }else{
+                        return false ;
+                    }
+                });
+            }
+        });
+    });
+
+    function sure(){
+        var id = $("#hiddId").val() ;
+        var code = $("#postCode").val() ;
+        var name = $("#postName").val() ;
+        $.ajax({
+            type: 'post',
+            url: '${link.contextPath}/dg/postset/validPostset',
+            dataType: "json",
+            data: {id:id,code:code,name:name},
+            success: function(data) {
+                if(data.success){
+                    $("#input_form").submit();
+                }else{
+                    layer.msg(data.msg, {icon: 2});
+                    return false ;
+                }
+            }
+        });
+
+    }
+
+    function cancel(){
+        window.parent.layer.closeAll();
+    }
+
+    var professText = '$!{postset.limitProfessionText}';
+    var professCode = '$!{postset.limitProfession}';
+
+    function choose(){
+        layer.open({
+            id:'layui-layer-iframe1',
+            type: 2,
+            title:['专业选择', 'font-weight:600'],
+            content:['${link.contextPath}/dg/postset/chooseSpecialty'],
+            btn: ['确定', '取消'],
+            shadeClose:true,
+            fix:true,
+            area: ['750px','580px'],
+            move: false,
+            yes: function(index, layero){
+                professText=[];
+                professCode=[];
+                //var body = layer.getChildFrame('body', index);
+                var profess=$("#layui-layer-iframe1 iframe")[0].contentWindow.profess;
+                for(var i in profess){
+                    professCode.push(i);
+                    professText.push(profess[i]);
+                }
+                $("#limitProfessionText").text(professText);
+                $("#limitProfession").val(professCode);
+                if(professCode.length>0) {
+                    layer.msg("专业添加成功！", {icon: 1});
+                }
+                layer.close(index);
+            }
+        })
+    }
+</script>
+<!-- 添加岗位 S-->
+<div class="dialog dialog-post">
+    <div class="table-content">
+        <form method="post" id="input_form">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>岗位代码：</th>
+                        <td>
+                            <input type="hidden" value="${postset.id}" name="id" id="hiddId">
+                            <input class="input" type="text" name="postCode" value="$!{postset.postCode}" id="postCode">
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>岗位名称：</th>
+                        <td>
+                            <input class="input" type="text" name="postName" value="${postset.postName}" id="postName">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>学科：</th>
+                        <td>
+                            <select class="select" name="subject" >
+                                <option value="" #if($!position.limitEdu == '') selected #end>== 请选择 ==</option>
+                                #foreach($list in $xklbDics)
+                                    <option value="$!list.value" #if($!postset.subject == $!list.value) selected #end>$!list.text</option>
+                                #end
+                            </select>
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>艺术类：</th>
+                        <td>
+                            <select class="select" name="isArt">
+                                <option value="">== 请选择 ==</option>\
+                                <option value="0" #if($!postset.isArt == '0') selected #end>否</option>
+                                <option value="1" #if($!postset.isArt == '1') selected #end>是</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>岗位类别：</th>
+                        <td>
+                            <select class="select" name="postCategory">
+                                <option value="">== 请选择 ==</option>
+                                #foreach($list in $gwlbDics)
+                                    <option value="$!list.value" #if($!postset.postCategory == $!list.value) selected #end>$!list.text</option>
+                                #end
+                            </select>
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>排序号：</th>
+                        <td>
+                            <input class="input" type="text" name="seq" value="${postset.seq}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">简介：</th>
+                        <td colspan="3">
+                            <textarea class="textarea" type="text" name="summary">$!{postset.summary}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><strong>岗位限制条件：</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <label><input type="checkbox" class="chbox" name="isLimitAge" id="isLimitAge" value="1" #if($!postset.isLimitAge == '1') checked #end>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</label>
+                            <input class="input grid-120 limitAge" type="text" name="limitAge" id="limitAge" value="$!{postset.limitAge}">&nbsp;岁
+                            <select class="select grid-120 limitAge" name="limitAgeConditition" id="limitAgeConditition">
+                                <option value="" #if($!postset.limitAgeConditition == '') selected #end>== 请选择 ==</option>
+                                <option value=">=" #if($!postset.limitAgeConditition == '>=') selected #end>及以上</option>
+                                <option value="<=" #if($!postset.limitAgeConditition == '<=') selected #end>及以下</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <label><input type="checkbox" class="chbox" name="isLimitEducation" id="isLimitEducation" value="1" #if($!postset.isLimitEducation == '1') checked #end>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;历：</label>
+                            <select class="select grid-120 first" name="limitEducation" id="limitEducation">
+                                <option value="">== 请选择 ==</option>
+                                #foreach($list in $xllxDics)
+                                    <option value="$!list.value" #if($!postset.limitEducation == $!list.value) selected #end>$!list.text</option>
+                                #end
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <select class="select grid-120 second" name="limitEducationConditition" id="limitEducationConditition">
+                                <option value="" #if($!postset.limitEducationConditition == '') selected #end>== 请选择 ==</option>
+                                <option value=">=" #if($!postset.limitEducationConditition == '>=') selected #end>及以上</option>
+                                <option value="<=" #if($!postset.limitEducationConditition == '<=') selected #end>及以下</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <label><input type="checkbox" class="chbox" name="isLimitEdu" id="isLimitEdu" value="1" #if($!postset.isLimitEdu == '1') checked #end>教育类型：</label>
+                            <select class="select grid-120 first" name="limitEdu">
+                                <option value="" #if($!postset.limitEdu == '') selected #end>== 请选择 ==</option>
+                                #foreach($list in $jylxDics)
+                                    <option value="$!list.value" #if($!postset.limitEdu == $!list.value) selected #end>$!list.text</option>
+                                #end
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <select class="select grid-120 second" name="limitEduConditition" id="limitEduConditition">
+                                <option value="" #if($!postset.limitEduConditition == '') selected #end>== 请选择 ==</option>
+                                <option value=">=" #if($!postset.limitEduConditition == '>=') selected #end>及以上</option>
+                                <option value="<=" #if($!postset.limitEduConditition == '<=') selected #end>及以下</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <label><input type="checkbox" class="chbox" name="isLimitDegree" id="isLimitDegree" value="1" #if($!postset.isLimitDegree == '1') checked #end>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：</label>
+                            <select class="select grid-120 first" name="limitDegree">
+                                <option value="" #if($!postset.limitDegree == '') selected #end>== 请选择 ==</option>
+                                #foreach($list in $xwlxDics)
+                                    <option value="$!list.value" #if($!postset.limitDegree == $!list.value) selected #end>$!list.text</option>
+                                #end
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <select class="select grid-120 second" name="limitDegreeConditition" id="limitDegreeConditition">
+                                <option value="" #if($!postset.limitDegreeConditition == '') selected #end>== 请选择 ==</option>
+                                <option value=">=" #if($!postset.limitDegreeConditition == '>=') selected #end>及以上</option>
+                                <option value="<=" #if($!postset.limitDegreeConditition == '<=') selected #end>及以下</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <div class="clearfix">
+                                <a  onclick="choose()" class="pull-right btn btn-primary btn-sm" href="javascript:void(0)" title="选择">选择</a>
+                                <label><input type="checkbox" name="isLimitProfession" id="isLimitProfession" value="1" #if($!postset.isLimitProfession == '1') checked #end>专业要求：</label>
+                            </div>
+                            <textarea id="limitProfessionText" class="textarea mt10" rows="5" name="limitProfessionText">$!{postset.limitProfessionText}</textarea>
+                            <input type="hidden" id="limitProfession" name="limitProfession" value="$!{postset.limitProfession}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <label><input type="checkbox" checked="true" disabled="true" id="isLimitRecruit" value="1">招聘对象：</label>
+                            <input type="hidden" value="1" name="isLimitRecruit">
+                            <select class="select grid-120" name="limitRecruit">
+                                <option value="0" value="" #if($!postset.limitRecruit == '0') selected #end>全部</option>
+                                #foreach($list in $bylxDics)
+                                    <option value="$!list.value" #if($!postset.limitRecruit == $!list.value) selected #end>$!list.text</option>
+                                #end
+                            </select>
+                        </td>
+                    </tr>
+					<tr>
+                        <td colspan="4">
+                            <label>中职专业课：</label>
+                            <select class="select grid-120" name="iszz">
+                                <option #if($!postset.iszz == '0') selected #end value="0">否</option>
+                                <option #if($!postset.iszz == '1') selected #end value="1">是</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <label><input type="checkbox" name="isEducationStudent" id="isEducationStudent" value="1" #if($!postset.isEducationStudent == '1') checked #end>要求东莞生源免费师范生</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                        	<div class="clearfix">
+                            	<label>学校其他限制条件：</label>
+                            </div>
+                            <textarea class="textarea mt10" rows="5" name="otherLimit">$!{postset.otherLimit}</textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <a style="display: none;" id="test-zh" class="btn btn-primary" onclick="sure();" href="javascript:void(0);" title="确定">确定</a>
+        </form>
+    </div>
+</div>
+<!-- 添加岗位 E-->

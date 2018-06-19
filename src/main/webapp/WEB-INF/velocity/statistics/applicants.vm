@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	#parse("/common/head-meta.vm")
+	<title>东莞招聘</title>
+	#parse("/common/head-js+css.vm")
+</head>
+<body ms-controller="statistics">
+	#parse("/common/topMenu.vm")
+	#parse("/common/leftTemplate.vm")
+<!-- Main内容模块 S-->
+<div class="content-wrapper">
+	<!-- context内容 S-->
+	<div class="content">
+        <!-- table切换 S-->
+        <div class="tabChange">
+            <ul class="clearfix">
+                <li><a href="${link.contextPath}/dg/statistics/toPeopleCount" title="人数统计">人数统计</a></li>
+                <li><a href="${link.contextPath}/dg/statistics/toRation" title="比例统计">比例统计</a></li>
+                <li class="active"><a href="${link.contextPath}/dg/statistics/toJob" title="岗位统计">岗位统计</a></li>
+            </ul>
+        </div>
+        <!-- table切换 E-->
+		<!-- 条件搜索 S-->
+		<form class="form-inline" id="list_form">
+			<div class="clearfix item-group">
+				<ul class="clearfix pull-left">
+					<li>
+						<span>招聘年份：</span>
+						<select class="select" ms-duplex="year">
+							#if($!years.size()>0)
+								#foreach($year in $years)
+									<option value="$!year" #if($foreach.index==0)selected="selected"#end>$!year</option>
+								#end
+							#else
+								<option value="">--请选择--</option>
+							#end
+						</select>
+					</li>
+					<li>
+						<span>主题名称：</span>
+						<select class="select" ms-duplex="themeId">
+							<option ms-repeat-theme="themes" ms-attr-value="{{theme.id}}" ms-attr-title="theme.theme">{{theme.theme|truncate(20,"……")}}</option>
+						</select>
+					</li>
+				</ul>
+				<ul class="clearfix pull-right">
+                	<li>
+                		<a ms-click="exportExcel" class="pull-right btn btn-primary btn-sm" href="javascript:void(0);" title="导出">导出</a>
+                	</li>
+                </ul>
+			</div>
+		</form>
+		<!-- 条件搜索 E-->
+		<!-- table表单模块 S-->
+		<div class="table-content">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>岗位名称</th>
+						<th>岗位报考人数</th>
+						<th>男(人数)</th>
+						<th>男(占总人数比例)</th>
+						<th>女(人数)</th>
+						<th>女(占总人数比例)</th>
+						<th>研究生(人数)</th>
+						<th>研究生(占总人数比例)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ms-repeat="applicants">
+						<td>{{el.postName}}</td>
+						<td>{{el.totalCount}}</td>
+						<td>{{el.menCount}}</td>
+						<td>{{el.menScale}}</td>
+						<td>{{el.womenCount}}</td>
+						<td>{{el.womenScale}}</td>
+						<td>{{el.graduateCount}}</td>
+						<td>{{el.graduateScale}}</td>
+                    </tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- table表单模块 E-->
+	</div>
+	<!-- context内容 E-->
+	<!-- footer S-->
+	#parse("common/foot.vm")
+	<!-- footer E-->
+</div>
+<!-- Main内容模块 E-->
+</body>
+<script type="text/javascript">
+	var vm;
+	$(function(){
+		vm=avalon.define({
+			$id:'statistics',
+			years:[],
+			year:'$years.get(0)',
+			themes:[],
+			themeId:'',
+			applicants:[],
+			loadThemes:function(){
+				$.ajax({
+					url:'${link.contextPath}/dg/theme/selectAllByYear',
+					data:{year:vm.year},
+					success:function(data){
+						vm.themes=data;
+						if(data&&data.length>0){
+							vm.themeId=data[0].id;
+						}
+					}
+				});
+			},
+			exportExcel:function(){
+				window.location.href="${link.contextPath}/dg/statistics/exportApplicants?itemsId="+vm.themeId+"&year="+vm.year;
+			}
+			
+		});
+        vm.$watch('year',function(){
+            vm.loadThemes();
+        });
+		vm.$watch('themeId',function(){
+			$.ajax({
+				url:'${link.contextPath}/dg/statistics/selectApplicants',
+				data:{year:vm.year,itemsId:vm.themeId},
+				success:function(data){
+    				for(var i in data){
+						var totalCount=data[i].totalCount;
+    					data[i].menScale=(totalCount?(Math.round(data[i].menCount/totalCount * 10000)/100).toFixed(2):0) + '%';
+    					data[i].womenScale=(totalCount?(Math.round(data[i].womenCount/totalCount * 10000)/100).toFixed(2):0) + '%';
+    					data[i].womenScale=(totalCount?(Math.round(data[i].womenCount/totalCount * 10000)/100).toFixed(2):0) + '%';
+						data[i].graduateScale=(totalCount?(Math.round(data[i].graduateCount/totalCount * 10000)/100).toFixed(2):0) + '%';
+						data[i].bachelorScale=(totalCount?(Math.round(data[i].bachelorCount/totalCount * 10000)/100).toFixed(2):0) + '%';
+						data[i].collegeScale=(totalCount?(Math.round(data[i].collegeCount/totalCount * 10000)/100).toFixed(2):0) + '%';
+						data[i].secondaryScale=(totalCount?(Math.round(data[i].secondaryCount/totalCount * 10000)/100).toFixed(2):0) + '%';
+    				}
+					vm.applicants=data;
+				}
+			});
+		});
+		vm.loadThemes();
+	});
+</script>
+</html>

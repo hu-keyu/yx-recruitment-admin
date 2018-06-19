@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>招聘计划审核</title>
+
+    <!-- 公共重置CSS -->
+
+    <link href="css/common.css" rel="stylesheet">
+    <link href="css/skin-blue.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1474956227_0993266.css">
+
+    <!-- 样式美化CSS -->
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <!-- 97日历控件 -->
+    <script src="plug-ln/My97DatePicker/WdatePicker.js"></script>
+    <!-- 项目公共JS -->
+    <script src="js/zh.js"></script>
+</head>
+<body>
+    <!-- 顶部导航 S-->
+    <div class="header">
+    	<!-- top S-->
+    	<div class="top clearfix">
+    		<!-- logo S-->
+	    	<div class="logoBox pull-left">
+	    		<img src="images/logo.png" alt="">
+	    	</div>
+	    	<!-- logo E-->
+	    	<!-- 导航模块 S-->
+	    	<div class="navList pull-left">
+	    		<ul class="clearfix">
+	    			<li class="active">
+	    				<a href="#this" title="招聘设置">
+	    					招聘设置
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="#this" title="考务管理">
+	    					考务管理
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="#this" title="成绩管理">
+	    					成绩管理
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="#this" title="查询统计">
+	    					查询统计
+	    				</a>
+	    			</li>
+	    		</ul>
+	    	</div>
+	    	<!-- 导航模块 E-->
+	    	<!-- 操作导航 S-->
+	    	<div class="handleList pull-right">
+	    		<ul class="clearfix">
+	    			<li>
+	    				<a href="#this" title="返回桌面">
+	    					<i class="iconfont">&#xe608;</i>
+	    					<span>返回桌面</span>
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="#this" title="换肤">
+	    					<i class="iconfont">&#xe607;</i>
+	    					<span>换肤</span>
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="#this" title="帮助">
+	    					<i class="iconfont">&#xe609;</i>
+	    					<span>帮助</span>
+	    				</a>
+	    			</li>
+	    			<li class="quit">
+	    				<div class="text-center">
+	    					<i class="iconfont">&#xe60a;</i>
+	    				</div>
+	    				<!-- 滑出层 S-->
+    					<div class="drop-panel">
+    						<div class="panel">
+    							<div class="info">
+    								<em class="flag"></em>
+                                    <div class="pic">
+                                        <em style="background-image: url(images/IMG_1338.JPG);filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/IMG_1338.JPG',  sizingMethod='scale');"></em>
+                                    </div>
+									<ul class="infoList">
+										<li>当前账号：zsf19</li>
+										<li>工作职务：教育局长</li>
+										<li>工作单位：东莞教育局</li>
+									</ul>
+    							</div>
+    							<div class="btnBox">
+    								<a class="password" href="#" title=""><i class="iconfont">&#xe60e;</i>修改密码</a>
+    								<a class="quit" href="#" title=""><i class="iconfont">&#xe60f;</i>退出登录</a>
+    							</div>
+    						</div>
+    					</div>
+    					<!-- 滑出层 E-->
+	    			</li>
+	    		</ul>
+	    	</div>
+	    	<!-- 操作导航 E-->
+    	</div>
+    	<!-- top E-->
+    	<!-- 二级菜单 S-->
+	    <div class="menuList">
+	    	<ul class="clearfix">
+				<li class="active">
+					<a href="#this">岗位设置</a>
+				</li>
+				<li>
+					<a href="#this">招聘主题发布</a>
+				</li>
+				<li>
+					<a href="#this">招聘计划审核</a>
+				</li>
+				<li>
+					<a href="#this">招聘公告发布</a>
+				</li>
+				<li>
+					<a href="#this">招聘人员审核</a>
+				</li>
+				<li>
+					<a href="#this">学科考题管理</a>
+				</li>
+			</ul>
+	    </div>
+	    <!-- 二级菜单 E-->
+    </div>
+    <!-- 顶部导航 E-->
+
+    <!-- 左侧日历+天气+个人信息 S-->
+    <div class="main-sidebar">
+    	<div class="sidebar">
+    		<!-- 个人信息 S-->
+    		<div class="userInfo">
+    			<div class="pic">
+                    <em style="background-image: url(images/IMG_1338.JPG);filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/IMG_1338.JPG',  sizingMethod='scale');"></em>         
+                </div>
+    			<div class="info">
+    				<h3>张远航</h3>
+    				<p>当前账号：<br/>zhangyuanhang-og</p>
+    				<p>工作职务：教育局长</p>
+    			</div>
+    		</div>
+    		<!-- 个人信息 E-->
+    		<!-- 日历 S-->
+    		<div class="title">
+    			<i class="iconfont">&#xe60c;</i>
+    			<span class="text">日历</span>
+    		</div>
+    		<hr>
+    		<div id="calendar" class="calendar"></div>
+    		<!-- 日历 E-->
+    		<!-- 天气 S-->
+    		<div class="title">
+    			<i class="iconfont">&#xe60d;</i>
+    			<span class="text">天气</span>
+    		</div>
+    		<hr>
+    		<div class="weather">
+    			<iframe id="a" name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=149" width="210" height="360" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+    		</div>
+    		<!-- 天气 E-->
+    	</div>
+    </div>
+    <!-- 左侧日历+天气+个人信息 E-->
+
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+    	<!-- context内容 S-->
+    	<div class="content">
+            <!-- table切换 S-->
+            <div class="tabChange">
+                <ul class="clearfix">
+                    <li class="active"><a href="#this" title="审批">审批</a></li>
+                    <li><a href="#this" title="汇总">汇总</a></li>
+                </ul>
+            </div>
+            <!-- table切换 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="formTable">
+                    <caption class="text-center style1">招聘主题：10.11(截止日期：2016-10-28)</caption>
+                    <tbody>
+                        <tr>
+                            <th class="text-right" width="15%"><span class="flag">*</span>预计当年总班额数：</th>
+                            <td>
+                                <input class="input" type="text" name="" value="zh">
+                            </td>
+                            <th class="text-right" width="15%"><span class="flag">*</span>市教育局当年初下发的编制数：</th>
+                            <td>
+                                <input class="input" type="text" name="" value="zh">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right" width="15%"><span class="flag">*</span>非在编教师数：</th>
+                            <td>
+                                <input class="input" type="text" name="" value="zh">
+                            </td>
+                            <th class="text-right" width="15%"><span class="flag">*</span>空编情况：</th>
+                            <td>
+                                <input class="input" type="text" name="" value="zh">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right" width="15%"><span class="flag">*</span>空岗情况：</th>
+                            <td>
+                                <input class="input" type="text" name="" value="zh">
+                            </td>
+                            <th class="text-right" width="15%"><span class="flag">*</span>预计减员数：</th>
+                            <td>
+                                <input class="input" type="text" name="" value="zh">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right" width="15%"><span class="flag">*</span>备注：</th>
+                            <td colspan="3">
+                                <textarea class="textarea" rows="5"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right" width="15%">在编人数：</th>
+                            <td colspan="3">
+                                <table class="formTable">
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-right" width="15%"><span class="flag">*</span>公办教职工在编人数：</th>
+                                            <td>
+                                                <input class="input" type="text" name="" value="zh">
+                                            </td>
+                                            <th class="text-right" width="15%"><span class="flag">*</span>在编不在岗人数：</th>
+                                            <td>
+                                                <input class="input" type="text" name="" value="zh">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-right" width="15%"><span class="flag">*</span>职员数：</th>
+                                            <td>
+                                                <input class="input" type="text" name="" value="zh">
+                                            </td>
+                                            <th class="text-right" width="15%"><span class="flag">*</span>工勤数：</th>
+                                            <td>
+                                                <input class="input" type="text" name="" value="zh">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right" width="15%">空岗情况细分：</th>
+                            <td colspan="3">
+                                <table class="formTable">
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-right" width="15%">专业技术-高级：</th>
+                                            <td>
+                                                <input class="input" type="text" name="" value="zh">
+                                            </td>
+                                            <th class="text-right" width="15%">专业技术-中级：</th>
+                                            <td>
+                                                <input class="input" type="text" name="" value="zh">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-right" width="15%">专业技术-初级：</th>
+                                            <td>
+                                                <input class="input" type="text" name="" value="zh">
+                                            </td>
+                                            <th class="text-right" width="15%">管理岗：</th>
+                                            <td>
+                                                <input class="input" type="text" name="" value="zh">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-right" width="15%">工勤岗：</th>
+                                            <td>
+                                                <input class="input" type="text" name="" value="zh">
+                                            </td>
+                                            <th class="text-right" width="15%"></th>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <dl class="formTable mt10">
+                    <dt class="text-center style1">招聘岗位信息</dt>
+                    <dd>
+                        <table class="formTable">
+                            <tbody>
+                                <tr>
+                                    <th class="text-right" width="15%">岗位名称：</th>
+                                    <td>中学语文教师（毕业生）</td>
+                                    <th class="text-right" width="15%">科目名称：</th>
+                                    <td>语文</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">科目课时：</th>
+                                    <td>20</td>
+                                    <th class="text-right" width="15%">本岗位应设人数：</th>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">本岗位现有人数：</th>
+                                    <td>20</td>
+                                    <th class="text-right" width="15%">本岗位空缺人数：</th>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">本岗位计划招聘人数：</th>
+                                    <td>20</td>
+                                    <th class="text-right" width="15%">本岗位实际招聘人数：</th>
+                                    <td>
+                                        <input class="input" type="text" name="">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">岗位备注说明：</th>
+                                    <td colspan="3">3</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">学校其他限制条件：</th>
+                                    <td colspan="3">3</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">岗位限制条件：</th>
+                                    <td colspan="3">教育类型： 全日制及以上; 年龄：41岁及以下; 学历：本科及以上; 学位：学士及以上; 专业：B040107人文教育,A0401教育学,B050301新闻学,B0501中国语言文学类,A0503新闻传播学,A0501中国语言文学,B040101教育学; 招聘对象：毕业生</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </dd>
+                    <dd>
+                        <table class="formTable">
+                            <tbody>
+                                <tr>
+                                    <th class="text-right" width="15%">岗位名称：</th>
+                                    <td>中学语文教师（毕业生）</td>
+                                    <th class="text-right" width="15%">科目名称：</th>
+                                    <td>语文</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">科目课时：</th>
+                                    <td>20</td>
+                                    <th class="text-right" width="15%">本岗位应设人数：</th>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">本岗位现有人数：</th>
+                                    <td>20</td>
+                                    <th class="text-right" width="15%">本岗位空缺人数：</th>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">本岗位计划招聘人数：</th>
+                                    <td>20</td>
+                                    <th class="text-right" width="15%">本岗位实际招聘人数：</th>
+                                    <td>
+                                        <input class="input" type="text" name="">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">岗位备注说明：</th>
+                                    <td colspan="3">3</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">学校其他限制条件：</th>
+                                    <td colspan="3">3</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" width="15%">岗位限制条件：</th>
+                                    <td colspan="3">教育类型： 全日制及以上; 年龄：41岁及以下; 学历：本科及以上; 学位：学士及以上; 专业：B040107人文教育,A0401教育学,B050301新闻学,B0501中国语言文学类,A0503新闻传播学,A0501中国语言文学,B040101教育学; 招聘对象：毕业生</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </dd>
+                </dl>
+                <table class="formTable mt10">
+                    <tbody>
+                        <tr>
+                            <th class="text-right" width="15%">审批意见：</th>
+                            <td colspan="3">
+                                <input class="input" type="text" name="">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 操作按钮 S-->
+            <div class="text-center pagesBox">
+                <button class="btn btn-primary btn-sm" type="button">审核结果发布</button>
+                <button class="btn btn-default btn-sm" type="button">返回</button>
+            </div>
+            <!-- 操作按钮 E-->
+    	</div>
+    	<!-- context内容 E-->
+
+    	<!-- footer S-->
+		<div class="page-footer">
+		    <div class="page-footer-inner">
+		        2016 © Metronic by keenthemes.
+		    </div>
+		</div>
+		<!-- footer E-->
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

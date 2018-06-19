@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>试室编排</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+		$(document).ready(function () {  
+	    $("#table2").hide();
+	    $("#showbishi").hide();
+        $("#detailshi").hide();
+        $("#showMessage").hide();
+        });
+          var amData;
+          var pmData;
+		  var eachData;
+		  var itemsId;
+		  var kaodian;
+		  var ryn;
+		  var type;
+		  var loadindex ;
+		  var sloadindex;
+		function selectSubject()
+       {
+          $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/selectSubject',
+                data : {
+                    "nyr" :$("#ryn").val(),
+                },
+                success: function (data) {
+                       var opstr="<span>招聘项目：</span><select class='select' id='themeid' onchange='selectThemeRoom()'  name='themeid'><option value=''>请选择</option>";
+                       for(i=0;i<data.length;i++)
+                       {
+                              if(data[i].theme.length>20)
+                        {
+                        tempname=data[i].theme.substring(0,19)+"...";
+                        }else
+                        {
+                         tempname=data[i].theme;
+                        }
+                        opstr=opstr+"<option title='"+data[i].theme+"' value='"+data[i].id+"'>"+tempname+"</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#themeidDiv").html(opstr);
+                }  
+            });  
+       }
+       function changekaodian()
+       {
+        $("#showbishi").hide();
+        $("#detailshi").hide();
+       }
+       
+	    //获取招聘主题的考点
+		function selectThemeRoom() {
+		    if(typeof($("#themeid").val())=='undefined')
+		    {
+		     layer.msg('请先选择主题!', {icon: 2});
+		     return;
+		    }
+		     if($("#typeid").val()=='392dc979a9b540029e6322d7637ab191')
+                        {
+                             $("#showbishi").hide();
+                             $("#detailshi").hide();
+                        }
+            $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/selectThemeRoom',
+                data : {
+                    "itemsId" :$("#themeid").val(),
+                    "type":$("#typeid").val()
+                },
+                success: function (data) {
+                      var opstr="<span>考点：</span><select class='select' id='kaodian' name='kaodian' ><option value=''>请选择</option>";
+                       var tempname;
+                       for(i=0;i<data.length;i++)
+                       {
+                          if(data[i].testName.length>20)
+                        {
+                        tempname=data[i].testName.substring(0,19)+"...";
+                        }else
+                        {
+                         tempname=data[i].testName;
+                        }
+                        opstr=opstr+"<option title='"+data[i].testName+"' value='"+data[i].id+"'>"+tempname+"</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#kaodianDiv").html(opstr);
+                       
+                }  
+            });  
+        }
+        
+		function query()
+		{
+		
+		  $(".table tbody tr").remove();//清空列表 
+		   ryn=$("#ryn").val();//年份
+		   itemsId=$("#themeid").val();//主题类型
+		   type=$("#typeid").val(); //考试类型
+		   kaodian=$("#kaodian").val();//考点id
+		  if(ryn=="")
+		  {
+		  layer.msg('年份不能为空!', {icon: 2});
+		  return;
+		  }
+		  if(itemsId=="")
+		  {
+		  layer.msg('招聘项目不能为空!', {icon: 2});
+		  return;
+		  }
+		   if(type=="")
+		  {
+		  layer.msg('考试类型不能为空!', {icon: 2});
+		  return;
+		  }
+		  if(kaodian=="")
+		  {
+		  layer.msg('考点不能为空!', {icon: 2});
+		  return;
+		  }
+		  if(type=='8ee2b706686c4eafa59c82001afc678a')
+		  {
+		    $("#table1").show();
+             $("#table2").hide();
+             $("#show1").show();
+             $("#detail1").show();
+             $("#showbishi").show();
+             $("#detailshi").show();
+              $("#showMessage").hide();
+		  $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/addGanWeiRoom',
+                data : {
+                    "ryn" :ryn,
+                    "itemsId" :itemsId,
+                    "type" :type,
+                    "kaodian":kaodian
+                },
+                success: function (data) {
+                if(data.msg!='success')
+                {
+                  layer.msg(data.msg, {icon: 2});
+                  return;
+                }
+		        var totalNum=data.totalNum;
+		        var layoutNum=data.layoutNum;
+                eachData=data.RoomLayoutVoList;
+                var insertHtml="";
+                var sumRoom=0;
+                var buttonstr="";
+                if(!data.isNotAddLayOut)
+                {
+                   buttonstr="<input type='button' value='手动调整'>";
+                }
+                for(i=0;i<eachData.length;i++)
+                {
+                   insertHtml=insertHtml+'<tr>'+
+                                                '<td>'+eachData[i].ganWeiName+'</td>'+
+                                                '<td>'+eachData[i].ganWeiNum+'</td>'+
+                                                '<td>'+eachData[i].roomNum+'</td>'+
+                                            '</tr>';
+                   sumRoom=sumRoom+eachData[i].roomNum;
+                }
+                 if(totalNum==0)
+                 {
+                   totalNum=sumRoom;
+                 }
+                 if(eachData.length!=0)
+                 {
+                  insertHtml=insertHtml+"<tr>"+"<td>附加试室</td>"+ "<td><input class='input text-center' type='text' value='"+layoutNum+"' readonly name='layoutRoomNum' id='layoutRoomNumId'> <input type='button' class='btn btn-primary btn-sm' value='手动调整' onclick='openLayoutRoom()'><td></td></tr>";
+				  insertHtml=insertHtml+"<tr>"+"<td>试室总数</td>"+ "<td><input class='input text-center' type='text' value='"+totalNum+"' readonly name='sumRoom' id='sumRoomId'> <td></td></tr>";
+                 }else
+                 {
+                   layer.msg('暂无相关数据!', {icon: 2});
+                 }
+				 $("#table1 tbody").append(insertHtml);//将返回的数据追加到表格
+				 $("#table2").hide();
+                } 
+               
+            }); 
+            }else if(type=='392dc979a9b540029e6322d7637ab191')
+            {
+             $("#leftData tbody tr").remove();
+             $("#amdiv tbody tr").remove();
+             $("#pmdiv tbody tr").remove();
+             $("#sjGroupDiv").html('');
+             $("#sjganweiDiv").html('');
+             $("#table1").hide();
+             $("#show1").hide();
+             $("#detail1").hide();
+          	 $("#amDate").val('');
+		     $("#pmDate").val('');
+		     $("#groupNameId").val('');
+		     $("#showMessage").show();
+             $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/queryLectureGanWei',
+                data : {
+                    "itemsId" :itemsId,
+                     "kaodian":kaodian
+                },
+                success: function (data) {
+                       if(data.msg!='success')
+                       {
+                         layer.msg(data.msg, {icon: 2});
+                         return;
+                       }
+                       $("#table2").show();
+                       var opstr="<select class='select' id='sjganweiId' name='sjganweiId' onchange='queryTrialArrange()'><option value=''>请选择</option>";
+                       for(i=0;i<data.data.length;i++)
+                       {
+                        opstr=opstr+"<option value='"+data.data[i].id+"'>"+data.data[i].postName+"</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#sjganweiDiv").html(opstr);
+                       $("#amDate").val( data.initData);
+		               $("#pmDate").val( data.initData);
+                      
+                }  
+            });  
+            }else
+            {
+                 layer.msg('暂无相关数据!', {icon: 2});
+            }
+		}
+		function openLayoutRoom()
+		{
+		  $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/checkIsEdit',
+                data : {
+                    "itemsId" :itemsId,
+                    "kaodian":kaodian
+                },
+                success: function (data) {
+		         if(data.msg=='')
+		         {
+	            layer.open({
+	            type: 2,
+	            title: '附加试室编辑',
+	            shadeClose: true,
+	            shade: 0.8,
+	            area: ['800px', '600px'],
+	            content: '${link.contextPath}/dg/examSubjectInfo/toSecondLayoutRoom'
+	            });
+		          
+		         }else
+		         {
+		          layer.msg(data.msg, {icon: 2});
+		         }
+                }  
+            });  
+		}
+		//发布
+		function showRoomAndStudentResult()
+		{
+		  if(kaodian=="")
+		  {
+		  layer.msg('考点不能为空!', {icon: 2});
+		  return;
+		  }
+		    layer.confirm("您确定发布编排结果吗,发布后不能修改？", function (index) {
+		    $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/showRoomAndStudentResult',
+                data : {
+                    "ryn" :ryn,
+                    "itemsId" :itemsId,
+                    "type" :$("#typeid").val(),
+                    "kaodian":kaodian
+                },
+                beforeSend:showRoomBeforeSend,
+                success: function (data) {
+                 layer.close(loadindex);
+		         if(data.msg=='success')
+		         {
+		           layer.msg("发布成功!", {icon: 1});
+		          
+		         }else if(data.msg=='error')
+		         {
+		         layer.msg("程序发生未知错误!", {icon: 2});
+		         }else
+		         {
+		         layer.close(index);
+		         layer.msg(data.msg, {icon: 2});
+		         
+		         }
+		         $('#showid').attr("disabled",false);
+                }  
+            });  
+           
+        });
+		}
+		function showRoomBeforeSend()
+		{
+		   loadindex = layer.load(1, {
+           shade: [0.1,'#fff'] //0.1透明度的白色背景
+           });
+		    　$('#showid').attr("disabled",true);
+		}
+		function queryDetail()
+		{
+		     if($("#kaodian").val()=="")
+		  {
+		  layer.msg('考点不能为空!', {icon: 2});
+		  return;
+		  }
+		    layer.open({
+	            type: 2,
+	            title: '试室详情',
+	            shadeClose: true,
+	            shade: 0.8,
+	            area: ['1000px', '800px'],
+	            content: '${link.contextPath}/dg/examSubjectInfo/toQueryLayoutDetail'
+	            });
+		}
+		    
+		function queryTrialArrange()
+		 {
+		    $("#amdiv tbody tr").remove();
+            $("#pmdiv tbody tr").remove();
+		    $("#leftData tbody tr").remove();
+		    $("#amDate").val('');
+		    $("#pmDate").val('');
+		    $("#groupNameId").val('');
+		    if($("#sjganweiId").val()=='')
+		    {
+		      layer.msg('请选择岗位', {icon: 2});
+		       return;
+		    }
+		    $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/queryTrialArrange',
+                data : {
+                    "itemsId" :itemsId,
+                    "kaodian":kaodian,
+                    "ganweiId":$("#sjganweiId").val()
+                },
+                 success: function (data) {
+		         var selectGroupList=data.selectGroupList;
+		         var LeftDataList=data.LeftDataList;
+		          var showStr="";
+		         if(LeftDataList.length>0)
+		         {
+		            
+		             for(i=0;i<LeftDataList.length;i++)
+                     {
+                         showStr=showStr+"<tr id='left_tr"+LeftDataList[i].schoolId+"'><td><input type='checkbox' name='leftCheckbox' value='"+LeftDataList[i].schoolId+"'></td>"
+                                       +"<td>"+LeftDataList[i].schoolName+"</td><td><ul><li>"+LeftDataList[i].ganweiNum+"人</li></ul></td><tr/>";
+                     }
+		             $("#leftData tbody").append(showStr);//将返回的数据追加到表格
+		         }
+		           //注入组选项
+		           var opstr="<select class='select' id='sjGroupId' name='sjGroupId' onchange='queryTrialArrangeByGroup()'>";
+                       for(i=0;i<selectGroupList.length;i++)
+                       {
+                        opstr=opstr+"<option value='"+selectGroupList[i].id+"'>第"+selectGroupList[i].groupNumber+"组</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#sjGroupDiv").html(opstr);
+                   //注入右边数据
+                    var amList=data.amList;
+                    var pmList=data.pmList;
+                    var showE=data.showE;
+                     if(amList.length>0)
+		           {
+		             showStr="";
+		             for(i=0;i<amList.length;i++)
+                     {
+                         showStr=showStr+"<tr id='am_tr"+amList[i].schoolId+"'><td><input type='checkbox' name='amcheckbox' value='"+amList[i].schoolId+"'></td>"
+                                       +"<td>"+amList[i].schoolName+"</td><td><ul><li>"+amList[i].ganweiNum+"人</li></ul></td><tr/>";
+                     }
+		             $("#amdiv tbody").append(showStr);//将返回的数据追加到表格
+		         }
+		           if(pmList.length>0)
+		           {
+		             showStr="";
+		             for(i=0;i<pmList.length;i++)
+                     {
+                         showStr=showStr+"<tr id='pm_tr"+pmList[i].schoolId+"'><td><input type='checkbox' name='pmcheckbox' value='"+pmList[i].schoolId+"'></td>"
+                                       +"<td>"+pmList[i].schoolName+"</td><td><ul><li>"+pmList[i].ganweiNum+"人</li></ul></td><tr/>";
+                     }
+		             $("#pmdiv tbody").append(showStr);//将返回的数据追加到表格
+		          }
+			$("#amDate").val(showE.amDate);
+		    $("#pmDate").val(showE.pmDate);
+		    $("#groupNameId").val(showE.groupName)
+                }  
+            });  
+		}
+		function addGroup(type)
+		{
+		   var arrs=new Array();
+           $("input:checkbox[name='leftCheckbox']:checked").each(function() { 
+             arrs.push($(this).val());
+           });
+           if(arrs.length==0)
+           {
+             layer.msg("请选择数据项!", {icon: 2});
+             return;
+           }
+           var dataStr="";
+           for(i=0;i<arrs.length;i++)
+           {
+            if(type==1)
+            {
+             $("#left_tr"+arrs[i]+" td").find(":checkbox").attr("name",'amcheckbox');
+             dataStr=dataStr+"<tr id='am_tr"+arrs[i]+"'>"+$("#left_tr"+arrs[i]).html()+"</tr>";
+            }else
+            {
+            $("#left_tr"+arrs[i]+" td").find(":checkbox").attr("name",'pmcheckbox');
+            dataStr=dataStr+"<tr id='pm_tr"+arrs[i]+"'>"+$("#left_tr"+arrs[i]).html()+"</tr>";
+            }
+           }
+            for(i=0;i<arrs.length;i++)
+           {
+            $("#left_tr"+arrs[i]).remove();//清除
+           }
+		  if(type==1)
+		  {   
+		        //追加上午
+		        $("#amdiv tbody").append(dataStr);
+		  }else{
+		      //追加下午
+		        $("#pmdiv tbody").append(dataStr);
+		  }
+		}
+		//退回
+		function backGroup()
+		{
+		   var amarrs=new Array();
+           $("input:checkbox[name='amcheckbox']:checked").each(function() { 
+             amarrs.push($(this).val());
+           });
+		   
+		   var pmarrs=new Array();
+           $("input:checkbox[name='pmcheckbox']:checked").each(function() { 
+             pmarrs.push($(this).val());
+           });
+           var amStr="";
+           if(amarrs.length>0)
+           {
+            for(i=0;i<amarrs.length;i++)
+           {
+             $("#am_tr"+amarrs[i]+" td").find(":checkbox").attr("name",'leftCheckbox');
+             amStr=amStr+"<tr id='left_tr"+amarrs[i]+"'>"+$("#am_tr"+amarrs[i]).html()+"</tr>";
+             $("#am_tr"+amarrs[i]).remove();//清除
+           }     
+          }
+           var pmStr="";
+           if(pmarrs.length>0)
+           {
+            for(i=0;i<pmarrs.length;i++)
+           {
+            $("#pm_tr"+pmarrs[i]+" td").find(":checkbox").attr("name",'leftCheckbox');
+            pmStr=pmStr+"<tr id='left_tr"+pmarrs[i]+"'>"+$("#pm_tr"+pmarrs[i]).html()+"</tr>";
+            $("#pm_tr"+pmarrs[i]).remove();//清除
+            }
+           }
+		   $("#leftData tbody").append(amStr+pmStr);//将返回的数据追加到表格
+		   
+		   var amarrs1=new Array();
+           $("input:checkbox[name='amcheckbox']").each(function() { 
+             amarrs1.push($(this).val());
+           });
+           if(amarrs1.length==0)
+           {
+           	$("#amDate").val('');
+           }
+		   var pmarrs1=new Array();
+           $("input:checkbox[name='pmcheckbox']").each(function() { 
+             pmarrs1.push($(this).val());
+           });
+           if(pmarrs1.length==0)
+           {
+		    $("#pmDate").val('');
+           }
+		}
+		
+		function queryTrialArrangeByGroup()
+		{
+		    $("#amdiv tbody tr").remove();
+            $("#pmdiv tbody tr").remove();
+		    $("#amDate").val('');
+		    $("#pmDate").val('');
+		    $("#groupNameId").val('');
+		     $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/queryTrialArrangeByGroup',
+                data : {
+                    "groupNum" :$("#sjGroupId").val(),
+                    "itemsId" :itemsId,
+                    "kaodian":kaodian,
+                    "ganweiId":$("#sjganweiId").val()
+                },
+                success: function (data) {
+                     //注入右边数据
+                    var amList=data.amList;
+                    var pmList=data.pmList;
+                    var showE=data.showE;
+                     if(amList.length>0)
+		           {
+		             showStr="";
+		             for(i=0;i<amList.length;i++)
+                     {
+                         showStr=showStr+"<tr id='am_tr"+amList[i].schoolId+"'><td><input type='checkbox' name='amcheckbox' value='"+amList[i].schoolId+"'></td>"
+                                       +"<td>"+amList[i].schoolName+"</td><td><ul><li>"+amList[i].ganweiNum+"人</li></ul></td><tr/>";
+                     }
+		             $("#amdiv tbody").append(showStr);//将返回的数据追加到表格
+		         }
+		           if(pmList.length>0)
+		           {
+		             showStr="";
+		             for(i=0;i<pmList.length;i++)
+                     {
+                         showStr=showStr+"<tr id='pm_tr"+pmList[i].schoolId+"'><td><input type='checkbox' name='pmcheckbox' value='"+pmList[i].schoolId+"'></td>"
+                                       +"<td>"+pmList[i].schoolName+"</td><td><ul><li>"+pmList[i].ganweiNum+"人</li></ul></td><tr/>";
+                     }
+		             $("#pmdiv tbody").append(showStr);//将返回的数据追加到表格
+		          }
+		          $("#amDate").val(showE.amDate);
+		          $("#pmDate").val(showE.pmDate);
+		          $("#groupNameId").val(showE.groupName);
+		          
+		          //注入左边数据
+		          $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/queryTrialLeftData',
+                data : {
+                    "itemsId" :itemsId,
+                    "kaodian":kaodian,
+                    "ganweiId":$("#sjganweiId").val()
+                },
+                 success: function (data) {
+                 $("#leftData tbody tr").remove();
+		         var LeftDataList=data;
+		          var showStr="";
+		         if(LeftDataList.length>0)
+		         {
+		             for(i=0;i<LeftDataList.length;i++)
+                     {
+                         showStr=showStr+"<tr id='left_tr"+LeftDataList[i].schoolId+"'><td><input type='checkbox' name='leftCheckbox' value='"+LeftDataList[i].schoolId+"'></td>"
+                                       +"<td>"+LeftDataList[i].schoolName+"</td><td><ul><li>"+LeftDataList[i].ganweiNum+"人</li></ul></td><tr/>";
+                     }
+		             $("#leftData tbody").append(showStr);//将返回的数据追加到表格
+		         }
+		        
+                }  
+            });  
+               
+                }  
+            });  
+		
+		}
+		
+		function save()
+		{
+		  var saveFlag=true;
+		  if($('#sjganweiId').val()=='')
+		  {
+		    layer.msg("请先选择岗位!", {icon: 2});
+		    saveFlag=false;
+		  }
+		  
+		  var amschoolId=new Array();
+		  var pmschoolId=new Array();
+		  var leftschoolId=new Array();
+		  var amDate=$("#amDate").val();
+		  var pmDate=$("#pmDate").val();
+		  $('input[name="amcheckbox"]').each(function(){ 
+          amschoolId.push($(this).val()); 
+          }); 
+          $('input[name="pmcheckbox"]').each(function(){ 
+          pmschoolId.push($(this).val()); 
+          }); 
+           $('input[name="leftCheckbox"]').each(function(){ 
+            leftschoolId.push($(this).val()); 
+          }); 
+        
+          if(amschoolId.length>0)
+          {
+            if(amDate=='')
+            {
+               layer.msg("请选择上午开始时间!", {icon: 2});
+               saveFlag=false;
+            }
+          }
+           if(pmschoolId.length>0)
+          {
+           if(pmDate=='')
+            {
+               layer.msg("请选择下午开始时间!", {icon: 2});
+               saveFlag=false;
+            }
+          }
+          if($("#groupNameId").val()=='')
+          {
+           layer.msg("请填入组名!", {icon: 2});
+              saveFlag=false;
+          
+          }
+         
+           if(saveFlag==true)
+           {
+             $.ajax({  
+                type: "POST",
+                dataType: "json",
+                async: false,
+                url: '${link.contextPath}/dg/examSubjectInfo/saveTrialArrange',
+                data : {
+                    "groupNum" :$("#sjGroupId").val(),
+                    "itemsId" :itemsId,
+                    "amschoolId" :amschoolId.join(","),
+                    "pmschoolId" :pmschoolId.join(","),
+                    "leftschoolId":leftschoolId.join(","),
+                    "kaodian":kaodian,
+                    "ganweiId":$("#sjganweiId").val(),
+                    "groupName":$("#groupNameId").val(),
+                    "pmDate":pmDate,
+                    "amDate":amDate
+                },
+                beforeSend: function(){
+                sloadindex = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+                });
+                },
+                success: function (data) {
+                  layer.close(sloadindex);
+		         if(data.msg=='success')
+		         {
+		           layer.msg("保存成功!", {icon: 1});
+		           //重新写入分组
+		            var selectGroupList=data.selectGroupList;
+		            var nowNum=data.nowNum;
+		           //注入组选项
+		           var opstr="<select class='select' id='sjGroupId' name='sjGroupId' onchange='queryTrialArrangeByGroup()'>";
+                       for(i=0;i<selectGroupList.length;i++)
+                       {
+                        var str="";
+                        if(selectGroupList[i].groupNumber==nowNum)
+                        {
+                         str="selected";
+                        }
+                        opstr=opstr+"<option value='"+selectGroupList[i].id+"' "+str+">第"+selectGroupList[i].groupNumber+"组</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#sjGroupDiv").html(opstr);
+		         }else
+		         {
+		         layer.msg(data.msg, {icon: 2});
+		         }
+                }  
+            });  
+           }
+		}
+		function showNotice()
+		{
+		     if($('#sjganweiId').val()=='')
+		  {
+		    layer.msg("请先选择岗位!", {icon: 2});
+		    return;
+		  }
+		    layer.confirm("您确定发布吗,发布后不能修改？", function (index) {
+		    $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/showNotice',
+               data : {
+                    "groupNum" :$("#sjGroupId").val(),
+                    "itemsId" :itemsId,
+                    "kaodian":kaodian,
+                    "ganweiId":$("#sjganweiId").val()
+                },
+                success: function (data) {
+                  
+		         if(data.msg=='success')
+		         {
+		           layer.msg("发布成功!", {icon: 1});
+		          
+		         }else
+		         {
+		         layer.msg(data.msg, {icon: 2});
+		         }
+                }  
+            });  
+        });
+		   
+		}
+		function exportLecture(type)
+		{
+		   if($('#sjganweiId').val()=='')
+		  {
+		    layer.msg("请先选择岗位!", {icon: 2});
+		    return;
+		  }
+		  $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/isexportLecture',
+               data : {
+                    "groupNum" :$("#sjGroupId").val(),
+                    "itemsId" :itemsId,
+                    "kaodian":kaodian,
+                    "ganweiId":$("#sjganweiId").val()
+                },
+                success: function (data) {
+		         if(data.msg=='success')
+		         {
+		          window.location.href="${link.contextPath}/dg/examSubjectInfo/exportLecture?groupNum="+$("#sjGroupId").val()+"&itemsId="+itemsId+"&kaodian="+kaodian+"&ganweiId="+$("#sjganweiId").val()+"&type="+type;
+		          
+		         }else
+		         {
+		         layer.msg('该组还没发布成功!', {icon: 2});
+		         }
+                }  
+            });  
+		}
+		  
+    </script>
+</head>
+<body>
+     #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+            <!-- 条件搜索 S-->
+            <form class="form-inline">
+				<div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li id="nyrDiv">
+                            <span>年份：</span>
+                            <select class="select" id="ryn" onchange="selectSubject()">
+                              <option value="">请选择</option>
+                              #foreach( $vo in $dateList )
+                              <option value="$vo">$vo</option>
+                                #end
+                            </select>
+                        </li>
+                          <li id="themeidDiv"">
+                           
+                        </li>
+                         <li>
+                            <span>考试类型：</span>
+                            <select class="select" id="typeid" onchange='selectThemeRoom()'>
+                                <option value="">请选择</option>
+                              #foreach( $vo in $kslxdics )
+                              <option value="$vo.id">$vo.text</option>
+                                #end
+                          </select>
+                        </li>
+                        <li id="kaodianDiv">
+                        </li>
+                          <li id="query1">
+                           <input type="button" value="查询"  class="btn btn-primary btn-sm" onclick="query()"/>
+                        </li>
+                        
+                          <li id="show1">
+                           <input type="button" value="发布"  id="showbishi" class="btn btn-primary btn-sm" onclick="showRoomAndStudentResult()" id="showid"/>
+                        </li>
+                          <li id="detail1">
+                           <input type="button" value="详情"  id="detailshi" class="btn btn-primary btn-sm" onclick="queryDetail()"/>
+                        </li>
+                       
+                    </ul>
+                </div>
+            </form>
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content" id="table1">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>招聘岗位</th>
+                            <th>人数</th>
+                            <th>试室数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <!-- table表单模块 S-->
+            <div class="table-content" id="table2">
+                <!-- 双表格 S-->
+                <div class="clearfix addTableBox mt10">
+                    <div class="pull-left" style="width: 45%">
+                        <table id="leftData">
+                            <caption>
+                                <span id='sjganweiDiv'>
+                                </span>
+                            </caption>
+                            <thead>
+                                <tr>
+                                    <th width="10%"></th>
+                                    <th>招聘单位</th>
+                                    <th>人数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pull-left text-center" style="width: 10%">
+                        <a class="btn btn-primary mt10" href="javascript:void(0)" onclick="addGroup(1)">添加至上午</a><br/>
+                        <a class="btn btn-primary mt10" href="javascript:void(0)" onclick="addGroup(2)">添加至下午</a><br/>
+                        <a class="btn btn-default mt10" href="javascript:void(0)" onclick="backGroup()">退回</a><br/>
+                    </div>
+                    <div class="pull-right" style="width: 45%">
+                        <table id="amdiv">
+                            <caption>
+                                <span id="sjGroupDiv"> 
+                                </span>
+                                <input type="text" value="" class="input" id="groupNameId" maxlength="15">(填入组名)
+                            </caption>
+                            <thead>
+                                <tr>
+                                    <th colspan="3">
+                                        <input id="amDate" name="amDateName" id="amDate" class="input Wdate" type="text"  onfocus="WdatePicker({minDate:'$!{dates}',dateFmt:'yyyy-MM-dd',maxDate:'2090-12-20'})">&nbsp;&nbsp;上午
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+      
+                            </tbody>
+                        </table>
+                        <table id="pmdiv">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">
+                                         <input id="pmDate" name="pmDateName" id="pmDate" class="input Wdate" type="text" onfocus="WdatePicker({minDate:'$!{dates}',dateFmt:'yyyy-MM-dd',maxDate:'2090-12-20'})">&nbsp;&nbsp;下午
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- 双表格 E-->
+                <!-- 操作按钮 S-->
+            <div class="text-center pagesBox mt10">
+                <button class="btn btn-primary btn-sm" type="button" onclick="save()">保存</button>
+                <button class="btn btn-primary btn-sm" type="button" onclick="showNotice()">发布</button>
+                <button class="btn btn-primary btn-sm" type="button" onclick="exportLecture(1)">试讲签到表</button>
+                <button class="btn btn-primary btn-sm" type="button" onclick="exportLecture(2)">试讲门贴表</button>
+            </div>
+            <p class="red text-center">注意！一旦点击保存按钮,整个考点将无法删除和修改,保存前请确认!</p>
+            <!-- 操作按钮 E-->
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+                <div id="pagination" class="pull-right pages"></div>
+            </div>
+            <!-- 分页+全选模块 E-->
+        </div>
+        <!-- context内容 E-->
+        #parse("/common/foot.vm")
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

@@ -1,0 +1,158 @@
+#parse("/common/head-js+css.vm")
+    <script>
+	var zTreeObj;
+	$(document).ready(function(){
+        $("#input_form").validator({
+            formClass:'n-yellow',
+            msgClass: "n-bottom",
+            msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+            timely:3,
+            focusInvalid:true,
+            focusCleanup:true,
+            stopOnError:false,
+            fields: {},
+            valid: function(form){
+				var treeObj = $.fn.zTree.getZTreeObj("menuTree");
+    			var nodes = treeObj.getCheckedNodes(true);
+        		var menuIds=[];
+        		for(var i in nodes){
+        			menuIds.push(nodes[i].id);
+        		}
+        		var id=$("#roleId").val();
+        		menuData={id:id,menuIds:menuIds};
+                url='${link.contextPath}/dg/role/saveRoleMenus';
+				$.ajax({
+        			type : 'post',
+        			url : '${link.contextPath}/dg/role/saveRoleMenus', 
+        			data: menuData,
+        			dataType:"json",
+        			success : function(data) {
+						/**parent.layer.msg("保存成功！", { time: 0 //不自动关闭
+                          		,btn: ['确定']
+                          		,yes: function(index){ window.parent.layer.closeAll(); }
+                       		 });
+							 **/
+        				 parent.layer.msg("保存成功！", {icon: 1});
+						 window.parent.layer.closeAll();
+        			}
+        		});
+            }
+        });
+		initTree();
+		
+		
+    })
+	
+	function sure(){
+	 $("#input_form").submit();
+	}
+	
+		//编辑时默认选中节点
+	function checkNodes(menuIds){
+	var treeObj = $.fn.zTree.getZTreeObj("menuTree");
+		$(menuIds).each(function(index,element){
+			var node = treeObj.getNodeByParam("id", element.id, null);
+			if(node){
+			zTreeObj.checkNode(node, true, true);
+			}
+		})
+	}
+	//初始化zTree树控件
+	function initTree(){
+		var zNodes=[];
+		var id=$("#roleId").val();
+		$.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/role/allMenus',
+				data : {roleId: id},
+                success: function (data) {
+                    if (data) {
+    					var setting = {
+    						data:{
+    							simpleData:{
+    								enable: true,
+    								idKey: "id",
+    								pIdKey: "parentId",
+    								rootPId: "MENUTREEROOT"
+    							},key:{
+    								name:"menuName",
+    								title: "menuName",
+    								checked: "checked",
+									url: "xxurl"
+    							}
+    						},
+    						check:{
+    							enable:true,
+    							chkStyle: "checkbox",
+    							chkboxType: { "Y": "p", "N": "ps"}
+							},
+							callback: {
+                                		onCheck: zTreeOnCheck
+                                	}
+    					};
+    					zTreeObj = $.fn.zTree.init($("#menuTree"), setting, data.allMenu);
+						zTreeObj.expandAll(true);
+                    }
+					if(data.ownMenu){
+            			checkNodes(data.ownMenu);
+            		}else{
+            			zTreeObj.checkAllNodes(false);
+            		}
+                }
+            });
+	}
+	function zTreeOnCheck(event, treeId, treeNode){
+	//alert(treeNode.tId + ", " + treeNode.menuName + "," + treeNode.checked);
+	var nodes = zTreeObj.getNodesByParam("parentId", treeNode.id, null);
+	var subIds = '';
+	subIds = getAllChildrenNodes(treeNode, subIds);
+	$(subIds.split(',')).each(function(index,element){
+			var node = zTreeObj.getNodeByParam("id", element, null);
+			if(node){
+				zTreeObj.checkNode(node, treeNode.checked, treeNode.checked);
+			}
+		})
+	}
+	function getAllChildrenNodes(treeNode,result){
+      if (treeNode.isParent) {
+        var childrenNodes = treeNode.children;
+        if (childrenNodes) {
+            for (var i = 0; i < childrenNodes.length; i++) {
+                result += ',' + childrenNodes[i].id;
+                result = getAllChildrenNodes(childrenNodes[i], result);
+            }
+        }
+    }
+    return result;
+}
+    </script>
+		<style type="text/css">
+.ztree li span.button.switch.level0 {visibility:hidden; width:1px;}
+.ztree li ul.level0 {padding:0; background:none;}
+	</style>
+	<div class="dialog">
+    <form class="table-content" method="post" id="input_form">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right" width="15%">角色编号：</th>
+						<input class="input" type="hidden" id="roleId" name="id" value="${role.id}">
+                        <td><input class="input" type="text" name="roleCode" readonly value="$!{role.roleCode}" /></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="15%">角色名称：</th>
+                        <td><input class="input" type="text" name="roleName" readonly value="$!{role.roleName}" /></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="15%">角色菜单：</th>
+                       <td>
+						<div>
+            				<ul id="menuTree" class="ztree"></ul>
+            			</div>
+                       </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+	</div>

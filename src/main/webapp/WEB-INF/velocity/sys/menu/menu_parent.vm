@@ -1,0 +1,59 @@
+#parse("/common/head-js+css.vm")
+
+<script>
+ $(document).ready(function () {
+            initMenuTree();
+   });
+//初始化zTree树控件
+	function initMenuTree(){
+		var zNodes=[];
+		$.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/menu/menus',
+                success: function (data) {
+                    if (data) {
+    					var setting = {
+    						data:{
+    							simpleData:{
+    								enable: true,
+    								idKey: "id",
+    								pIdKey: "parentId",
+    								rootPId: "MENUTREEROOT"
+    							},
+								key:{
+    								name:"menuName",
+    								title: "menuName",
+    								checked: "checked",
+									url: "xxurl"
+    							}
+    						},
+						view : {
+									selectedMulti: false
+							},
+    					check:{
+    							enable:false
+							},
+						callback: {
+								onClick: onClick
+                             }
+    					};
+    					zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, data.allMenu);
+						zTreeObj.expandAll(true);
+                    }
+                }
+            });
+	}
+function onClick(e, treeId, treeNode) {
+	//alert(treeNode.menuName + ' === ' + treeNode.id)
+	$("#parentId").val(treeNode.id);
+	$("#parentName").val(treeNode.menuName);
+	}
+</script>
+<div class="dialog">
+	 <input class="input" type="hidden" id="parentId" value="$!{parentId}">
+		 <input class="input" type="hidden" id="parentName" value="$!{parentName}">
+	<div id="menuContent" class="menuContent">
+    	<ul id="treeDemo" class="ztree"></ul>
+    </div>
+</div>

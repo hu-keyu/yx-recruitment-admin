@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+</head>
+<body>
+
+    <button onclick="layer.open({
+                                type: 1,
+                                title:['换肤', 'font-weight:600'],
+                                content:$('.dialog-post'),
+                                btn: ['确定', '取消'],
+                                shadeClose:true,
+                                fix:true,
+                                area: ['800px','500px'],
+                                move: false
+                                })" 
+    class="btn btn-primary btn-sm" type="button">添加岗位</button>
+
+    <button onclick="layer.open({
+                                type: 1,
+                                title:['考点信息维护', 'font-weight:600'],
+                                content:$('.dialog-info'),
+                                btn: ['确定', '取消'],
+                                shadeClose:true,
+                                fix:true,
+                                area: ['800px','500px'],
+                                move: false
+                                })"
+     class="btn btn-primary btn-sm" type="button">考点信息维护</button>
+
+    <button onclick="layer.open({
+                                type: 1,
+                                title:['岗位管理', 'font-weight:600'],
+                                content:$('.dialog-manage'),
+                                btn: ['确定', '取消'],
+                                shadeClose:true,
+                                fix:true,
+                                area: ['800px','500px'],
+                                move: false
+                                })"
+     class="btn btn-primary btn-sm" type="button">岗位管理</button>
+
+    <button onclick="layer.open({
+                                type: 1,
+                                title:['岗位选择', 'font-weight:600'],
+                                content:$('.dialog-select'),
+                                btn: ['清空', '取消'],
+                                shadeClose:true,
+                                fix:true,
+                                area: ['800px','500px'],
+                                move: false
+                                })"
+     class="btn btn-primary btn-sm" type="button">岗位选择</button>
+
+    <button onclick="layer.open({
+                                type: 1,
+                                title:['考生步骤走向(若箭头中断表示该考生步骤结束)', 'font-weight:600'],
+                                content:$('.dialog-step'),
+                                btn: ['取消'],
+                                shadeClose:true,
+                                fix:true,
+                                area: ['700px','240px'],
+                                move: false
+                                })"
+     class="btn btn-primary btn-sm" type="button">步骤</button>
+
+    <button onclick="layer.open({
+                                type: 1,
+                                title:['原因新增', 'font-weight:600'],
+                                content:$('.dialog-cause'),
+                                btn: ['取消'],
+                                shadeClose:true,
+                                fix:true,
+                                area: ['400px','201px'],
+                                move: false
+                                })"
+     class="btn btn-primary btn-sm" type="button">原因新增</button>
+
+    <button onclick="layer.open({
+                                type: 1,
+                                title:['编辑招聘', 'font-weight:600'],
+                                content:$('.dialog-edit'),
+                                btn: ['修改补报日期及比例分数线', '取消'],
+                                shadeClose:true,
+                                fix:true,
+                                area: ['800px','500px'],
+                                move: false
+                                })"
+    class="btn btn-primary btn-sm" type="button">编辑招聘</button>
+
+    <button onclick="layer.open({
+                                type: 1,
+                                title:['设置密保问题', 'font-weight:600'],
+                                content:$('.dialog-encrypted'),
+                                btn: ['设置'],
+                                shadeClose:true,
+                                fix:true,
+                                area: ['350px','300px'],
+                                move: false
+                                })"
+    class="btn btn-primary btn-sm" type="button">设置密保</button>
+
+    <!-- 上传控件 S-->
+    <div class="layui-box clearfix">
+        <div class="layui-upload-button pull-left">
+            <form target="layui-upload-iframe" method="post" key="set-mine" enctype="multipart/form-data" action="/upload/">
+                <input onchange="setfileName(this)" class="layui-upload-file" type="file" name="file-demo">
+            </form>
+            <span class="layui-upload-icon">
+                <i class="layui-icon"></i>上传图片
+            </span>
+        </div>
+        <div class="fileName pull-left ellipsis"></div>
+    </div>
+    <script type="text/javascript">
+        //将上传文件名传入span中显示;
+        function setfileName(_this){
+            var _val = _this.value,
+                fileName = getFileName(_val).replace(/'/g,"");//如只需要文件名去掉 replace(/'/g,"") 即可;
+            console.log(_val);
+            $(_this).parents('.layui-upload-button').siblings('.fileName').text(fileName);
+        }
+        //获取上传文件名;
+        function getFileName(o){
+            var pos=o.lastIndexOf("\\");
+            return o.substring(pos+1);  
+        }
+        layui.use('upload', function(){
+            layui.upload({
+                elem:'layui-upload-file',//string  指定元素的选择器，默认直接查找class为layui-upload-file的元素;
+                url:'',//string 上传文件的接口;
+                method:'',//string  设置http类型，如：post、get。默认post。也可以直接在input设置lay-method="get"来取代。
+                before:function(){//function  执行上传前的回调;
+                    
+                },
+                success:function(){//function  上传成功后的回调;
+                //返回文件名、文件路径、附件表的id
+                    setfileName($(".layui-upload-file"));
+                },
+                type:'',//string  设定上传的文件类型，也可以直接在input设置lay-type=""来取代;
+                ext:'',//string  自定义可支持的文件扩展名，也可以直接在input设置lay-ext=""来取代;
+            });
+        });
+    </script>
+    <!-- 上传控件 E-->
+
+    <!-- 添加岗位 S-->
+    <div class="dialog dialog-post" style="display: none;">
+        <div class="table-content">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-center" colspan="1" rowspan="13" width="5%">拟招聘岗位对应学科情况</td>
+                        <th class="text-right"><span class="flag">*</span>岗位名称：</th>
+                        <td>
+                            <select class="select">
+                                <option value="">== 请选择 ==</option>
+                            </select>
+                        </td>
+                        <th class="text-right">科目名称：</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>科目课时：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>本岗位应设人数：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>本岗位现有人数：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>本岗位空缺人数：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>本岗位现有人数：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                        <th class="text-right"></th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" rowspan="9">岗位限制条件：</th>
+                        <td colspan="3">
+                            <label><input type="checkbox" name="" value="">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</label>
+                            <input class="input grid-120" type="text" name="">&nbsp;岁
+                            <select class="select grid-120">
+                                <option value="">及以上</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" name="" value="">学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;历：</label>
+                            <select class="select grid-120">
+                                <option value="">== 请选择 ==</option>
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <select class="select grid-120">
+                                <option value="">及以上</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" name="" value="">教育类型：</label>
+                            <select class="select grid-120">
+                                <option value="">== 请选择 ==</option>
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <select class="select grid-120">
+                                <option value="">及以上</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" name="" value="">学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：</label>
+                            <select class="select grid-120">
+                                <option value="">== 请选择 ==</option>
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <select class="select grid-120">
+                                <option value="">及以上</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="clearfix">
+                                <input class="btn btn-primary pull-right" type="button" name="" value="选择"/>
+                                <label><input type="checkbox" name="" value="">专业要求：</label>
+                            </div>
+                            <textarea class="textarea mt10" rows="5" name=""></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" name="" value="">招聘对象：</label>
+                            <select class="select grid-120">
+                                <option value="">全部</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" name="" value="">要求东莞生源免费师范生</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" name="" value="">岗位备注说明：</label>
+                            <textarea class="textarea mt10" rows="5" name=""></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label><input type="checkbox" name="" value="">学校其他限制条件：</label>
+                            <textarea class="textarea mt10" rows="5" name=""></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- 添加岗位 E-->
+
+    <!-- 考点信息维护 S-->
+    <div class="dialog dialog-info" style="display: none;">
+        <div class="table-content">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right">招聘项目：</th>
+                        <td>
+
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>考试类型：</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>考点编号：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>考点名称：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>开始时间：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>结束时间：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>考点地址：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                        <th class="text-right">试室数</th>
+                        <td>(根据编排后自动计算)</td>
+                    </tr>
+                    <tr>
+                        <td>限制岗位：</td>
+                        <td colspan="3">
+                            <textarea class="textarea" rows="5" name=""></textarea>
+                            <input class="btn btn-primary mt10" type="button" name="" value="选择"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>交通环境：</td>
+                        <td colspan="3">
+                            <textarea class="textarea mt10" rows="5" name=""></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- 考点信息维护 E-->
+
+    <!-- 岗位管理 S-->
+    <div class="dialog dialog-manage" style="display: none;">
+        <div class="table-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>岗位名称</th>
+                        <th>上报人数</th>
+                        <th>审批人数</th>
+                        <th>报名人数</th>
+                        <th>招录比例</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>中学物理教师（社会人员）</td>
+                        <td>11</td>
+                        <td>11</td>
+                        <td>11</td>
+                        <td>1:2</td>
+                        <td>
+                            <a class="btn btn-default" href="#this" title="启用">启用</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>中学物理教师（社会人员）</td>
+                        <td>11</td>
+                        <td>11</td>
+                        <td>11</td>
+                        <td>1:2</td>
+                        <td>
+                            <a class="btn btn-default" href="#this" title="启用">启用</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- 岗位管理 E-->
+
+    <!-- 岗位选择 S-->
+    <div ms-controller="gwxz" class="dialog dialog-select" style="display: none;">
+        <!-- 条件搜索 S-->
+        <form class="form-inline border-left-none border-right-none">
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-left">
+                    <li>
+                        <span>查找对象：</span>
+                        <input class="input" type="text" name="">
+                    </li>
+                    <li>
+                        <button class="btn btn-default btn-sm" type="submit">搜索</button>
+                    </li>
+                </ul>
+            </div>
+            <hr>
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-left">
+                    <li>
+                        <span>专业类型：</span>
+                        <select class="select">
+                            <option value="">研究生</option>
+                            <option value="">本科生</option>
+                        </select>
+                    </li>
+                    <li>
+                        <span>一级学科：</span>
+                        <select class="select">
+                            <option value="">研究生</option>
+                            <option value="">本科生</option>
+                        </select>
+                    </li>
+                    <li>
+                        <span>二级学科：</span>
+                        <select class="select">
+                            <option value="">研究生</option>
+                            <option value="">本科生</option>
+                        </select>
+                    </li>
+                </ul>
+                <ul class="pull-right">
+                    <li>
+                        <button class="btn btn-primary btn-sm" type="submit">确定</button>
+                        <button class="btn btn-default btn-sm" type="submit">取消</button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <!-- 条件搜索 E-->
+        <div class="table-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-left" colspan="4">
+                            <label><input ms-duplex-checked="allchecked"
+                                          ms-change="checkAll"
+                                          type="checkbox" name="">全选
+                            </label>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="grid-h-130 overflow">
+                <table class="table">
+                    <tbody>
+                        <tr ms-repeat-el="dataList">
+                            <td ms-repeat-elem="el" class="text-left">
+                                <label><input ms-duplex-checked="elem.checked"
+                                              ms-change="checked(elem)" 
+                                              type="checkbox" name="">&nbsp;{{elem.content}}
+                                </label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="selectedBox">
+                <div class="title"><strong>已选择专业</strong>（提示：单击名称可删除）</div>
+                <div class="listbox">
+                    <ul class="clearfix">
+                        <li ms-repeat="addDataList">
+                            <label>
+                                <a href="javascript:void(0);" ms-on-click="del(el)">{{el.content}}、</a>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var vm_select = avalon.define({
+            $id:'gwxz',
+            allchecked:false,
+            dataList:[
+                [
+                    {
+                        checked:false,
+                        content:'数据一'
+                    },
+                    {
+                        checked:false,
+                        content:'数据二'
+                    },
+                    {
+                        checked:false,
+                        content:'数据三'
+                    },
+                    {
+                        checked:false,
+                        content:'数据四'
+                    }
+                ],
+                [
+                    {
+                        checked:false,
+                        content:'数据五'
+                    },
+                    {
+                        checked:false,
+                        content:'数据六'
+                    },
+                    {
+                        checked:false,
+                        content:'数据七'
+                    },
+                    {
+                        checked:false,
+                        content:'数据八'
+                    }
+                ]
+
+            ],
+            addDataList:[],
+            del:function(el){
+                vm_select.addDataList.remove(el);
+                vm_select.allchecked = false;
+                 for(var i=0;i<vm_select.dataList.length;i++){
+                     for(var ii=0;ii<vm_select.dataList[i].length;ii++){
+                        if(vm_select.dataList[i][ii]==el){
+                            vm_select.dataList[i][ii].checked=false;
+                        }
+                    } 
+                };
+            },
+            checkAll:function(){
+                var bool = vm_select.allchecked = this.checked;
+                    vm_select.dataList.forEach(function(el) {
+                        el.forEach(function(elem){
+                            elem.checked = bool;
+                            if(bool){
+                                vm_select.addDataList.ensure(elem);
+                            }else{
+                                vm_select.addDataList.remove(elem);
+                            }
+                        })
+                    })
+            },
+            checked:function(elem){
+                if (!this.checked) {
+                    vm_select.addDataList.remove(elem);
+                    vm_select.allchecked = false;
+                }else{
+                    for(var i=0;i<vm_select.dataList.length;i++){
+                        vm_select.allchecked = vm_select.dataList[i].every(function(elem){
+                            return elem.checked;
+                        });
+                    };
+                    vm_select.addDataList.ensure(elem);
+                }
+            },
+        });
+    </script>
+    <!-- 岗位选择 E-->
+
+    <!-- 步骤 S-->
+    <div class="dialog dialog-step" style="display: none;">
+        <table class="stepBox">
+            <tbody>
+                <tr>
+                    <td class="active">
+                        <span>注册报名</span>
+                        <i class="iconfont icon-jiantou"></i>
+                        <p>2016.10.12~2016.10.31</p>
+                    </td>
+                    <td class="active">
+                        <span>单位面试</span>
+                        <i class="iconfont icon-jiantou"></i>
+                        <p>2016.10.12~2016.10.31</p>
+                    </td>
+                    <td>
+                        <span>统一笔试</span>
+                        <i class="iconfont icon-jiantou"></i>
+                        <p>2016.10.12~2016.10.31</p>
+                    </td>
+                    <td>
+                        <span>统一试讲</span>
+                        <i class="iconfont icon-jiantou"></i>
+                        <p>2016.10.12~2016.10.31</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>体验</span>
+                        <i class="iconfont icon-jiantou"></i>
+                        <p>2016.10.12~2016.10.31</p>
+                    </td>
+                    <td>
+                        <span>考察</span>
+                        <i class="iconfont icon-jiantou"></i>
+                        <p>2016.10.12~2016.10.31</p>
+                    </td>
+                    <td>
+                        <span>公示</span>
+                        <i class="iconfont icon-jiantou"></i>
+                        <p>2016.10.12~2016.10.31</p>
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 步骤 E-->
+
+    <!-- 原因新增 S-->
+    <div class="dialog dialog-cause" style="display: none;">
+        <div class="table-content p15">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right" width="20%">序号：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="20%">原因：</th>
+                        <td>
+                            <input class="input" type="text" name="">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- 原因新增 E-->
+
+    <!-- 编辑招聘 S-->
+    <div class="dialog dialog-edit" style="display: none;">
+        <div class="table-content">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>项目名称：</th>
+                        <td colspan="3">
+                            <select class="select" name="">
+                                <option value="">== 请选择 ==</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>开始日期：</th>
+                        <td>
+                            <input id="d4311" class="input Wdate" type="text" 
+                            onfocus="WdatePicker({minDate:'%y-%M-{%d}',maxDate:'#F{$dp.$D(\'d4312\')||\'2020-10-01\'}'})"/>
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>结束日期：</th>
+                        <td>
+                            <input id="d4312" class="input Wdate" type="text" 
+                            onfocus="WdatePicker({minDate:'#F{$dp.$D(\'d4311\')||\'%y-%M-{%d}\'}',maxDate:'2020-10-01'})"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>录取形式：</th>
+                        <td>
+                            <select class="select" name="">
+                                <option value="">== 请选择 ==</option>
+                            </select>
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>是否发布：</th>
+                        <td>
+                            <select class="select" name="">
+                                <option value="">== 请选择 ==</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">补报开始日期：</th>
+                        <td>
+                            <input id="d4313" class="input Wdate" type="text" 
+                            onfocus="WdatePicker({minDate:'%y-%M-{%d}',maxDate:'#F{$dp.$D(\'d4314\')||\'2020-10-01\'}'})"/>
+                        </td>
+                        <th class="text-right">补报结束日期：</th>
+                        <td>
+                            <input id="d4314" class="input Wdate" type="text" 
+                            onfocus="WdatePicker({minDate:'#F{$dp.$D(\'d4313\')||\'%y-%M-{%d}\'}',maxDate:'2020-10-01'})"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table mt10">
+                <thead>
+                    <tr>
+                        <th>步骤名称</th>
+                        <th>开始日期</th>
+                        <th>结束日期</th>
+                        <th>名单是否发布</th>
+                        <th>成绩是否发布</th>
+                        <th>录取比例</th>
+                        <th>录取分数线</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span class="step">注册报名</span>
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        1：<input class="input text-center grid-40" type="text">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-60" type="text" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="step">单位面试</span>
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>是</td>
+                        <td>
+                        </td>
+                        <td>
+                        1：<input class="input text-center grid-40" type="text">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-60" type="text" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="step">统一笔试</span>
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>是</td>
+                        <td>是</td>
+                        <td>
+                        1：<input class="input text-center grid-40" type="text">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-60" type="text" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="step">统一试讲</span>
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>普：&nbsp;&nbsp;是</td>
+                        <td>艺：&nbsp;&nbsp;是</td>
+                        <td>
+                        1：<input class="input text-center grid-40" type="text">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-60" type="text" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="step">体检</span>
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>是</td>
+                        <td>是</td>
+                        <td>
+                        1：<input class="input text-center grid-40" type="text">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-60" type="text" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="step">考察</span>
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>是</td>
+                        <td>是</td>
+                        <td>
+                        1：<input class="input text-center grid-40" type="text">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-60" type="text" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="step">公示</span>
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-150" type="text" name="">
+                        </td>
+                        <td>是</td>
+                        <td>是</td>
+                        <td>
+                        1：<input class="input text-center grid-40" type="text">
+                        </td>
+                        <td>
+                            <input class="input text-center grid-60" type="text" name="">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="selectedBox">
+                <div class="title"><strong>岗位信息</strong>——<span>(招聘岗位及招聘人数)</span></div>
+                <div class="listbox">
+                    <ul class="clearfix">
+                        <li>中学语文教师（毕业生）&nbsp;<strong class="red">10</strong>&nbsp;人、</li>
+                        <li> 中学语文教师（社会人员） &nbsp;<strong class="red">10</strong>&nbsp;人、</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="selectedBox">
+                <div class="title"><strong>项目公告正文</strong></div>
+                <textarea class="textarea border-none align-middle" rows="3" name=""></textarea>
+            </div>
+        </div>
+    </div>
+    <!-- 编辑招聘 E-->
+
+    <!-- 设置密保问题 S-->
+    <div class="dialog dialog-encrypted" style="display: none;">
+        <div class="table-content">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <td class="p15">
+                            <p><b>问题1：对你影响最大的人名字是？</b></p>
+                            <input class="input mt10" type="text" placeholder="1-19个中文或2-38个英文" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="p15">
+                            <p><b>问题2：你父亲的姓名是？</b></p>
+                            <input class="input mt10" type="text" placeholder="1-19个中文或2-38个英文" name="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="p15">
+                            <p><b>问题3：你的学号（或工号）？</b></p>
+                            <input class="input mt10" type="text" placeholder="2-16个阿拉伯数字" name="">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- 设置密保问题 E-->
+</body>
+</html>

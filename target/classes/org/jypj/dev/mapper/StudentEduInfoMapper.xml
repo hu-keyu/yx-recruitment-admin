@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.StudentEduInfoDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.StudentEduInfo" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="EMPLOY_ITEMS_ID" property="employItemsId" jdbcType="VARCHAR" />
+	<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+	<result column="EDU_CODE" property="eduCode" jdbcType="VARCHAR" />
+	<result column="EDU_NAME" property="eduName" jdbcType="VARCHAR" />
+	<result column="EDU_SCHOOL_CODE" property="eduSchoolCode" jdbcType="VARCHAR" />
+	<result column="EDU_SCHOOL_NAME" property="eduSchoolName" jdbcType="VARCHAR" />
+	<result column="EDU_GRADUATE_TIME" property="eduGraduateTime" jdbcType="DATE" />
+	<result column="EDU_PROFESSION_CODE" property="eduProfessionCode" jdbcType="VARCHAR" />
+	<result column="EDU_PROFESSION_NAME" property="eduProfessionName" jdbcType="VARCHAR" />
+	<result column="IS_SIMILAR_TERM" property="isSimilarTerm" jdbcType="VARCHAR" />
+	<result column="SIMILAR_TERM_CODE" property="similarTermCode" jdbcType="VARCHAR" />
+	<result column="EDU_BACHELOR_CODE" property="eduBachelorCode" jdbcType="VARCHAR" />
+	<result column="EDU_TYPE" property="eduType" jdbcType="VARCHAR" />
+	<result column="EDU_CERTIFICATE" property="eduCertificate" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+	<result column="REAL_SPECIALTY_NAME" property="realSpecialtyName" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,EMPLOY_ITEMS_ID,STUDENT_ID,EDU_CODE,EDU_NAME,EDU_SCHOOL_CODE,EDU_SCHOOL_NAME,EDU_GRADUATE_TIME,EDU_PROFESSION_CODE,EDU_PROFESSION_NAME,IS_SIMILAR_TERM,SIMILAR_TERM_CODE,EDU_BACHELOR_CODE,EDU_TYPE,EDU_CERTIFICATE,CREATE_USER,CTIME,MODIFY_USER,MTIME
+  </sql>
+  
+  <sql id="Base_Column_List_With_Alias" >
+  t.ID,t.EMPLOY_ITEMS_ID,t.STUDENT_ID,t.EDU_CODE,t.EDU_NAME,t.EDU_SCHOOL_CODE,t.EDU_SCHOOL_NAME,t.EDU_GRADUATE_TIME,t.EDU_PROFESSION_CODE,t.EDU_PROFESSION_NAME,t.IS_SIMILAR_TERM,t.SIMILAR_TERM_CODE,t.EDU_BACHELOR_CODE,t.EDU_TYPE,t.EDU_CERTIFICATE,t.CREATE_USER,t.CTIME,t.MODIFY_USER,t.MTIME
+  </sql>
+  
+   <insert id="saveStudentEduInfoByField" parameterType="org.jypj.dev.entity.StudentEduInfo" >
+    insert into student_education_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="employItemsId != null" >
+    EMPLOY_ITEMS_ID,
+   </if>
+   <if test="studentId != null" >
+    STUDENT_ID,
+   </if>
+   <if test="eduCode != null" >
+    EDU_CODE,
+   </if>
+   <if test="eduName != null" >
+    EDU_NAME,
+   </if>
+   <if test="eduSchoolCode != null" >
+    EDU_SCHOOL_CODE,
+   </if>
+   <if test="eduSchoolName != null" >
+    EDU_SCHOOL_NAME,
+   </if>
+   <if test="eduGraduateTime != null" >
+    EDU_GRADUATE_TIME,
+   </if>
+   <if test="eduProfessionCode != null" >
+    EDU_PROFESSION_CODE,
+   </if>
+   <if test="eduProfessionName != null" >
+    EDU_PROFESSION_NAME,
+   </if>
+   <if test="isSimilarTerm != null" >
+    IS_SIMILAR_TERM,
+   </if>
+   <if test="similarTermCode != null" >
+    SIMILAR_TERM_CODE,
+   </if>
+   <if test="eduBachelorCode != null" >
+    EDU_BACHELOR_CODE,
+   </if>
+   <if test="eduType != null" >
+    EDU_TYPE,
+   </if>
+   <if test="eduCertificate != null" >
+    EDU_CERTIFICATE,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="ctime != null" >
+    CTIME,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+   <if test="mtime != null" >
+    MTIME,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="employItemsId != null" >
+        #{employItemsId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="eduCode != null" >
+        #{eduCode,jdbcType=VARCHAR},
+      </if>
+      <if test="eduName != null" >
+        #{eduName,jdbcType=VARCHAR},
+      </if>
+      <if test="eduSchoolCode != null" >
+        #{eduSchoolCode,jdbcType=VARCHAR},
+      </if>
+      <if test="eduSchoolName != null" >
+        #{eduSchoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="eduGraduateTime != null" >
+        #{eduGraduateTime,jdbcType=DATE},
+      </if>
+      <if test="eduProfessionCode != null" >
+        #{eduProfessionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="eduProfessionName != null" >
+        #{eduProfessionName,jdbcType=VARCHAR},
+      </if>
+      <if test="isSimilarTerm != null" >
+        #{isSimilarTerm,jdbcType=VARCHAR},
+      </if>
+      <if test="similarTermCode != null" >
+        #{similarTermCode,jdbcType=VARCHAR},
+      </if>
+      <if test="eduBachelorCode != null" >
+        #{eduBachelorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="eduType != null" >
+        #{eduType,jdbcType=VARCHAR},
+      </if>
+      <if test="eduCertificate != null" >
+        #{eduCertificate,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=DATE},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        #{mtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveStudentEduInfo" parameterType="org.jypj.dev.entity.StudentEduInfo" >
+    insert into student_education_info (
+	ID,
+	EMPLOY_ITEMS_ID,
+	STUDENT_ID,
+	EDU_CODE,
+	EDU_NAME,
+	EDU_SCHOOL_CODE,
+	EDU_SCHOOL_NAME,
+	EDU_GRADUATE_TIME,
+	EDU_PROFESSION_CODE,
+	EDU_PROFESSION_NAME,
+	IS_SIMILAR_TERM,
+	SIMILAR_TERM_CODE,
+	EDU_BACHELOR_CODE,
+	EDU_TYPE,
+	EDU_CERTIFICATE,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	 MTIME
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{employItemsId,jdbcType=VARCHAR},
+	#{studentId,jdbcType=VARCHAR},
+	#{eduCode,jdbcType=VARCHAR},
+	#{eduName,jdbcType=VARCHAR},
+	#{eduSchoolCode,jdbcType=VARCHAR},
+	#{eduSchoolName,jdbcType=VARCHAR},
+	#{eduGraduateTime,jdbcType=DATE},
+	#{eduProfessionCode,jdbcType=VARCHAR},
+	#{eduProfessionName,jdbcType=VARCHAR},
+	#{isSimilarTerm,jdbcType=VARCHAR},
+	#{similarTermCode,jdbcType=VARCHAR},
+	#{eduBachelorCode,jdbcType=VARCHAR},
+	#{eduType,jdbcType=VARCHAR},
+	#{eduCertificate,jdbcType=VARCHAR},
+	#{createUser,jdbcType=VARCHAR},
+	sysdate,
+	#{modifyUser,jdbcType=VARCHAR},
+	sysdate
+	)
+  </insert>
+  
+  <delete id="deleteStudentEduInfoById" parameterType="java.lang.String" >
+    delete from student_education_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteStudentEduInfoByObject" parameterType="org.jypj.dev.entity.StudentEduInfo" >
+    delete from student_education_info
+    where EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR} and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateStudentEduInfoByField" parameterType="org.jypj.dev.entity.StudentEduInfo" >
+    update student_education_info
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="employItemsId != null" >
+  	 EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="studentId != null" >
+  	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="eduCode != null" >
+  	 EDU_CODE=#{eduCode,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="eduName != null" >
+  	 EDU_NAME=#{eduName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="eduSchoolCode != null" >
+  	 EDU_SCHOOL_CODE=#{eduSchoolCode,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="eduSchoolName != null" >
+  	 EDU_SCHOOL_NAME=#{eduSchoolName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="eduGraduateTime != null" >
+  	 EDU_GRADUATE_TIME=#{eduGraduateTime,jdbcType=DATE},
+  	 </if>
+  	 <if test="eduProfessionCode != null" >
+  	 EDU_PROFESSION_CODE=#{eduProfessionCode,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="eduProfessionName != null" >
+  	 EDU_PROFESSION_NAME=#{eduProfessionName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isSimilarTerm != null" >
+  	 IS_SIMILAR_TERM=#{isSimilarTerm,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="similarTermCode != null" >
+  	 SIMILAR_TERM_CODE=#{similarTermCode,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="eduBachelorCode != null" >
+  	 EDU_BACHELOR_CODE=#{eduBachelorCode,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="eduType != null" >
+  	 EDU_TYPE=#{eduType,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="eduCertificate != null" >
+  	 EDU_CERTIFICATE=#{eduCertificate,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="ctime != null" >
+  	 CTIME=#{ctime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="mtime != null" >
+  	 MTIME=#{mtime,jdbcType=DATE}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateStudentEduInfo" parameterType="org.jypj.dev.entity.StudentEduInfo" >
+    update student_education_info
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR},
+	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+	 EDU_CODE=#{eduCode,jdbcType=VARCHAR},
+	 EDU_NAME=#{eduName,jdbcType=VARCHAR},
+	 EDU_SCHOOL_CODE=#{eduSchoolCode,jdbcType=VARCHAR},
+	 EDU_SCHOOL_NAME=#{eduSchoolName,jdbcType=VARCHAR},
+	 EDU_GRADUATE_TIME=#{eduGraduateTime,jdbcType=DATE},
+	 EDU_PROFESSION_CODE=#{eduProfessionCode,jdbcType=VARCHAR},
+	 EDU_PROFESSION_NAME=#{eduProfessionName,jdbcType=VARCHAR},
+	 IS_SIMILAR_TERM=#{isSimilarTerm,jdbcType=VARCHAR},
+	 SIMILAR_TERM_CODE=#{similarTermCode,jdbcType=VARCHAR},
+	 EDU_BACHELOR_CODE=#{eduBachelorCode,jdbcType=VARCHAR},
+	 EDU_TYPE=#{eduType,jdbcType=VARCHAR},
+	 EDU_CERTIFICATE=#{eduCertificate,jdbcType=VARCHAR},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 CTIME=#{ctime,jdbcType=DATE},
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MTIME=#{mtime,jdbcType=DATE}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectStudentEduInfoById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_education_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_education_info
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageByStudentEduInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.StudentEduInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_education_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduCode != null and eduCode !='' ">
+	  and EDU_CODE=#{eduCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduName != null and eduName !='' ">
+	  and EDU_NAME=#{eduName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduSchoolCode != null and eduSchoolCode !='' ">
+	  and EDU_SCHOOL_CODE=#{eduSchoolCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduSchoolName != null and eduSchoolName !='' ">
+	  and EDU_SCHOOL_NAME=#{eduSchoolName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduGraduateTime != null and eduGraduateTime !='' ">
+	  and EDU_GRADUATE_TIME=#{eduGraduateTime,jdbcType=DATE}
+	 </if>
+	 <if test="eduProfessionCode != null and eduProfessionCode !='' ">
+	  and EDU_PROFESSION_CODE=#{eduProfessionCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduProfessionName != null and eduProfessionName !='' ">
+	  and EDU_PROFESSION_NAME=#{eduProfessionName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isSimilarTerm != null and isSimilarTerm !='' ">
+	  and IS_SIMILAR_TERM=#{isSimilarTerm,jdbcType=VARCHAR}
+	 </if>
+	 <if test="similarTermCode != null and similarTermCode !='' ">
+	  and SIMILAR_TERM_CODE=#{similarTermCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduBachelorCode != null and eduBachelorCode !='' ">
+	  and EDU_BACHELOR_CODE=#{eduBachelorCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduType != null and eduType !='' ">
+	  and EDU_TYPE=#{eduType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduCertificate != null and eduCertificate !='' ">
+	  and EDU_CERTIFICATE=#{eduCertificate,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_education_info
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByStudentEduInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.StudentEduInfo" >
+    select 
+    <include refid="Base_Column_List_With_Alias" />,
+    r.CODE||r.NAME as REAL_SPECIALTY_NAME
+    from student_education_info t
+    left join recruit_specialty r on t.EDU_PROFESSION_CODE = r.CODE
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and t.ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and t.EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and t.STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduCode != null and eduCode !='' ">
+	  and t.EDU_CODE=#{eduCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduName != null and eduName !='' ">
+	  and t.EDU_NAME=#{eduName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduSchoolCode != null and eduSchoolCode !='' ">
+	  and t.EDU_SCHOOL_CODE=#{eduSchoolCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduSchoolName != null and eduSchoolName !='' ">
+	  and t.EDU_SCHOOL_NAME=#{eduSchoolName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduGraduateTime != null and eduGraduateTime !='' ">
+	  and t.EDU_GRADUATE_TIME=#{eduGraduateTime,jdbcType=DATE}
+	 </if>
+	 <if test="eduProfessionCode != null and eduProfessionCode !='' ">
+	  and t.EDU_PROFESSION_CODE=#{eduProfessionCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduProfessionName != null and eduProfessionName !='' ">
+	  and t.EDU_PROFESSION_NAME=#{eduProfessionName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isSimilarTerm != null and isSimilarTerm !='' ">
+	  and t.IS_SIMILAR_TERM=#{isSimilarTerm,jdbcType=VARCHAR}
+	 </if>
+	 <if test="similarTermCode != null and similarTermCode !='' ">
+	  and t.SIMILAR_TERM_CODE=#{similarTermCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduBachelorCode != null and eduBachelorCode !='' ">
+	  and t.EDU_BACHELOR_CODE=#{eduBachelorCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduType != null and eduType !='' ">
+	  and t.EDU_TYPE=#{eduType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduCertificate != null and eduCertificate !='' ">
+	  and t.EDU_CERTIFICATE=#{eduCertificate,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and t.CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and t.CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and t.MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and t.MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	  order by t.EDU_CODE desc
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_education_info
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByStudentEduInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.StudentEduInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_education_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduCode != null and eduCode !='' ">
+	  and EDU_CODE=#{eduCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduName != null and eduName !='' ">
+	  and EDU_NAME=#{eduName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduSchoolCode != null and eduSchoolCode !='' ">
+	  and EDU_SCHOOL_CODE=#{eduSchoolCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduSchoolName != null and eduSchoolName !='' ">
+	  and EDU_SCHOOL_NAME=#{eduSchoolName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduGraduateTime != null and eduGraduateTime !='' ">
+	  and EDU_GRADUATE_TIME=#{eduGraduateTime,jdbcType=DATE}
+	 </if>
+	 <if test="eduProfessionCode != null and eduProfessionCode !='' ">
+	  and EDU_PROFESSION_CODE=#{eduProfessionCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduProfessionName != null and eduProfessionName !='' ">
+	  and EDU_PROFESSION_NAME=#{eduProfessionName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isSimilarTerm != null and isSimilarTerm !='' ">
+	  and IS_SIMILAR_TERM=#{isSimilarTerm,jdbcType=VARCHAR}
+	 </if>
+	 <if test="similarTermCode != null and similarTermCode !='' ">
+	  and SIMILAR_TERM_CODE=#{similarTermCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduBachelorCode != null and eduBachelorCode !='' ">
+	  and EDU_BACHELOR_CODE=#{eduBachelorCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduType != null and eduType !='' ">
+	  and EDU_TYPE=#{eduType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="eduCertificate != null and eduCertificate !='' ">
+	  and EDU_CERTIFICATE=#{eduCertificate,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select>
+
+	<select id="selectCountBySpecialty" resultType="java.lang.Integer">
+		SELECT count(id) FROM student_education_info where EDU_PROFESSION_CODE = #{specialty,jdbcType=VARCHAR}
+	</select>
+  
+</mapper>

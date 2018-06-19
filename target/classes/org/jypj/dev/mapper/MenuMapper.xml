@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.MenuDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.Menu" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="MENU_NAME" property="menuName" jdbcType="VARCHAR" />
+	<result column="IMAGE_URL" property="imageUrl" jdbcType="VARCHAR" />
+	<result column="SORT_ORDER" property="sortOrder" jdbcType="DECIMAL" />
+	<result column="URL" property="url" jdbcType="VARCHAR" />
+	<result column="DESCRIBE" property="describe" jdbcType="VARCHAR" />
+	<result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+	<result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+	<result column="MODIFY_DATE" property="modifyDate" jdbcType="DATE" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="role_id" property="roleId" jdbcType="VARCHAR" />
+	<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,MENU_NAME,IMAGE_URL,SORT_ORDER,URL,DESCRIBE,PARENT_ID,CREATE_DATE,MODIFY_DATE,CREATE_USER,MODIFY_USER
+  </sql>
+  
+   <insert id="saveMenuByField" parameterType="org.jypj.dev.entity.Menu" >
+    insert into eims_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="menuName != null" >
+    MENU_NAME,
+   </if>
+   <if test="imageUrl != null" >
+    IMAGE_URL,
+   </if>
+   <if test="sortOrder != null" >
+    SORT_ORDER,
+   </if>
+   <if test="url != null" >
+    URL,
+   </if>
+   <if test="describe != null" >
+    DESCRIBE,
+   </if>
+   <if test="parentId != null" >
+    PARENT_ID,
+   </if>
+   <if test="createDate != null" >
+    CREATE_DATE,
+   </if>
+   <if test="modifyDate != null" >
+    MODIFY_DATE,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null" >
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sortOrder != null" >
+        #{sortOrder,jdbcType=DECIMAL},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=DATE},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveMenu" parameterType="org.jypj.dev.entity.Menu" >
+    insert into eims_menu (
+	ID,
+	MENU_NAME,
+	IMAGE_URL,
+	SORT_ORDER,
+	URL,
+	DESCRIBE,
+	PARENT_ID,
+	CREATE_DATE,
+	MODIFY_DATE,
+	CREATE_USER,
+	 MODIFY_USER
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{menuName,jdbcType=VARCHAR},
+	#{imageUrl,jdbcType=VARCHAR},
+	#{sortOrder,jdbcType=DECIMAL},
+	#{url,jdbcType=VARCHAR},
+	#{describe,jdbcType=VARCHAR},
+	#{parentId,jdbcType=VARCHAR},
+	sysdate,
+	sysdate,
+	#{createUser,jdbcType=VARCHAR},
+	#{modifyUser,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteMenuById" parameterType="java.lang.String" >
+    delete from eims_menu
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteMenuByObject" parameterType="org.jypj.dev.entity.Menu" >
+    delete from eims_menu
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+    <delete id="deleteMenuByIds">
+    delete from eims_menu
+    where ID in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+     #{id,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+  
+  <update id="updateMenuByField" parameterType="org.jypj.dev.entity.Menu" >
+    update eims_menu
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="menuName != null" >
+  	 MENU_NAME=#{menuName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="imageUrl != null" >
+  	 IMAGE_URL=#{imageUrl,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="sortOrder != null" >
+  	 SORT_ORDER=#{sortOrder,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="url != null" >
+  	 URL=#{url,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="describe != null" >
+  	 DESCRIBE=#{describe,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="parentId != null" >
+  	 PARENT_ID=#{parentId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createDate != null" >
+  	 CREATE_DATE=#{createDate,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyDate != null" >
+  	 MODIFY_DATE=#{modifyDate,jdbcType=DATE},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateMenu" parameterType="org.jypj.dev.entity.Menu" >
+    update eims_menu
+    <set >
+	 MENU_NAME=#{menuName,jdbcType=VARCHAR},
+	 IMAGE_URL=#{imageUrl,jdbcType=VARCHAR},
+	 SORT_ORDER=#{sortOrder,jdbcType=DECIMAL},
+	 URL=#{url,jdbcType=VARCHAR},
+	 DESCRIBE=#{describe,jdbcType=VARCHAR},
+	 PARENT_ID=#{parentId,jdbcType=VARCHAR},
+	 MODIFY_DATE=sysdate,
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectMenuById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_menu
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_menu
+    where 1=1 
+	 <if test="menuName != null and menuName !='' ">
+	  and MENU_NAME like '%'||#{menuName,jdbcType=VARCHAR}||'%'
+	 </if>
+	 <if test="imageUrl != null and imageUrl !='' ">
+	  and IMAGE_URL=#{imageUrl,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sortOrder != null and sortOrder !='' ">
+	  and SORT_ORDER=#{sortOrder,jdbcType=DECIMAL}
+	 </if>
+	 <if test="url != null and url !='' ">
+	  and URL like '%'||#{url,jdbcType=VARCHAR}||'%'
+	 </if>
+	 <if test="describe != null and describe !='' ">
+	  and DESCRIBE=#{describe,jdbcType=VARCHAR}
+	 </if>
+	 <if test="parentId != null and parentId !='' ">
+	  and PARENT_ID=#{parentId,jdbcType=VARCHAR}
+	 </if>
+	 order by SORT_ORDER,MENU_NAME
+  </select> 
+  
+  <select id="selectOnePageByMenu" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Menu" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_menu
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="menuName != null and menuName !='' ">
+	  and MENU_NAME=#{menuName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="imageUrl != null and imageUrl !='' ">
+	  and IMAGE_URL=#{imageUrl,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sortOrder != null and sortOrder !='' ">
+	  and SORT_ORDER=#{sortOrder,jdbcType=DECIMAL}
+	 </if>
+	 <if test="url != null and url !='' ">
+	  and URL=#{url,jdbcType=VARCHAR}
+	 </if>
+	 <if test="describe != null and describe !='' ">
+	  and DESCRIBE=#{describe,jdbcType=VARCHAR}
+	 </if>
+	 <if test="parentId != null and parentId !='' ">
+	  and PARENT_ID=#{parentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_menu
+    where 1=1
+	 <if test="menuName != null and menuName !='' ">
+	  and MENU_NAME like '%'||#{menuName,jdbcType=VARCHAR}||'%' 
+	 </if>
+	 <if test="imageUrl != null and imageUrl !='' ">
+	  and IMAGE_URL like '%'||#{imageUrl,jdbcType=VARCHAR}||'%' 
+	 </if>
+	 <if test="url != null and url !='' ">
+	  and URL like '%'||#{url,jdbcType=VARCHAR}||'%' 
+	 </if>
+	 <if test="parentId != null and parentId !='' ">
+	  and PARENT_ID=#{parentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleId != null and roleId !='' ">
+	  and ID in(select MENU_ID from EIMS_ROLE_MENU where ROLE_ID=#{roleId,jdbcType=VARCHAR}) 
+	 </if>
+  </select> 
+  <select id="selectMenuGroupbyRole" resultMap="BaseResultMap" parameterType="java.util.Map" >
+	select mt.ID,mt.MENU_NAME,mt.IMAGE_URL,mt.SORT_ORDER,mt.URL,mt.DESCRIBE,mt.PARENT_ID,mt.CREATE_DATE
+	,mt.MODIFY_DATE,mt.CREATE_USER,mt.MODIFY_USER,r.ID as roleId,r.ROLE_NAME 
+	from EIMS_MENU mt, EIMS_ROLE_MENU rm, EIMS_ROLE r
+	 where mt.ID=rm.MENU_ID and rm.ROLE_ID=r.ID
+	 <if test="menuName != null and menuName !='' ">
+	  and MENU_NAME like '%'||#{menuName,jdbcType=VARCHAR}||'%' 
+	 </if>
+	 <if test="roleId != null and roleId !='' ">
+	  and rm.ROLE_ID=#{roleId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userId != null and userId !='' ">
+	  and rm.ROLE_ID in(select ROLE_ID from EIMS_USER_ROLE where user_id=#{userId,jdbcType=VARCHAR}) 
+	 </if>
+	 <if test="loginName != null and loginName !='' ">
+	  and rm.ROLE_ID in(select a.ROLE_ID from EIMS_USER_ROLE a, EIMS_USER b where a.USER_ID=b.ID and b.LOGIN_NAME=#{loginName,jdbcType=VARCHAR}) 
+	 </if>
+	 order by rm.ROLE_ID,mt.SORT_ORDER 
+  </select>
+  
+   <select id="selectAllByMenu" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Menu" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_menu
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="menuName != null and menuName !='' ">
+	  and MENU_NAME=#{menuName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="imageUrl != null and imageUrl !='' ">
+	  and IMAGE_URL=#{imageUrl,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sortOrder != null and sortOrder !='' ">
+	  and SORT_ORDER=#{sortOrder,jdbcType=DECIMAL}
+	 </if>
+	 <if test="url != null and url !='' ">
+	  and URL=#{url,jdbcType=VARCHAR}
+	 </if>
+	 <if test="describe != null and describe !='' ">
+	  and DESCRIBE=#{describe,jdbcType=VARCHAR}
+	 </if>
+	 <if test="parentId != null and parentId !='' ">
+	  and PARENT_ID=#{parentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_menu
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByMenu" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Menu" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_menu
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="menuName != null and menuName !='' ">
+	  and MENU_NAME=#{menuName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="imageUrl != null and imageUrl !='' ">
+	  and IMAGE_URL=#{imageUrl,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sortOrder != null and sortOrder !='' ">
+	  and SORT_ORDER=#{sortOrder,jdbcType=DECIMAL}
+	 </if>
+	 <if test="url != null and url !='' ">
+	  and URL=#{url,jdbcType=VARCHAR}
+	 </if>
+	 <if test="describe != null and describe !='' ">
+	  and DESCRIBE=#{describe,jdbcType=VARCHAR}
+	 </if>
+	 <if test="parentId != null and parentId !='' ">
+	  and PARENT_ID=#{parentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+</mapper>

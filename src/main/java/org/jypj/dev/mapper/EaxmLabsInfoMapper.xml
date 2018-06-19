@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.EaxmLabsInfoDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.EaxmLabsInfo" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="EMP_ITEMS_ID" property="empItemsId" jdbcType="VARCHAR" />
+	<result column="TEST_ID" property="testId" jdbcType="VARCHAR" />
+	<result column="POST_ID" property="postId" jdbcType="VARCHAR" />
+	<result column="SUBJECT_ID" property="subjectId" jdbcType="VARCHAR" />
+	<result column="LABS_NAME" property="labsName" jdbcType="VARCHAR" />
+	<result column="LABS_NUM" property="labsNum" jdbcType="VARCHAR" />
+	<result column="LABS_ADDR" property="labsAddr" jdbcType="VARCHAR" />
+	<result column="LABS_TOTAL" property="labsTotal" jdbcType="VARCHAR" />
+	<result column="LABS_REALNUM" property="labsRealnum" jdbcType="VARCHAR" />
+	<result column="IS_ADD" property="isAdd" jdbcType="VARCHAR" />
+	<result column="LABS_TYPE" property="labsType" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+	   <result column="STARTTIME" property="startTime" jdbcType="TIMESTAMP" />
+	<result column="ENDTIME" property="endTime" jdbcType="TIMESTAMP" />
+	<result column="MANGERPERSON" property="mangerPerson" jdbcType="VARCHAR" />
+	<result column="SUBJECTITEMID" property="subjectItmeId" jdbcType="VARCHAR" />
+	
+	
+	
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,EMP_ITEMS_ID,TEST_ID,POST_ID,SUBJECT_ID,LABS_NAME,LABS_NUM,LABS_ADDR,LABS_TOTAL,LABS_REALNUM,IS_ADD,LABS_TYPE,CREATE_USER,CTIME,MODIFY_USER,MTIME,STARTTIME,ENDTIME,MANGERPERSON,SUBJECTITEMID
+  </sql>
+  
+   <insert id="saveEaxmLabsInfoByField" parameterType="org.jypj.dev.entity.EaxmLabsInfo" >
+    insert into exam_labs_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="empItemsId != null" >
+    EMP_ITEMS_ID,
+   </if>
+   <if test="testId != null" >
+    TEST_ID,
+   </if>
+   <if test="postId != null" >
+    POST_ID,
+   </if>
+   <if test="subjectId != null" >
+    SUBJECT_ID,
+   </if>
+   <if test="labsName != null" >
+    LABS_NAME,
+   </if>
+   <if test="labsNum != null" >
+    LABS_NUM,
+   </if>
+   <if test="labsAddr != null" >
+    LABS_ADDR,
+   </if>
+   <if test="labsTotal != null" >
+    LABS_TOTAL,
+   </if>
+   <if test="labsRealnum != null" >
+    LABS_REALNUM,
+   </if>
+   <if test="isAdd != null" >
+    IS_ADD,
+   </if>
+   <if test="labsType != null" >
+    LABS_TYPE,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="ctime != null" >
+    CTIME,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+   <if test="mtime != null" >
+    MTIME,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="empItemsId != null" >
+        #{empItemsId,jdbcType=VARCHAR},
+      </if>
+      <if test="testId != null" >
+        #{testId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="labsName != null" >
+        #{labsName,jdbcType=VARCHAR},
+      </if>
+      <if test="labsNum != null" >
+        #{labsNum,jdbcType=VARCHAR},
+      </if>
+      <if test="labsAddr != null" >
+        #{labsAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="labsTotal != null" >
+        #{labsTotal,jdbcType=VARCHAR},
+      </if>
+      <if test="labsRealnum != null" >
+        #{labsRealnum,jdbcType=VARCHAR},
+      </if>
+      <if test="isAdd != null" >
+        #{isAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="labsType != null" >
+        #{labsType,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=DATE},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        #{mtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveEaxmLabsInfo" parameterType="org.jypj.dev.entity.EaxmLabsInfo" >
+    insert into exam_labs_info (
+	ID,
+	EMP_ITEMS_ID,
+	TEST_ID,
+	POST_ID,
+	SUBJECT_ID,
+	LABS_NAME,
+	LABS_NUM,
+	LABS_ADDR,
+	LABS_TOTAL,
+	LABS_REALNUM,
+	IS_ADD,
+	LABS_TYPE,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	 MTIME,
+	 STARTTIME,
+	 ENDTIME
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{empItemsId,jdbcType=VARCHAR},
+	#{testId,jdbcType=VARCHAR},
+	#{postId,jdbcType=VARCHAR},
+	#{subjectId,jdbcType=VARCHAR},
+	#{labsName,jdbcType=VARCHAR},
+	#{labsNum,jdbcType=VARCHAR},
+	#{labsAddr,jdbcType=VARCHAR},
+	#{labsTotal,jdbcType=VARCHAR},
+	#{labsRealnum,jdbcType=VARCHAR},
+	#{isAdd,jdbcType=VARCHAR},
+	#{labsType,jdbcType=VARCHAR},
+	#{createUser,jdbcType=VARCHAR},
+	#{ctime,jdbcType=DATE},
+	#{modifyUser,jdbcType=VARCHAR},
+	#{mtime,jdbcType=DATE},
+	#{startTime,jdbcType=TIMESTAMP},
+	#{endTime,jdbcType=TIMESTAMP}
+	)
+  </insert>
+  
+  <insert id="addBatch" parameterType="java.util.List"> 
+  insert into exam_labs_info (
+	ID,
+	EMP_ITEMS_ID,
+	TEST_ID,
+	POST_ID,
+	SUBJECT_ID,
+	LABS_NAME,
+	LABS_NUM,
+	LABS_ADDR,
+	LABS_TOTAL,
+	LABS_REALNUM,
+	IS_ADD,
+	LABS_TYPE,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	 MTIME,
+	 SUBJECTITEMID,
+	 STARTTIME,
+	 ENDTIME
+	 
+	)
+
+  <foreach collection="list" item="item" index="index" separator="union all"> 
+   (
+   select
+	#{item.id,jdbcType=VARCHAR},
+	#{item.empItemsId,jdbcType=VARCHAR},
+	#{item.testId,jdbcType=VARCHAR},
+	#{item.postId,jdbcType=VARCHAR},
+	#{item.subjectId,jdbcType=VARCHAR},
+	#{item.labsName,jdbcType=VARCHAR},
+	#{item.labsNum,jdbcType=VARCHAR},
+	#{item.labsAddr,jdbcType=VARCHAR},
+	#{item.labsTotal,jdbcType=VARCHAR},
+	#{item.labsRealnum,jdbcType=VARCHAR},
+	#{item.isAdd,jdbcType=VARCHAR},
+	#{item.labsType,jdbcType=VARCHAR},
+	#{item.createUser,jdbcType=VARCHAR},
+	#{item.ctime,jdbcType=DATE},
+	#{item.modifyUser,jdbcType=VARCHAR},
+	#{item.mtime,jdbcType=DATE},
+	#{item.subjectItmeId,jdbcType=VARCHAR},
+	#{item.startTime,jdbcType=TIMESTAMP},
+	#{item.endTime,jdbcType=TIMESTAMP}
+	from dual
+	)
+  </foreach> 
+  </insert>
+  
+  <delete id="deleteEaxmLabsInfoById" parameterType="java.lang.String" >
+    delete from exam_labs_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteEaxmLabsInfoByObject" parameterType="org.jypj.dev.entity.EaxmLabsInfo" >
+    delete from exam_labs_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateEaxmLabsInfoByField" parameterType="org.jypj.dev.entity.EaxmLabsInfo" >
+    update exam_labs_info
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="empItemsId != null" >
+  	 EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="testId != null" >
+  	 TEST_ID=#{testId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="postId != null" >
+  	 POST_ID=#{postId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="subjectId != null" >
+  	 SUBJECT_ID=#{subjectId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="labsName != null" >
+  	 LABS_NAME=#{labsName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="labsNum != null" >
+  	 LABS_NUM=#{labsNum,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="labsAddr != null" >
+  	 LABS_ADDR=#{labsAddr,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="labsTotal != null" >
+  	 LABS_TOTAL=#{labsTotal,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="labsRealnum != null" >
+  	 LABS_REALNUM=#{labsRealnum,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isAdd != null" >
+  	 IS_ADD=#{isAdd,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="labsType != null" >
+  	 LABS_TYPE=#{labsType,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="ctime != null" >
+  	 CTIME=#{ctime,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="mtime != null" >
+  	 MTIME=#{mtime,jdbcType=TIMESTAMP}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateEaxmLabsInfo" parameterType="org.jypj.dev.entity.EaxmLabsInfo" >
+    update exam_labs_info
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR},
+	 TEST_ID=#{testId,jdbcType=VARCHAR},
+	 POST_ID=#{postId,jdbcType=VARCHAR},
+	 SUBJECT_ID=#{subjectId,jdbcType=VARCHAR},
+	 LABS_NAME=#{labsName,jdbcType=VARCHAR},
+	 LABS_NUM=#{labsNum,jdbcType=VARCHAR},
+	 LABS_ADDR=#{labsAddr,jdbcType=VARCHAR},
+	 LABS_TOTAL=#{labsTotal,jdbcType=VARCHAR},
+	 LABS_REALNUM=#{labsRealnum,jdbcType=VARCHAR},
+	 IS_ADD=#{isAdd,jdbcType=VARCHAR},
+	 LABS_TYPE=#{labsType,jdbcType=VARCHAR},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 CTIME=systimeStamp,
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MTIME=systimeStamp,
+	 SUBJECTITEMID=#{subjectItmeId,jdbcType=VARCHAR},
+	 STARTTIME=#{startTime,jdbcType=TIMESTAMP},
+	 ENDTIME=#{endTime,jdbcType=TIMESTAMP},
+	 MANGERPERSON=#{mangerPerson,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectEaxmLabsInfoById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select * from EXAM_LABS_INFO t inner join EXAM_ITEMS_INFO  e on e.ID=t.TEST_ID where 1=1 
+     <if test="empItemsId != null and empItemsId !='' ">
+	  and EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testId != null and testId !='' ">
+	  and TEST_ID=#{testId,jdbcType=VARCHAR}
+	 </if>
+	 <!--<if test="year !=null and year !='' ">
+      and to_char(t.CTIME,'yyyy')=#{year,jdbcType=VARCHAR}
+     </if>-->
+     	order by t.LABS_NUM asc
+  </select> 
+  
+  <select id="selectOnePageByEaxmLabsInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.EaxmLabsInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="empItemsId != null and empItemsId !='' ">
+	  and EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testId != null and testId !='' ">
+	  and TEST_ID=#{testId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectId != null and subjectId !='' ">
+	  and SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsName != null and labsName !='' ">
+	  and LABS_NAME=#{labsName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsNum != null and labsNum !='' ">
+	  and LABS_NUM=#{labsNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsAddr != null and labsAddr !='' ">
+	  and LABS_ADDR=#{labsAddr,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsTotal != null and labsTotal !='' ">
+	  and LABS_TOTAL=#{labsTotal,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsRealnum != null and labsRealnum !='' ">
+	  and LABS_REALNUM=#{labsRealnum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isAdd != null and isAdd !='' ">
+	  and IS_ADD=#{isAdd,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsType != null and labsType !='' ">
+	  and LABS_TYPE=#{labsType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_info
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByEaxmLabsInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.EaxmLabsInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="empItemsId != null and empItemsId !='' ">
+	  and EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testId != null and testId !='' ">
+	  and TEST_ID=#{testId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectId != null and subjectId !='' ">
+	  and SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsName != null and labsName !='' ">
+	  and LABS_NAME=#{labsName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsNum != null and labsNum !='' ">
+	  and LABS_NUM=#{labsNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsAddr != null and labsAddr !='' ">
+	  and LABS_ADDR=#{labsAddr,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsTotal != null and labsTotal !='' ">
+	  and LABS_TOTAL=#{labsTotal,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsRealnum != null and labsRealnum !='' ">
+	  and LABS_REALNUM=#{labsRealnum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isAdd != null and isAdd !='' ">
+	  and IS_ADD=#{isAdd,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsType != null and labsType !='' ">
+	  and LABS_TYPE=#{labsType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="nyr != null and nyr !='' ">
+	  and to_char(CTIME,'YYYY')=#{nyr,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_info
+    where 1=1 
+   </select> 
+  
+  <select id="selectLabNums" resultType="integer" >
+    select count(1) from EXAM_LABS_INFO where TEST_ID=#{testid,jdbcType=VARCHAR} and LABS_NUM=#{num,jdbcType=VARCHAR} and ID !=#{id,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="selectLabName" resultType="integer" >
+    select count(1) from EXAM_LABS_INFO where TEST_ID=#{testid,jdbcType=VARCHAR} and LABS_NAME=#{labsname,jdbcType=VARCHAR} and ID !=#{id,jdbcType=VARCHAR}
+  </select>
+  
+    <select id="selectLabAddress" resultType="integer" >
+    select count(1) from EXAM_LABS_INFO where TEST_ID=#{testid,jdbcType=VARCHAR} and LABS_ADDR=#{labsAddress,jdbcType=VARCHAR} and ID !=#{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectObjectByEaxmLabsInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.EaxmLabsInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="empItemsId != null and empItemsId !='' ">
+	  and EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testId != null and testId !='' ">
+	  and TEST_ID=#{testId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectId != null and subjectId !='' ">
+	  and SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsName != null and labsName !='' ">
+	  and LABS_NAME=#{labsName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsNum != null and labsNum !='' ">
+	  and LABS_NUM=#{labsNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsAddr != null and labsAddr !='' ">
+	  and LABS_ADDR=#{labsAddr,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsTotal != null and labsTotal !='' ">
+	  and LABS_TOTAL=#{labsTotal,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsRealnum != null and labsRealnum !='' ">
+	  and LABS_REALNUM=#{labsRealnum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isAdd != null and isAdd !='' ">
+	  and IS_ADD=#{isAdd,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsType != null and labsType !='' ">
+	  and LABS_TYPE=#{labsType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+ 
+  <select id="getLabsByKaodian" resultType="org.jypj.dev.vo.RoomGanWeiVo" parameterType="map" >
+    select test_id as ganweiId,count(id) as num from EXAM_LABS_INFO where EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR} group by test_id
+  </select> 
+  
+  
+  
+</mapper>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            queryData();
+        });
+        
+        function queryData() {
+            $("#select_all").attr("checked",false) ;
+            var $serializeForm=$("#list_form").serialize();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/postset/dataGrid',
+                data : $serializeForm,
+                success: function (data) {
+                    if (data) {
+                        /*获取数据总行数*/
+                        $("#totalCounts").val(data.total);
+						$("#currentPage").val(data.currentPage);
+                        /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/
+                        if (parseInt($("#totalCounts").val()) == 0) {
+                            $("#totalCounts").val(1);
+                        }
+						if(parseInt($("#currentPage").val()) == 0) {  
+                        	$("#currentPage").val(1);
+                        }				
+                        /*生成表和套用css样式*/
+                        data = data.rows;//获取筛选后的内容
+                        $(".table tbody tr").remove();//清空列表
+                        $.each(data, function (index, e) {
+                            var isArt="";
+                            switch(e.isArt){
+                                case "0" : isArt="否";break;
+                                case "1" : isArt="是";break;
+                                default:isArt="否";
+                            }
+                            var insertHtml=
+                                    '<tr>'+
+                                    '<td>'+
+                                    '<input class="input" type="hidden" value="'+e.id+'">'+
+                                    '<input class="js_select" onclick="setselectAll()" type="checkbox" name="ganweiCheckBox">'+
+                                    '</td>'+
+                                    '<td>'+e.postCode+'</td>'+
+                                    '<td>'+e.postName+'</td>'+
+                                    '<td>'+isArt+'</td>'+
+                                    '<td>'+e.subjectText+'</td>'+
+                                    '<td>'+
+                                    '<a class="btn btn-default" href="javascript:void(0);" onclick="addOrUpdate('+"'"+e.id+"'"+');" title="修改">修改</a>'+
+                                    '</td>'+
+                                    '</tr>';
+                            $(".table tbody").append(insertHtml);//将返回的数据追加到表格
+                        });
+                        /*生成分页标签*/
+                       paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));
+                    }
+                }
+            });
+        }
+
+        function paginator(pageIndex, pageSize, totalCount) {
+            $.jqPaginator('#pagination', {
+                totalCounts: totalCount,
+                pageSize: pageSize,
+                currentPage: pageIndex,
+                visiblePages: 7,
+                first:'<a class="first">首页</a>',
+                prev: '<a class="prev">上一页</a>',
+                next: '<a class="next">下一页</a>',
+                last: '<a class="last：">末页</a>',
+                page: '<a class="page">{{page}}</a>',
+                onPageChange: function (num, type) {
+                    if (type === 'change' && num !== parseInt($("#currentPage").val())) {
+                        $("#currentPage").val(num);//点击改变页码时，同步model中的页码
+                        queryData();//重新生成新表
+                    }
+                }
+            });
+        }
+
+        function addOrUpdate(id){
+            if(id==0){
+                var title="岗位添加" ;
+                var url = '${link.contextPath}/dg/postset/addPage' ;
+            }else{
+                var title="岗位修改" ;
+                var url = '${link.contextPath}/dg/postset/editPage?id='+id ;
+            }
+            layer.open({
+                id:'layer',
+                type: 2,
+                title:[title, 'font-weight:600'],
+                content:[url,'yes'],
+                btn: ['确定', '取消'],
+                shadeClose:false,
+                fix:true,
+                area: ['1000px','800px'],
+                move: false,
+                yes: function(index, layero){
+                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                    iframeWin.sure();
+                }
+            });
+        }
+
+        function deletePost(){
+            var itemIds='';
+            $(".js_select:checked").each(function(){
+                var input = $(this).parent("td").find("input[type='hidden']");
+                itemIds+=input.val()+',';
+            });
+            itemIds=itemIds.substring(0,itemIds.length-1);
+            var num = 0 ;
+            if(itemIds.length>0) {
+                num = itemIds.split(",").length ;
+            }
+            if(num==0){
+                layer.msg('请至少选择一条要删除的记录！');
+                return false ;
+            }
+            layer.confirm('确定要删除'+num+'个岗位', {
+                btn: ['确定','取消']
+            }, function(){
+                $.ajax({
+                    url : '${link.contextPath}/dg/postset/deleteBatch',
+                    type : 'post',
+                    async: false,
+                    cache : false,
+                    data:{"ids":itemIds},
+                    dataType : 'json',
+                    success : function(data) {
+                        if(data.success){
+                            layer.close() ;
+                            queryData();
+                        }
+                        layer.msg(data.msg, {icon: 1});
+                    }
+                });
+            });
+
+        }
+
+        function clearSearch(){
+            $("#postName").val("");
+            $("#postName1").val("");
+            queryData() ;
+        }
+		
+		function searchFunc(){
+            $("#postName1").val($("#postName").val());
+            $("#currentPage").val("1");
+            queryData();
+        }
+    </script>
+</head>
+<body>
+    #parse("/common/topMenu.vm")
+    #parse("/common/leftTemplate.vm")
+<!-- Main内容模块 S-->
+<div class="content-wrapper">
+    <!-- context内容 S-->
+    <div class="content">
+        <!-- 条件搜索 S-->
+        <form class="form-inline" id="list_form">
+            <input type="hidden" id="currentPage" name="currentPage" value="1"/>
+            <input type="hidden" id="pageSize" name="pageSize" value="20"/>
+            <input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-left">
+                    <li>
+                        <span>岗位名称：</span>
+                        <input id="postName" class="input" type="text" placeholder="请输入">
+                        <input id="postName1" class="input" type="hidden" name="postName" placeholder="请输入">
+                    </li>
+                    <li>
+                        <a onclick="searchFunc();" class="btn btn-primary btn-sm" href="javascript:void(0);" title="查找">查找</a>
+                        <a onclick="clearSearch();" class="btn btn-primary btn-sm" href="javascript:void(0);" title="清空">清空</a>
+                    </li>
+                </ul>
+                <ul class="clearfix pull-right">
+                    <li>
+                        <a onclick="addOrUpdate(0);" class="pull-right btn btn-primary btn-sm" href="javascript:void(0);" title="新增">新增</a>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <!-- 条件搜索 E-->
+        <!-- table表单模块 S-->
+        <div class="table-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="50">选择</th>
+                        <th>岗位代码</th>
+                        <th>岗位名称</th>
+                        <th>是否艺术类</th>
+                        <th>学科</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <!-- table表单模块 E-->
+        <!-- 分页+全选模块 S-->
+        <div class="clearfix pagesBox">
+            <div class="pull-left checkAllBox">
+                <label><input class="js_selectAll" onclick="selectAll(this)" type="checkbox" name="" value="" id="select_all">全选</label>
+                <span class="handle">
+                    <a onclick="deletePost();" href="javascript:void(0);" title="删除">删除</a>
+                </span>
+            </div>
+            <div id="pagination" class="pull-right pages"></div>
+        </div>
+        <!-- 分页+全选模块 E-->
+    </div>
+    <!-- context内容 E-->
+
+    <!-- footer S-->
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2016 © Metronic by keenthemes.
+        </div>
+    </div>
+    <!-- footer E-->
+</div>
+<!-- Main内容模块 E-->
+</body>
+</html>

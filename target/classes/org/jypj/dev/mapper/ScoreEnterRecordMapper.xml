@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.ScoreEnterRecordDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.ScoreEnterRecord" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="EMP_ITEMS_ID" property="empItemsId" jdbcType="VARCHAR" />
+	<result column="POST_ID" property="postId" jdbcType="VARCHAR" />
+	<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+	<result column="TYPE" property="type" jdbcType="VARCHAR" />
+	<result column="IS_ENTER" property="isEnter" jdbcType="VARCHAR" />
+	<result column="SUBJECT_TYPE" property="subjectType" jdbcType="VARCHAR" />
+	<result column="UPDATE_REASON" property="updateReason" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+	<result column="SCHOOL_ID" property="schoolId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,EMP_ITEMS_ID,POST_ID,STUDENT_ID,TYPE,IS_ENTER,SUBJECT_TYPE,UPDATE_REASON,CREATE_USER,CTIME,MODIFY_USER,MTIME,SCHOOL_ID
+  </sql>
+  
+   <insert id="saveScoreEnterRecordByField" parameterType="org.jypj.dev.entity.ScoreEnterRecord" >
+    insert into score_enter_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="empItemsId != null" >
+    EMP_ITEMS_ID,
+   </if>
+   <if test="postId != null" >
+    POST_ID,
+   </if>
+   <if test="studentId != null" >
+    STUDENT_ID,
+   </if>
+   <if test="type != null" >
+    TYPE,
+   </if>
+   <if test="isEnter != null" >
+    IS_ENTER,
+   </if>
+   <if test="subjectType != null" >
+    SUBJECT_TYPE,
+   </if>
+   <if test="updateReason != null" >
+    UPDATE_REASON,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="ctime != null" >
+    CTIME,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+   <if test="mtime != null" >
+    MTIME,
+   </if>
+   <if test="schoolId != null" >
+    SCHOOL_ID,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="empItemsId != null" >
+        #{empItemsId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnter != null" >
+        #{isEnter,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectType != null" >
+        #{subjectType,jdbcType=VARCHAR},
+      </if>
+      <if test="updateReason != null" >
+        #{updateReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=DATE},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        #{mtime,jdbcType=DATE},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveScoreEnterRecord" parameterType="org.jypj.dev.entity.ScoreEnterRecord" >
+    insert into score_enter_record (
+	ID,
+	EMP_ITEMS_ID,
+	POST_ID,
+	STUDENT_ID,
+	TYPE,
+	IS_ENTER,
+	SUBJECT_TYPE,
+	UPDATE_REASON,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	MTIME,
+	 SCHOOL_ID
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{empItemsId,jdbcType=VARCHAR},
+	#{postId,jdbcType=VARCHAR},
+	#{studentId,jdbcType=VARCHAR},
+	#{type,jdbcType=VARCHAR},
+	#{isEnter,jdbcType=VARCHAR},
+	#{subjectType,jdbcType=VARCHAR},
+	#{updateReason,jdbcType=VARCHAR},
+	#{createUser,jdbcType=VARCHAR},
+	#{ctime,jdbcType=DATE},
+	#{modifyUser,jdbcType=VARCHAR},
+	#{mtime,jdbcType=DATE},
+	#{schoolId,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <!--将修改名单批量插入入围名单记录表中-->
+  <insert id="saveRecordsList" parameterType="list" >
+    insert into score_enter_record (
+    ID,
+	EMP_ITEMS_ID,
+	POST_ID,
+	STUDENT_ID,
+	TYPE,
+	IS_ENTER,
+	SUBJECT_TYPE,
+	UPDATE_REASON,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	MTIME,
+	SCHOOL_ID
+	)
+	<foreach collection="list" item="item" index="index" open="(" separator="union all" close=")" >  
+	select sys_guid(),
+	#{item.empItemsId,jdbcType=VARCHAR},
+	#{item.postId,jdbcType=VARCHAR},
+	#{item.studentId,jdbcType=VARCHAR},
+	#{item.type,jdbcType=VARCHAR},
+	#{item.isEnter,jdbcType=VARCHAR},
+	#{item.subjectType,jdbcType=VARCHAR},
+	#{item.updateReason,jdbcType=VARCHAR},
+	#{item.createUser,jdbcType=VARCHAR},
+	systimeStamp,
+	#{item.modifyUser,jdbcType=VARCHAR},
+	#{item.mtime,jdbcType=DATE},
+	#{item.schoolId,jdbcType=VARCHAR}
+	from dual
+	</foreach> 
+  </insert>
+  
+  <delete id="deleteScoreEnterRecordById" parameterType="java.lang.String" >
+    delete from score_enter_record
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteScoreEnterRecordByObject" parameterType="org.jypj.dev.entity.ScoreEnterRecord" >
+    delete from score_enter_record
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateScoreEnterRecordByField" parameterType="org.jypj.dev.entity.ScoreEnterRecord" >
+    update score_enter_record
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="empItemsId != null" >
+  	 EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="postId != null" >
+  	 POST_ID=#{postId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="studentId != null" >
+  	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="type != null" >
+  	 TYPE=#{type,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isEnter != null" >
+  	 IS_ENTER=#{isEnter,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="subjectType != null" >
+  	 SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="updateReason != null" >
+  	 UPDATE_REASON=#{updateReason,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="ctime != null" >
+  	 CTIME=#{ctime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="mtime != null" >
+  	 MTIME=#{mtime,jdbcType=DATE},
+  	 </if>
+     <if test="schoolId != null" >
+  	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateScoreEnterRecord" parameterType="org.jypj.dev.entity.ScoreEnterRecord" >
+    update score_enter_record
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR},
+	 POST_ID=#{postId,jdbcType=VARCHAR},
+	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+	 TYPE=#{type,jdbcType=VARCHAR},
+	 IS_ENTER=#{isEnter,jdbcType=VARCHAR},
+	 SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR},
+	 UPDATE_REASON=#{updateReason,jdbcType=VARCHAR},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 CTIME=#{ctime,jdbcType=DATE},
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MTIME=#{mtime,jdbcType=DATE},
+	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectScoreEnterRecordById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_record
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_record
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageByScoreEnterRecord" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ScoreEnterRecord" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_record
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="empItemsId != null and empItemsId !='' ">
+	  and EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isEnter != null and isEnter !='' ">
+	  and IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectType != null and subjectType !='' ">
+	  and SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="updateReason != null and updateReason !='' ">
+	  and UPDATE_REASON=#{updateReason,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_record
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByScoreEnterRecord" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ScoreEnterRecord" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_record
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="empItemsId != null and empItemsId !='' ">
+	  and EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isEnter != null and isEnter !='' ">
+	  and IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectType != null and subjectType !='' ">
+	  and SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="updateReason != null and updateReason !='' ">
+	  and UPDATE_REASON=#{updateReason,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_record
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByScoreEnterRecord" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ScoreEnterRecord" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_enter_record
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="empItemsId != null and empItemsId !='' ">
+	  and EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isEnter != null and isEnter !='' ">
+	  and IS_ENTER=#{isEnter,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectType != null and subjectType !='' ">
+	  and SUBJECT_TYPE=#{subjectType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="updateReason != null and updateReason !='' ">
+	  and UPDATE_REASON=#{updateReason,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+</mapper>

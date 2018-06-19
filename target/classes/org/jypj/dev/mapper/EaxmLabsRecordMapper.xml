@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.EaxmLabsRecordDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.EaxmLabsRecord" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="LABS_ID" property="labsId" jdbcType="VARCHAR" />
+	<result column="SUBJECT_ID" property="subjectId" jdbcType="VARCHAR" />
+	<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+	<result column="SEAT_NUM" property="seatNum" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,LABS_ID,SUBJECT_ID,STUDENT_ID,SEAT_NUM,CREATE_USER,CTIME,MODIFY_USER,MTIME
+  </sql>
+  
+   <insert id="saveEaxmLabsRecordByField" parameterType="org.jypj.dev.entity.EaxmLabsRecord" >
+    insert into exam_labs_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="labsId != null" >
+    LABS_ID,
+   </if>
+   <if test="subjectId != null" >
+    SUBJECT_ID,
+   </if>
+   <if test="studentId != null" >
+    STUDENT_ID,
+   </if>
+   <if test="seatNum != null" >
+    SEAT_NUM,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="ctime != null" >
+    CTIME,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+   <if test="mtime != null" >
+    MTIME,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="labsId != null" >
+        #{labsId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="seatNum != null" >
+        #{seatNum,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=DATE},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        #{mtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveEaxmLabsRecord" parameterType="org.jypj.dev.entity.EaxmLabsRecord" >
+    insert into exam_labs_record (
+	ID,
+	LABS_ID,
+	SUBJECT_ID,
+	STUDENT_ID,
+	SEAT_NUM,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	 MTIME
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{labsId,jdbcType=VARCHAR},
+	#{subjectId,jdbcType=VARCHAR},
+	#{studentId,jdbcType=VARCHAR},
+	#{seatNum,jdbcType=VARCHAR},
+	#{createUser,jdbcType=VARCHAR},
+	#{ctime,jdbcType=DATE},
+	#{modifyUser,jdbcType=VARCHAR},
+	#{mtime,jdbcType=DATE}
+	)
+  </insert>
+   <insert id="addBatch" parameterType="java.util.List"> 
+   insert into exam_labs_record (
+	ID,
+	LABS_ID,
+	SUBJECT_ID,
+	STUDENT_ID,
+	SEAT_NUM,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	 MTIME
+	)
+
+  <foreach collection="list" item="item" index="index" open="(" separator="union all" close=")" >
+   (
+   select
+	#{item.id,jdbcType=VARCHAR},
+	#{item.labsId,jdbcType=VARCHAR},
+	#{item.subjectId,jdbcType=VARCHAR},
+	#{item.studentId,jdbcType=VARCHAR},
+	#{item.seatNum,jdbcType=VARCHAR},
+	#{item.createUser,jdbcType=VARCHAR},
+	#{item.ctime,jdbcType=DATE},
+	#{item.modifyUser,jdbcType=VARCHAR},
+	#{item.mtime,jdbcType=DATE}
+	from dual
+	)
+  </foreach> 
+  </insert>
+  
+  
+  
+  <delete id="deleteEaxmLabsRecordById" parameterType="java.lang.String" >
+    delete from exam_labs_record
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteEaxmLabsRecordByObject" parameterType="org.jypj.dev.entity.EaxmLabsRecord" >
+    delete from exam_labs_record
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateEaxmLabsRecordByField" parameterType="org.jypj.dev.entity.EaxmLabsRecord" >
+    update exam_labs_record
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="labsId != null" >
+  	 LABS_ID=#{labsId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="subjectId != null" >
+  	 SUBJECT_ID=#{subjectId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="studentId != null" >
+  	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="seatNum != null" >
+  	 SEAT_NUM=#{seatNum,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="ctime != null" >
+  	 CTIME=#{ctime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="mtime != null" >
+  	 MTIME=#{mtime,jdbcType=DATE}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateEaxmLabsRecordAdjust" parameterType="map" >
+     update exam_labs_record set
+  	 <if test="labsId != null" >
+  	 LABS_ID=#{labsId,jdbcType=VARCHAR}
+  	 </if>
+     where
+     <if test="studentIds != null and studentIds !=''">
+    	 STUDENT_ID IN 
+		<foreach collection="studentIds" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+    </if>
+     and  SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateEaxmLabsRecord" parameterType="org.jypj.dev.entity.EaxmLabsRecord" >
+    update exam_labs_record
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 LABS_ID=#{labsId,jdbcType=VARCHAR},
+	 SUBJECT_ID=#{subjectId,jdbcType=VARCHAR},
+	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+	 SEAT_NUM=#{seatNum,jdbcType=VARCHAR},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 CTIME=#{ctime,jdbcType=DATE},
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MTIME=#{mtime,jdbcType=DATE}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectEaxmLabsRecordById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_record
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_record
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageByEaxmLabsRecord" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.EaxmLabsRecord" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_record
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsId != null and labsId !='' ">
+	  and LABS_ID=#{labsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectId != null and subjectId !='' ">
+	  and SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="seatNum != null and seatNum !='' ">
+	  and SEAT_NUM=#{seatNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="studentIds != null and studentIds !='' ">
+	 and STUDENT_ID in
+	 <foreach collection="studentIds" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_record
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsId != null and labsId !='' ">
+	  and LABS_ID=#{labsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectId != null and subjectId !='' ">
+	  and SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="seatNum != null and seatNum !='' ">
+	  and SEAT_NUM=#{seatNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	  <if test="studentIds != null and studentIds !='' ">
+	 and STUDENT_ID in
+	 <foreach collection="studentIds" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	 </if>
+  </select> 
+  
+   <select id="selectAllByEaxmLabsRecord" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.EaxmLabsRecord" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_record
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsId != null and labsId !='' ">
+	  and LABS_ID=#{labsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectId != null and subjectId !='' ">
+	  and SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="seatNum != null and seatNum !='' ">
+	  and SEAT_NUM=#{seatNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_record
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByEaxmLabsRecord" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.EaxmLabsRecord" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_labs_record
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsId != null and labsId !='' ">
+	  and LABS_ID=#{labsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectId != null and subjectId !='' ">
+	  and SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="seatNum != null and seatNum !='' ">
+	  and SEAT_NUM=#{seatNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+  </select> 
+  
+	<update id="updateBatchEaxmLabsRecordList" parameterType="list">
+	  
+		<foreach collection="list" item="item" index="index" open="begin" close="end;" separator="" >
+	    update exam_labs_record G 
+	 <set >
+	 G.ID=#{item.id,jdbcType=VARCHAR},
+	 G.LABS_ID=#{item.labsId,jdbcType=VARCHAR},
+	 G.SUBJECT_ID=#{item.subjectId,jdbcType=VARCHAR},
+	 G.STUDENT_ID=#{item.studentId,jdbcType=VARCHAR},
+	 G.SEAT_NUM=#{item.seatNum,jdbcType=VARCHAR},
+	 G.CREATE_USER=#{item.createUser,jdbcType=VARCHAR},
+	 G.CTIME=#{item.ctime,jdbcType=DATE},
+	 G.MODIFY_USER=#{item.modifyUser,jdbcType=VARCHAR},
+	 G.MTIME=#{item.mtime,jdbcType=DATE}
+    </set>
+    where G.ID = #{item.id,jdbcType=VARCHAR};
+       </foreach>
+	</update>  
+  
+</mapper>

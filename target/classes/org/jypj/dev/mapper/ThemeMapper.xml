@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.ThemeDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.Theme" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="THEME" property="theme" jdbcType="VARCHAR" />
+	<result column="REPORT_END_TIME" property="reportEndTime" jdbcType="TIMESTAMP" />
+	<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+	<result column="STATUS" property="status" jdbcType="DECIMAL" />
+	<result column="STEP" property="step" jdbcType="DECIMAL" />
+	<result column="CREATETIME" property="createtime" jdbcType="DATE" />
+	<result column="MODIFYTIME" property="modifytime" jdbcType="DATE" />
+	<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+	<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+	<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+	<result column="SCHOOL_COUNT" property="schoolCount" jdbcType="VARCHAR" />
+	<result column="PUBLISH_SCHOOL_COUNT" property="publishSchoolCount" jdbcType="VARCHAR" />
+	<result column="SCHOO_TOTLE_COUNT" property="schooTotleCount" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,THEME,REPORT_END_TIME,CONTENT,STATUS,STEP,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,REMARK
+  </sql>
+  
+   <insert id="saveThemeByField" parameterType="org.jypj.dev.entity.Theme" >
+    insert into recruit_theme
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="theme != null" >
+    THEME,
+   </if>
+   <if test="reportEndTime != null" >
+    REPORT_END_TIME,
+   </if>
+   <if test="content != null" >
+    CONTENT,
+   </if>
+   <if test="status != null" >
+    STATUS,
+   </if>
+   <if test="step != null" >
+    STEP,
+   </if>
+    CREATETIME,
+   <if test="modifytime != null" >
+    MODIFYTIME,
+   </if>
+   <if test="createuser != null" >
+    CREATEUSER,
+   </if>
+   <if test="modifyuser != null" >
+    MODIFYUSER,
+   </if>
+   <if test="remark != null" >
+    REMARK,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="theme != null" >
+        #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="reportEndTime != null" >
+        #{reportEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="step != null" >
+        #{step,jdbcType=DECIMAL},
+      </if>
+        sysdate,
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyuser != null" >
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveTheme" parameterType="org.jypj.dev.entity.Theme" >
+    insert into recruit_theme (
+	ID,
+	THEME,
+	REPORT_END_TIME,
+	CONTENT,
+	STATUS,
+	STEP,
+	CREATETIME,
+	MODIFYTIME,
+	CREATEUSER,
+	MODIFYUSER,
+	 REMARK
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{theme,jdbcType=VARCHAR},
+	#{reportEndTime,jdbcType=TIMESTAMP},
+	#{content,jdbcType=VARCHAR},
+	#{status,jdbcType=DECIMAL},
+	#{step,jdbcType=DECIMAL},
+	#{createtime,jdbcType=DATE},
+	#{modifytime,jdbcType=DATE},
+	#{createuser,jdbcType=VARCHAR},
+	#{modifyuser,jdbcType=VARCHAR},
+	#{remark,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteThemeById" parameterType="java.lang.String" >
+    delete from recruit_theme
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteThemeByObject" parameterType="org.jypj.dev.entity.Theme" >
+    delete from recruit_theme
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateThemeByField" parameterType="org.jypj.dev.entity.Theme" >
+    update recruit_theme
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="theme != null" >
+  	 THEME=#{theme,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="reportEndTime != null" >
+  	 REPORT_END_TIME=#{reportEndTime,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="content != null" >
+  	 CONTENT=#{content,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="status != null" >
+  	 STATUS=#{status,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="step != null" >
+  	 STEP=#{step,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="createtime != null" >
+  	 CREATETIME=#{createtime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifytime != null" >
+  	 MODIFYTIME=#{modifytime,jdbcType=DATE},
+  	 </if>
+  	 <if test="createuser != null" >
+  	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="modifyuser != null" >
+  	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="remark != null" >
+  	 REMARK=#{remark,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateTheme" parameterType="org.jypj.dev.entity.Theme" >
+    update recruit_theme
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 THEME=#{theme,jdbcType=VARCHAR},
+	 REPORT_END_TIME=#{reportEndTime,jdbcType=TIMESTAMP},
+	 CONTENT=#{content,jdbcType=VARCHAR},
+	 STATUS=#{status,jdbcType=DECIMAL},
+	 STEP=#{step,jdbcType=DECIMAL},
+	 CREATETIME=#{createtime,jdbcType=DATE},
+	 MODIFYTIME=#{modifytime,jdbcType=DATE},
+	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+	 REMARK=#{remark,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectThemeById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme
+    where 1=1
+	<if test="_parameter.containsKey('theme')">
+		AND THEME LIKE CONCAT(CONCAT('%', #{theme,jdbcType=VARCHAR}), '%')
+	</if>
+	<if test="_parameter.containsKey('year')">
+		AND  TO_CHAR(CREATETIME, 'yyyy') = #{year,jdbcType=VARCHAR}
+	</if>
+	ORDER BY CREATETIME DESC
+  </select> 
+  
+  <select id="selectOnePageByTheme" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Theme" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="theme != null and theme !='' ">
+	  and THEME=#{theme,jdbcType=VARCHAR}
+	 </if>
+	 <if test="reportEndTime != null and reportEndTime !='' ">
+	  and REPORT_END_TIME=#{reportEndTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="content != null and content !='' ">
+	  and CONTENT=#{content,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and STATUS=#{status,jdbcType=DECIMAL}
+	 </if>
+	 <if test="step != null and step !='' ">
+	  and STEP=#{step,jdbcType=DECIMAL}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select distinct theme.ID as THEMEID,theme.* from recruit_theme theme 
+    	left join RECRUIT_NOTICE notice on theme.ID=notice.THEME_ID 
+    	left join SCHOOL_PLAN_APPLY apply on apply.PROJECT_ID=theme.ID 
+    where 1=1 
+    	<if test="schoolId !=null and schoolId !=''">
+	    	and apply.SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+    	</if>
+    	<if test="isPublish !=null and isPublish !=''">
+	    	and notice.IS_PUBLISH=#{isPublish,jdbcType=VARCHAR}
+    	</if>
+    	<if test="year !=null and year !=''">
+	    	and to_char(theme.CREATETIME,'yyyy')=#{year,jdbcType=VARCHAR}
+    	</if>
+    	<if test="status !=null and status !=''">
+	    	and apply.STATUS=#{status,jdbcType=VARCHAR}
+    	</if>
+    order by theme.CREATETIME desc
+  </select>
+  
+   <select id="selectAllByTheme" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Theme" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="theme != null and theme !='' ">
+	  and THEME=#{theme,jdbcType=VARCHAR}
+	 </if>
+	 <if test="reportEndTime != null and reportEndTime !='' ">
+	  and REPORT_END_TIME=#{reportEndTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="content != null and content !='' ">
+	  and CONTENT=#{content,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and STATUS=#{status,jdbcType=DECIMAL}
+	 </if>
+	 <if test="step != null and step !='' ">
+	  and STEP=#{step,jdbcType=DECIMAL}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByTheme" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Theme" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="theme != null and theme !='' ">
+	  and THEME=#{theme,jdbcType=VARCHAR}
+	 </if>
+	 <if test="reportEndTime != null and reportEndTime !='' ">
+	  and REPORT_END_TIME=#{reportEndTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="content != null and content !='' ">
+	  and CONTENT=#{content,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and STATUS=#{status,jdbcType=DECIMAL}
+	 </if>
+	 <if test="step != null and step !='' ">
+	  and STEP=#{step,jdbcType=DECIMAL}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+	
+	<select id="selectAllByYear" resultMap="BaseResultMap">
+		SELECT * FROM recruit_theme
+		WHERE
+		TO_CHAR(CREATETIME, 'yyyy') = #{year,jdbcType=VARCHAR}
+		ORDER BY CREATETIME DESC
+	</select>
+
+	<select id="selectThemeNotUsed" resultMap="BaseResultMap">
+		SELECT * FROM recruit_theme t
+		WHERE
+	   	t.ID NOT IN (SELECT r.THEME_ID FROM recruit_notice r)
+	   	and status = 1
+	   	ORDER BY CREATETIME DESC
+	</select>
+	
+	<update id="updateStep" parameterType="map">
+		UPDATE recruit_theme
+		SET step = #{num,jdbcType=INTEGER}
+		WHERE id = #{themeId,jdbcType=VARCHAR} and STATUS='1'
+	</update>
+	
+	<select id="selectStep" parameterType="string" resultType="INTEGER">
+		SELECT
+		step
+		FROM
+		recruit_theme
+		WHERE
+		id = #{themeId,jdbcType=VARCHAR}
+	</select>
+  
+  <select id="selectAllByYearMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		SELECT * FROM recruit_theme
+		WHERE
+		TO_CHAR(CREATETIME, 'yyyy') = #{year,jdbcType=VARCHAR}
+		and STATUS=#{status,jdbcType=DECIMAL}
+	</select>
+
+	<select id="selectYears" resultType="string">
+		SELECT
+		DISTINCT TO_CHAR(CREATETIME, 'yyyy')
+		FROM recruit_theme
+		ORDER BY TO_CHAR(CREATETIME, 'yyyy') DESC
+	</select>
+  	
+  	<select id="queryTheme" resultMap="BaseResultMap" parameterType="java.util.Map">
+  		SELECT nvl(x.school_count,'0') as school_count,nvl(y.publish_school_count,'0') as publish_school_count,nvl(z.schoo_totle_count,'0') as schoo_totle_count,t.* FROM recruit_theme t 
+	       left join (SELECT t.project_id,count(t.project_id) as school_count FROM school_grade t WHERE 1=1 and t.project_id=#{projectId,jdbcType=VARCHAR}
+	                         and t.school_id=#{schoolId,jdbcType=VARCHAR} and t.score_publish_status='1' group by t.project_id) x on x.project_id=t.id
+	       left join (select b.project_id,count(b.project_id) as publish_school_count from (
+	                     SELECT t.project_id,t.school_id,count(t.school_id) FROM school_grade t WHERE 1=1 and t.project_id=#{projectId,jdbcType=VARCHAR}
+	                       and t.score_publish_status='1' group by t.project_id,t.school_id
+	                     ) b group by b.project_id) y on y.project_id=t.id
+	       left join (select a.project_id,count(a.project_id) as schoo_totle_count from (
+	                    SELECT t.project_id,t.school_id,count(t.school_id) FROM school_grade t WHERE 1=1 and t.project_id=#{projectId,jdbcType=VARCHAR}
+	                           group by t.project_id,t.school_id
+	                    ) a group by a.project_id)z on z.project_id=t.id
+		WHERE T.ID=#{projectId,jdbcType=VARCHAR}
+  	</select>
+</mapper>

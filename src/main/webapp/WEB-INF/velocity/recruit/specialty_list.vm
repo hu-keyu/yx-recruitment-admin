@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+    <script type="text/javascript">
+        $(document).ready(function () {
+			initFirstData();
+            queryData();
+        });
+
+        function queryData() {
+			$("#js_selectAll").attr("checked",false) ;
+            var $serializeForm=$("#list_form").serialize();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/specialty/dataGrid',
+                data : $serializeForm,
+                success: function (data) {
+                    if (data) {
+                        /*获取数据总行数*/
+                        $("#totalCounts").val(data.total);
+						$("#currentPage").val(data.currentPage);
+                        /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/
+                        if (parseInt($("#totalCounts").val()) == 0) {
+                            $("#totalCounts").val(1);
+                        }
+						if(parseInt($("#currentPage").val()) == 0) {  
+                        	$("#currentPage").val(1);
+                        }	
+                        /*生成表和套用css样式*/
+						storey = data.storey ;//层级
+                        data = data.rows;//获取筛选后的内容
+                        $(".table tbody tr").remove();//清空列表
+                        $.each(data, function (index, e) {
+                            var insertHtml = '' ;
+                            if(storey==1){
+								$("[erji=erji]").hide() ;
+								$("[sanji=sanji]").hide() ;
+								var name = "" ;
+								if(e.name.length>30){
+                                    name = e.name.substring(0,30)+"..." ;
+                                }else{
+								    name = e.name ;
+                                }
+                                insertHtml =
+                                        '<tr>'+
+                                        '<td>'+
+                                        '<input class="input" type="hidden" value="'+e.id+'">'+
+                                        '<input class="js_select" onclick="setselectAll()" type="checkbox" name="">'+
+                                        '</td>'+
+                                        '<td>'+e.code+'</td>'+
+                                        '<td title="'+e.name+'">'+name+'</td>'+
+                                        '<td>'+
+                                        '<a class="btn btn-default" href="javascript:void(0);" onclick="editSpe('+"'"+e.id+"'"+');" title="修改">修改</a>'+
+                                        '</td>'+
+                                        '</tr>';
+                            }
+                            if(storey==2){
+									$("[erji=erji]").show() ;
+									$("[sanji=sanji]").hide() ;
+                                    if(e.firstSbjName.length>20){
+                                        firstSbjName = e.firstSbjName.substring(0,20)+"..." ;
+                                    }else{
+                                        firstSbjName = e.firstSbjName ;
+                                    }
+                                    if(e.name.length>20){
+                                        name = e.name.substring(0,20)+"..." ;
+                                    }else{
+                                        name = e.name ;
+                                    }
+                                insertHtml =
+                                        '<tr>'+
+                                        '<td>'+
+                                        '<input class="input" type="hidden" value="'+e.id+'">'+
+                                        '<input class="js_select" onclick="setselectAll()" type="checkbox" name="">'+
+                                        '</td>'+
+                                        '<td>'+e.firstSbjCode+'</td>'+
+                                        '<td title="'+e.firstSbjName+'">'+firstSbjName+'</td>'+
+                                        '<td>'+e.code+'</td>'+
+                                        '<td title="'+e.name+'">'+name+'</td>'+
+                                        '<td>'+
+                                        '<a class="btn btn-default" href="javascript:void(0);" onclick="editSpe('+"'"+e.id+"'"+');" title="修改">修改</a>'+
+                                        '</td>'+
+                                        '</tr>';
+                            }
+                            if(storey==3){
+								$("[erji=erji]").show() ;
+								$("[sanji=sanji]").show() ;
+                                if(e.secondSbjName.length>15){
+                                    secondSbjName = e.secondSbjName.substring(0,15)+"..." ;
+                                }else{
+                                    secondSbjName = e.secondSbjName ;
+                                }
+                                if(e.firstSbjName.length>15){
+                                    firstSbjName = e.firstSbjName.substring(0,15)+"..." ;
+                                }else{
+                                    firstSbjName = e.firstSbjName ;
+                                }
+                                if(e.name.length>15){
+                                    name = e.name.substring(0,15)+"..." ;
+                                }else{
+                                    name = e.name ;
+                                }
+                                insertHtml =
+                                        '<tr>'+
+                                        '<td>'+
+                                        '<input class="input" type="hidden" value="'+e.id+'">'+
+                                        '<input class="js_select" onclick="setselectAll()" type="checkbox" name="">'+
+                                        '</td>'+
+                                        '<td>'+e.secondSbjCode+'</td>'+
+                                        '<td title="'+e.secondSbjName+'">'+secondSbjName+'</td>'+
+                                        '<td>'+e.firstSbjCode+'</td>'+
+                                        '<td title="'+e.firstSbjName+'">'+firstSbjName+'</td>'+
+                                        '<td>'+e.code+'</td>'+
+                                        '<td title="'+e.name+'">'+name+'</td>'+
+                                        '<td>'+
+                                        '<a class="btn btn-default" href="javascript:void(0);" onclick="editSpe('+"'"+e.id+"'"+');" title="修改">修改</a>'+
+                                        '</td>'+
+                                        '</tr>';
+                            }
+                            $(".table tbody").append(insertHtml);//将返回的数据追加到表格
+                        });
+                        /*生成分页标签*/
+                        paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));
+                    }
+                }
+            });
+        }
+
+        function paginator(pageIndex, pageSize, totalCount) {
+            $.jqPaginator('#pagination', {
+                totalCounts: totalCount,
+                pageSize: pageSize,
+                currentPage: pageIndex,
+                visiblePages: 7,
+                first:'<a class="first">首页</a>',
+                prev: '<a class="prev">上一页</a>',
+                next: '<a class="next">下一页</a>',
+                last: '<a class="last：">末页</a>',
+                page: '<a class="page">{{page}}</a>',
+                onPageChange: function (num, type) {
+                    if (type === 'change' && num !== parseInt($("#currentPage").val())) {
+                        $("#currentPage").val(num);//点击改变页码时，同步model中的页码
+                        queryData();//重新生成新表
+                    }
+                }
+            });
+        }
+
+        function add(){
+            layer.open({
+                type: 2,
+                title:['专业添加', 'font-weight:600'],
+                content:['${link.contextPath}/dg/specialty/addPage','yes'],
+                btn: ['确定', '取消'],
+                shadeClose:false,
+                fix:true,
+                area: ['750px','580px'],
+                maxWidth:474,
+                move: false,
+                yes: function(index, layero){
+                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                    var flag = iframeWin.sure();
+					if(flag){
+						var body = layer.getChildFrame('body', index);
+                    	body.find("#submitBtn").click();
+					}
+                }
+            });
+        }
+		
+		function editSpe(id){
+			var url = '${link.contextPath}/dg/specialty/editPage?id='+id ;
+            layer.open({
+                type: 2,
+                title:['专业修改', 'font-weight:600'],
+                content:[url,'yes'],
+                btn: ['确定', '取消'],
+                shadeClose:false,
+                fix:true,
+                area: ['750px','580px'],
+                maxWidth:474,
+                move: false,
+                yes: function(index, layero){
+                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                    var flag = iframeWin.sure();
+					if(flag){
+						var body = layer.getChildFrame('body', index);
+                    	body.find("#submitBtn").click();
+                    }
+                }
+            });
+        }
+		
+		
+		function initFirstData(){
+            var type=$("#type").val();
+            if(type){
+                $("#firstSbjCode").html("");
+                $.ajax({
+                    url : '${link.contextPath}/dg/specialty/selectFirstByType',
+                    type : 'post',
+                    data:{"type":type},
+                    async: false,
+                    cache : false,
+                    dataType : 'json',
+                    success : function(data) {
+                        if(data.length){
+                            var insertHtml="<option value=''>--请选择--</option>";
+                            $.each(data,function(index,e){
+                                if(e.name.length>20){
+                                    var name1 = e.name.substring(0,10)+"..." ;
+                                }else {
+                                    var name1 = e.name ;
+                                }
+                                insertHtml+='<option value="'+e.code+'" title="'+e.name+'">'+name1+'</option>';
+                            });
+                            $("#firstSbjCode").append(insertHtml);
+                        }else{
+                            $("#firstSbjCode").append('<option value="">--请选择--</option>');
+                        }
+                    }
+                });
+            }else{
+                $("#firstSbjCode").html('<option value="">--请选择--</option>');
+            }
+        }
+		
+		
+		
+		function initScondData(){
+            var firstSbjCode=$("#firstSbjCode").val();
+            if(firstSbjCode){
+                $("#secondSbjCode").html("");
+                $.ajax({
+                    url : '${link.contextPath}/dg/specialty/selectSecondByFirstSbjCode',
+                    type : 'post',
+                    data:{"code":firstSbjCode},
+                    async: false,
+                    cache : false,
+                    dataType : 'json',
+                    success : function(data) {
+                        if(data.length){
+                            var insertHtml="<option value=''>--请选择--</option>";
+                            $.each(data,function(index,e){
+                                if(e.name.length>20){
+                                    var name1 = e.name.substring(0,10)+"..." ;
+                                }else {
+                                    var name1 = e.name ;
+                                }
+                                insertHtml+='<option value="'+e.code+'" title="'+e.name+'">'+name1+'</option>';
+                            });
+                            $("#secondSbjCode").append(insertHtml);
+                        }else{
+                            $("#secondSbjCode").append('<option value="">--请选择--</option>');
+                        }
+                    }
+                });
+            }else{
+                $("#secondSbjCode").html('<option value="">--请选择--</option>');
+            }
+        }
+		
+		function clearSearch(){
+           $("#name").val("");
+            $("#name1").val("");
+           queryData() ;
+        }
+		
+		function searchFunc(){
+		    $("#name1").val($("#name").val()) ;
+            $("#currentPage").val("1");
+            queryData();
+        }
+		
+		function deleteSpecialty(){
+            var itemIds='';
+            $(".js_select:checked").each(function(){
+                var input = $(this).parent("td").find("input[type='hidden']");
+                itemIds+=input.val()+',';
+            });
+            itemIds=itemIds.substring(0,itemIds.length-1);
+            var num = 0 ;
+            if(itemIds.length>0) {
+                num = itemIds.split(",").length ;
+            }
+            if(num==0){
+                layer.msg('请至少选择一条要删除的记录！');
+                return false ;
+            }
+            layer.confirm('确定要删除'+num+'条记录？', {
+                btn: ['确定','取消']
+            }, function(){
+                $.ajax({
+                    url : '${link.contextPath}/dg/specialty/deleteBatch',
+                    type : 'post',
+                    async: false,
+                    cache : false,
+                    data:{"ids":itemIds},
+                    dataType : 'json',
+                    success : function(data) {
+                        if(data.success){
+                            layer.close() ;
+							initFirstData();
+                            initScondData();
+                            queryData();
+                        }
+                        layer.msg(data.msg, {icon: 1});
+                    }
+                });
+            });
+
+        }
+
+    </script>
+</head>
+<body>
+    #parse("/common/topMenu.vm")
+    #parse("/common/leftTemplate.vm")
+<!-- Main内容模块 S-->
+<div class="content-wrapper">
+    <!-- context内容 S-->
+    <div class="content">
+        <!-- 条件搜索 S-->
+        <form class="form-inline" id="list_form">
+            <input type="hidden" id="currentPage" name="currentPage" value="1"/>
+            <input type="hidden" id="pageSize" name="pageSize" value="20"/>
+            <input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-left">
+                    <li>
+                        <span>专业类型：</span>
+                        <select class="select" name="type" id="type" onchange="initFirstData();queryData();">
+                            <option value="1">研究生</option>
+                            <option value="2">本科</option>
+							<option value="3">高职</option>
+                        </select>
+                    </li>
+                    <li id="yiji">
+                        <span>一级学科：</span>
+                        <select class="select" id="firstSbjCode" name="firstSbjCode" onchange="initScondData();queryData();">
+							<option value="">--请选择--</option>
+                        </select>
+                    </li>
+                    <li id="erji">
+                        <span>二级学科：</span>
+                        <select class="select" id="secondSbjCode" name="secondSbjCode" onchange="queryData();">
+							<option value="">--请选择--</option>
+                        </select>
+                    </li>
+                    <li>
+                        <span>专业名称：</span>
+                        <input class="input" type="text" id="name" placeholder="请输入">
+                        <input class="input" type="hidden" id="name1" name="name" placeholder="请输入">
+                    </li>
+                    <li>
+                        <a onclick="searchFunc();" class="btn btn-primary btn-sm" href="javascript:void(0);" title="查找">查找</a>
+                        <a onclick="clearSearch();" class="btn btn-primary btn-sm" href="javascript:void(0);" title="清空">清空</a>
+                    </li>
+                </ul>
+                <ul class="clearfix pull-right">
+                    <li>
+                        <a onclick="add();" class="pull-right btn btn-primary btn-sm" href="javascript:void(0);" title="添加专业">新增</a>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <!-- 条件搜索 E-->
+        <!-- table表单模块 S-->
+        <div class="table-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="50">选择</th>
+                        <th>一级学科代码</th>
+                        <th>一级学科名称</th>
+                        <th erji="erji">二级学科代码</th>
+                        <th erji="erji">二级学科名称</th>
+                        <th sanji="sanji">专业代码</th>
+                        <th sanji="sanji">专业名称</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <!-- table表单模块 E-->
+        <!-- 分页+全选模块 S-->
+        <div class="clearfix pagesBox">
+            <div class="pull-left checkAllBox">
+                <label><input class="js_selectAll" onclick="selectAll(this)" type="checkbox" id="js_selectAll" name="" value="">全选</label>
+                <span class="handle"><a href="javascript:void(0);" onclick="deleteSpecialty();" title="删除">删除</a></span>
+            </div>
+            <div class="clearfix pagesBox">
+                <div id="pagination" class="pull-right pages"></div>
+            </div>
+        </div>
+        <!-- 分页+全选模块 E-->
+    </div>
+    <!-- context内容 E-->
+
+    <!-- footer S-->
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2016 © Metronic by keenthemes.
+        </div>
+    </div>
+    <!-- footer E-->
+</div>
+<!-- Main内容模块 E-->
+</body>
+</html>

@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.DictionaryDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.Dictionary" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MODIFY_DATE" property="modifyDate" jdbcType="DATE" />
+	<result column="DESCRIBE" property="describe" jdbcType="VARCHAR" />
+	<result column="SORT_ORDER" property="sortOrder" jdbcType="DECIMAL" />
+	<result column="TEXT" property="text" jdbcType="VARCHAR" />
+	<result column="CODE_NAME" property="codeName" jdbcType="VARCHAR" />
+	<result column="CODE" property="code" jdbcType="VARCHAR" />
+	<result column="VALUE" property="value" jdbcType="VARCHAR" />
+	<result column="IS_DEFAULT" property="isDefault" jdbcType="VARCHAR" />
+	<result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  MODIFY_USER,MODIFY_DATE,DESCRIBE,SORT_ORDER,TEXT,ID,CODE_NAME,CODE,VALUE,IS_DEFAULT,CREATE_DATE,CREATE_USER
+  </sql>
+  
+   <insert id="saveDictionaryByField" parameterType="org.jypj.dev.entity.Dictionary" >
+    insert into SYS_DICTIONARY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+   <if test="modifyDate != null" >
+    MODIFY_DATE,
+   </if>
+   <if test="describe != null" >
+    DESCRIBE,
+   </if>
+   <if test="sortOrder != null" >
+    SORT_ORDER,
+   </if>
+   <if test="text != null" >
+    TEXT,
+   </if>
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="codeName != null" >
+    CODE_NAME,
+   </if>
+   <if test="code != null" >
+    CODE,
+   </if>
+   <if test="value != null" >
+    VALUE,
+   </if>
+   <if test="isDefault != null" >
+    IS_DEFAULT,
+   </if>
+   <if test="createDate != null" >
+    CREATE_DATE,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=DATE},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="sortOrder != null" >
+        #{sortOrder,jdbcType=DECIMAL},
+      </if>
+      <if test="text != null" >
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="codeName != null" >
+        #{codeName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null" >
+        #{isDefault,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveDictionary" parameterType="org.jypj.dev.entity.Dictionary" >
+    insert into SYS_DICTIONARY (
+	MODIFY_USER,
+	MODIFY_DATE,
+	DESCRIBE,
+	SORT_ORDER,
+	TEXT,
+	ID,
+	CODE_NAME,
+	CODE,
+	VALUE,
+	IS_DEFAULT,
+	CREATE_DATE,
+	 CREATE_USER
+	)
+	values (
+	#{modifyUser,jdbcType=VARCHAR},
+	#{modifyDate,jdbcType=DATE},
+	#{describe,jdbcType=VARCHAR},
+	#{sortOrder,jdbcType=DECIMAL},
+	#{text,jdbcType=VARCHAR},
+	#{id,jdbcType=VARCHAR},
+	#{codeName,jdbcType=VARCHAR},
+	#{code,jdbcType=VARCHAR},
+	#{value,jdbcType=VARCHAR},
+	#{isDefault,jdbcType=VARCHAR},
+	#{createDate,jdbcType=DATE},
+	#{createUser,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteDictionaryById" parameterType="java.lang.String" >
+    delete from SYS_DICTIONARY
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteDictionaryByObject" parameterType="org.jypj.dev.entity.Dictionary" >
+    delete from SYS_DICTIONARY
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateDictionaryByField" parameterType="org.jypj.dev.entity.Dictionary" >
+    update SYS_DICTIONARY
+    <set >
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="modifyDate != null" >
+  	 MODIFY_DATE=#{modifyDate,jdbcType=DATE},
+  	 </if>
+  	 <if test="describe != null" >
+  	 DESCRIBE=#{describe,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="sortOrder != null" >
+  	 SORT_ORDER=#{sortOrder,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="text != null" >
+  	 TEXT=#{text,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="codeName != null" >
+  	 CODE_NAME=#{codeName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="code != null" >
+  	 CODE=#{code,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="value != null" >
+  	 VALUE=#{value,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isDefault != null" >
+  	 IS_DEFAULT=#{isDefault,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createDate != null" >
+  	 CREATE_DATE=#{createDate,jdbcType=DATE},
+  	 </if>
+     <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateDictionary" parameterType="org.jypj.dev.entity.Dictionary" >
+    update SYS_DICTIONARY
+    <set >
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MODIFY_DATE=#{modifyDate,jdbcType=DATE},
+	 DESCRIBE=#{describe,jdbcType=VARCHAR},
+	 SORT_ORDER=#{sortOrder,jdbcType=DECIMAL},
+	 TEXT=#{text,jdbcType=VARCHAR},
+	 ID=#{id,jdbcType=VARCHAR},
+	 CODE_NAME=#{codeName,jdbcType=VARCHAR},
+	 CODE=#{code,jdbcType=VARCHAR},
+	 VALUE=#{value,jdbcType=VARCHAR},
+	 IS_DEFAULT=#{isDefault,jdbcType=VARCHAR},
+	 CREATE_DATE=#{createDate,jdbcType=DATE},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectDictionaryById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DICTIONARY
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DICTIONARY
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageByDictionary" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Dictionary" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DICTIONARY
+    where 1=1 
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="describe != null and describe !='' ">
+	  and DESCRIBE=#{describe,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sortOrder != null and sortOrder !='' ">
+	  and SORT_ORDER=#{sortOrder,jdbcType=DECIMAL}
+	 </if>
+	 <if test="text != null and text !='' ">
+	  and TEXT like concat(concat('%',#{text,jdbcType=VARCHAR}),'%')
+	 </if>
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="codeName != null and codeName !='' ">
+	  and CODE_NAME like concat(concat('%',#{codeName,jdbcType=VARCHAR}),'%')
+	 </if>
+	 <if test="code != null and code !='' ">
+	  and CODE=#{code,jdbcType=VARCHAR}
+	 </if>
+	 <if test="value != null and value !='' ">
+	  and VALUE=#{value,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isDefault != null and isDefault !='' ">
+	  and IS_DEFAULT=#{isDefault,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 order by CODE,SORT_ORDER
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DICTIONARY
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByDictionary" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Dictionary" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DICTIONARY
+    where 1=1 
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="describe != null and describe !='' ">
+	  and DESCRIBE=#{describe,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sortOrder != null and sortOrder !='' ">
+	  and SORT_ORDER=#{sortOrder,jdbcType=DECIMAL}
+	 </if>
+	 <if test="text != null and text !='' ">
+	  and TEXT=#{text,jdbcType=VARCHAR}
+	 </if>
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="codeName != null and codeName !='' ">
+	  and CODE_NAME=#{codeName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="code != null and code !='' ">
+	  and CODE=#{code,jdbcType=VARCHAR}
+	 </if>
+	 <if test="value != null and value !='' ">
+	  and VALUE=#{value,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isDefault != null and isDefault !='' ">
+	  and IS_DEFAULT=#{isDefault,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 order by CODE,SORT_ORDER
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DICTIONARY
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByDictionary" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Dictionary" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DICTIONARY
+    where 1=1 
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="describe != null and describe !='' ">
+	  and DESCRIBE=#{describe,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sortOrder != null and sortOrder !='' ">
+	  and SORT_ORDER=#{sortOrder,jdbcType=DECIMAL}
+	 </if>
+	 <if test="text != null and text !='' ">
+	  and TEXT=#{text,jdbcType=VARCHAR}
+	 </if>
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="codeName != null and codeName !='' ">
+	  and CODE_NAME=#{codeName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="code != null and code !='' ">
+	  and CODE=#{code,jdbcType=VARCHAR}
+	 </if>
+	 <if test="value != null and value !='' ">
+	  and VALUE=#{value,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isDefault != null and isDefault !='' ">
+	  and IS_DEFAULT=#{isDefault,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+	
+	<select id="searchByCodeAndText" resultMap="BaseResultMap" parameterType="map">
+		SELECT * FROM SYS_DICTIONARY
+		WHERE code=#{code,jdbcType=VARCHAR}
+		AND TEXT LIKE CONCAT(CONCAT('%', #{text,jdbcType=VARCHAR}), '%')
+
+	</select>
+  
+</mapper>

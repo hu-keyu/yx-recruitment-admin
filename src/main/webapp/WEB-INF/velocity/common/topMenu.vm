@@ -1,0 +1,171 @@
+<!-- 顶部导航 S-->
+<div ms-controller="Menu" class="header">
+    <!-- top S-->
+    <div class="top clearfix">
+        <!-- logo S-->
+        <div class="logoBox pull-left">
+            <img src="${link.contextPath}/static/images/logo.png" alt="">
+        </div>
+        <!-- logo E-->
+        <!-- 导航模块 S-->
+        <div class="navList pull-left">
+            <ul class="clearfix">
+                <li ms-repeat-el="menu" ms-class='active:active === $index' ms-on-click="menuTab($index)">
+                    <a ms-attr-title="{{el.name}}" ms-attr-href="{{el.url}}">{{el.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <!-- 导航模块 E-->
+        <!-- 操作导航 S-->
+        <div class="handleList pull-right">
+            <ul class="clearfix">
+              
+                
+                <li onclick="skin()">
+                    <a href="#this" title="换肤">
+                        <i class="iconfont">&#xe607;</i>
+                        <span>换肤</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#this" title="帮助">
+                        <i class="iconfont">&#xe609;</i>
+                        <span>帮助</span>
+                    </a>
+                </li>
+                <li class="quit">
+                    <div class="text-center">
+                        <i class="iconfont">&#xe60a;</i>
+                    </div>
+                    <!-- 滑出层 S-->
+                    <div class="drop-panel">
+                        <div class="panel">
+                            <div class="info">
+                                <em class="flag"></em>
+                                <div class="pic">
+                                    <em style="background-image: url(${link.contextPath}/static/images/default.jpg);filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='${link.contextPath}/static/images/default.jpg',  sizingMethod='scale');"></em>
+                                </div>
+                                <ul class="infoList">
+                                    <li>当前账号：${user.loginName}</li>
+                                </ul>
+                            </div>
+                            <div class="btnBox">
+                                <a class="password" href="javascript:void(0)" onclick="openUpdatePwd();" title=""><i class="iconfont">&#xe60e;</i>修改密码</a>
+                                <a class="quit" href="${link.contextPath}/login/loginout" title=""><i class="iconfont">&#xe60f;</i>退出登录</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 滑出层 E-->
+                </li>
+            </ul>
+        </div>
+        <!-- 操作导航 E-->
+    </div>
+    <!-- top E-->
+    <!-- 二级菜单 S-->
+    <div class="menuList">
+        <ul class="clearfix">
+            <li ms-repeat-elem="menu[active].menuSecond" ms-class='active:activeSecond === $index' ms-on-click="menuTab2($index)">
+                <a ms-attr-href="{{elem.url}}">{{elem.name}}</a>
+            </li>
+        </ul>
+    </div>
+    <!-- 二级菜单 E-->
+</div>
+<!-- 顶部导航 E-->
+
+<!-- 皮肤模块 S-->
+<div id="js_skin" class="skin">
+    <ul class="clearfix">
+        <li>
+            <div class="item blue"></div>
+            <input type="radio" data-skin="blue" checked name="skin" value="blue">
+        </li>
+        <li>
+            <div class="item black"></div>
+            <input type="radio" data-skin="black" name="skin"  value="black">
+        </li>
+        <li>
+            <div class="item cyan"></div>
+            <input type="radio" data-skin="cyan" name="skin" value="cyan">
+        </li>
+    </ul>
+</div>
+<!-- 皮肤模块 E-->
+
+<script type="text/javascript">
+//皮肤功能;
+function skin(){
+    layer.open({
+        type: 1,
+        title:['换肤设置', 'font-weight:600'],
+        content:$('.skin'),
+        btn: ['确定'],
+        yes:function(){
+           var temp=$('#js_skin input[name="skin"]:checked ').val();
+           $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/index/changeSikn',
+                data : {
+                    "skin" :temp
+                },
+                success: function (data){
+                  if(data.msg=='success')
+                  {
+                   layer.msg('更新成功!');
+                  }
+                    setTimeout(function() {
+                   layer.closeAll();
+	              }, 1000);
+                
+                }  
+            });  
+        },
+        shadeClose:true,
+        fix:true,
+        area: 'auto',
+        maxWidth:474,
+        move: false
+    })
+}
+var vm_menu = avalon.define({
+    $id:'Menu',
+    active:${firstIndex},
+    activeSecond:${secondIndex},
+    menu:${objectJson},
+    menuTab:function(index){
+        vm_menu.active = index;
+        vm_menu.activeSecond = 0;
+    },
+    menuTab2:function(index){
+        vm_menu.activeSecond = index;
+    },
+});
+
+ function openUpdatePwd()
+ {
+   layer.open({
+	            type: 2,
+	            title: '修改密码',
+	            shadeClose: true,
+	            shade: 0.8,
+	             area: ['500px', '400px'],           
+	            content: "${link.contextPath}/dg/index/toUpwd?",
+	            btn: ['确认', '取消'], //只是为了演示
+	            yes: function(index, layero){
+                var iframeWin = window[layero.find('iframe')[0]['name']]; 
+                 iframeWin.sureForm();
+                 if(iframeWin.getupdateValue()!='')
+                 {
+                   setTimeout(function() {
+                   layer.closeAll();
+                   window.location.href="${toUrl}";
+	              }, 1000);
+                 }
+                },
+                btn2: function(){
+                }
+		        });
+ }
+</script>

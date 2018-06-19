@@ -1,0 +1,344 @@
+@charset "utf-8";
+/*
+ * 
+ * @time 2016-08-11
+ * @creater 前端工程师——张工 <354631282@qq.com>
+ * */
+/* 全局区域 -S */
+/* 全局设置 -S */
+*{
+  box-sizing: border-box;
+}
+body,ul,li,img,dl,dt,dd,h1,h2,h3,h4,h5,h6 {
+  margin: 0;
+  padding: 0;
+}
+/* Custom scrollbars for webkit browsers */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background-color: #eaeaea;
+  border-left: 1px solid #cecece;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #cecece;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #aaaaaa;
+}
+::-webkit-scrollbar-track {
+  border-radius: 0;
+  box-shadow: none;
+  border: 0;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  box-shadow: none;
+  border: 0;
+}
+body {
+  font-family: "Microsoft YaHei", verdana, arial;
+  font-size: 12px;
+  color: #444;
+  -ms-overflow-style: scrollbar;
+}
+table {
+  width: 100%;
+  max-width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+ul {
+  list-style-type: none;
+  list-style-position: inside;
+}
+img {
+  border: none;
+}
+a {
+  text-decoration: none;
+  color: #444;
+}
+a:hover {
+  color: #666;
+  text-decoration: none;
+}
+a:focus,
+a:visited {
+  outline: none;
+  -moz-outline: none;
+  text-decoration: none;
+}
+.ellipsis {
+  display: inline-block;
+  *display:inline;
+  *zoom:1;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.break_word {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.keep_all {
+  word-break: keep-all;
+  white-space: nowrap;
+}
+.test_justify {
+  text-align: justify;
+  text-justify: distribute-all-lines;
+  /*ie6-8*/
+  text-align-last: justify;
+  /* ie9*/
+  -ms-text-align-last: justify;
+  -o-text-align-last: justify;
+  -moz-text-align-last: justify;
+  /*ff*/
+  -webkit-text-align-last: justify;
+  /*chrome 20+*/
+}
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  /* chrome*/
+  .test_justify:after {
+    content: ".";
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 100%;
+    overflow: hidden;
+    height: 0;
+  }
+}
+
+input::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #999;
+}
+input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #999;
+}
+input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #999;
+}
+input:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #999;
+}
+input::-ms-clear {
+  display: none;
+}
+
+/* 全局设置 -E */
+/* 公共类 -S */
+/*浮动*/
+.pull-left{
+  float: left!important;
+}
+.pull-right{
+  float: right!important;
+}
+/*设置clearfix火狐和IE不兼容问题*/
+.clearfix:before, .clearfix:after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+
+/*input,select基础样式*/
+.input{
+  border: 1px solid #ddd!important;
+  height: 26px!important;
+  padding: 4px 5px;
+  padding-right: 0\9;
+  line-height: 16px;
+  outline: none;
+  vertical-align: middle;
+}
+.select {
+  border: 1px solid #ddd!important;
+  height: 26px!important;
+  padding: 0px 5px;
+  padding-right: 0\9;
+  line-height: 18px;
+  outline: none;
+  vertical-align: middle;
+}
+.textarea {
+  width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  outline: medium none;
+  padding: 5px;
+  font-size: 14px;
+  line-height: 1.42857;
+  color: #666;
+  background-color: #fff;
+  background-image: none;
+  resize: none;
+}
+.text-left {
+  text-align: left!important;
+}
+.text-center {
+  text-align: center!important;
+}
+.text-right {
+  text-align: right!important;
+}
+
+/*项目公共布局样式*/
+.container {
+    width: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+    *zoom: 1;
+}
+.nobg {
+    background: none;
+}
+.noborder{
+  border: none !important;
+}
+/* 公共类 -E */
+/* 全局区域 -E */
+
+.fileName{
+  display: inline-block;
+  *display: inline;
+  *zoom:1;
+  width: 200px;
+  margin-left: 15px;
+  height: 26px;
+  line-height: 26px;
+  color: #2553a0;
+  text-decoration: underline;
+  vertical-align: middle;
+}
+
+.uploadFile{
+  display: inline-block;
+  *display: inline;
+  *zoom:1;
+  margin: 0px 30px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.uploadFile .smallImg{
+  display: none;
+  margin: 0 auto;
+  width: auto;
+  max-width: 30px;
+  height: 24px;
+}
+
+.uploadFile .bigImg{
+  display: none;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+}
+
+.uploadFile .fileSp{
+ display: none;
+ font-size:14px;
+ font-family:"微软雅黑";
+ line-height: 24px;
+ text-decoration: underline;
+}
+
+/* ==================================================================== */
+/* CHECKBOX TYPE 11 ---------------------------------------------------- */
+/* ==================================================================== */
+
+input[type="checkbox"] + label {
+  cursor: pointer;
+  font-size: 1em;
+}
+[id^="checkbox-11-"] + label {
+  background-color: #FFF;
+  padding: 16px 50px;
+  border-radius: 7px;
+  display: inline-block;
+  *display: inline;
+  *zoom:1;
+  position: relative;
+  margin-right: 30px;
+  background: #F7836D;
+  width: 100px;
+  height: 10px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1), 0 0 10px rgba(245, 146, 146, 0.4);
+}
+
+[id^="checkbox-11-"] + label:before {
+  content: ' ';
+  position: absolute;
+  background: #FFF;
+  top: 0px;
+  z-index: 99999;
+  left: 0px;
+  width: 24px;
+  color: #FFF;
+  height: 32px;
+  border-radius: 7px;
+  box-shadow: 0 0 1px rgba(0,0,0,0.6);
+}
+
+[id^="checkbox-11-"] + label:after {
+  content: '暂停招聘';
+  position: absolute;
+  top: 7px;
+  left: 37px;
+  font-size: 1.2em;
+  color: white;
+  font-weight: bold;
+  left: 8px;
+  padding: 5px;
+  top: 2px;
+  border-radius: 100px;
+}
+
+[id^="checkbox-11-"]:checked + label {
+  background: #67A5DF;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1), 0 0 10px rgba(146, 196, 245, 0.4);
+}
+
+[id^="checkbox-11-"]:checked + label:after {
+  content: '正常招聘';
+  left: 6px;
+}
+
+[id^="checkbox-11-"]:checked + label:before {
+  content: ' ';
+  position: absolute;
+  z-index: 99999;
+  left: 75px;
+}
+
+
+[id^="checkbox-11-"] + label:after {
+  left: 30px;
+} 
+
+#checkbox-11-3 + label:before {
+  width: 21px;
+  height: 22px;
+  top: 3px;
+  left: 3px;
+}
+
+#checkbox-11-3:checked + label:before {
+  left: 49px;
+}
+
+#checkbox-11-2 + label:after, #checkbox-11-2 + label:before, #checkbox label {  
+  -webkit-transition: all 0.1s ease-in;
+  transition: all 0.1s ease-in;
+}

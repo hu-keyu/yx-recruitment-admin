@@ -1,0 +1,7 @@
+#parse("/common/head-js+css.vm")
+
+    <div align="center">
+          
+          <b><font size="10">${labname}试室</font></b>
+ 
+    </div>

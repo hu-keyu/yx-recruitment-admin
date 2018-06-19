@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.ScoreGradePhysicalDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.ScoreGradePhysical" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+	<result column="GRADE" property="grade" jdbcType="VARCHAR" />
+	<result column="RESULT" property="result" jdbcType="VARCHAR" />
+	<result column="PROJECT_ID" property="projectId" jdbcType="VARCHAR" />
+	<result column="POSITION_ID" property="positionId" jdbcType="VARCHAR" />
+	<result column="SCHOOL_ID" property="schoolId" jdbcType="VARCHAR" />
+	<result column="SCORE_PUBLISH_STATUS" property="scorePublishStatus" jdbcType="VARCHAR" />
+	<result column="LIST_PUBLISH_STATUS" property="listPublishStatus" jdbcType="VARCHAR" />
+	<result column="TYPE" property="type" jdbcType="VARCHAR" />
+	<result column="IS_RESET" property="isReset" jdbcType="VARCHAR" />
+	<result column="CREATETIME" property="createtime" jdbcType="DATE" />
+	<result column="MODIFYTIME" property="modifytime" jdbcType="DATE" />
+	<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+	<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+	<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,STUDENT_ID,GRADE,RESULT,PROJECT_ID,POSITION_ID,SCHOOL_ID,SCORE_PUBLISH_STATUS,LIST_PUBLISH_STATUS,TYPE,IS_RESET,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,REMARK
+  </sql>
+  
+   <insert id="saveScoreGradePhysicalByField" parameterType="org.jypj.dev.entity.ScoreGradePhysical" >
+    insert into score_grade_physical
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="studentId != null" >
+    STUDENT_ID,
+   </if>
+   <if test="grade != null" >
+    GRADE,
+   </if>
+   <if test="result != null" >
+    RESULT,
+   </if>
+   <if test="projectId != null" >
+    PROJECT_ID,
+   </if>
+   <if test="positionId != null" >
+    POSITION_ID,
+   </if>
+   <if test="schoolId != null" >
+    SCHOOL_ID,
+   </if>
+   <if test="scorePublishStatus != null" >
+    SCORE_PUBLISH_STATUS,
+   </if>
+   <if test="listPublishStatus != null" >
+    LIST_PUBLISH_STATUS,
+   </if>
+   <if test="type != null" >
+    TYPE,
+   </if>
+   <if test="isReset != null" >
+    IS_RESET,
+   </if>
+   <if test="createtime != null" >
+    CREATETIME,
+   </if>
+   <if test="modifytime != null" >
+    MODIFYTIME,
+   </if>
+   <if test="createuser != null" >
+    CREATEUSER,
+   </if>
+   <if test="modifyuser != null" >
+    MODIFYUSER,
+   </if>
+   <if test="remark != null" >
+    REMARK,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=VARCHAR},
+      </if>
+      <if test="scorePublishStatus != null" >
+        #{scorePublishStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="listPublishStatus != null" >
+        #{listPublishStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="isReset != null" >
+        #{isReset,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyuser != null" >
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveScoreGradePhysical" parameterType="org.jypj.dev.entity.ScoreGradePhysical" >
+    insert into score_grade_physical (
+	ID,
+	STUDENT_ID,
+	GRADE,
+	RESULT,
+	PROJECT_ID,
+	POSITION_ID,
+	SCHOOL_ID,
+	SCORE_PUBLISH_STATUS,
+	LIST_PUBLISH_STATUS,
+	TYPE,
+	IS_RESET,
+	CREATETIME,
+	MODIFYTIME,
+	CREATEUSER,
+	MODIFYUSER,
+	 REMARK
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{studentId,jdbcType=VARCHAR},
+	#{grade,jdbcType=VARCHAR},
+	#{result,jdbcType=VARCHAR},
+	#{projectId,jdbcType=VARCHAR},
+	#{positionId,jdbcType=VARCHAR},
+	#{schoolId,jdbcType=VARCHAR},
+	#{scorePublishStatus,jdbcType=VARCHAR},
+	#{listPublishStatus,jdbcType=VARCHAR},
+	#{type,jdbcType=VARCHAR},
+	#{isReset,jdbcType=VARCHAR},
+	#{createtime,jdbcType=DATE},
+	#{modifytime,jdbcType=DATE},
+	#{createuser,jdbcType=VARCHAR},
+	#{modifyuser,jdbcType=VARCHAR},
+	#{remark,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <!--将体检入围名单批量插入体检成绩表-->
+  <insert id="savePhysicalGradesList" parameterType="list" >
+    insert into score_grade_physical (
+    ID,
+	STUDENT_ID,
+	GRADE,
+	RESULT,
+	PROJECT_ID,
+	POSITION_ID,
+	SCHOOL_ID,
+	SCORE_PUBLISH_STATUS,
+	LIST_PUBLISH_STATUS,
+	TYPE,
+	IS_RESET,
+	CREATETIME,
+	MODIFYTIME,
+	CREATEUSER,
+	MODIFYUSER,
+	 REMARK
+	)
+	<foreach collection="list" item="item" index="index" open="(" separator="union all" close=")" >  
+	select sys_guid(),
+	#{item.studentId,jdbcType=VARCHAR},
+	#{item.grade,jdbcType=VARCHAR},
+	#{item.result,jdbcType=VARCHAR},
+	#{item.projectId,jdbcType=VARCHAR},
+	#{item.positionId,jdbcType=VARCHAR},
+	#{item.schoolId,jdbcType=VARCHAR},
+	#{item.scorePublishStatus,jdbcType=VARCHAR},
+	#{item.listPublishStatus,jdbcType=VARCHAR},
+	#{item.type,jdbcType=VARCHAR},
+	#{item.isReset,jdbcType=VARCHAR},
+	systimeStamp,
+	#{item.modifytime,jdbcType=DATE},
+	#{item.createuser,jdbcType=VARCHAR},
+	#{item.modifyuser,jdbcType=VARCHAR},
+	#{item.remark,jdbcType=VARCHAR}
+	from dual
+	</foreach> 
+  </insert>
+  
+  <delete id="deleteScoreGradePhysicalById" parameterType="java.lang.String" >
+    delete from score_grade_physical
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteScoreGradePhysicalByObject" parameterType="org.jypj.dev.entity.ScoreGradePhysical" >
+    delete from score_grade_physical
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateScoreGradePhysicalByField" parameterType="org.jypj.dev.entity.ScoreGradePhysical" >
+    update score_grade_physical
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="studentId != null" >
+  	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="grade != null" >
+  	 GRADE=#{grade,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="result != null" >
+  	 RESULT=#{result,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="projectId != null" >
+  	 PROJECT_ID=#{projectId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="positionId != null" >
+  	 POSITION_ID=#{positionId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="schoolId != null" >
+  	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="scorePublishStatus != null" >
+  	 SCORE_PUBLISH_STATUS=#{scorePublishStatus,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="listPublishStatus != null" >
+  	 LIST_PUBLISH_STATUS=#{listPublishStatus,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="type != null" >
+  	 TYPE=#{type,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isReset != null" >
+  	 IS_RESET=#{isReset,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createtime != null" >
+  	 CREATETIME=#{createtime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifytime != null" >
+  	 MODIFYTIME=#{modifytime,jdbcType=DATE},
+  	 </if>
+  	 <if test="createuser != null" >
+  	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="modifyuser != null" >
+  	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="remark != null" >
+  	 REMARK=#{remark,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateScoreGradePhysical" parameterType="org.jypj.dev.entity.ScoreGradePhysical" >
+    update score_grade_physical
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+	 GRADE=#{grade,jdbcType=VARCHAR},
+	 RESULT=#{result,jdbcType=VARCHAR},
+	 PROJECT_ID=#{projectId,jdbcType=VARCHAR},
+	 POSITION_ID=#{positionId,jdbcType=VARCHAR},
+	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR},
+	 SCORE_PUBLISH_STATUS=#{scorePublishStatus,jdbcType=VARCHAR},
+	 LIST_PUBLISH_STATUS=#{listPublishStatus,jdbcType=VARCHAR},
+	 TYPE=#{type,jdbcType=VARCHAR},
+	 IS_RESET=#{isReset,jdbcType=VARCHAR},
+	 CREATETIME=#{createtime,jdbcType=DATE},
+	 MODIFYTIME=#{modifytime,jdbcType=DATE},
+	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+	 REMARK=#{remark,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!--批量更新体检成绩表-->
+  <update id="updatePhysicalList" parameterType="list">
+  		<foreach collection="list" item="item" index="index" open="begin" close="end;" separator="" > 
+	        update score_grade_physical 
+	        <set>
+	        	 <if test="item.modifyuser != null and item.modifyuser !='' ">
+				   	MODIFYUSER=#{item.modifyuser,jdbcType=VARCHAR},
+				 </if>
+				  <if test="item.result != null and item.result !='' ">
+				   	RESULT=#{item.result,jdbcType=VARCHAR},
+				 </if>
+	        	MODIFYTIME=systimeStamp
+	        </set>
+	        where ID = #{item.id,jdbcType=VARCHAR};
+       </foreach>
+  </update>
+  
+  <select id="selectScoreGradePhysicalById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_grade_physical
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultType="org.jypj.dev.vo.ScoreEntersOutVo" parameterType="java.util.Map" >
+    <!-- select t.ID as id ,t.RESULT as isPass,s.NAME as studentName,s.SEX as sex,s.TICKETNUM as ticketNum,s.ID as studentId from score_grade_physical t 
+    inner join STUDENT_INFO s on t.STUDENT_ID=s.ID where 1=1
+	<if test="year != null and year !='' ">
+	  and to_char(t.CREATETIME,'yyyy')=#{year,jdbcType=VARCHAR}
+	</if>  -->
+	select t.ID as id ,t.RESULT as isPass,s.NAME as studentName,s.SEX as sex,s.TICKETNUM as ticketNum,s.ID as studentId,d.TEXT as school 
+	from score_grade_physical t 
+    left join STUDENT_INFO s on t.STUDENT_ID=s.ID left join SYS_DICTIONARY d on t.SCHOOL_ID=d.ID where 1=1
+  	<if test="projectId != null and projectId !='' ">
+	  and t.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="testType != null and testType !='' ">
+	  and t.TYPE=#{testType,jdbcType=VARCHAR}
+	</if>
+	<if test="postId != null and postId !='' ">
+	  and t.POSITION_ID=#{postId,jdbcType=VARCHAR}
+	</if>
+	<if test="nameOrNum != null and nameOrNum !='' ">
+	  and (s.NAME like concat(concat('%',#{nameOrNum,jdbcType=VARCHAR}),'%') 
+	  or s.TICKETNUM like concat(concat('%',#{nameOrNum,jdbcType=VARCHAR}),'%'))
+	</if>
+	order by t.SCHOOL_ID,t.RESULT,t.id
+  </select>
+  
+  <select id="selectOnePageByScoreGradePhysical" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ScoreGradePhysical" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_grade_physical
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="grade != null and grade !='' ">
+	  and GRADE=#{grade,jdbcType=VARCHAR}
+	 </if>
+	 <if test="result != null and result !='' ">
+	  and RESULT=#{result,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="positionId != null and positionId !='' ">
+	  and POSITION_ID=#{positionId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="scorePublishStatus != null and scorePublishStatus !='' ">
+	  and SCORE_PUBLISH_STATUS=#{scorePublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="listPublishStatus != null and listPublishStatus !='' ">
+	  and LIST_PUBLISH_STATUS=#{listPublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isReset != null and isReset !='' ">
+	  and IS_RESET=#{isReset,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+  <!--(导入)批量更新体检成绩表-->
+  <update id="updatePhysicalBatchs" parameterType="list">
+		<foreach collection="list" item="item" index="index" open="begin" close="end;" separator="" >
+	        update score_grade_physical t 
+	        <set>
+	        	<if test="item.result != null and item.result !='' " >
+			    	t.RESULT=#{item.result,jdbcType=VARCHAR},
+			    </if>
+	        	<if test="item.modifyuser != null and item.modifyuser !='' " >
+		        	t.MODIFYUSER=#{item.modifyuser,jdbcType=VARCHAR},
+			    </if>
+	        	t.MODIFYTIME=systimeStamp 
+	        </set>
+	        where 1=1 
+	        	AND t.PROJECT_ID = #{item.projectId,jdbcType=VARCHAR}
+				<if test="item.postName != null and item.postName !='' " >
+	        	AND EXISTS (select 1 from SCHOOL_PLAN_APPLY t inner join SCHOOL_POSITION p on t.ID=p.PLAN_APPLY_ID  inner join RECRUIT_POSTSET r on r.ID=p.STATION_ID 
+				where 1=1 and t.STATUS='2' and p.STATUS='1'AND r.POST_NAME=#{item.postName,jdbcType=VARCHAR}) 
+	        	</if>
+	        	AND EXISTS (SELECT 1 FROM STUDENT_INFO S WHERE S.EMPLOY_ITEMS_ID=t.PROJECT_ID AND t.STUDENT_ID=S.ID AND S.TICKETNUM=#{item.ticketnum,jdbcType=VARCHAR} 
+	        	<if test="item.name != null and item.name !='' " >
+	        		AND S.NAME=#{item.name,jdbcType=VARCHAR}
+	        	</if>
+	        	);
+       </foreach>
+	</update>
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_grade_physical t where 1=1 
+    <!-- <if test="year != null and year !='' ">
+	  and to_char(t.CREATETIME,'yyyy')=#{year,jdbcType=VARCHAR}
+	</if>  -->
+  	<if test="projectId != null and projectId !='' ">
+	  and t.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="testType != null and testType !='' ">
+	  and t.TYPE=#{testType,jdbcType=VARCHAR}
+	</if>
+	<!--<if test="postId != null and postId !='' ">
+	  and t.POSITION_ID=#{postId,jdbcType=VARCHAR}
+	</if>
+	<if test="result != null and result !='' ">
+	  and t.RESULT=#{RESULT,jdbcType=VARCHAR}
+	</if> -->
+  </select> 
+  
+   <select id="selectAllByScoreGradePhysical" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ScoreGradePhysical" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_grade_physical
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="grade != null and grade !='' ">
+	  and GRADE=#{grade,jdbcType=VARCHAR}
+	 </if>
+	 <if test="result != null and result !='' ">
+	  and RESULT=#{result,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="positionId != null and positionId !='' ">
+	  and POSITION_ID=#{positionId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="scorePublishStatus != null and scorePublishStatus !='' ">
+	  and SCORE_PUBLISH_STATUS=#{scorePublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="listPublishStatus != null and listPublishStatus !='' ">
+	  and LIST_PUBLISH_STATUS=#{listPublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isReset != null and isReset !='' ">
+	  and IS_RESET=#{isReset,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_grade_physical
+    where 1=1 
+   </select> 
+   
+    <select id="selectPhysicalByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_grade_physical
+    where 1=1 
+    <if test="ids != null and ids !=''">
+    	 AND ID IN 
+		<foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+    </if>
+  </select>
+  
+  <select id="selectObjectByScoreGradePhysical" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ScoreGradePhysical" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_grade_physical
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="grade != null and grade !='' ">
+	  and GRADE=#{grade,jdbcType=VARCHAR}
+	 </if>
+	 <if test="result != null and result !='' ">
+	  and RESULT=#{result,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="positionId != null and positionId !='' ">
+	  and POSITION_ID=#{positionId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="scorePublishStatus != null and scorePublishStatus !='' ">
+	  and SCORE_PUBLISH_STATUS=#{scorePublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="listPublishStatus != null and listPublishStatus !='' ">
+	  and LIST_PUBLISH_STATUS=#{listPublishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isReset != null and isReset !='' ">
+	  and IS_RESET=#{isReset,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+</mapper>

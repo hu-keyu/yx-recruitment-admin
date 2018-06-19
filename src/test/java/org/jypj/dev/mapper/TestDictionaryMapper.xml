@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.TestDictionaryDao">
+
+	<resultMap id="BaseResultMap" type="org.jypj.dev.entity.Dictionary">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+		<result column="MODIFY_DATE" property="modifyDate" jdbcType="DATE" />
+		<result column="DESCRIBE" property="describe" jdbcType="VARCHAR" />
+		<result column="SORT_ORDER" property="sortOrder" jdbcType="DECIMAL" />
+		<result column="TEXT" property="text" jdbcType="VARCHAR" />
+		<result column="CODE_NAME" property="codeName" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="VALUE" property="value" jdbcType="VARCHAR" />
+		<result column="IS_DEFAULT" property="isDefault" jdbcType="VARCHAR" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+		<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		MODIFY_USER,MODIFY_DATE,DESCRIBE,SORT_ORDER,TEXT,ID,CODE_NAME,CODE,VALUE,IS_DEFAULT,CREATE_DATE,CREATE_USER
+	</sql>
+	<select id="selectAllByDictionary" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Dictionary">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_DICTIONARY
+		where 1=1
+		<if test="modifyUser != null and modifyUser !='' ">
+			and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+		</if>
+		<if test="modifyDate != null and modifyDate !='' ">
+			and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+		</if>
+		<if test="describe != null and describe !='' ">
+			and DESCRIBE=#{describe,jdbcType=VARCHAR}
+		</if>
+		<if test="sortOrder != null and sortOrder !='' ">
+			and SORT_ORDER=#{sortOrder,jdbcType=DECIMAL}
+		</if>
+		<if test="text != null and text !='' ">
+			and TEXT=#{text,jdbcType=VARCHAR}
+		</if>
+		<if test="id != null and id !='' ">
+			and ID=#{id,jdbcType=VARCHAR}
+		</if>
+		<if test="codeName != null and codeName !='' ">
+			and CODE_NAME=#{codeName,jdbcType=VARCHAR}
+		</if>
+		<if test="code != null and code !='' ">
+			and CODE=#{code,jdbcType=VARCHAR}
+		</if>
+		<if test="value != null and value !='' ">
+			and VALUE=#{value,jdbcType=VARCHAR}
+		</if>
+		<if test="isDefault != null and isDefault !='' ">
+			and IS_DEFAULT=#{isDefault,jdbcType=VARCHAR}
+		</if>
+		<if test="createDate != null and createDate !='' ">
+			and CREATE_DATE=#{createDate,jdbcType=DATE}
+		</if>
+		<if test="createUser != null and createUser !='' ">
+			and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+		</if>
+	</select>
+	<select id="selectAllByCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_DICTIONARY
+		where CODE=#{code,jdbcType=VARCHAR}
+	</select>
+</mapper>

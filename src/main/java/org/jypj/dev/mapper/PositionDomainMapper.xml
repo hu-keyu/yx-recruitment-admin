@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.PositionDomainDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.PositionDomain" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="SCHOOL_ID" property="schoolId" jdbcType="VARCHAR" />
+	<result column="PLAN_APPLY_ID" property="planApplyId" jdbcType="VARCHAR" />
+	<result column="POSITION_ID" property="positionId" jdbcType="VARCHAR" />
+	<result column="DOMAIN_ID" property="domainId" jdbcType="VARCHAR" />
+	<result column="CREATETIME" property="createtime" jdbcType="DATE" />
+	<result column="MODIFYTIME" property="modifytime" jdbcType="DATE" />
+	<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+	<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+	<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+	<result column="DOMAIN_NAME" property="domainName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,SCHOOL_ID,PLAN_APPLY_ID,POSITION_ID,DOMAIN_ID,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,REMARK,DOMAIN_NAME
+  </sql>
+  
+   <insert id="savePositionDomainByField" parameterType="org.jypj.dev.entity.PositionDomain" >
+    insert into school_position_domain
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="schoolId != null" >
+    SCHOOL_ID,
+   </if>
+   <if test="planApplyId != null" >
+    PLAN_APPLY_ID,
+   </if>
+   <if test="positionId != null" >
+    POSITION_ID,
+   </if>
+   <if test="domainId != null" >
+    DOMAIN_ID,
+   </if>
+   <if test="createtime != null" >
+    CREATETIME,
+   </if>
+   <if test="modifytime != null" >
+    MODIFYTIME,
+   </if>
+   <if test="createuser != null" >
+    CREATEUSER,
+   </if>
+   <if test="modifyuser != null" >
+    MODIFYUSER,
+   </if>
+   <if test="remark != null" >
+    REMARK,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=VARCHAR},
+      </if>
+      <if test="planApplyId != null" >
+        #{planApplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="domainId != null" >
+        #{domainId,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyuser != null" >
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="savePositionDomain" parameterType="org.jypj.dev.entity.PositionDomain" >
+    insert into school_position_domain (
+	ID,
+	SCHOOL_ID,
+	PLAN_APPLY_ID,
+	POSITION_ID,
+	DOMAIN_ID,
+	CREATETIME,
+	MODIFYTIME,
+	CREATEUSER,
+	MODIFYUSER,
+	 REMARK
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{schoolId,jdbcType=VARCHAR},
+	#{planApplyId,jdbcType=VARCHAR},
+	#{positionId,jdbcType=VARCHAR},
+	#{domainId,jdbcType=VARCHAR},
+	#{createtime,jdbcType=DATE},
+	#{modifytime,jdbcType=DATE},
+	#{createuser,jdbcType=VARCHAR},
+	#{modifyuser,jdbcType=VARCHAR},
+	#{remark,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deletePositionDomainById" parameterType="java.lang.String" >
+    delete from school_position_domain
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deletePositionDomainByObject" parameterType="org.jypj.dev.entity.PositionDomain" >
+    delete from school_position_domain where 1=1 
+      <if test="id != null and id !='' " >
+        and ID = #{id,jdbcType=VARCHAR}
+      </if>
+      <if test="schoolId != null and schoolId !='' " >
+        and SCHOOL_ID = #{schoolId,jdbcType=VARCHAR}
+      </if>
+      <if test="planApplyId != null and planApplyId !='' " >
+        and PLAN_APPLY_ID = #{planApplyId,jdbcType=VARCHAR}
+      </if>
+      <if test="positionId != null and positionId !='' " >
+        and POSITION_ID = #{positionId,jdbcType=VARCHAR}
+      </if>
+      <if test="domainId != null and domainId !='' " >
+        and DOMAIN_ID = #{domainId,jdbcType=VARCHAR}
+      </if>
+  </delete>
+  
+  <update id="updatePositionDomainByField" parameterType="org.jypj.dev.entity.PositionDomain" >
+    update school_position_domain
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="schoolId != null" >
+  	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="planApplyId != null" >
+  	 PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="positionId != null" >
+  	 POSITION_ID=#{positionId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="domainId != null" >
+  	 DOMAIN_ID=#{domainId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createtime != null" >
+  	 CREATETIME=#{createtime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifytime != null" >
+  	 MODIFYTIME=#{modifytime,jdbcType=DATE},
+  	 </if>
+  	 <if test="createuser != null" >
+  	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="modifyuser != null" >
+  	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="remark != null" >
+  	 REMARK=#{remark,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="domainName != null" >
+  	 DOMAIN_NAME=#{domainName,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updatePositionDomain" parameterType="org.jypj.dev.entity.PositionDomain" >
+    update school_position_domain
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR},
+	 PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR},
+	 POSITION_ID=#{positionId,jdbcType=VARCHAR},
+	 DOMAIN_ID=#{domainId,jdbcType=VARCHAR},
+	 CREATETIME=#{createtime,jdbcType=DATE},
+	 MODIFYTIME=#{modifytime,jdbcType=DATE},
+	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+	 REMARK=#{remark,jdbcType=VARCHAR},
+	 DOMAIN_NAME=#{domainName,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectPositionDomainById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_position_domain
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_position_domain
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageByPositionDomain" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.PositionDomain" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_position_domain
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="planApplyId != null and planApplyId !='' ">
+	  and PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="positionId != null and positionId !='' ">
+	  and POSITION_ID=#{positionId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="domainId != null and domainId !='' ">
+	  and DOMAIN_ID=#{domainId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_position_domain
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByPositionDomain" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.PositionDomain" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_position_domain
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="planApplyId != null and planApplyId !='' ">
+	  and PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="positionId != null and positionId !='' ">
+	  and POSITION_ID=#{positionId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="domainId != null and domainId !='' ">
+	  and DOMAIN_ID=#{domainId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_position_domain
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByPositionDomain" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.PositionDomain" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_position_domain
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="planApplyId != null and planApplyId !='' ">
+	  and PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="positionId != null and positionId !='' ">
+	  and POSITION_ID=#{positionId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="domainId != null and domainId !='' ">
+	  and DOMAIN_ID=#{domainId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+  <insert id="saveList" parameterType="list">
+  	INSERT INTO SCHOOL_POSITION_DOMAIN(ID, SCHOOL_ID, PLAN_APPLY_ID, POSITION_ID, DOMAIN_ID, CREATETIME, MODIFYTIME, CREATEUSER, MODIFYUSER, REMARK, DOMAIN_NAME) 
+      <foreach collection="list" item="item" index="index" open="(" separator="union all" close=")" >
+     	select
+  	  		sys_guid(),
+			#{item.schoolId,jdbcType=VARCHAR},
+			#{item.planApplyId,jdbcType=VARCHAR},
+			#{item.positionId,jdbcType=VARCHAR},
+			#{item.domainId,jdbcType=VARCHAR},
+			sysdate,
+			sysdate,
+			#{item.createuser,jdbcType=VARCHAR},
+			#{item.modifyuser,jdbcType=VARCHAR},
+			#{item.remark,jdbcType=VARCHAR},
+			#{item.domainName,jdbcType=VARCHAR}
+  	 	from dual
+  	 </foreach>
+  </insert>
+
+	<select id="selectCountBySpecialty" resultType="java.lang.Integer">
+		SELECT count(id) FROM SCHOOL_POSITION_DOMAIN where DOMAIN_ID = #{specialty,jdbcType=VARCHAR}
+	</select>
+</mapper>

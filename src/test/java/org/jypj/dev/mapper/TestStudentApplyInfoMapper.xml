@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.TestStudentApplyInfoDao">
+
+	<resultMap id="BaseResultMap" type="org.jypj.dev.entity.StudentApplyInfo">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="EMPLOY_ITEMS_ID" property="employItemsId" jdbcType="VARCHAR" />
+		<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+		<result column="APPLY_JOB_ID" property="applyJobId" jdbcType="VARCHAR" />
+		<result column="APPLY_JOB_NAME" property="applyJobName" jdbcType="VARCHAR" />
+		<result column="APPLY_DEP_ID" property="applyDepId" jdbcType="VARCHAR" />
+		<result column="IDCARD_ATT_ID" property="idcardAttId" jdbcType="VARCHAR" />
+		<result column="CER_ACH_ATT_ID" property="cerAchAttId" jdbcType="VARCHAR" />
+		<result column="GRA_RECOM_ATT_ID" property="graRecomAttId" jdbcType="VARCHAR" />
+		<result column="ACA_QUA_ATT_ID" property="acaQuaAttId" jdbcType="VARCHAR" />
+		<result column="BAC_ATT_ID" property="bacAttId" jdbcType="VARCHAR" />
+		<result column="BAC_QUA_ATT_ID" property="bacQuaAttId" jdbcType="VARCHAR" />
+		<result column="FAM_PLAN_ATT_ID" property="famPlanAttId" jdbcType="VARCHAR" />
+		<result column="STUDY_WORK_ATT_ID" property="studyWorkAttId" jdbcType="VARCHAR" />
+		<result column="TEA_VIDEO_ATT_ID" property="teaVideoAttId" jdbcType="VARCHAR" />
+		<result column="SUSPEND_EMP_ATT_ID" property="suspendEmpAttId" jdbcType="VARCHAR" />
+		<result column="ABROAD_STUDY_ATT_ID" property="abroadStudyAttId" jdbcType="VARCHAR" />
+		<result column="APPLY_REASON" property="applyReason" jdbcType="VARCHAR" />
+		<result column="APPLY_STATUS" property="applyStatus" jdbcType="VARCHAR" />
+		<result column="APPLY_AUDIT_CODE" property="applyAuditCode" jdbcType="VARCHAR" />
+		<result column="APPLY_AUDIT_NAME" property="applyAuditName" jdbcType="VARCHAR" />
+		<result column="IS_REPAY" property="isRepay" jdbcType="VARCHAR" />
+		<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+		<result column="CTIME" property="ctime" jdbcType="DATE" />
+		<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+		<result column="MTIME" property="mtime" jdbcType="DATE" />
+		<result column="AUDITTYPE" property="audittype" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID,EMPLOY_ITEMS_ID,STUDENT_ID,APPLY_JOB_ID,APPLY_JOB_NAME,APPLY_DEP_ID,IDCARD_ATT_ID,CER_ACH_ATT_ID,GRA_RECOM_ATT_ID,ACA_QUA_ATT_ID,BAC_ATT_ID,BAC_QUA_ATT_ID,FAM_PLAN_ATT_ID,STUDY_WORK_ATT_ID,TEA_VIDEO_ATT_ID,SUSPEND_EMP_ATT_ID,ABROAD_STUDY_ATT_ID,APPLY_REASON,APPLY_STATUS,APPLY_AUDIT_CODE,APPLY_AUDIT_NAME,IS_REPAY,CREATE_USER,CTIME,MODIFY_USER,MTIME,AUDITTYPE
+	</sql>
+	<insert id="saveStudentApplyInfo" parameterType="org.jypj.dev.entity.StudentApplyInfo">
+		insert into student_apply_info (
+		ID,
+		EMPLOY_ITEMS_ID,
+		STUDENT_ID,
+		APPLY_JOB_ID,
+		APPLY_JOB_NAME,
+		APPLY_DEP_ID,
+		IDCARD_ATT_ID,
+		CER_ACH_ATT_ID,
+		GRA_RECOM_ATT_ID,
+		ACA_QUA_ATT_ID,
+		BAC_ATT_ID,
+		BAC_QUA_ATT_ID,
+		FAM_PLAN_ATT_ID,
+		STUDY_WORK_ATT_ID,
+		TEA_VIDEO_ATT_ID,
+		SUSPEND_EMP_ATT_ID,
+		ABROAD_STUDY_ATT_ID,
+		APPLY_REASON,
+		APPLY_STATUS,
+		APPLY_AUDIT_CODE,
+		APPLY_AUDIT_NAME,
+		IS_REPAY,
+		CREATE_USER,
+		CTIME,
+		MODIFY_USER,
+		MTIME
+		)
+		values (
+		#{id,jdbcType=VARCHAR},
+		#{employItemsId,jdbcType=VARCHAR},
+		#{studentId,jdbcType=VARCHAR},
+		#{applyJobId,jdbcType=VARCHAR},
+		#{applyJobName,jdbcType=VARCHAR},
+		#{applyDepId,jdbcType=VARCHAR},
+		#{idcardAttId,jdbcType=VARCHAR},
+		#{cerAchAttId,jdbcType=VARCHAR},
+		#{graRecomAttId,jdbcType=VARCHAR},
+		#{acaQuaAttId,jdbcType=VARCHAR},
+		#{bacAttId,jdbcType=VARCHAR},
+		#{bacQuaAttId,jdbcType=VARCHAR},
+		#{famPlanAttId,jdbcType=VARCHAR},
+		#{studyWorkAttId,jdbcType=VARCHAR},
+		#{teaVideoAttId,jdbcType=VARCHAR},
+		#{suspendEmpAttId,jdbcType=VARCHAR},
+		#{abroadStudyAttId,jdbcType=VARCHAR},
+		#{applyReason,jdbcType=VARCHAR},
+		#{applyStatus,jdbcType=VARCHAR},
+		#{applyAuditCode,jdbcType=VARCHAR},
+		#{applyAuditName,jdbcType=VARCHAR},
+		#{isRepay,jdbcType=VARCHAR},
+		#{createUser,jdbcType=VARCHAR},
+		#{ctime,jdbcType=DATE},
+		#{modifyUser,jdbcType=VARCHAR},
+		#{mtime,jdbcType=DATE}
+		)
+	</insert>
+	<delete id="deleteTestStudentApplyInfo" parameterType="java.lang.String">
+		delete from student_apply_info
+		where
+		CREATE_USER = #{createUser,jdbcType=VARCHAR}
+	</delete>
+</mapper>

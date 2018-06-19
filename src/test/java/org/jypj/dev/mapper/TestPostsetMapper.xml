@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.TestPostsetDao" >
+
+	<resultMap id="BaseResultMap" type="org.jypj.dev.entity.Postset" >
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="POST_CODE" property="postCode" jdbcType="VARCHAR" />
+		<result column="POST_NAME" property="postName" jdbcType="VARCHAR" />
+		<result column="SUBJECT" property="subject" jdbcType="VARCHAR" />
+		<result column="IS_ART" property="isArt" jdbcType="DECIMAL" />
+		<result column="POST_CATEGORY" property="postCategory" jdbcType="VARCHAR" />
+		<result column="SEQ" property="seq" jdbcType="DECIMAL" />
+		<result column="SUMMARY" property="summary" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_AGE" property="isLimitAge" jdbcType="VARCHAR" />
+		<result column="LIMIT_AGE" property="limitAge" jdbcType="DECIMAL" />
+		<result column="LIMIT_AGE_CONDITITION" property="limitAgeConditition" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_EDUCATION" property="isLimitEducation" jdbcType="VARCHAR" />
+		<result column="LIMIT_EDUCATION" property="limitEducation" jdbcType="VARCHAR" />
+		<result column="LIMIT_EDUCATION_CONDITITION" property="limitEducationConditition" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_EDU" property="isLimitEdu" jdbcType="VARCHAR" />
+		<result column="LIMIT_EDU" property="limitEdu" jdbcType="VARCHAR" />
+		<result column="LIMIT_EDU_CONDITITION" property="limitEduConditition" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_DEGREE" property="isLimitDegree" jdbcType="VARCHAR" />
+		<result column="LIMIT_DEGREE" property="limitDegree" jdbcType="VARCHAR" />
+		<result column="LIMIT_DEGREE_CONDITITION" property="limitDegreeConditition" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_PROFESSION" property="isLimitProfession" jdbcType="VARCHAR" />
+		<result column="IS_LIMIT_RECRUIT" property="isLimitRecruit" jdbcType="VARCHAR" />
+		<result column="LIMIT_RECRUIT" property="limitRecruit" jdbcType="VARCHAR" />
+		<result column="IS_EDUCATION_STUDENT" property="isEducationStudent" jdbcType="VARCHAR" />
+		<result column="OTHER_LIMIT" property="otherLimit" jdbcType="VARCHAR" />
+		<result column="CREATETIME" property="createtime" jdbcType="DATE" />
+		<result column="MODIFYTIME" property="modifytime" jdbcType="DATE" />
+		<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+		<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="SUBJECTTEXT" property="subjectText" jdbcType="VARCHAR" />
+		<!-- <collection property="specialtys" ofType="org.jypj.dev.entity.Specialty">
+			<id column="SPECIALTY_ID" property="id" jdbcType="VARCHAR" />
+			<result column="SPECIALTY_CODE" property="code" jdbcType="VARCHAR" />
+			<result column="SPECIALTY_NAME" property="name" jdbcType="VARCHAR" />
+		</collection> -->
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+	  ID,POST_CODE,POST_NAME,SUBJECT,IS_ART,POST_CATEGORY,SEQ,SUMMARY,IS_LIMIT_AGE,LIMIT_AGE,LIMIT_AGE_CONDITITION,IS_LIMIT_EDUCATION,LIMIT_EDUCATION,LIMIT_EDUCATION_CONDITITION,IS_LIMIT_EDU,LIMIT_EDU,LIMIT_EDU_CONDITITION,IS_LIMIT_DEGREE,LIMIT_DEGREE,LIMIT_DEGREE_CONDITITION,IS_LIMIT_PROFESSION,IS_LIMIT_RECRUIT,LIMIT_RECRUIT,IS_EDUCATION_STUDENT,OTHER_LIMIT,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,REMARK
+	</sql>
+	
+	<select id="selectAllPostset" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from recruit_postset
+	</select>
+
+</mapper>

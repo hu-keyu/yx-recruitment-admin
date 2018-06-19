@@ -1,0 +1,23 @@
+#parse("/common/head-js+css.vm")
+<!-- 原因修改 S-->
+<div class="dialog dialog-info" style="display: none;">
+    <div class="table-content">
+        <table class="formTable">
+            <tbody>
+                <tr>
+                    <th class="text-right"><span class="flag"></span>序号：</th>
+                    <td>
+                        <input class="input" type="text" name="" value="01">
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-right"><span class="flag"></span>原因：</th>
+                    <td>
+                        <input class="input" type="text" name="" value="学历不够">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 原因修改 E-->

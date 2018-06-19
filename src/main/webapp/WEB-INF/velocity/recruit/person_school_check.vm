@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	#parse("/common/head-meta.vm")
+    <title>东莞招聘</title> #parse("/common/head-js+css.vm")
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        initThemeData();
+        queryData();
+
+        $("#checkAll").click(function(){
+            if($(this).is(":checked")){
+                $("input[name='chk']:enabled").prop("checked", true);
+            }else{
+                $("input[name='chk']:enabled").prop("checked", false);
+            }
+        });
+
+        $(document).on("click","input[name='chk']:enabled",function(){
+            if($("input[name='chk']:enabled:checked").length == $("input[name='chk']:enabled").length){
+                $("#checkAll").prop("checked", true);
+            }else{
+                $("#checkAll").prop("checked", false);
+            }
+        });
+    });
+
+    function queryData() {
+        var $serializeForm=$("#list_form").serialize();
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: '${link.contextPath}/dg/personCheck/selectSchoolCheckedSituation',
+            data : $serializeForm,
+            success: function (data) {
+                if (data) {
+                    /*获取数据总行数*/
+                    $("#totalCounts").val(data.total);
+					$("#currentPage").val(data.currentPage);
+                    /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/
+                    if (parseInt($("#totalCounts").val()) == 0) {
+                        $("#totalCounts").val(1);
+                    }
+					if(parseInt($("#currentPage").val()) == 0) {  
+                        	$("#currentPage").val(1);
+                    }	
+                    /*生成表和套用css样式*/
+                    data = data.rows;//获取筛选后的内容
+                    $(".table tbody tr").remove();//清空列表
+                    $.each(data, function (index, e) {
+                        var sex="";
+                        switch(e.sex){
+                            case "1" : sex="男";break;
+                            case "2" : sex="女";break;
+                        }
+                        var insertHtml='<tr>';
+                        insertHtml+='<td>'+e.name+'</td>';
+                        insertHtml+='<td>'+sex+'</td>';
+                        insertHtml+='<td>'+e.identityCard+'</td>';
+                        insertHtml+='<td>'+e.phoneNumber+'</td>';
+                        insertHtml+='<td>'+e.schoolName+'</td>';
+                        insertHtml+='<td>'+e.postName+'</td>';
+                        insertHtml+='<td>'+e.statustext+'</td>';
+                        insertHtml+='</tr>';
+                        $(".table tbody").append(insertHtml);//将返回的数据追加到表格
+                    });
+                    /*生成分页标签*/
+                    paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));
+                }
+            }
+        });
+    }
+
+    function paginator(pageIndex, pageSize, totalCount) {
+        $.jqPaginator('#pagination', {
+            totalCounts: totalCount,
+            pageSize: pageSize,
+            currentPage: pageIndex,
+            visiblePages: 7,
+            first:'<a class="first">首页</a>',
+            prev: '<a class="prev">上一页</a>',
+            next: '<a class="next">下一页</a>',
+            last: '<a class="last：">末页</a>',
+            page: '<a class="page">{{page}}</a>',
+            onPageChange: function (num, type) {
+                if (type === 'change' && num !== parseInt($("#currentPage").val())) {
+                    $("#currentPage").val(num);//点击改变页码时，同步model中的页码
+                    queryData();//重新生成新表
+                }
+            }
+        });
+    }
+
+    function initThemeData(){
+        var year=$("#year").val();
+        if(year){
+            $("#projectId").html("");
+            $.ajax({
+                url : '${link.contextPath}/dg/theme/selectAllByYear',
+                type : 'post',
+                data:{"year":year},
+                async: false,
+                cache : false,
+                dataType : 'json',
+                success : function(data) {
+                    if(data.length){
+                        var insertHtml="";
+                        $.each(data,function(index,e){
+                            if(e.theme.length>20){
+                                var theme1 = e.theme.substring(0,19)+"..." ;
+                            }else {
+                                var theme1 = e.theme ;
+                            }
+                            insertHtml+='<option value="'+e.id+'" title="'+e.theme+'">'+theme1+'</option>';
+                        });
+                        $("#projectId").append(insertHtml);
+                    }else{
+                        $("#projectId").append('<option value="">--请选择--</option>');
+                    }
+                }
+            });
+        }else{
+            $("#projectId").append('<option value="">--请选择--</option>');
+        }
+    }
+
+	function clearData(){
+			$("#conditionName").val("");
+            $("#conditionName1").val("");
+			queryData() ;
+	}
+	
+	function searchFunc(){
+            $("#conditionName1").val($("#conditionName").val());
+            $("#currentPage").val("1");
+            queryData();
+    }
+	
+	function exportData(){
+		var project = $("#projectId").val() ;
+		var status = $("#selectStatus").val() ;
+		var name = $("#conditionName1").val() ;
+		var currentPage = $("#currentPage").val() ;
+		window.location.href="${link.contextPath}/dg/personCheck/exportSchoolCheckedSituation?projectId="+project+"&status="+status+"&name="+name+"&currentPage="+currentPage ;
+	}
+</script>
+</head>
+<body>
+	#parse("/common/topMenu.vm")
+	#parse("/common/leftTemplate.vm")
+<!-- Main内容模块 S-->
+<div class="content-wrapper">
+    <!-- context内容 S-->
+    <div class="content">
+        <!-- table切换 S-->
+        <div class="tabChange">
+            <ul class="clearfix">
+                <li><a href="${link.contextPath}/dg/personCheck/personCheckIndex" title="未审核">未审核</a></li>
+                <li><a href="${link.contextPath}/dg/personCheck/personChecked" title="已审核">已审核</a></li>
+                <li class="active"><a href="${link.contextPath}/dg/personCheck/personSchoolCheck" title="学校审核情况">学校审核情况</a></li>
+                <li><a href="${link.contextPath}/dg/personCheck/schoolView" title="学校面试情况">学校面试情况</a></li>
+            </ul>
+        </div>
+        <!-- table切换 E-->
+        <!-- 条件搜索 S-->
+        <form class="form-inline" id="list_form">
+            <input type="hidden" id="currentPage" name="currentPage" value="1"/>
+            <input type="hidden" id="pageSize" name="pageSize" value="20"/>
+            <input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-left">
+                    <li>
+                        <span>年份：</span>
+                        <select class="select" id="year" name="condition['year']" onchange="initThemeData();queryData();">
+                            #if($!years.size()>0)
+    							#foreach($list in $years)
+                                    <option value="$!list">$!list</option>
+                                #end
+							#else
+									<option value="">--请选择--</option>
+							#end	
+                        </select>
+                    </li>
+                    <li>
+                        <span>招聘项目：</span>
+                        <select class="select" id="projectId" name="condition['projectId']" onchange="queryData();"></select>
+                    </li>
+                    <li>
+                       <span>状态：</span>
+							<select class="select" id="selectStatus" name="condition['applyStatus']" onchange="queryData();">
+                                <option value="">全部</option>
+								<option value="yes">通过</option>
+								<option value="no">不通过</option>
+                       </select>
+                    </li>
+                    <li>
+                        <span>姓名：</span>
+                        <input class="input" id="conditionName" type="text" placeholder="请输入姓名">
+                        <input class="input" id="conditionName1" type="hidden" name="condition['name']" placeholder="请输入姓名">
+                    </li>
+                    <li>
+						<a onclick="searchFunc();" class="btn btn-primary btn-sm" href="javascript:void(0);" title="查找">查找</a>
+                        <a onclick="clearData();" class="btn btn-default btn-sm" href="javascript:void(0);" title="清空">清空</a>
+						<a onclick="exportData();" class="btn btn-default btn-sm" href="javascript:void(0);" title="导出">导出</a>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <!-- 条件搜索 E-->
+        <!-- table表单模块 S-->
+        <div class="table-content">
+            <table class="table">
+                <thead>
+					<tr>
+						<th>姓名</th>
+						<th>性别</th>
+						<th>身份证号</th>
+						<th>手机号</th>
+						<th>单位名称</th>
+						<th>申请岗位</th>
+						<th>状态</th>
+					</tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <!-- table表单模块 E-->
+        <!-- 分页+全选模块 S-->
+        <div class="clearfix pagesBox">
+            <div id="pagination" class="pull-right pages"></div>
+        </div>
+        <!-- 分页+全选模块 E-->
+    </div>
+    <!-- context内容 E-->
+	#parse("/common/foot.vm")
+</div>
+<!-- Main内容模块 E-->
+</body>
+</html>

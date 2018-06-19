@@ -1,0 +1,1118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.PositionDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.Position" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="PROJECT_ID" property="projectId" jdbcType="VARCHAR" />
+	<result column="PLAN_APPLY_ID" property="planApplyId" jdbcType="VARCHAR" />
+	<result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+	<result column="STATUS" property="status" jdbcType="VARCHAR" />
+	<result column="SUBJECT_HOUR" property="subjectHour" jdbcType="DECIMAL" />
+	<result column="SUBJECT_COUNT" property="subjectCount" jdbcType="DECIMAL" />
+	<result column="SUBJECT_CURRENT_COUNT" property="subjectCurrentCount" jdbcType="DECIMAL" />
+	<result column="SUBJECT_VACANCY_COUNT" property="subjectVacancyCount" jdbcType="DECIMAL" />
+	<result column="SUBJECT_PLAN_COUNT" property="subjectPlanCount" jdbcType="INTEGER" />
+	<result column="SUBJECT_APPROVE_COUNT" property="subjectApproveCount" jdbcType="INTEGER" />
+	<result column="IS_LIMIT_AGE" property="isLimitAge" jdbcType="VARCHAR" />
+	<result column="LIMIT_AGE" property="limitAge" jdbcType="DECIMAL" />
+	<result column="LIMIT_AGE_CONDITITION" property="limitAgeConditition" jdbcType="VARCHAR" />
+	<result column="IS_LIMIT_EDUCATION" property="isLimitEducation" jdbcType="VARCHAR" />
+	<result column="LIMIT_EDUCATION" property="limitEducation" jdbcType="VARCHAR" />
+	<result column="LIMIT_EDUCATION_CONDITITION" property="limitEducationConditition" jdbcType="VARCHAR" />
+	<result column="IS_LIMIT_EDU" property="isLimitEdu" jdbcType="VARCHAR" />
+	<result column="LIMIT_EDU" property="limitEdu" jdbcType="VARCHAR" />
+	<result column="LIMIT_EDU_CONDITITION" property="limitEduConditition" jdbcType="VARCHAR" />
+	<result column="IS_LIMIT_DEGREE" property="isLimitDegree" jdbcType="VARCHAR" />
+	<result column="LIMIT_DEGREE" property="limitDegree" jdbcType="VARCHAR" />
+	<result column="LIMIT_DEGREE_CONDITITION" property="limitDegreeConditition" jdbcType="VARCHAR" />
+	<result column="IS_LIMIT_RECRUIT" property="isLimitRecruit" jdbcType="VARCHAR" />
+	<result column="LIMIT_RECRUIT" property="limitRecruit" jdbcType="VARCHAR" />
+	<result column="IS_EDUCATION_STUDENT" property="isEducationStudent" jdbcType="VARCHAR" />
+	<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+	<result column="OTHER_LIMIT" property="otherLimit" jdbcType="VARCHAR" />
+	<result column="CREATETIME" property="createtime" jdbcType="DATE" />
+	<result column="MODIFYTIME" property="modifytime" jdbcType="DATE" />
+	<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+	<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+	<result column="IS_LIMIT_PROFESSION" property="isLimitProfession" jdbcType="VARCHAR" />
+	<result column="SCHOOL_ID" property="schoolId" jdbcType="VARCHAR" />
+	<result column="LIMITEDUCATIONTEXT" property="limitEducationText" jdbcType="VARCHAR" />
+	<result column="LIMITEDUTEXT" property="limitEduText" jdbcType="VARCHAR" />
+	<result column="LIMITDEGREETEXT" property="limitDegreeText" jdbcType="VARCHAR" />
+	<result column="LIMITRECRUITTEXT" property="limitRecruitText" jdbcType="VARCHAR" />
+	<result column="SUBJECTTEXT" property="subjectText" jdbcType="VARCHAR" />
+	<result column="POST_NAME" property="postName" jdbcType="VARCHAR" />
+	<result column="ENTER_CONDITION" property="enterCondition" jdbcType="VARCHAR" />
+	<result column="INTERVIEW_ENTER_PROPO" property="interviewEnterpPropo" jdbcType="VARCHAR" />
+	<result column="APPLY_COUNT" property="applyCount" jdbcType="VARCHAR" />
+	<result property="postName" column="postName" />
+	<collection property="positionDomains" ofType="org.jypj.dev.entity.PositionDomain">
+		<id column="DOMAINID" property="id" jdbcType="VARCHAR" />
+		<result column="DOMAIN_CODE" property="domainId" jdbcType="VARCHAR" />
+		<result column="DOMAIN_NAME" property="domainName" jdbcType="VARCHAR" />	
+	</collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,PROJECT_ID,PLAN_APPLY_ID,STATION_ID,STATUS,SUBJECT_HOUR,SUBJECT_COUNT,SUBJECT_CURRENT_COUNT,SUBJECT_VACANCY_COUNT,SUBJECT_PLAN_COUNT,SUBJECT_APPROVE_COUNT,IS_LIMIT_AGE,LIMIT_AGE,LIMIT_AGE_CONDITITION,IS_LIMIT_EDUCATION,LIMIT_EDUCATION,LIMIT_EDUCATION_CONDITITION,IS_LIMIT_EDU,LIMIT_EDU,LIMIT_EDU_CONDITITION,IS_LIMIT_DEGREE,LIMIT_DEGREE,LIMIT_DEGREE_CONDITITION,IS_LIMIT_RECRUIT,LIMIT_RECRUIT,IS_EDUCATION_STUDENT,REMARK,OTHER_LIMIT,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,SCHOOL_ID,IS_LIMIT_PROFESSION
+  </sql>
+  
+   <insert id="savePositionByField" parameterType="org.jypj.dev.entity.Position" >
+    insert into school_position
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="projectId != null" >
+    PROJECT_ID,
+   </if>
+   <if test="planApplyId != null" >
+    PLAN_APPLY_ID,
+   </if>
+   <if test="stationId != null" >
+    STATION_ID,
+   </if>
+   <if test="status != null" >
+    STATUS,
+   </if>
+   <if test="subjectHour != null" >
+    SUBJECT_HOUR,
+   </if>
+   <if test="subjectCount != null" >
+    SUBJECT_COUNT,
+   </if>
+   <if test="subjectCurrentCount != null" >
+    SUBJECT_CURRENT_COUNT,
+   </if>
+   <if test="subjectVacancyCount != null" >
+    SUBJECT_VACANCY_COUNT,
+   </if>
+   <if test="subjectPlanCount != null" >
+    SUBJECT_PLAN_COUNT,
+   </if>
+   <if test="subjectApproveCount != null" >
+    SUBJECT_APPROVE_COUNT,
+   </if>
+   <if test="isLimitAge != null" >
+    IS_LIMIT_AGE,
+   </if>
+   <if test="limitAge != null" >
+    LIMIT_AGE,
+   </if>
+   <if test="limitAgeConditition != null" >
+    LIMIT_AGE_CONDITITION,
+   </if>
+   <if test="isLimitEducation != null" >
+    IS_LIMIT_EDUCATION,
+   </if>
+   <if test="limitEducation != null" >
+    LIMIT_EDUCATION,
+   </if>
+   <if test="limitEducationConditition != null" >
+    LIMIT_EDUCATION_CONDITITION,
+   </if>
+   <if test="isLimitEdu != null" >
+    IS_LIMIT_EDU,
+   </if>
+   <if test="limitEdu != null" >
+    LIMIT_EDU,
+   </if>
+   <if test="limitEduConditition != null" >
+    LIMIT_EDU_CONDITITION,
+   </if>
+   <if test="isLimitDegree != null" >
+    IS_LIMIT_DEGREE,
+   </if>
+   <if test="limitDegree != null" >
+    LIMIT_DEGREE,
+   </if>
+   <if test="limitDegreeConditition != null" >
+    LIMIT_DEGREE_CONDITITION,
+   </if>
+   <if test="isLimitRecruit != null" >
+    IS_LIMIT_RECRUIT,
+   </if>
+   <if test="limitRecruit != null" >
+    LIMIT_RECRUIT,
+   </if>
+   <if test="isEducationStudent != null" >
+    IS_EDUCATION_STUDENT,
+   </if>
+   <if test="remark != null" >
+    REMARK,
+   </if>
+   <if test="otherLimit != null" >
+    OTHER_LIMIT,
+   </if>
+   <if test="createtime != null" >
+    CREATETIME,
+   </if>
+   <if test="modifytime != null" >
+    MODIFYTIME,
+   </if>
+   <if test="createuser != null" >
+    CREATEUSER,
+   </if>
+   <if test="modifyuser != null" >
+    MODIFYUSER,
+   </if>
+   <if test="schoolId != null" >
+    SCHOOL_ID,
+   </if>
+   <if test="isLimitProfession != null" >
+    IS_LIMIT_PROFESSION,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        sys_guid(),
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="planApplyId != null" >
+        #{planApplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="stationId != null" >
+        #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectHour != null" >
+        #{subjectHour,jdbcType=DECIMAL},
+      </if>
+      <if test="subjectCount != null" >
+        #{subjectCount,jdbcType=DECIMAL},
+      </if>
+      <if test="subjectCurrentCount != null" >
+        #{subjectCurrentCount,jdbcType=DECIMAL},
+      </if>
+      <if test="subjectVacancyCount != null" >
+        #{subjectVacancyCount,jdbcType=DECIMAL},
+      </if>
+      <if test="subjectPlanCount != null" >
+        #{subjectPlanCount,jdbcType=INTEGER},
+      </if>
+      <if test="subjectApproveCount != null" >
+        #{subjectApproveCount,jdbcType=INTEGER},
+      </if>
+      <if test="isLimitAge != null" >
+        #{isLimitAge,jdbcType=VARCHAR},
+      </if>
+      <if test="limitAge != null" >
+        #{limitAge,jdbcType=DECIMAL},
+      </if>
+      <if test="limitAgeConditition != null" >
+        #{limitAgeConditition,jdbcType=VARCHAR},
+      </if>
+      <if test="isLimitEducation != null" >
+        #{isLimitEducation,jdbcType=VARCHAR},
+      </if>
+      <if test="limitEducation != null" >
+        #{limitEducation,jdbcType=VARCHAR},
+      </if>
+      <if test="limitEducationConditition != null" >
+        #{limitEducationConditition,jdbcType=VARCHAR},
+      </if>
+      <if test="isLimitEdu != null" >
+        #{isLimitEdu,jdbcType=VARCHAR},
+      </if>
+      <if test="limitEdu != null" >
+        #{limitEdu,jdbcType=VARCHAR},
+      </if>
+      <if test="limitEduConditition != null" >
+        #{limitEduConditition,jdbcType=VARCHAR},
+      </if>
+      <if test="isLimitDegree != null" >
+        #{isLimitDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="limitDegree != null" >
+        #{limitDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="limitDegreeConditition != null" >
+        #{limitDegreeConditition,jdbcType=VARCHAR},
+      </if>
+      <if test="isLimitRecruit != null" >
+        #{isLimitRecruit,jdbcType=VARCHAR},
+      </if>
+      <if test="limitRecruit != null" >
+        #{limitRecruit,jdbcType=VARCHAR},
+      </if>
+      <if test="isEducationStudent != null" >
+        #{isEducationStudent,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="otherLimit != null" >
+        #{otherLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyuser != null" >
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=VARCHAR},
+      </if>
+      <if test="isLimitProfession != null" >
+        #{isLimitProfession,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="savePosition" parameterType="org.jypj.dev.entity.Position" >
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+    	SELECT SYS_GUID() FROM DUAL
+  	</selectKey>
+    insert into school_position (
+	ID,
+	PROJECT_ID,
+	PLAN_APPLY_ID,
+	STATION_ID,
+	STATUS,
+	SUBJECT_HOUR,
+	SUBJECT_COUNT,
+	SUBJECT_CURRENT_COUNT,
+	SUBJECT_VACANCY_COUNT,
+	SUBJECT_PLAN_COUNT,
+	SUBJECT_APPROVE_COUNT,
+	IS_LIMIT_AGE,
+	LIMIT_AGE,
+	LIMIT_AGE_CONDITITION,
+	IS_LIMIT_EDUCATION,
+	LIMIT_EDUCATION,
+	LIMIT_EDUCATION_CONDITITION,
+	IS_LIMIT_EDU,
+	LIMIT_EDU,
+	LIMIT_EDU_CONDITITION,
+	IS_LIMIT_DEGREE,
+	LIMIT_DEGREE,
+	LIMIT_DEGREE_CONDITITION,
+	IS_LIMIT_RECRUIT,
+	LIMIT_RECRUIT,
+	IS_EDUCATION_STUDENT,
+	REMARK,
+	OTHER_LIMIT,
+	CREATETIME,
+	MODIFYTIME,
+	CREATEUSER,
+	MODIFYUSER,
+	SCHOOL_ID,
+	IS_LIMIT_PROFESSION
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{projectId,jdbcType=VARCHAR},
+	#{planApplyId,jdbcType=VARCHAR},
+	#{stationId,jdbcType=VARCHAR},
+	#{status,jdbcType=VARCHAR},
+	#{subjectHour,jdbcType=DECIMAL},
+	#{subjectCount,jdbcType=DECIMAL},
+	#{subjectCurrentCount,jdbcType=DECIMAL},
+	#{subjectVacancyCount,jdbcType=DECIMAL},
+	#{subjectPlanCount,jdbcType=INTEGER},
+	#{subjectApproveCount,jdbcType=INTEGER},
+	#{isLimitAge,jdbcType=VARCHAR},
+	#{limitAge,jdbcType=DECIMAL},
+	#{limitAgeConditition,jdbcType=VARCHAR},
+	#{isLimitEducation,jdbcType=VARCHAR},
+	#{limitEducation,jdbcType=VARCHAR},
+	#{limitEducationConditition,jdbcType=VARCHAR},
+	#{isLimitEdu,jdbcType=VARCHAR},
+	#{limitEdu,jdbcType=VARCHAR},
+	#{limitEduConditition,jdbcType=VARCHAR},
+	#{isLimitDegree,jdbcType=VARCHAR},
+	#{limitDegree,jdbcType=VARCHAR},
+	#{limitDegreeConditition,jdbcType=VARCHAR},
+	#{isLimitRecruit,jdbcType=VARCHAR},
+	#{limitRecruit,jdbcType=VARCHAR},
+	#{isEducationStudent,jdbcType=VARCHAR},
+	#{remark,jdbcType=VARCHAR},
+	#{otherLimit,jdbcType=VARCHAR},
+	sysdate,
+	sysdate,
+	#{createuser,jdbcType=VARCHAR},
+	#{modifyuser,jdbcType=VARCHAR},
+	#{schoolId,jdbcType=VARCHAR},
+	#{isLimitProfession,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deletePositionById" parameterType="java.lang.String" >
+    delete from school_position
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deletePositionByObject" parameterType="org.jypj.dev.entity.Position" >
+    delete from school_position
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updatePositionByField" parameterType="org.jypj.dev.entity.Position" >
+    update school_position
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="projectId != null" >
+  	 PROJECT_ID=#{projectId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="planApplyId != null" >
+  	 PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="stationId != null" >
+  	 STATION_ID=#{stationId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="status != null" >
+  	 STATUS=#{status,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="subjectHour != null" >
+  	 SUBJECT_HOUR=#{subjectHour,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="subjectCount != null" >
+  	 SUBJECT_COUNT=#{subjectCount,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="subjectCurrentCount != null" >
+  	 SUBJECT_CURRENT_COUNT=#{subjectCurrentCount,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="subjectVacancyCount != null" >
+  	 SUBJECT_VACANCY_COUNT=#{subjectVacancyCount,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="subjectPlanCount != null" >
+  	 SUBJECT_PLAN_COUNT=#{subjectPlanCount,jdbcType=INTEGER},
+  	 </if>
+  	 <if test="subjectApproveCount != null" >
+  	 SUBJECT_APPROVE_COUNT=#{subjectApproveCount,jdbcType=INTEGER},
+  	 </if>
+  	 <if test="isLimitAge != null" >
+  	 IS_LIMIT_AGE=#{isLimitAge,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="limitAge != null" >
+  	 LIMIT_AGE=#{limitAge,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="limitAgeConditition != null" >
+  	 LIMIT_AGE_CONDITITION=#{limitAgeConditition,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isLimitEducation != null" >
+  	 IS_LIMIT_EDUCATION=#{isLimitEducation,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="limitEducation != null" >
+  	 LIMIT_EDUCATION=#{limitEducation,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="limitEducationConditition != null" >
+  	 LIMIT_EDUCATION_CONDITITION=#{limitEducationConditition,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isLimitEdu != null" >
+  	 IS_LIMIT_EDU=#{isLimitEdu,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="limitEdu != null" >
+  	 LIMIT_EDU=#{limitEdu,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="limitEduConditition != null" >
+  	 LIMIT_EDU_CONDITITION=#{limitEduConditition,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isLimitDegree != null" >
+  	 IS_LIMIT_DEGREE=#{isLimitDegree,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="limitDegree != null" >
+  	 LIMIT_DEGREE=#{limitDegree,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="limitDegreeConditition != null" >
+  	 LIMIT_DEGREE_CONDITITION=#{limitDegreeConditition,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isLimitRecruit != null" >
+  	 IS_LIMIT_RECRUIT=#{isLimitRecruit,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="limitRecruit != null" >
+  	 LIMIT_RECRUIT=#{limitRecruit,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isEducationStudent != null" >
+  	 IS_EDUCATION_STUDENT=#{isEducationStudent,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="remark != null" >
+  	 REMARK=#{remark,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="otherLimit != null" >
+  	 OTHER_LIMIT=#{otherLimit,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createtime != null" >
+  	 CREATETIME=#{createtime,jdbcType=DATE},
+  	 </if>
+  	 MODIFYTIME=sysdate,
+  	 <if test="createuser != null" >
+  	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="modifyuser != null" >
+  	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="schoolId != null" >
+  	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isLimitProfession != null" >
+  	 IS_LIMIT_PROFESSION=#{isLimitProfession,jdbcType=VARCHAR},
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updatePosition" parameterType="org.jypj.dev.entity.Position" >
+    update school_position
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 PROJECT_ID=#{projectId,jdbcType=VARCHAR},
+	 PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR},
+	 STATION_ID=#{stationId,jdbcType=VARCHAR},
+	 STATUS=#{status,jdbcType=VARCHAR},
+	 SUBJECT_HOUR=#{subjectHour,jdbcType=DECIMAL},
+	 SUBJECT_COUNT=#{subjectCount,jdbcType=DECIMAL},
+	 SUBJECT_CURRENT_COUNT=#{subjectCurrentCount,jdbcType=DECIMAL},
+	 SUBJECT_VACANCY_COUNT=#{subjectVacancyCount,jdbcType=DECIMAL},
+	 SUBJECT_PLAN_COUNT=#{subjectPlanCount,jdbcType=INTEGER},
+	 SUBJECT_APPROVE_COUNT=#{subjectApproveCount,jdbcType=INTEGER},
+	 IS_LIMIT_AGE=#{isLimitAge,jdbcType=VARCHAR},
+	 LIMIT_AGE=#{limitAge,jdbcType=DECIMAL},
+	 LIMIT_AGE_CONDITITION=#{limitAgeConditition,jdbcType=VARCHAR},
+	 IS_LIMIT_EDUCATION=#{isLimitEducation,jdbcType=VARCHAR},
+	 LIMIT_EDUCATION=#{limitEducation,jdbcType=VARCHAR},
+	 LIMIT_EDUCATION_CONDITITION=#{limitEducationConditition,jdbcType=VARCHAR},
+	 IS_LIMIT_EDU=#{isLimitEdu,jdbcType=VARCHAR},
+	 LIMIT_EDU=#{limitEdu,jdbcType=VARCHAR},
+	 LIMIT_EDU_CONDITITION=#{limitEduConditition,jdbcType=VARCHAR},
+	 IS_LIMIT_DEGREE=#{isLimitDegree,jdbcType=VARCHAR},
+	 LIMIT_DEGREE=#{limitDegree,jdbcType=VARCHAR},
+	 LIMIT_DEGREE_CONDITITION=#{limitDegreeConditition,jdbcType=VARCHAR},
+	 IS_LIMIT_RECRUIT=#{isLimitRecruit,jdbcType=VARCHAR},
+	 LIMIT_RECRUIT=#{limitRecruit,jdbcType=VARCHAR},
+	 IS_EDUCATION_STUDENT=#{isEducationStudent,jdbcType=VARCHAR},
+	 REMARK=#{remark,jdbcType=VARCHAR},
+	 OTHER_LIMIT=#{otherLimit,jdbcType=VARCHAR},
+	 MODIFYTIME=sysdate,
+	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR},
+	 IS_LIMIT_PROFESSION=#{isLimitProfession,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectPositionById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select p.*,(SELECT t.TEXT FROM sys_dictionary t WHERE 1=1 and t.code='xklb' and t.VALUE=r.SUBJECT) as subjecttext,
+    	main.ID as DOMAINID, main.DOMAIN_ID as DOMAIN_CODE, main.DOMAIN_NAME 
+    	from school_position p 
+    	left join RECRUIT_POSTSET r on p.STATION_ID=r.ID 
+    	left join SCHOOL_POSITION_DOMAIN main on (p.PLAN_APPLY_ID=main.PLAN_APPLY_ID and p.STATION_ID=main.POSITION_ID and p.SCHOOL_ID=main.SCHOOL_ID)
+    where p.ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOptionalPosition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+  	select distinct sp.* from school_plan_apply  spa inner join 
+	school_position sp on sp.project_id = spa.project_id 
+	and sp.plan_apply_id = spa.id and sp.school_id = spa.school_id
+	inner join school_information si on si.position_id = sp.station_id 
+	and si.school_id = sp.school_id and si.project_id = sp.project_id
+	left join school_position_domain spd on spd.position_id = sp.station_id 
+	and spd.plan_apply_id = spa.id
+	and spd.school_id = sp.school_id
+	where spa.status = '2' and sp.status = '1'
+	and sp.project_id = #{recruitId,jdbcType=VARCHAR} and sp.station_id = #{positionId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_position
+    where 1=1 
+  </select> 
+  
+  <!--按条件查询岗位数量（发布试讲成绩专用）-->
+  <select id="selectTrailPosCount" resultType="_int" parameterType="java.lang.String" >
+    select sum(p.SUBJECT_APPROVE_COUNT) from SCHOOL_POSITION p where 1=1 
+	<if test="projectId !=null and projectId !='' ">
+		and p.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="postId !=null and postId !='' ">
+		and p.STATION_ID=#{postId,jdbcType=VARCHAR}
+	</if>
+	
+  </select> 
+  
+  <select id="selectOnePageByPosition" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Position" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_position
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="planApplyId != null and planApplyId !='' ">
+	  and PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="stationId != null and stationId !='' ">
+	  and STATION_ID=#{stationId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and STATUS=#{status,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectHour != null and subjectHour !='' ">
+	  and SUBJECT_HOUR=#{subjectHour,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectCount != null and subjectCount !='' ">
+	  and SUBJECT_COUNT=#{subjectCount,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectCurrentCount != null and subjectCurrentCount !='' ">
+	  and SUBJECT_CURRENT_COUNT=#{subjectCurrentCount,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectVacancyCount != null and subjectVacancyCount !='' ">
+	  and SUBJECT_VACANCY_COUNT=#{subjectVacancyCount,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectPlanCount != null and subjectPlanCount !='' ">
+	  and SUBJECT_PLAN_COUNT=#{subjectPlanCount,jdbcType=INTEGER}
+	 </if>
+	 <if test="subjectApproveCount != null and subjectApproveCount !='' ">
+	  and SUBJECT_APPROVE_COUNT=#{subjectApproveCount,jdbcType=INTEGER}
+	 </if>
+	 <if test="isLimitAge != null and isLimitAge !='' ">
+	  and IS_LIMIT_AGE=#{isLimitAge,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitAge != null and limitAge !='' ">
+	  and LIMIT_AGE=#{limitAge,jdbcType=DECIMAL}
+	 </if>
+	 <if test="limitAgeConditition != null and limitAgeConditition !='' ">
+	  and LIMIT_AGE_CONDITITION=#{limitAgeConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitEducation != null and isLimitEducation !='' ">
+	  and IS_LIMIT_EDUCATION=#{isLimitEducation,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEducation != null and limitEducation !='' ">
+	  and LIMIT_EDUCATION=#{limitEducation,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEducationConditition != null and limitEducationConditition !='' ">
+	  and LIMIT_EDUCATION_CONDITITION=#{limitEducationConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitEdu != null and isLimitEdu !='' ">
+	  and IS_LIMIT_EDU=#{isLimitEdu,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEdu != null and limitEdu !='' ">
+	  and LIMIT_EDU=#{limitEdu,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEduConditition != null and limitEduConditition !='' ">
+	  and LIMIT_EDU_CONDITITION=#{limitEduConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitDegree != null and isLimitDegree !='' ">
+	  and IS_LIMIT_DEGREE=#{isLimitDegree,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitDegree != null and limitDegree !='' ">
+	  and LIMIT_DEGREE=#{limitDegree,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitDegreeConditition != null and limitDegreeConditition !='' ">
+	  and LIMIT_DEGREE_CONDITITION=#{limitDegreeConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitRecruit != null and isLimitRecruit !='' ">
+	  and IS_LIMIT_RECRUIT=#{isLimitRecruit,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitRecruit != null and limitRecruit !='' ">
+	  and LIMIT_RECRUIT=#{limitRecruit,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isEducationStudent != null and isEducationStudent !='' ">
+	  and IS_EDUCATION_STUDENT=#{isEducationStudent,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+	 <if test="otherLimit != null and otherLimit !='' ">
+	  and OTHER_LIMIT=#{otherLimit,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT n.ENTER_CONDITION,n.INTERVIEW_ENTER_PROPO,t.apply_count,r.POST_NAME,p.* FROM SCHOOL_POSITION p 
+    	left join RECRUIT_POSTSET r on p.STATION_ID=r.ID  
+    	left join RECRUIT_NOTICE n on n.THEME_ID=p.PROJECT_ID 
+    	left join (SELECT a.EMPLOY_ITEMS_ID,a.APPLY_DEP_ID,a.APPLY_JOB_ID,count(a.APPLY_JOB_ID) as apply_count FROM STUDENT_INFO s 
+                   		LEFT JOIN (select * from STUDENT_APPLY_INFO where APPLY_STATUS != '1') a on s.ID=a.STUDENT_ID and s.EMPLOY_ITEMS_ID=a.EMPLOY_ITEMS_ID group by a.EMPLOY_ITEMS_ID,a.APPLY_DEP_ID,a.APPLY_JOB_ID) t 
+    	on (t.EMPLOY_ITEMS_ID=p.PROJECT_ID and t.APPLY_DEP_ID=p.SCHOOL_ID and t.APPLY_JOB_ID=p.STATION_ID) 
+	WHERE 1=1 
+	<if test="projectId !=null and projectId !='' ">
+		and p.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="planApplyId !=null and planApplyId !='' ">
+		and p.PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR}
+	</if>
+	<if test="schoolId !=null and schoolId !='' ">
+		and p.SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	</if>
+  </select> 
+  
+   <select id="selectAllByPosition" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Position" >
+    select distinct p.*, r.POST_NAME,main.ID as DOMAINID, main.DOMAIN_ID as DOMAIN_CODE, main.DOMAIN_NAME,
+		(SELECT t.TEXT FROM sys_dictionary t WHERE 1=1 and t.code='xllx' and t.VALUE=p.LIMIT_EDUCATION) as limiteducationtext,
+        (SELECT t.TEXT FROM sys_dictionary t WHERE 1=1 and t.code='jylx' and t.VALUE=p.LIMIT_EDU) as limitEduText,
+        (SELECT t.TEXT FROM sys_dictionary t WHERE 1=1 and t.code='xwlx' and t.VALUE=p.LIMIT_DEGREE) as limitdegreetext,
+        (SELECT t.TEXT FROM sys_dictionary t WHERE 1=1 and t.code='bylx' and t.VALUE=p.LIMIT_RECRUIT) as limitrecruittext,
+        (SELECT t.TEXT FROM sys_dictionary t WHERE 1=1 and t.code='xklb' and t.VALUE=r.SUBJECT) as subjecttext
+    from school_position p 
+    	left join RECRUIT_POSTSET r on p.STATION_ID=r.ID 
+    	left join SCHOOL_POSITION_DOMAIN main on (p.PLAN_APPLY_ID=main.PLAN_APPLY_ID and p.STATION_ID=main.POSITION_ID and p.SCHOOL_ID=main.SCHOOL_ID) 
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and p.ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and p.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="planApplyId != null and planApplyId !='' ">
+	  and p.PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="stationId != null and stationId !='' ">
+	  and p.STATION_ID=#{stationId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and p.STATUS=#{status,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectHour != null and subjectHour !='' ">
+	  and p.SUBJECT_HOUR=#{subjectHour,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectCount != null and subjectCount !='' ">
+	  and p.SUBJECT_COUNT=#{subjectCount,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectCurrentCount != null and subjectCurrentCount !='' ">
+	  and p.SUBJECT_CURRENT_COUNT=#{subjectCurrentCount,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectVacancyCount != null and subjectVacancyCount !='' ">
+	  and p.SUBJECT_VACANCY_COUNT=#{subjectVacancyCount,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectPlanCount != null and subjectPlanCount !='' ">
+	  and p.SUBJECT_PLAN_COUNT=#{subjectPlanCount,jdbcType=INTEGER}
+	 </if>
+	 <if test="subjectApproveCount != null and subjectApproveCount !='' ">
+	  and p.SUBJECT_APPROVE_COUNT=#{subjectApproveCount,jdbcType=INTEGER}
+	 </if>
+	 <if test="isLimitAge != null and isLimitAge !='' ">
+	  and p.IS_LIMIT_AGE=#{isLimitAge,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitAge != null and limitAge !='' ">
+	  and p.LIMIT_AGE=#{limitAge,jdbcType=DECIMAL}
+	 </if>
+	 <if test="limitAgeConditition != null and limitAgeConditition !='' ">
+	  and p.LIMIT_AGE_CONDITITION=#{limitAgeConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitEducation != null and isLimitEducation !='' ">
+	  and p.IS_LIMIT_EDUCATION=#{isLimitEducation,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEducation != null and limitEducation !='' ">
+	  and p.LIMIT_EDUCATION=#{limitEducation,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEducationConditition != null and limitEducationConditition !='' ">
+	  and p.LIMIT_EDUCATION_CONDITITION=#{limitEducationConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitEdu != null and isLimitEdu !='' ">
+	  and p.IS_LIMIT_EDU=#{isLimitEdu,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEdu != null and limitEdu !='' ">
+	  and p.LIMIT_EDU=#{limitEdu,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEduConditition != null and limitEduConditition !='' ">
+	  and p.LIMIT_EDU_CONDITITION=#{limitEduConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitDegree != null and isLimitDegree !='' ">
+	  and p.IS_LIMIT_DEGREE=#{isLimitDegree,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitDegree != null and limitDegree !='' ">
+	  and p.LIMIT_DEGREE=#{limitDegree,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitDegreeConditition != null and limitDegreeConditition !='' ">
+	  and p.LIMIT_DEGREE_CONDITITION=#{limitDegreeConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitRecruit != null and isLimitRecruit !='' ">
+	  and p.IS_LIMIT_RECRUIT=#{isLimitRecruit,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitRecruit != null and limitRecruit !='' ">
+	  and p.LIMIT_RECRUIT=#{limitRecruit,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isEducationStudent != null and isEducationStudent !='' ">
+	  and p.IS_EDUCATION_STUDENT=#{isEducationStudent,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and p.REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+	 <if test="otherLimit != null and otherLimit !='' ">
+	  and p.OTHER_LIMIT=#{otherLimit,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and p.CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and p.MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and p.CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and p.MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and p.SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_position
+    where 1=1 
+   </select> 
+   
+   <select id="selectByPosition" resultMap="BaseResultMap" >
+    	select r.ID as id,r.POST_NAME as postName from SCHOOL_PLAN_APPLY t 
+    	inner join SCHOOL_POSITION p on t.ID=p.PLAN_APPLY_ID  inner join RECRUIT_POSTSET r on r.ID=p.STATION_ID 
+    	where 1=1 and t.STATUS='2' and p.STATUS='1'
+     <if test="year !=null and year !='' ">
+    	and to_char(t.CREATETIME,'yyyy')=#{year,jdbcType=VARCHAR}
+     </if>
+     <if test="themeid !=null and themeid !='' ">
+    	and t.PROJECT_ID=#{themeid,jdbcType=VARCHAR}
+     </if>
+     group by r.ID ,r.POST_NAME
+   </select> 
+   
+   
+    <select id="selectPostByRecruitId" resultMap="BaseResultMap" >
+          select distinct sp.id, sp.station_id,rp.post_name as postName from school_position sp 
+		   left join recruit_postset rp on rp.id = sp.station_id 
+		   left join school_plan_apply spa on spa.id = sp.plan_apply_id and spa.project_id = sp.project_id
+		   and spa.school_id = sp.school_id
+		where sp.status = '1' and spa.status = '2' and sp.project_id = #{recruitId,jdbcType=VARCHAR} 
+   </select> 
+   
+   
+  
+  <select id="selectObjectByPosition" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Position" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_position
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="planApplyId != null and planApplyId !='' ">
+	  and PLAN_APPLY_ID=#{planApplyId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="stationId != null and stationId !='' ">
+	  and STATION_ID=#{stationId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and STATUS=#{status,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectHour != null and subjectHour !='' ">
+	  and SUBJECT_HOUR=#{subjectHour,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectCount != null and subjectCount !='' ">
+	  and SUBJECT_COUNT=#{subjectCount,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectCurrentCount != null and subjectCurrentCount !='' ">
+	  and SUBJECT_CURRENT_COUNT=#{subjectCurrentCount,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectVacancyCount != null and subjectVacancyCount !='' ">
+	  and SUBJECT_VACANCY_COUNT=#{subjectVacancyCount,jdbcType=DECIMAL}
+	 </if>
+	 <if test="subjectPlanCount != null and subjectPlanCount !='' ">
+	  and SUBJECT_PLAN_COUNT=#{subjectPlanCount,jdbcType=INTEGER}
+	 </if>
+	 <if test="subjectApproveCount != null and subjectApproveCount !='' ">
+	  and SUBJECT_APPROVE_COUNT=#{subjectApproveCount,jdbcType=INTEGER}
+	 </if>
+	 <if test="isLimitAge != null and isLimitAge !='' ">
+	  and IS_LIMIT_AGE=#{isLimitAge,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitAge != null and limitAge !='' ">
+	  and LIMIT_AGE=#{limitAge,jdbcType=DECIMAL}
+	 </if>
+	 <if test="limitAgeConditition != null and limitAgeConditition !='' ">
+	  and LIMIT_AGE_CONDITITION=#{limitAgeConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitEducation != null and isLimitEducation !='' ">
+	  and IS_LIMIT_EDUCATION=#{isLimitEducation,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEducation != null and limitEducation !='' ">
+	  and LIMIT_EDUCATION=#{limitEducation,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEducationConditition != null and limitEducationConditition !='' ">
+	  and LIMIT_EDUCATION_CONDITITION=#{limitEducationConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitEdu != null and isLimitEdu !='' ">
+	  and IS_LIMIT_EDU=#{isLimitEdu,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEdu != null and limitEdu !='' ">
+	  and LIMIT_EDU=#{limitEdu,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitEduConditition != null and limitEduConditition !='' ">
+	  and LIMIT_EDU_CONDITITION=#{limitEduConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitDegree != null and isLimitDegree !='' ">
+	  and IS_LIMIT_DEGREE=#{isLimitDegree,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitDegree != null and limitDegree !='' ">
+	  and LIMIT_DEGREE=#{limitDegree,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitDegreeConditition != null and limitDegreeConditition !='' ">
+	  and LIMIT_DEGREE_CONDITITION=#{limitDegreeConditition,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isLimitRecruit != null and isLimitRecruit !='' ">
+	  and IS_LIMIT_RECRUIT=#{isLimitRecruit,jdbcType=VARCHAR}
+	 </if>
+	 <if test="limitRecruit != null and limitRecruit !='' ">
+	  and LIMIT_RECRUIT=#{limitRecruit,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isEducationStudent != null and isEducationStudent !='' ">
+	  and IS_EDUCATION_STUDENT=#{isEducationStudent,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+	 <if test="otherLimit != null and otherLimit !='' ">
+	  and OTHER_LIMIT=#{otherLimit,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+	
+	
+	<!--根据项目和岗位名查询-->
+   <select id="selectByPosName" resultMap="BaseResultMap" >
+    	select p.PROJECT_ID as projectId,r.ID as id,r.POST_NAME as postName from SCHOOL_PLAN_APPLY t 
+    	inner join SCHOOL_POSITION p on t.ID=p.PLAN_APPLY_ID  inner join RECRUIT_POSTSET r on r.ID=p.STATION_ID 
+    	where 1=1 and t.STATUS='2' and p.STATUS='1'
+    <if test="projectId !=null and projectId !='' ">
+    	and t.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+     </if>
+     <if test="postName !=null and postName !='' ">
+    	and r.POST_NAME=#{postName,jdbcType=VARCHAR}
+     </if>
+   </select>
+	
+	
+  <update id="checkBatch" parameterType="list">
+	  <foreach collection="list" item="item" index="index" open="begin" close="end;" separator="" >
+		  update school_position
+		  <set>
+		  	SUBJECT_APPROVE_COUNT=${item.subjectApproveCount},
+		  	MODIFYTIME=SYSDATE
+		  </set>
+		  where ID = #{item.id,jdbcType=VARCHAR};
+	  </foreach>
+  </update>
+  
+  <select id="queryValidPosition" parameterType="map" resultMap="BaseResultMap">
+  	SELECT rp.POST_NAME,p.* FROM SCHOOL_POSITION p 
+    	left join SCHOOL_PLAN_APPLY a on (a.PROJECT_ID=p.PROJECT_ID and a.ID=p.PLAN_APPLY_ID) 
+    	left join RECRUIT_NOTICE n on p.PROJECT_ID=n.THEME_ID
+    	left join RECRUIT_POSTSET rp on p.STATION_ID=rp.ID
+	where 1=1 
+	<if test="pstatus !=null and pstatus !=''">
+	    and p.STATUS=#{pstatus,jdbcType=VARCHAR}
+	</if>
+	<if test="astatus !=null and astatus !=''">
+	    and a.STATUS=#{astatus,jdbcType=VARCHAR}
+	</if>
+	<if test="isPublish !=null and isPublish !=''">
+	    and n.IS_PUBLISH=#{isPublish,jdbcType=VARCHAR}
+	</if>
+	<if test="schoolId !=null and schoolId !=''">
+	    and a.SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	</if>
+	<if test="projectId !=null and projectId !=''">
+	    and p.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="informationPositionId !=null and informationPositionId !=''">
+	    and p.STATION_ID not in (SELECT POSITION_ID FROM school_information WHERE TYPE='1' 
+	    							and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	    							and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR})
+	</if>
+  </select>
+	
+	<!--查询所有经过审核的岗位 -->
+	<select id="selectPostByPorjectId" resultType="java.util.HashMap">
+		select
+		distinct
+		r.post_name postName,
+		t.station_id stationId
+		from SCHOOL_POSITION t
+		left join recruit_postset r on r.id = t.station_id
+		left join SCHOOL_PLAN_APPLY p on t.PLAN_APPLY_ID = p.id
+		where t.project_id = #{projectId,jdbcType=VARCHAR}
+		and p.status='2'
+	</select>
+	
+	<select id="selectApproveCount" resultType="_int" parameterType="map">
+		SELECT
+		sum(SUBJECT_APPROVE_COUNT)
+		FROM SCHOOL_POSITION
+		WHERE project_id = #{projectId,jdbcType=VARCHAR}
+		AND station_id = #{stationId,jdbcType=VARCHAR}
+	</select>
+	
+	<resultMap id="PositionVoResultMap" type="org.jypj.dev.vo.PositionVo" >
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="SCHOOL_NAME" property="schoolName" jdbcType="VARCHAR" />
+		<result column="POST_NAME" property="postName" jdbcType="VARCHAR" />
+		<result column="SUBJECT" property="subject" jdbcType="VARCHAR" />
+		<result column="APPROVE_COUNT" property="approveCount" jdbcType="VARCHAR" />
+		<result column="LIMIT_RECRUIT" property="limitRecruit" jdbcType="VARCHAR" />
+		<result column="AGE" property="age" jdbcType="VARCHAR" />
+		<result column="EDUCATION" property="education" jdbcType="VARCHAR" />
+		<result column="DEGREE" property="degree" jdbcType="VARCHAR" />
+		<result column="OTHER_LIMIT" property="otherLimit" jdbcType="VARCHAR" />
+		<result column="CATEGORY" property="category" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<collection property="positionDomains" ofType="org.jypj.dev.entity.PositionDomain">
+			<id column="domainId" property="id" jdbcType="VARCHAR" />
+			<result column="DOMAIN_NAME" property="domainName" jdbcType="VARCHAR" />
+		</collection>
+		<collection property="specialtys" ofType="org.jypj.dev.entity.Specialty">
+			<id column="SPECIALTYID" property="id" jdbcType="VARCHAR" />
+			<result column="CODE" property="code" jdbcType="VARCHAR" />
+			<result column="NAME" property="name" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	
+	<select id="getPositionVoSubjectList" parameterType="map" resultMap="PositionVoResultMap">
+		SELECT r.ID,r.POST_NAME,r.SUBJECT,nvl(p.APPROVE_COUNT,0) as APPROVE_COUNT,r.LIMIT_RECRUIT,
+		    case when nvl(r.IS_LIMIT_AGE,'0') != '0'then decode(r.LIMIT_AGE_CONDITITION,'>=','大于等于','小于等于') || r.LIMIT_AGE || '岁' else null end as age,
+		    case when nvl(r.IS_LIMIT_EDUCATION,'0') != '0'then decode(r.LIMIT_EDUCATION_CONDITITION,'>=','大于等于','小于等于') || (SELECT TEXT FROM SYS_DICTIONARY WHERE CODE='xllx' and VALUE=r.LIMIT_EDUCATION)  else null end as EDUCATION,
+		    case when nvl(r.IS_LIMIT_DEGREE,'0') != '0' and r.LIMIT_DEGREE !='1'  then decode(r.LIMIT_DEGREE_CONDITITION,'>=','大于等于','小于等于') || (SELECT TEXT FROM SYS_DICTIONARY WHERE CODE='xwlx' and VALUE=r.LIMIT_DEGREE)  else null end as DEGREE,
+		    r.OTHER_LIMIT,(SELECT TEXT FROM SYS_DICTIONARY WHERE CODE ='gwlb' and VALUE=r.POST_CATEGORY) as CATEGORY,r.REMARK,
+		    rs.ID as SPECIALTYID,rs.CODE,rs.NAME
+		FROM RECRUIT_POSTSET r 
+			left join (SELECT STATION_ID,sum(SUBJECT_APPROVE_COUNT) as APPROVE_COUNT FROM SCHOOL_POSITION where PROJECT_ID=#{projectId,jdbcType=VARCHAR} group by STATION_ID) p on p.STATION_ID=r.ID
+			left join RECRUIT_POST_SPECIALTY rps on rps.POST_ID=r.ID 
+			left join RECRUIT_SPECIALTY rs on rs.CODE=rps.SPECIALTY_ID
+		WHERE 1=1 
+		<if test="ids !=null and ids != ''">
+			AND r.ID IN 
+			<foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		order by r.POST_NAME asc,r.ID asc
+	</select>
+	
+	<select id="getPositionVoIds" parameterType="map" resultType="string">
+		SELECT r.ID FROM RECRUIT_POSTSET r 
+			left join (SELECT STATION_ID,sum(SUBJECT_APPROVE_COUNT) as APPROVE_COUNT FROM SCHOOL_POSITION where PROJECT_ID=#{projectId,jdbcType=VARCHAR} group by STATION_ID) p on p.STATION_ID=r.ID
+		WHERE exists (SELECT 1 FROM SCHOOL_POSITION sp left join SCHOOL_PLAN_APPLY a on a.PROJECT_ID=sp.PROJECT_ID and a.ID=sp.PLAN_APPLY_ID where sp.PROJECT_ID=#{projectId,jdbcType=VARCHAR} and sp.STATUS='1' and a.STATUS='2' AND sp.STATION_ID=R.ID group by sp.STATION_ID) 
+		order by r.ID asc 
+	</select>
+	
+	<select id="getPositionVoUnitList" parameterType="map" resultMap="PositionVoResultMap">
+		SELECT p.ID,d.TEXT as school_name,r.POST_NAME,r.SUBJECT,p.SUBJECT_APPROVE_COUNT as APPROVE_COUNT,p.LIMIT_RECRUIT,
+		    case when nvl(p.IS_LIMIT_AGE,'0') != '0'then decode(p.LIMIT_AGE_CONDITITION,'>=','大于等于','小于等于') || p.LIMIT_AGE || '岁' else null end as age,
+		    case when nvl(p.IS_LIMIT_EDUCATION,'0') != '0'then decode(p.LIMIT_EDUCATION_CONDITITION,'>=','大于等于','小于等于') || (SELECT TEXT FROM SYS_DICTIONARY WHERE CODE='xllx' and VALUE=p.LIMIT_EDUCATION)  else null end as EDUCATION,
+		    case when nvl(p.IS_LIMIT_DEGREE,'0') != '0' and p.LIMIT_DEGREE !='1'  then decode(p.LIMIT_DEGREE_CONDITITION,'>=','大于等于','小于等于') || (SELECT TEXT FROM SYS_DICTIONARY WHERE CODE='xwlx' and VALUE=p.LIMIT_DEGREE)  else null end as DEGREE,
+		    p.OTHER_LIMIT,(SELECT TEXT FROM SYS_DICTIONARY WHERE CODE ='gwlb' and VALUE=r.POST_CATEGORY) as CATEGORY,p.REMARK,
+		    m.ID as domainId,m.DOMAIN_NAME
+		FROM SCHOOL_POSITION p
+		    left join  SCHOOL_PLAN_APPLY a on (a.PROJECT_ID=p.PROJECT_ID and a.ID=p.PLAN_APPLY_ID)
+		    left join RECRUIT_POSTSET r on r.ID=p.STATION_ID
+		    left join SYS_DICTIONARY d on a.SCHOOL_ID=d.ID
+		    left join SCHOOL_POSITION_DOMAIN m on m.SCHOOL_ID=p.SCHOOL_ID and m.PLAN_APPLY_ID=a.ID and m.POSITION_ID=p.STATION_ID
+		WHERE 1=1 
+		<if test="ids !=null and ids != ''">
+			AND p.ID IN 
+			<foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		order by a.SCHOOL_ID asc,r.POST_NAME asc,p.id asc
+	</select>
+	
+	<select id="getPositionVoUnitIds" parameterType="map" resultType="string">
+		SELECT p.ID FROM SCHOOL_POSITION p
+		    left join SCHOOL_PLAN_APPLY a on (a.PROJECT_ID=p.PROJECT_ID and a.ID=p.PLAN_APPLY_ID)
+		    left join RECRUIT_POSTSET r on r.ID=p.STATION_ID
+		WHERE p.PROJECT_ID=#{projectId,jdbcType=VARCHAR} and p.STATUS='1' and a.STATUS='2' order by a.SCHOOL_ID asc,p.id asc
+	</select>
+	
+	<select id="queryPositionVoSubjectList" parameterType="map" resultMap="PositionVoResultMap">
+		SELECT r.ID,r.POST_NAME,r.SUBJECT,nvl(p.APPROVE_COUNT,0) as APPROVE_COUNT,r.LIMIT_RECRUIT,
+		    case when nvl(r.IS_LIMIT_AGE,'0') != '0'then decode(r.LIMIT_AGE_CONDITITION,'>=','大于等于','小于等于') || r.LIMIT_AGE || '岁' else null end as age,
+		    case when nvl(r.IS_LIMIT_EDUCATION,'0') != '0'then decode(r.LIMIT_EDUCATION_CONDITITION,'>=','大于等于','小于等于') || (SELECT TEXT FROM SYS_DICTIONARY WHERE CODE='xllx' and VALUE=r.LIMIT_EDUCATION)  else null end as EDUCATION,
+		    case when nvl(r.IS_LIMIT_DEGREE,'0') != '0' and r.LIMIT_DEGREE !='1'  then decode(r.LIMIT_DEGREE_CONDITITION,'>=','大于等于','小于等于') || (SELECT TEXT FROM SYS_DICTIONARY WHERE CODE='xwlx' and VALUE=r.LIMIT_DEGREE)  else null end as DEGREE,
+		    r.OTHER_LIMIT,(SELECT TEXT FROM SYS_DICTIONARY WHERE CODE ='gwlb' and VALUE=r.POST_CATEGORY) as CATEGORY,r.REMARK,
+		    rs.ID as SPECIALTYID,rs.CODE,rs.NAME
+		FROM RECRUIT_POSTSET r 
+			left join (SELECT STATION_ID,sum(SUBJECT_APPROVE_COUNT) as APPROVE_COUNT FROM SCHOOL_POSITION where PROJECT_ID=#{projectId,jdbcType=VARCHAR} group by STATION_ID) p on p.STATION_ID=r.ID
+			left join RECRUIT_POST_SPECIALTY rps on rps.POST_ID=r.ID 
+			left join RECRUIT_SPECIALTY rs on rs.CODE=rps.SPECIALTY_ID
+		WHERE exists (SELECT 1 FROM SCHOOL_POSITION sp left join SCHOOL_PLAN_APPLY a on a.PROJECT_ID=sp.PROJECT_ID and a.ID=sp.PLAN_APPLY_ID where sp.PROJECT_ID=#{projectId,jdbcType=VARCHAR} and sp.STATUS='1' and a.STATUS='2' AND sp.STATION_ID=R.ID group by sp.STATION_ID) 
+		order by r.POST_NAME asc,r.ID asc
+	</select>
+	
+	<select id="queryPositionVoUnitList" parameterType="map" resultMap="PositionVoResultMap">
+		SELECT p.ID,d.TEXT as school_name,r.POST_NAME,r.SUBJECT,p.SUBJECT_APPROVE_COUNT as APPROVE_COUNT,p.LIMIT_RECRUIT,
+		    case when nvl(p.IS_LIMIT_AGE,'0') != '0'then decode(p.LIMIT_AGE_CONDITITION,'>=','大于等于','小于等于') || p.LIMIT_AGE || '岁' else null end as age,
+		    case when nvl(p.IS_LIMIT_EDUCATION,'0') != '0'then decode(p.LIMIT_EDUCATION_CONDITITION,'>=','大于等于','小于等于') || (SELECT TEXT FROM SYS_DICTIONARY WHERE CODE='xllx' and VALUE=p.LIMIT_EDUCATION)  else null end as EDUCATION,
+		    case when nvl(p.IS_LIMIT_DEGREE,'0') != '0' and p.LIMIT_DEGREE !='1'  then decode(p.LIMIT_DEGREE_CONDITITION,'>=','大于等于','小于等于') || (SELECT TEXT FROM SYS_DICTIONARY WHERE CODE='xwlx' and VALUE=p.LIMIT_DEGREE)  else null end as DEGREE,
+		    p.OTHER_LIMIT,(SELECT TEXT FROM SYS_DICTIONARY WHERE CODE ='gwlb' and VALUE=r.POST_CATEGORY) as CATEGORY,p.REMARK,
+		    m.ID as domainId,m.DOMAIN_NAME
+		FROM SCHOOL_POSITION p
+		    left join  SCHOOL_PLAN_APPLY a on (a.PROJECT_ID=p.PROJECT_ID and a.ID=p.PLAN_APPLY_ID)
+		    left join RECRUIT_POSTSET r on r.ID=p.STATION_ID
+		    left join SYS_DICTIONARY d on a.SCHOOL_ID=d.ID
+		    left join SCHOOL_POSITION_DOMAIN m on m.SCHOOL_ID=p.SCHOOL_ID and m.PLAN_APPLY_ID=a.ID and m.POSITION_ID=p.STATION_ID
+		WHERE p.PROJECT_ID=#{projectId,jdbcType=VARCHAR} and p.STATUS='1' and a.STATUS='2' 
+		order by a.SCHOOL_ID asc,r.POST_NAME asc,p.id asc
+	</select>
+
+	<select id="selectByApplyJobId" resultType="java.lang.Integer">
+		SELECT
+		COUNT (id)
+		from SCHOOL_POSITION
+		WHERE STATION_ID=#{applyJobId,jdbcType=VARCHAR}
+	</select>
+	
+</mapper>

@@ -1,0 +1,1248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.NoticeDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.Notice" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="THEME_ID" property="themeId" jdbcType="VARCHAR" />
+	<result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+	<result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+	<result column="ENTER_CONDITION" property="enterCondition" jdbcType="DECIMAL" />
+	<result column="IS_PUBLISH" property="isPublish" jdbcType="DECIMAL" />
+	<result column="REPORT_START" property="reportStart" jdbcType="TIMESTAMP" />
+	<result column="REPORT_END" property="reportEnd" jdbcType="TIMESTAMP" />
+	<result column="REGISTER_START" property="registerStart" jdbcType="TIMESTAMP" />
+	<result column="REGISTER_END" property="registerEnd" jdbcType="TIMESTAMP" />
+	<result column="INTERVIEW_START" property="interviewStart" jdbcType="TIMESTAMP" />
+	<result column="INTERVIEW_END" property="interviewEnd" jdbcType="TIMESTAMP" />
+	<result column="INTERVIEW_LIST_PUBLISH" property="interviewListPublish" jdbcType="DECIMAL" />
+	<result column="INTERVIEW_ENTER_PROPO" property="interviewEnterPropo" jdbcType="DECIMAL" />
+	<result column="INTERVIEW_ENTER_LINE" property="interviewEnterLine" jdbcType="DECIMAL" />
+	<result column="WRITTEN_START" property="writtenStart" jdbcType="TIMESTAMP" />
+	<result column="WRITTEN_END" property="writtenEnd" jdbcType="TIMESTAMP" />
+	<result column="WRITTEN_LIST_PUBLISH" property="writtenListPublish" jdbcType="DECIMAL" />
+	<result column="WRITTEN_SCORE_PUBLISH" property="writtenScorePublish" jdbcType="DECIMAL" />
+	<result column="WRITTEN_ENTER_PROPO" property="writtenEnterPropo" jdbcType="DECIMAL" />
+	<result column="WRITTEN_ENTER_LINE" property="writtenEnterLine" jdbcType="DECIMAL" />
+	<result column="LECTURE_START" property="lectureStart" jdbcType="TIMESTAMP" />
+	<result column="LECTURE_END" property="lectureEnd" jdbcType="TIMESTAMP" />
+	<result column="LECTURE_LIST_PUBLISH_NOR" property="lectureListPublishNor" jdbcType="DECIMAL" />
+	<result column="LECTURE_LIST_PUBLISH_ART" property="lectureListPublishArt" jdbcType="DECIMAL" />
+	<result column="LECTURE_SCORE_PUBLISH_NOR" property="lectureScorePublishNor" jdbcType="DECIMAL" />
+	<result column="LECTURE_SCORE_PUBLISH_ART" property="lectureScorePublishArt" jdbcType="DECIMAL" />
+	<result column="LECTURE_ENTER_PROPO" property="lectureEnterPropo" jdbcType="DECIMAL" />
+	<result column="LECTURE_ENTER_LINE" property="lectureEnterLine" jdbcType="DECIMAL" />
+	<result column="BODYEXAM_START" property="bodyexamStart" jdbcType="TIMESTAMP" />
+	<result column="BODYEXAM_END" property="bodyexamEnd" jdbcType="TIMESTAMP" />
+	<result column="BODYEXAM_LIST_PUBLISH" property="bodyexamListPublish" jdbcType="DECIMAL" />
+	<result column="BODYEXAM_SCORE_PUBLISH" property="bodyexamScorePublish" jdbcType="DECIMAL" />
+	<result column="LOOK_START" property="lookStart" jdbcType="TIMESTAMP" />
+	<result column="LOOK_END" property="lookEnd" jdbcType="TIMESTAMP" />
+	<result column="LOOK_LIST_PUBLISH" property="lookListPublish" jdbcType="DECIMAL" />
+	<result column="LOOK_SCORE_PUBLISH" property="lookScorePublish" jdbcType="DECIMAL" />
+	<result column="SHOW_START" property="showStart" jdbcType="TIMESTAMP" />
+	<result column="SHOW_END" property="showEnd" jdbcType="TIMESTAMP" />
+	<result column="SHOW_LIST_PUBLISH" property="showListPublish" jdbcType="DECIMAL" />
+	<result column="SHOW_SCORE_PUBLISH" property="showScorePublish" jdbcType="DECIMAL" />
+	<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+	<result column="CREATETIME" property="createtime" jdbcType="DATE" />
+	<result column="MODIFYTIME" property="modifytime" jdbcType="DATE" />
+	<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+	<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+	<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="themeName" property="themeName" jdbcType="VARCHAR" />
+    <result column="STOP" property="stop" jdbcType="INTEGER" />
+    <result column="STOP_TITLE" property="stopTitle" jdbcType="VARCHAR" />
+    <result column="STOP_CONTENT" property="stopContent" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,THEME_ID,START_TIME,END_TIME,ENTER_CONDITION,IS_PUBLISH,REPORT_START,REPORT_END,REGISTER_START,REGISTER_END,INTERVIEW_START,INTERVIEW_END,INTERVIEW_LIST_PUBLISH,INTERVIEW_ENTER_PROPO,INTERVIEW_ENTER_LINE,WRITTEN_START,WRITTEN_END,WRITTEN_LIST_PUBLISH,WRITTEN_SCORE_PUBLISH,WRITTEN_ENTER_PROPO,WRITTEN_ENTER_LINE,LECTURE_START,LECTURE_END,LECTURE_LIST_PUBLISH_NOR,LECTURE_LIST_PUBLISH_ART,LECTURE_SCORE_PUBLISH_NOR,LECTURE_SCORE_PUBLISH_ART,LECTURE_ENTER_PROPO,LECTURE_ENTER_LINE,BODYEXAM_START,BODYEXAM_END,BODYEXAM_LIST_PUBLISH,BODYEXAM_SCORE_PUBLISH,LOOK_START,LOOK_END,LOOK_LIST_PUBLISH,LOOK_SCORE_PUBLISH,SHOW_START,SHOW_END,SHOW_LIST_PUBLISH,SHOW_SCORE_PUBLISH,CONTENT,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,REMARK,STOP,STOP_TITLE,STOP_CONTENT
+  </sql>
+  
+   <insert id="saveNoticeByField" parameterType="org.jypj.dev.entity.Notice" >
+    insert into recruit_notice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+    ID,
+   <if test="themeId != null" >
+    THEME_ID,
+   </if>
+   <if test="startTime != null" >
+    START_TIME,
+   </if>
+   <if test="endTime != null" >
+    END_TIME,
+   </if>
+   <if test="enterCondition != null" >
+    ENTER_CONDITION,
+   </if>
+   <if test="isPublish != null" >
+    IS_PUBLISH,
+   </if>
+   <if test="reportStart != null" >
+    REPORT_START,
+   </if>
+   <if test="reportEnd != null" >
+    REPORT_END,
+   </if>
+   <if test="registerStart != null" >
+    REGISTER_START,
+   </if>
+   <if test="registerEnd != null" >
+    REGISTER_END,
+   </if>
+   <if test="interviewStart != null" >
+    INTERVIEW_START,
+   </if>
+   <if test="interviewEnd != null" >
+    INTERVIEW_END,
+   </if>
+   <if test="interviewListPublish != null" >
+    INTERVIEW_LIST_PUBLISH,
+   </if>
+   <if test="interviewEnterPropo != null" >
+    INTERVIEW_ENTER_PROPO,
+   </if>
+   <if test="interviewEnterLine != null" >
+    INTERVIEW_ENTER_LINE,
+   </if>
+   <if test="writtenStart != null" >
+    WRITTEN_START,
+   </if>
+   <if test="writtenEnd != null" >
+    WRITTEN_END,
+   </if>
+   <if test="writtenListPublish != null" >
+    WRITTEN_LIST_PUBLISH,
+   </if>
+   <if test="writtenScorePublish != null" >
+    WRITTEN_SCORE_PUBLISH,
+   </if>
+   <if test="writtenEnterPropo != null" >
+    WRITTEN_ENTER_PROPO,
+   </if>
+   <if test="writtenEnterLine != null" >
+    WRITTEN_ENTER_LINE,
+   </if>
+   <if test="lectureStart != null" >
+    LECTURE_START,
+   </if>
+   <if test="lectureEnd != null" >
+    LECTURE_END,
+   </if>
+   <if test="lectureListPublishNor != null" >
+    LECTURE_LIST_PUBLISH_NOR,
+   </if>
+   <if test="lectureListPublishArt != null" >
+    LECTURE_LIST_PUBLISH_ART,
+   </if>
+   <if test="lectureScorePublishNor != null" >
+    LECTURE_SCORE_PUBLISH_NOR,
+   </if>
+   <if test="lectureScorePublishArt != null" >
+    LECTURE_SCORE_PUBLISH_ART,
+   </if>
+   <if test="lectureEnterPropo != null" >
+    LECTURE_ENTER_PROPO,
+   </if>
+   <if test="lectureEnterLine != null" >
+    LECTURE_ENTER_LINE,
+   </if>
+   <if test="bodyexamStart != null" >
+    BODYEXAM_START,
+   </if>
+   <if test="bodyexamEnd != null" >
+    BODYEXAM_END,
+   </if>
+   <if test="bodyexamListPublish != null" >
+    BODYEXAM_LIST_PUBLISH,
+   </if>
+   <if test="bodyexamScorePublish != null" >
+    BODYEXAM_SCORE_PUBLISH,
+   </if>
+   <if test="lookStart != null" >
+    LOOK_START,
+   </if>
+   <if test="lookEnd != null" >
+    LOOK_END,
+   </if>
+   <if test="lookListPublish != null" >
+    LOOK_LIST_PUBLISH,
+   </if>
+   <if test="lookScorePublish != null" >
+    LOOK_SCORE_PUBLISH,
+   </if>
+   <if test="showStart != null" >
+    SHOW_START,
+   </if>
+   <if test="showEnd != null" >
+    SHOW_END,
+   </if>
+   <if test="showListPublish != null" >
+    SHOW_LIST_PUBLISH,
+   </if>
+   <if test="showScorePublish != null" >
+    SHOW_SCORE_PUBLISH,
+   </if>
+   <if test="content != null" >
+    CONTENT,
+   </if>
+    CREATETIME,
+   <if test="modifytime != null" >
+    MODIFYTIME,
+   </if>
+   <if test="createuser != null" >
+    CREATEUSER,
+   </if>
+   <if test="modifyuser != null" >
+    MODIFYUSER,
+   </if>
+   <if test="remark != null" >
+    REMARK,
+   </if>
+    <if test="stop != null" >
+        STOP,
+    </if>
+    <if test="stopTitle != null" >
+        STOP_TITLE,
+    </if>
+    <if test="stopContent != null" >
+        STOP_CONTENT,
+    </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        sys_guid(),
+      <if test="themeId != null" >
+        #{themeId,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enterCondition != null" >
+        #{enterCondition,jdbcType=DECIMAL},
+      </if>
+      <if test="isPublish != null" >
+        #{isPublish,jdbcType=DECIMAL},
+      </if>
+      <if test="reportStart != null" >
+        #{reportStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportEnd != null" >
+        #{reportEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerStart != null" >
+        #{registerStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerEnd != null" >
+        #{registerEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="interviewStart != null" >
+        #{interviewStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="interviewEnd != null" >
+        #{interviewEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="interviewListPublish != null" >
+        #{interviewListPublish,jdbcType=DECIMAL},
+      </if>
+      <if test="interviewEnterPropo != null" >
+        #{interviewEnterPropo,jdbcType=DECIMAL},
+      </if>
+      <if test="interviewEnterLine != null" >
+        #{interviewEnterLine,jdbcType=DECIMAL},
+      </if>
+      <if test="writtenStart != null" >
+        #{writtenStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="writtenEnd != null" >
+        #{writtenEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="writtenListPublish != null" >
+        #{writtenListPublish,jdbcType=DECIMAL},
+      </if>
+      <if test="writtenScorePublish != null" >
+        #{writtenScorePublish,jdbcType=DECIMAL},
+      </if>
+      <if test="writtenEnterPropo != null" >
+        #{writtenEnterPropo,jdbcType=DECIMAL},
+      </if>
+      <if test="writtenEnterLine != null" >
+        #{writtenEnterLine,jdbcType=DECIMAL},
+      </if>
+      <if test="lectureStart != null" >
+        #{lectureStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lectureEnd != null" >
+        #{lectureEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lectureListPublishNor != null" >
+        #{lectureListPublishNor,jdbcType=DECIMAL},
+      </if>
+      <if test="lectureListPublishArt != null" >
+        #{lectureListPublishArt,jdbcType=DECIMAL},
+      </if>
+      <if test="lectureScorePublishNor != null" >
+        #{lectureScorePublishNor,jdbcType=DECIMAL},
+      </if>
+      <if test="lectureScorePublishArt != null" >
+        #{lectureScorePublishArt,jdbcType=DECIMAL},
+      </if>
+      <if test="lectureEnterPropo != null" >
+        #{lectureEnterPropo,jdbcType=DECIMAL},
+      </if>
+      <if test="lectureEnterLine != null" >
+        #{lectureEnterLine,jdbcType=DECIMAL},
+      </if>
+      <if test="bodyexamStart != null" >
+        #{bodyexamStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bodyexamEnd != null" >
+        #{bodyexamEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bodyexamListPublish != null" >
+        #{bodyexamListPublish,jdbcType=DECIMAL},
+      </if>
+      <if test="bodyexamScorePublish != null" >
+        #{bodyexamScorePublish,jdbcType=DECIMAL},
+      </if>
+      <if test="lookStart != null" >
+        #{lookStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lookEnd != null" >
+        #{lookEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lookListPublish != null" >
+        #{lookListPublish,jdbcType=DECIMAL},
+      </if>
+      <if test="lookScorePublish != null" >
+        #{lookScorePublish,jdbcType=DECIMAL},
+      </if>
+      <if test="showStart != null" >
+        #{showStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="showEnd != null" >
+        #{showEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="showListPublish != null" >
+        #{showListPublish,jdbcType=DECIMAL},
+      </if>
+      <if test="showScorePublish != null" >
+        #{showScorePublish,jdbcType=DECIMAL},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+        sysdate,
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyuser != null" >
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="stop != null" >
+        #{stop,jdbcType=INTEGER},
+      </if>
+      <if test="stopTitle != null" >
+        #{stopTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="stopContent != null" >
+        #{stopContent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveNotice" parameterType="org.jypj.dev.entity.Notice" >
+    insert into recruit_notice (
+	ID,
+	THEME_ID,
+	START_TIME,
+	END_TIME,
+	ENTER_CONDITION,
+	IS_PUBLISH,
+	REPORT_START,
+	REPORT_END,
+	REGISTER_START,
+	REGISTER_END,
+	INTERVIEW_START,
+	INTERVIEW_END,
+	INTERVIEW_LIST_PUBLISH,
+	INTERVIEW_ENTER_PROPO,
+	INTERVIEW_ENTER_LINE,
+	WRITTEN_START,
+	WRITTEN_END,
+	WRITTEN_LIST_PUBLISH,
+	WRITTEN_SCORE_PUBLISH,
+	WRITTEN_ENTER_PROPO,
+	WRITTEN_ENTER_LINE,
+	LECTURE_START,
+	LECTURE_END,
+	LECTURE_LIST_PUBLISH_NOR,
+	LECTURE_LIST_PUBLISH_ART,
+	LECTURE_SCORE_PUBLISH_NOR,
+	LECTURE_SCORE_PUBLISH_ART,
+	LECTURE_ENTER_PROPO,
+	LECTURE_ENTER_LINE,
+	BODYEXAM_START,
+	BODYEXAM_END,
+	BODYEXAM_LIST_PUBLISH,
+	BODYEXAM_SCORE_PUBLISH,
+	LOOK_START,
+	LOOK_END,
+	LOOK_LIST_PUBLISH,
+	LOOK_SCORE_PUBLISH,
+	SHOW_START,
+	SHOW_END,
+	SHOW_LIST_PUBLISH,
+	SHOW_SCORE_PUBLISH,
+	CONTENT,
+	CREATETIME,
+	MODIFYTIME,
+	CREATEUSER,
+	MODIFYUSER,
+	 REMARK
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{themeId,jdbcType=VARCHAR},
+	#{startTime,jdbcType=TIMESTAMP},
+	#{endTime,jdbcType=TIMESTAMP},
+	#{enterCondition,jdbcType=DECIMAL},
+	#{isPublish,jdbcType=DECIMAL},
+	#{reportStart,jdbcType=TIMESTAMP},
+	#{reportEnd,jdbcType=TIMESTAMP},
+	#{registerStart,jdbcType=TIMESTAMP},
+	#{registerEnd,jdbcType=TIMESTAMP},
+	#{interviewStart,jdbcType=TIMESTAMP},
+	#{interviewEnd,jdbcType=TIMESTAMP},
+	#{interviewListPublish,jdbcType=DECIMAL},
+	#{interviewEnterPropo,jdbcType=DECIMAL},
+	#{interviewEnterLine,jdbcType=DECIMAL},
+	#{writtenStart,jdbcType=TIMESTAMP},
+	#{writtenEnd,jdbcType=TIMESTAMP},
+	#{writtenListPublish,jdbcType=DECIMAL},
+	#{writtenScorePublish,jdbcType=DECIMAL},
+	#{writtenEnterPropo,jdbcType=DECIMAL},
+	#{writtenEnterLine,jdbcType=DECIMAL},
+	#{lectureStart,jdbcType=TIMESTAMP},
+	#{lectureEnd,jdbcType=TIMESTAMP},
+	#{lectureListPublishNor,jdbcType=DECIMAL},
+	#{lectureListPublishArt,jdbcType=DECIMAL},
+	#{lectureScorePublishNor,jdbcType=DECIMAL},
+	#{lectureScorePublishArt,jdbcType=DECIMAL},
+	#{lectureEnterPropo,jdbcType=DECIMAL},
+	#{lectureEnterLine,jdbcType=DECIMAL},
+	#{bodyexamStart,jdbcType=TIMESTAMP},
+	#{bodyexamEnd,jdbcType=TIMESTAMP},
+	#{bodyexamListPublish,jdbcType=DECIMAL},
+	#{bodyexamScorePublish,jdbcType=DECIMAL},
+	#{lookStart,jdbcType=TIMESTAMP},
+	#{lookEnd,jdbcType=TIMESTAMP},
+	#{lookListPublish,jdbcType=DECIMAL},
+	#{lookScorePublish,jdbcType=DECIMAL},
+	#{showStart,jdbcType=TIMESTAMP},
+	#{showEnd,jdbcType=TIMESTAMP},
+	#{showListPublish,jdbcType=DECIMAL},
+	#{showScorePublish,jdbcType=DECIMAL},
+	#{content,jdbcType=VARCHAR},
+	#{createtime,jdbcType=DATE},
+	#{modifytime,jdbcType=DATE},
+	#{createuser,jdbcType=VARCHAR},
+	#{modifyuser,jdbcType=VARCHAR},
+	#{remark,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteNoticeById" parameterType="java.lang.String" >
+    delete from recruit_notice
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteNoticeByObject" parameterType="org.jypj.dev.entity.Notice" >
+    delete from recruit_notice
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateNoticeByField" parameterType="org.jypj.dev.entity.Notice" >
+    update recruit_notice
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="themeId != null" >
+  	 THEME_ID=#{themeId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="startTime != null" >
+  	 START_TIME=#{startTime,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="endTime != null" >
+  	 END_TIME=#{endTime,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="enterCondition != null" >
+  	 ENTER_CONDITION=#{enterCondition,jdbcType=DECIMAL},
+  	 </if>
+     /*因为这个下拉框设置为disable参数无法传递，而不可以将1
+        改为1，所以传递1过来的时候可以改为该值，传0过来就不用改，也不能改*/
+  	 <if test="isPublish == 1" >
+  	 IS_PUBLISH=#{isPublish,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="reportStart != null" >
+  	 REPORT_START=#{reportStart,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="reportEnd != null" >
+  	 REPORT_END=#{reportEnd,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="registerStart != null" >
+  	 REGISTER_START=#{registerStart,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="registerEnd != null" >
+  	 REGISTER_END=#{registerEnd,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="interviewStart != null" >
+  	 INTERVIEW_START=#{interviewStart,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="interviewEnd != null" >
+  	 INTERVIEW_END=#{interviewEnd,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <!-- 
+  	 <if test="interviewListPublish != null" >
+  	 INTERVIEW_LIST_PUBLISH=#{interviewListPublish,jdbcType=DECIMAL},
+  	 </if>
+  	 -->
+  	 <if test="interviewEnterPropo != null" >
+  	 INTERVIEW_ENTER_PROPO=#{interviewEnterPropo,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="interviewEnterLine != null" >
+  	 INTERVIEW_ENTER_LINE=#{interviewEnterLine,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="writtenStart != null" >
+  	 WRITTEN_START=#{writtenStart,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="writtenEnd != null" >
+  	 WRITTEN_END=#{writtenEnd,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <!--
+  	 <if test="writtenListPublish != null" >
+  	 WRITTEN_LIST_PUBLISH=#{writtenListPublish,jdbcType=DECIMAL},
+  	 </if>
+  	 -->
+  	 <!--
+  	 <if test="writtenScorePublish != null" >
+  	 WRITTEN_SCORE_PUBLISH=#{writtenScorePublish,jdbcType=DECIMAL},
+  	 </if>
+  	 -->
+  	 <if test="writtenEnterPropo != null" >
+  	 WRITTEN_ENTER_PROPO=#{writtenEnterPropo,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="writtenEnterLine != null" >
+  	 WRITTEN_ENTER_LINE=#{writtenEnterLine,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="lectureStart != null" >
+  	 LECTURE_START=#{lectureStart,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="lectureEnd != null" >
+  	 LECTURE_END=#{lectureEnd,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <!--
+  	 <if test="lectureListPublishNor != null" >
+  	 LECTURE_LIST_PUBLISH_NOR=#{lectureListPublishNor,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="lectureListPublishArt != null" >
+  	 LECTURE_LIST_PUBLISH_ART=#{lectureListPublishArt,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="lectureScorePublishNor != null" >
+  	 LECTURE_SCORE_PUBLISH_NOR=#{lectureScorePublishNor,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="lectureScorePublishArt != null" >
+  	 LECTURE_SCORE_PUBLISH_ART=#{lectureScorePublishArt,jdbcType=DECIMAL},
+  	 </if>
+  	 -->
+  	 <if test="lectureEnterPropo != null" >
+  	 LECTURE_ENTER_PROPO=#{lectureEnterPropo,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="lectureEnterLine != null" >
+  	 LECTURE_ENTER_LINE=#{lectureEnterLine,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="bodyexamStart != null" >
+  	 BODYEXAM_START=#{bodyexamStart,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="bodyexamEnd != null" >
+  	 BODYEXAM_END=#{bodyexamEnd,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <!-- 
+  	 <if test="bodyexamListPublish != null" >
+  	 BODYEXAM_LIST_PUBLISH=#{bodyexamListPublish,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="bodyexamScorePublish != null" >
+  	 BODYEXAM_SCORE_PUBLISH=#{bodyexamScorePublish,jdbcType=DECIMAL},
+  	 </if>
+  	 -->
+  	 <if test="lookStart != null" >
+  	 LOOK_START=#{lookStart,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="lookEnd != null" >
+  	 LOOK_END=#{lookEnd,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <!-- 
+  	 <if test="lookListPublish != null" >
+  	 LOOK_LIST_PUBLISH=#{lookListPublish,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="lookScorePublish != null" >
+  	 LOOK_SCORE_PUBLISH=#{lookScorePublish,jdbcType=DECIMAL},
+  	 </if>
+  	 -->
+  	 <if test="showStart != null" >
+  	 SHOW_START=#{showStart,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="showEnd != null" >
+  	 SHOW_END=#{showEnd,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <!--
+  	 <if test="showListPublish != null" >
+  	 SHOW_LIST_PUBLISH=#{showListPublish,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="showScorePublish != null" >
+  	 SHOW_SCORE_PUBLISH=#{showScorePublish,jdbcType=DECIMAL},
+  	 </if>
+  	 -->
+  	 <if test="content != null" >
+  	 CONTENT=#{content,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createtime != null" >
+  	 CREATETIME=#{createtime,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="modifytime != null" >
+  	 MODIFYTIME=#{modifytime,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="createuser != null" >
+  	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="modifyuser != null" >
+  	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="remark != null" >
+  	 REMARK=#{remark,jdbcType=VARCHAR},
+  	 </if>
+     <if test="stop != null" >
+     STOP=#{stop,jdbcType=INTEGER},
+     </if>
+     <if test="stopTitle != null" >
+     STOP_TITLE=#{stopTitle,jdbcType=VARCHAR},
+     </if>
+     <if test="stopContent != null" >
+     STOP_CONTENT=#{stopContent,jdbcType=VARCHAR}
+     </if>
+     </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <update id="updateNoticeByFieldAndTheme" parameterType="org.jypj.dev.entity.Notice" >
+        update recruit_notice
+        <set >
+            <if test="interviewListPublish != null and interviewListPublish != 0" >
+                INTERVIEW_LIST_PUBLISH=#{interviewListPublish,jdbcType=DECIMAL},
+            </if>
+            <if test="writtenListPublish != null and writtenListPublish != 0" >
+                WRITTEN_LIST_PUBLISH=#{writtenListPublish,jdbcType=DECIMAL},
+            </if>
+            <if test="writtenScorePublish != null and writtenScorePublish != 0" >
+                WRITTEN_SCORE_PUBLISH=#{writtenScorePublish,jdbcType=DECIMAL},
+            </if>
+            <if test="lectureListPublishNor != null and lectureListPublishNor != 0"  >
+                LECTURE_LIST_PUBLISH_NOR=#{lectureListPublishNor,jdbcType=DECIMAL},
+            </if>
+            <if test="lectureListPublishArt != null and lectureListPublishArt != 0" >
+                LECTURE_LIST_PUBLISH_ART=#{lectureListPublishArt,jdbcType=DECIMAL},
+            </if>
+            <if test="lectureScorePublishNor != null and lectureScorePublishNor != 0" >
+                LECTURE_SCORE_PUBLISH_NOR=#{lectureScorePublishNor,jdbcType=DECIMAL},
+            </if>
+            <if test="lectureScorePublishArt != null and lectureScorePublishArt != 0" >
+                LECTURE_SCORE_PUBLISH_ART=#{lectureScorePublishArt,jdbcType=DECIMAL},
+            </if>
+            <if test="bodyexamListPublish != null and bodyexamListPublish != 0" >
+                BODYEXAM_LIST_PUBLISH=#{bodyexamListPublish,jdbcType=DECIMAL},
+            </if>
+            <if test="bodyexamScorePublish != null and bodyexamScorePublish != 0" >
+                BODYEXAM_SCORE_PUBLISH=#{bodyexamScorePublish,jdbcType=DECIMAL},
+            </if>
+            <if test="lookListPublish != null and lookListPublish != 0" >
+                LOOK_LIST_PUBLISH=#{lookListPublish,jdbcType=DECIMAL},
+            </if>
+            <if test="lookScorePublish != null and lookScorePublish != 0" >
+                LOOK_SCORE_PUBLISH=#{lookScorePublish,jdbcType=DECIMAL},
+            </if>
+            <if test="showListPublish != null and showListPublish != 0" >
+                SHOW_LIST_PUBLISH=#{showListPublish,jdbcType=DECIMAL},
+            </if>
+            <if test="showScorePublish != null and showScorePublish != 0" >
+                SHOW_SCORE_PUBLISH=#{showScorePublish,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where THEME_ID = #{themeId,jdbcType=VARCHAR}
+    </update>
+  
+  <update id="updateNotice" parameterType="org.jypj.dev.entity.Notice" >
+    update recruit_notice
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 THEME_ID=#{themeId,jdbcType=VARCHAR},
+	 START_TIME=#{startTime,jdbcType=TIMESTAMP},
+	 END_TIME=#{endTime,jdbcType=TIMESTAMP},
+	 ENTER_CONDITION=#{enterCondition,jdbcType=DECIMAL},
+	 IS_PUBLISH=#{isPublish,jdbcType=DECIMAL},
+	 REPORT_START=#{reportStart,jdbcType=TIMESTAMP},
+	 REPORT_END=#{reportEnd,jdbcType=TIMESTAMP},
+	 REGISTER_START=#{registerStart,jdbcType=TIMESTAMP},
+	 REGISTER_END=#{registerEnd,jdbcType=TIMESTAMP},
+	 INTERVIEW_START=#{interviewStart,jdbcType=TIMESTAMP},
+	 INTERVIEW_END=#{interviewEnd,jdbcType=TIMESTAMP},
+	 INTERVIEW_LIST_PUBLISH=#{interviewListPublish,jdbcType=DECIMAL},
+	 INTERVIEW_ENTER_PROPO=#{interviewEnterPropo,jdbcType=DECIMAL},
+	 INTERVIEW_ENTER_LINE=#{interviewEnterLine,jdbcType=DECIMAL},
+	 WRITTEN_START=#{writtenStart,jdbcType=TIMESTAMP},
+	 WRITTEN_END=#{writtenEnd,jdbcType=TIMESTAMP},
+	 WRITTEN_LIST_PUBLISH=#{writtenListPublish,jdbcType=DECIMAL},
+	 WRITTEN_SCORE_PUBLISH=#{writtenScorePublish,jdbcType=DECIMAL},
+	 WRITTEN_ENTER_PROPO=#{writtenEnterPropo,jdbcType=DECIMAL},
+	 WRITTEN_ENTER_LINE=#{writtenEnterLine,jdbcType=DECIMAL},
+	 LECTURE_START=#{lectureStart,jdbcType=TIMESTAMP},
+	 LECTURE_END=#{lectureEnd,jdbcType=TIMESTAMP},
+	 LECTURE_LIST_PUBLISH_NOR=#{lectureListPublishNor,jdbcType=DECIMAL},
+	 LECTURE_LIST_PUBLISH_ART=#{lectureListPublishArt,jdbcType=DECIMAL},
+	 LECTURE_SCORE_PUBLISH_NOR=#{lectureScorePublishNor,jdbcType=DECIMAL},
+	 LECTURE_SCORE_PUBLISH_ART=#{lectureScorePublishArt,jdbcType=DECIMAL},
+	 LECTURE_ENTER_PROPO=#{lectureEnterPropo,jdbcType=DECIMAL},
+	 LECTURE_ENTER_LINE=#{lectureEnterLine,jdbcType=DECIMAL},
+	 BODYEXAM_START=#{bodyexamStart,jdbcType=TIMESTAMP},
+	 BODYEXAM_END=#{bodyexamEnd,jdbcType=TIMESTAMP},
+	 BODYEXAM_LIST_PUBLISH=#{bodyexamListPublish,jdbcType=DECIMAL},
+	 BODYEXAM_SCORE_PUBLISH=#{bodyexamScorePublish,jdbcType=DECIMAL},
+	 LOOK_START=#{lookStart,jdbcType=TIMESTAMP},
+	 LOOK_END=#{lookEnd,jdbcType=TIMESTAMP},
+	 LOOK_LIST_PUBLISH=#{lookListPublish,jdbcType=DECIMAL},
+	 LOOK_SCORE_PUBLISH=#{lookScorePublish,jdbcType=DECIMAL},
+	 SHOW_START=#{showStart,jdbcType=TIMESTAMP},
+	 SHOW_END=#{showEnd,jdbcType=TIMESTAMP},
+	 SHOW_LIST_PUBLISH=#{showListPublish,jdbcType=DECIMAL},
+	 SHOW_SCORE_PUBLISH=#{showScorePublish,jdbcType=DECIMAL},
+	 CONTENT=#{content,jdbcType=VARCHAR},
+	 CREATETIME=#{createtime,jdbcType=DATE},
+	 MODIFYTIME=#{modifytime,jdbcType=DATE},
+	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+	 REMARK=#{remark,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectNoticeById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_notice
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    t.*,
+    r.theme themeName
+    from recruit_notice t
+    LEFT JOIN recruit_theme r ON t.THEME_ID=r.ID
+    where 1=1
+    <if test="_parameter.containsKey('theme')">
+        AND r.theme LIKE CONCAT(CONCAT('%', #{theme,jdbcType=VARCHAR}), '%')
+    </if>
+    <if test="_parameter.containsKey('year')">
+        AND  TO_CHAR(r.CREATETIME, 'yyyy') = #{year,jdbcType=VARCHAR}
+    </if>
+    ORDER BY t.CREATETIME DESC
+  </select>
+
+	<select id="selectEffectNotice" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from recruit_notice
+		where 1=1 and IS_PUBLISH=#{isPublish,jdbcType=DECIMAL}
+		<if test="themeId != null and themeId !='' ">
+			and THEME_ID=#{themeId,jdbcType=VARCHAR}
+		</if>
+		and START_TIME <![CDATA[<=]]>
+		sysdate and END_TIME <![CDATA[>=]]>
+		sysdate
+	</select> 
+  
+  
+  <select id="selectOnePageByNotice" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Notice" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_notice
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="themeId != null and themeId !='' ">
+	  and THEME_ID=#{themeId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="startTime != null and startTime !='' ">
+	  and START_TIME=#{startTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="endTime != null and endTime !='' ">
+	  and END_TIME=#{endTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="enterCondition != null and enterCondition !='' ">
+	  and ENTER_CONDITION=#{enterCondition,jdbcType=DECIMAL}
+	 </if>
+	 <if test="isPublish != null and isPublish !='' ">
+	  and IS_PUBLISH=#{isPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="reportStart != null and reportStart !='' ">
+	  and REPORT_START=#{reportStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="reportEnd != null and reportEnd !='' ">
+	  and REPORT_END=#{reportEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="registerStart != null and registerStart !='' ">
+	  and REGISTER_START=#{registerStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="registerEnd != null and registerEnd !='' ">
+	  and REGISTER_END=#{registerEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="interviewStart != null and interviewStart !='' ">
+	  and INTERVIEW_START=#{interviewStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="interviewEnd != null and interviewEnd !='' ">
+	  and INTERVIEW_END=#{interviewEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="interviewListPublish != null and interviewListPublish !='' ">
+	  and INTERVIEW_LIST_PUBLISH=#{interviewListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="interviewEnterPropo != null and interviewEnterPropo !='' ">
+	  and INTERVIEW_ENTER_PROPO=#{interviewEnterPropo,jdbcType=DECIMAL}
+	 </if>
+	 <if test="interviewEnterLine != null and interviewEnterLine !='' ">
+	  and INTERVIEW_ENTER_LINE=#{interviewEnterLine,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenStart != null and writtenStart !='' ">
+	  and WRITTEN_START=#{writtenStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="writtenEnd != null and writtenEnd !='' ">
+	  and WRITTEN_END=#{writtenEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="writtenListPublish != null and writtenListPublish !='' ">
+	  and WRITTEN_LIST_PUBLISH=#{writtenListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenScorePublish != null and writtenScorePublish !='' ">
+	  and WRITTEN_SCORE_PUBLISH=#{writtenScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenEnterPropo != null and writtenEnterPropo !='' ">
+	  and WRITTEN_ENTER_PROPO=#{writtenEnterPropo,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenEnterLine != null and writtenEnterLine !='' ">
+	  and WRITTEN_ENTER_LINE=#{writtenEnterLine,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureStart != null and lectureStart !='' ">
+	  and LECTURE_START=#{lectureStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lectureEnd != null and lectureEnd !='' ">
+	  and LECTURE_END=#{lectureEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lectureListPublishNor != null and lectureListPublishNor !='' ">
+	  and LECTURE_LIST_PUBLISH_NOR=#{lectureListPublishNor,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureListPublishArt != null and lectureListPublishArt !='' ">
+	  and LECTURE_LIST_PUBLISH_ART=#{lectureListPublishArt,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureScorePublishNor != null and lectureScorePublishNor !='' ">
+	  and LECTURE_SCORE_PUBLISH_NOR=#{lectureScorePublishNor,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureScorePublishArt != null and lectureScorePublishArt !='' ">
+	  and LECTURE_SCORE_PUBLISH_ART=#{lectureScorePublishArt,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureEnterPropo != null and lectureEnterPropo !='' ">
+	  and LECTURE_ENTER_PROPO=#{lectureEnterPropo,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureEnterLine != null and lectureEnterLine !='' ">
+	  and LECTURE_ENTER_LINE=#{lectureEnterLine,jdbcType=DECIMAL}
+	 </if>
+	 <if test="bodyexamStart != null and bodyexamStart !='' ">
+	  and BODYEXAM_START=#{bodyexamStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="bodyexamEnd != null and bodyexamEnd !='' ">
+	  and BODYEXAM_END=#{bodyexamEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="bodyexamListPublish != null and bodyexamListPublish !='' ">
+	  and BODYEXAM_LIST_PUBLISH=#{bodyexamListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="bodyexamScorePublish != null and bodyexamScorePublish !='' ">
+	  and BODYEXAM_SCORE_PUBLISH=#{bodyexamScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lookStart != null and lookStart !='' ">
+	  and LOOK_START=#{lookStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lookEnd != null and lookEnd !='' ">
+	  and LOOK_END=#{lookEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lookListPublish != null and lookListPublish !='' ">
+	  and LOOK_LIST_PUBLISH=#{lookListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lookScorePublish != null and lookScorePublish !='' ">
+	  and LOOK_SCORE_PUBLISH=#{lookScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="showStart != null and showStart !='' ">
+	  and SHOW_START=#{showStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="showEnd != null and showEnd !='' ">
+	  and SHOW_END=#{showEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="showListPublish != null and showListPublish !='' ">
+	  and SHOW_LIST_PUBLISH=#{showListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="showScorePublish != null and showScorePublish !='' ">
+	  and SHOW_SCORE_PUBLISH=#{showScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="content != null and content !='' ">
+	  and CONTENT=#{content,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_notice
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByNotice" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Notice" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_notice
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="themeId != null and themeId !='' ">
+	  and THEME_ID=#{themeId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="startTime != null and startTime !='' ">
+	  and START_TIME=#{startTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="endTime != null and endTime !='' ">
+	  and END_TIME=#{endTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="enterCondition != null and enterCondition !='' ">
+	  and ENTER_CONDITION=#{enterCondition,jdbcType=DECIMAL}
+	 </if>
+	 <if test="isPublish != null and isPublish !='' ">
+	  and IS_PUBLISH=#{isPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="reportStart != null and reportStart !='' ">
+	  and REPORT_START=#{reportStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="reportEnd != null and reportEnd !='' ">
+	  and REPORT_END=#{reportEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="registerStart != null and registerStart !='' ">
+	  and REGISTER_START=#{registerStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="registerEnd != null and registerEnd !='' ">
+	  and REGISTER_END=#{registerEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="interviewStart != null and interviewStart !='' ">
+	  and INTERVIEW_START=#{interviewStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="interviewEnd != null and interviewEnd !='' ">
+	  and INTERVIEW_END=#{interviewEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="interviewListPublish != null and interviewListPublish !='' ">
+	  and INTERVIEW_LIST_PUBLISH=#{interviewListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="interviewEnterPropo != null and interviewEnterPropo !='' ">
+	  and INTERVIEW_ENTER_PROPO=#{interviewEnterPropo,jdbcType=DECIMAL}
+	 </if>
+	 <if test="interviewEnterLine != null and interviewEnterLine !='' ">
+	  and INTERVIEW_ENTER_LINE=#{interviewEnterLine,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenStart != null and writtenStart !='' ">
+	  and WRITTEN_START=#{writtenStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="writtenEnd != null and writtenEnd !='' ">
+	  and WRITTEN_END=#{writtenEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="writtenListPublish != null and writtenListPublish !='' ">
+	  and WRITTEN_LIST_PUBLISH=#{writtenListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenScorePublish != null and writtenScorePublish !='' ">
+	  and WRITTEN_SCORE_PUBLISH=#{writtenScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenEnterPropo != null and writtenEnterPropo !='' ">
+	  and WRITTEN_ENTER_PROPO=#{writtenEnterPropo,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenEnterLine != null and writtenEnterLine !='' ">
+	  and WRITTEN_ENTER_LINE=#{writtenEnterLine,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureStart != null and lectureStart !='' ">
+	  and LECTURE_START=#{lectureStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lectureEnd != null and lectureEnd !='' ">
+	  and LECTURE_END=#{lectureEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lectureListPublishNor != null and lectureListPublishNor !='' ">
+	  and LECTURE_LIST_PUBLISH_NOR=#{lectureListPublishNor,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureListPublishArt != null and lectureListPublishArt !='' ">
+	  and LECTURE_LIST_PUBLISH_ART=#{lectureListPublishArt,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureScorePublishNor != null and lectureScorePublishNor !='' ">
+	  and LECTURE_SCORE_PUBLISH_NOR=#{lectureScorePublishNor,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureScorePublishArt != null and lectureScorePublishArt !='' ">
+	  and LECTURE_SCORE_PUBLISH_ART=#{lectureScorePublishArt,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureEnterPropo != null and lectureEnterPropo !='' ">
+	  and LECTURE_ENTER_PROPO=#{lectureEnterPropo,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureEnterLine != null and lectureEnterLine !='' ">
+	  and LECTURE_ENTER_LINE=#{lectureEnterLine,jdbcType=DECIMAL}
+	 </if>
+	 <if test="bodyexamStart != null and bodyexamStart !='' ">
+	  and BODYEXAM_START=#{bodyexamStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="bodyexamEnd != null and bodyexamEnd !='' ">
+	  and BODYEXAM_END=#{bodyexamEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="bodyexamListPublish != null and bodyexamListPublish !='' ">
+	  and BODYEXAM_LIST_PUBLISH=#{bodyexamListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="bodyexamScorePublish != null and bodyexamScorePublish !='' ">
+	  and BODYEXAM_SCORE_PUBLISH=#{bodyexamScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lookStart != null and lookStart !='' ">
+	  and LOOK_START=#{lookStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lookEnd != null and lookEnd !='' ">
+	  and LOOK_END=#{lookEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lookListPublish != null and lookListPublish !='' ">
+	  and LOOK_LIST_PUBLISH=#{lookListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lookScorePublish != null and lookScorePublish !='' ">
+	  and LOOK_SCORE_PUBLISH=#{lookScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="showStart != null and showStart !='' ">
+	  and SHOW_START=#{showStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="showEnd != null and showEnd !='' ">
+	  and SHOW_END=#{showEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="showListPublish != null and showListPublish !='' ">
+	  and SHOW_LIST_PUBLISH=#{showListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="showScorePublish != null and showScorePublish !='' ">
+	  and SHOW_SCORE_PUBLISH=#{showScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="content != null and content !='' ">
+	  and CONTENT=#{content,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_notice
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByNotice" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.Notice" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_notice
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="themeId != null and themeId !='' ">
+	  and THEME_ID=#{themeId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="startTime != null and startTime !='' ">
+	  and START_TIME=#{startTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="endTime != null and endTime !='' ">
+	  and END_TIME=#{endTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="enterCondition != null and enterCondition !='' ">
+	  and ENTER_CONDITION=#{enterCondition,jdbcType=DECIMAL}
+	 </if>
+	 <if test="isPublish != null and isPublish !='' ">
+	  and IS_PUBLISH=#{isPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="reportStart != null and reportStart !='' ">
+	  and REPORT_START=#{reportStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="reportEnd != null and reportEnd !='' ">
+	  and REPORT_END=#{reportEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="registerStart != null and registerStart !='' ">
+	  and REGISTER_START=#{registerStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="registerEnd != null and registerEnd !='' ">
+	  and REGISTER_END=#{registerEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="interviewStart != null and interviewStart !='' ">
+	  and INTERVIEW_START=#{interviewStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="interviewEnd != null and interviewEnd !='' ">
+	  and INTERVIEW_END=#{interviewEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="interviewListPublish != null and interviewListPublish !='' ">
+	  and INTERVIEW_LIST_PUBLISH=#{interviewListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="interviewEnterPropo != null and interviewEnterPropo !='' ">
+	  and INTERVIEW_ENTER_PROPO=#{interviewEnterPropo,jdbcType=DECIMAL}
+	 </if>
+	 <if test="interviewEnterLine != null and interviewEnterLine !='' ">
+	  and INTERVIEW_ENTER_LINE=#{interviewEnterLine,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenStart != null and writtenStart !='' ">
+	  and WRITTEN_START=#{writtenStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="writtenEnd != null and writtenEnd !='' ">
+	  and WRITTEN_END=#{writtenEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="writtenListPublish != null and writtenListPublish !='' ">
+	  and WRITTEN_LIST_PUBLISH=#{writtenListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenScorePublish != null and writtenScorePublish !='' ">
+	  and WRITTEN_SCORE_PUBLISH=#{writtenScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenEnterPropo != null and writtenEnterPropo !='' ">
+	  and WRITTEN_ENTER_PROPO=#{writtenEnterPropo,jdbcType=DECIMAL}
+	 </if>
+	 <if test="writtenEnterLine != null and writtenEnterLine !='' ">
+	  and WRITTEN_ENTER_LINE=#{writtenEnterLine,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureStart != null and lectureStart !='' ">
+	  and LECTURE_START=#{lectureStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lectureEnd != null and lectureEnd !='' ">
+	  and LECTURE_END=#{lectureEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lectureListPublishNor != null and lectureListPublishNor !='' ">
+	  and LECTURE_LIST_PUBLISH_NOR=#{lectureListPublishNor,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureListPublishArt != null and lectureListPublishArt !='' ">
+	  and LECTURE_LIST_PUBLISH_ART=#{lectureListPublishArt,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureScorePublishNor != null and lectureScorePublishNor !='' ">
+	  and LECTURE_SCORE_PUBLISH_NOR=#{lectureScorePublishNor,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureScorePublishArt != null and lectureScorePublishArt !='' ">
+	  and LECTURE_SCORE_PUBLISH_ART=#{lectureScorePublishArt,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureEnterPropo != null and lectureEnterPropo !='' ">
+	  and LECTURE_ENTER_PROPO=#{lectureEnterPropo,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lectureEnterLine != null and lectureEnterLine !='' ">
+	  and LECTURE_ENTER_LINE=#{lectureEnterLine,jdbcType=DECIMAL}
+	 </if>
+	 <if test="bodyexamStart != null and bodyexamStart !='' ">
+	  and BODYEXAM_START=#{bodyexamStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="bodyexamEnd != null and bodyexamEnd !='' ">
+	  and BODYEXAM_END=#{bodyexamEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="bodyexamListPublish != null and bodyexamListPublish !='' ">
+	  and BODYEXAM_LIST_PUBLISH=#{bodyexamListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="bodyexamScorePublish != null and bodyexamScorePublish !='' ">
+	  and BODYEXAM_SCORE_PUBLISH=#{bodyexamScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lookStart != null and lookStart !='' ">
+	  and LOOK_START=#{lookStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lookEnd != null and lookEnd !='' ">
+	  and LOOK_END=#{lookEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="lookListPublish != null and lookListPublish !='' ">
+	  and LOOK_LIST_PUBLISH=#{lookListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="lookScorePublish != null and lookScorePublish !='' ">
+	  and LOOK_SCORE_PUBLISH=#{lookScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="showStart != null and showStart !='' ">
+	  and SHOW_START=#{showStart,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="showEnd != null and showEnd !='' ">
+	  and SHOW_END=#{showEnd,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="showListPublish != null and showListPublish !='' ">
+	  and SHOW_LIST_PUBLISH=#{showListPublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="showScorePublish != null and showScorePublish !='' ">
+	  and SHOW_SCORE_PUBLISH=#{showScorePublish,jdbcType=DECIMAL}
+	 </if>
+	 <if test="content != null and content !='' ">
+	  and CONTENT=#{content,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select>
+
+    <select id="selectObjectByThemeId" parameterType="string" resultMap="BaseResultMap">
+        SELECT * FROM recruit_notice
+        WHERE THEME_ID = #{themeId,jdbcType=VARCHAR}
+    </select>
+  
+</mapper>

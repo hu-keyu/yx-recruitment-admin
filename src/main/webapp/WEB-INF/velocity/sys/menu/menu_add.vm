@@ -1,0 +1,90 @@
+#parse("/common/head-js+css.vm")
+<script>
+ $(document).ready(function(){
+        $("#input_form").validator({
+            formClass:'n-yellow',
+            msgClass: "n-bottom",
+            msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+            timely:3,
+            focusInvalid:true,
+            focusCleanup:true,
+            stopOnError:false,
+            rules: {
+                // 使用正则表达式定义规则
+                postcode: [/^\d{3}$/, '请输入3位数字'],
+            },
+            fields: {
+                menuName: "菜单名称必选:required;length(1~20)",
+                url: "访问地址必填:required;length(1~200)",
+				parentId:"上级菜单必填:required;",
+				describe:"length(1~200)",
+				imageUrl:"length(1~50)",
+				sortOrder: {
+                    rule: "显示顺序:integer;length(1~3)",
+                    msg:{
+                        integer:"显示顺序请填写整数数字"
+                    }
+                }
+            },
+            valid: function(form){
+                url='${link.contextPath}/dg/menu/add';
+                //表单验证通过，提交表单
+                $.post(url, $(form).serialize()).done(function(data){
+                    parent.layer.msg(data.msg, {icon: 1});
+                    if(data.success){
+                        window.parent.layer.closeAll();
+                    }
+                });
+            }
+        });
+    })
+	
+	function sure(){
+	 $("#input_form").submit();
+	}
+	
+	function setParents(parentName, parentId){
+		console.log('menuaddPage:' + parentName + '--' + parentId);
+	}
+	
+</script>
+<div class="dialog">
+    <!-- table表单模块 S-->
+    <form class="table-content" method="post" id="input_form" onsubmit="return false;">
+        <table class="formTable">
+            <tbody>
+                <tr>
+                    <th class="text-right" width="15%"><span class="flag">*</span>菜单名称：</th>
+                    <td><input class="input" type="text" name="menuName" ></td>
+                </tr>
+                <tr>
+                    <th class="text-right" width="15%"><span class="flag">*</span>访问地址：</th>
+                    <td><input class="input" type="text" name="url" ></td>
+                </tr>
+				 <tr>
+                    <th class="text-right" width="15%"><span class="flag">*</span>上级菜单：</th>
+                    <td style="position:relative;">
+						<input class="input" type="hidden" id="parentId" name="parentId" >
+						<input id="parentName" class="input grid-150" type="text" name="parentName" readonly value=""/>&nbsp;
+						<a id="menuBtn" class="btn btn-primary" href="#" onclick="window.parent.selectPMenu()">选择</a>
+					</td>
+                </tr>
+                <tr>
+                    <th class="text-right" width="15%">内容描述：</th>
+                    <td>
+                        <textarea class="textarea" rows="5" name="describe"></textarea>
+                    </td>
+                </tr>
+                 <tr>
+                    <th class="text-right" width="15%">图标地址：</th>
+                    <td><input class="input" type="text" name="imageUrl" ></td>
+                </tr>
+				 <tr>
+                    <th class="text-right" width="15%">显示顺序：</th>
+                    <td><input class="input" type="text" name="sortOrder" ></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <!-- table表单模块 E-->
+</div>

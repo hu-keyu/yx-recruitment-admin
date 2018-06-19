@@ -1,0 +1,133 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+	$(document).ready(function () {  
+		queryData();
+    });
+	
+	function queryData() {
+		var $serializeForm=$("#list_form").serialize();
+		$serializeForm+="&projectId="+'$!projectId'+"&testType="+'$!testType';
+		$.ajax({
+            type: "POST",
+            dataType: "json",
+            url: '${link.contextPath}/dg/gradeExportLog/selectScoreTypeLog',
+            data : $serializeForm,
+            success: function (data) {
+                if (data) {  
+                    /*获取数据总行数*/
+                    $("#totalCounts").val(data.total);
+					$("#currentPage").val(data.currentPage);
+                    /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/
+                    if (parseInt($("#totalCounts").val()) == 0) {
+                        $("#totalCounts").val(1);
+                    }
+					if(parseInt($("#currentPage").val()) == 0) {  
+                    	$("#currentPage").val(1);
+                    }
+                    /*生成表和套用css样式*/  
+                    data = data.rows;//获取筛选后的内容 
+                    $(".table tbody tr").remove();//清空列表 
+                    $.each(data, function (index, e) {
+						var insertHtml='<tr>';
+								insertHtml+='<td>'+e.orderNumber+'</td>';
+                          		insertHtml+='<td>'+e.fileName+'</td>';
+								insertHtml+='<td>'+e.status+'</td>';
+								insertHtml+='<td>'+e.result+'</td>';
+								insertHtml+='<td>'+new Date(e.createtime).format("yyyy-MM-dd hh:mm")+'</td>';
+								insertHtml+='<td>'+e.userName+'</td>';
+								insertHtml+='<td>';
+								if(e.remark){
+									insertHtml+='<a class="btn btn-default" onclick="downloadFile(\''+e.remark+'\');" href="javascript:void(0);" title="下载">下载</a>&nbsp;';
+								}
+								insertHtml+='</td>';
+								insertHtml+='</tr>';
+						$(".table tbody").append(insertHtml);//将返回的数据追加到表格
+                    });
+                    /*生成分页标签*/
+                    paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));  
+                }
+            }
+        });
+    }
+	
+	function paginator(pageIndex, pageSize, totalCount) {
+    	$.jqPaginator('#pagination', {
+    		totalCounts: totalCount,
+    		pageSize: pageSize,
+    	    currentPage: pageIndex,
+    	    visiblePages: 7,
+    		first:'<a class="first">首页</a>',
+    	    prev: '<a class="prev">上一页</a>',
+    	    next: '<a class="next">下一页</a>',
+    		last: '<a class="last：">末页</a>',
+    	    page: '<a class="page">{{page}}</a>',
+    	    onPageChange: function (num, type) {
+    	    	if (type === 'change' && num !== parseInt($("#currentPage").val())) {  
+                    $("#currentPage").val(num);//点击改变页码时，同步model中的页码  
+                    queryData();//重新生成新表
+                }
+    	    }
+    	});
+    }
+	
+	function downloadFile(fileId){
+		if(!fileId){
+			layer.msg("上传文件ID为空，无法下载错误文件！", {icon: 2});	
+			return;
+		}
+		window.location.href="${link.contextPath}/dg/gradeExportLog/downloadErrorFile?fileId="+fileId;
+	}
+</script>
+<!-- 岗位管理 S-->
+<div class="dialog dialog-manage">
+    <!-- 条件搜索 S-->
+    <form class="form-inline" id="list_form" onsubmit="return false;">
+		<input type="hidden" id="currentPage" name="currentPage" value="1"/>
+		<input type="hidden" id="pageSize" name="pageSize" value="10"/>
+		<input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+    </form>
+    <!-- 条件搜索 E-->
+	<div class="table-content">
+        <table class="table">
+            <thead>
+                <tr>
+					<th>序号</th>
+                    <th>文件名称</th>
+                    <th>任务状态</th>
+					<th>任务结果</th>
+					<th>导入时间</th>
+					<th>操作人</th>
+					<th>错误数据文件</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!list in $!positions)
+    				<tr>
+                        <td>$!list.postName</td>
+                        <td>$!list.subjectPlanCount</td>
+                        <td>$!list.subjectApproveCount</td>
+                        <td>$!list.applyCount</td>
+                        <td>
+							#if($!list.enterCondition == '1' || $!list.enterCondition == '2')
+    							1:$!list.interviewEnterpPropo
+							#end
+						</td>
+                        <td>
+							#if($!list.status == '1')
+    							<a class="btn btn-primary" href="javascript:void(0);" onclick="cancel('$!list.id','$!list.projectId','$!list.stationId'),'';" title="取消">取消</a>
+							#else
+    							<a class="btn btn-default" href="javascript:void(0);" onclick="enabled('$!list.id');" title="启用">启用</a>
+							#end
+                        </td>
+                    </tr>
+				#end
+            </tbody>
+        </table>
+    </div>
+	 <!-- 分页+全选模块 S-->
+    <div class="clearfix pagesBox">
+        <div id="pagination" class="pull-right pages"></div>
+    </div>
+    <!-- 分页+全选模块 E-->
+</div>
+<!-- 岗位管理 E-->

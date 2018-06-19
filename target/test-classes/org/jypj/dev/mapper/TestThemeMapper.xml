@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.TestThemeDao">
+
+	<resultMap id="BaseResultMap" type="org.jypj.dev.entity.Theme">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="THEME" property="theme" jdbcType="VARCHAR" />
+		<result column="REPORT_END_TIME" property="reportEndTime" jdbcType="DATE" />
+		<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="DECIMAL" />
+		<result column="STEP" property="step" jdbcType="DECIMAL" />
+		<result column="CREATETIME" property="createtime" jdbcType="DATE" />
+		<result column="MODIFYTIME" property="modifytime" jdbcType="DATE" />
+		<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+		<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID,THEME,REPORT_END_TIME,CONTENT,STATUS,STEP,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,REMARK
+	</sql>
+	<select id="selectAllTheme" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from recruit_theme
+		where 1=1
+	</select>
+</mapper>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+</head>
+<body>
+     #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+            #if($user.userType =='000')  
+            <hr>
+            <div class="flowBox">
+                <ul class="clearfix">
+                    <li>
+                        <div class="flow">
+                            <div class="flowTitle">
+                                <i class="iconfont">&#xe601;</i>招聘设置流程
+                            </div>
+                            <table border="0" cellspacing="0" cellpadding="0" align="center" style="max-width: 750px;margin-top: 40px;">
+                                <tbody>
+                                    <tr>
+                                        <td class="state1-1" align="center"><span>开始</span></td>
+                                        <td class="line9">&nbsp;</td>
+                                        <td class="state4" title="教育局端">
+                                            <span>
+                                                <a href="${link.contextPath}/dg/postset/index?&firstIndex=0&secondIndex=2&topMenu=menu">岗位设置</a>
+                                            </span>
+                                        </td>
+                                        <td class="line1">&nbsp;</td>
+                                        <td class="state4" title="教育局端">
+                                            <span>
+                                                <a href="${link.contextPath}/dg/theme/index?&firstIndex=0&secondIndex=3&topMenu=menu">招聘主题发布</a>
+                                            </span>
+                                        </td>
+                                        <td class="line1">&nbsp;</td>
+                                        <td class="state4" title="教育局端">
+                                            <span>
+                                                <a href="${link.contextPath}/dg/planApply/checkIndex?&firstIndex=0&secondIndex=4&topMenu=menu">招聘计划审核</a>
+                                            </span>
+                                        </td>
+                                        <td class="line1">&nbsp;</td>
+                                        <td class="state4" title="教育局端">
+                                            <span>
+                                                <a href="${link.contextPath}/dg/notice/index?&firstIndex=0&secondIndex=5&topMenu=menu">招聘公告发布</a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td class="line6">&nbsp;</td>
+                                        <td class="state4" title="教育局端">
+                                            <span>
+                                                <a href="javascript:void(0)">学科考题管理</a>
+                                            </span>
+                                        </td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flow">
+                            <div class="flowTitle">
+                                <i class="iconfont">&#xe602;</i>考务管理流程
+                            </div>
+                            <table border="0" cellspacing="0" cellpadding="0" align="center" style="max-width: 750px;margin-top: 55px;">
+                                <tbody>
+                                    <tr>
+                                        <td class="state1-1" align="center">
+                                            <span>开始</span>
+                                        </td>
+                                        <td class="line1">&nbsp;</td>
+                                        <td class="state4" title="教育局端">
+                                            <span>
+                                                <a href="${link.contextPath}/dg/examItemsInfo/toExamItemsInfoList?&firstIndex=1&secondIndex=1&topMenu=menu">考点维护</a>
+                                            </span>
+                                        </td>
+                                        <td class="line1">&nbsp;</td>
+                                        <td class="state4" title="教育局端">
+                                            <span>
+                                                <a href="${link.contextPath}/dg/examSubjectInfo/toExamSubjectInfo?&firstIndex=1&secondIndex=2&topMenu=menu">试室编排</a>
+                                            </span>
+                                        </td>
+                                        <td class="line1">&nbsp;</td>
+                                        <td class="state4" title="教育局端">
+                                            <span>
+                                                <a href="${link.contextPath}/dg/eaxmLabsInfo/eaxmLabs?&firstIndex=1&secondIndex=3&topMenu=menu">试室信息维护</a>
+                                            </span>
+                                        </td>
+                                        <td class="line1">&nbsp;</td>
+                                        <td class="state4" title="教育局端">
+                                            <span>
+                                                <a href="${link.contextPath}/dg/examSubjectInfo/toQueryRoomLayout?&firstIndex=1&secondIndex=4&topMenu=menu">试室编排查询</a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flow">
+                            <div class="flowTitle">
+                                <i class="iconfont">&#xe604;</i>成绩管理流程
+                            </div>
+                            <table border="0" cellspacing="0" cellpadding="0" align="center" style="width: 400px;">
+                                <tbody>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td class="line4">&nbsp;</td>
+                                    <td class="state4" title="教育局端">
+                                        <span>
+                                            <a href="${link.contextPath}/dg/scoreEnterInformation/toScoreInformationInput?&firstIndex=2&secondIndex=2&topMenu=menu">成绩录入</a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="state1-1" align="center">
+                                        <span>开始</span>
+                                    </td>
+                                    <td class="line1">&nbsp;</td>
+                                    <td class="state4" title="教育局端">
+                                        <span>
+                                            <a href="${link.contextPath}/dg/scoreEnterInformation/toScoreInformationList?&firstIndex=2&secondIndex=1&topMenu=menu">入围名单</a>
+                                        </span>
+                                    </td>
+                                    <td class="line2">&nbsp;</td>
+                                    <td class="state4" title="教育局端">
+                                        <span>
+                                            <a href="${link.contextPath}/dg/scoreGradeWriten/importScore?&firstIndex=2&secondIndex=3&topMenu=menu">成绩导入</a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td class="line6">&nbsp;</td>
+                                    <td class="state4" title="教育局端">
+                                        <span>
+                                            <a href="${link.contextPath}/dg/scoreEnterInformation/toscoreInformationSearch?&firstIndex=2&secondIndex=4&topMenu=menu">成绩查询</a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flow">
+                            <div class="flowTitle">
+                                <i class="iconfont">&#xe605;</i>查询统计流程
+                            </div>
+                           <!--
+                            <table border="0" cellspacing="0" cellpadding="0" align="center" style="width: 280px;">
+                                <tbody>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td class="line4">&nbsp;</td>
+                                        <td class="state4" title="教育局端">
+                                            <span>
+                                                <a href="javascript:void(0)" onclick="parent.clickModule(43004);return false;">岗位查询</a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="state1-1" align="center">
+                                            <span>开始</span>
+                                        </td>
+                                    <td class="line2">&nbsp;</td>
+                                    <td class="state4" title="教育局端">
+                                        <span>
+                                            <a href="javascript:void(0)" onclick="parent.clickModule(43040);return false;">资料查询</a>
+                                        </span>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td class="line6">&nbsp;</td>
+                                        <td class="state4" title="教育局端">
+                                            <span>
+                                                <a href="javascript:void(0)" onclick="parent.clickModule(43041);return false;">人数统计</a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            -->
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 流程图列表 E-->
+            #end
+        </div>
+        <!-- context内容 E-->
+        #parse("/common/foot.vm")
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

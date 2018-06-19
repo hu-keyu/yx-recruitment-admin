@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.PlanApplyDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.PlanApply" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="PROJECT_ID" property="projectId" jdbcType="VARCHAR" />
+	<result column="STATUS" property="status" jdbcType="VARCHAR" />
+	<result column="PROJECT_PUBLISH_WORK" property="projectPublishWork" jdbcType="VARCHAR" />
+	<result column="SCHOOL_ID" property="schoolId" jdbcType="VARCHAR" />
+	<result column="YEAR" property="year" jdbcType="VARCHAR" />
+	<result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+	<result column="MODIFYTIME" property="modifytime" jdbcType="TIMESTAMP" />
+	<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+	<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+	<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+	<result column="PROJECT_PUBLISH_NAME" property="projectPublishName" jdbcType="VARCHAR" />
+	<result column="INTERVIEW_START" property="interviewStartDate" jdbcType="TIMESTAMP"/>
+	<association property="themeApply" javaType="org.jypj.dev.entity.Theme">
+		<id column="themeId" property="id" jdbcType="VARCHAR" />
+		<result column="THEME" property="theme" jdbcType="VARCHAR" />
+		<result column="REPORT_END_TIME" property="reportEndTime" jdbcType="TIMESTAMP" />
+		<result column="STEP" property="step" jdbcType="DECIMAL" />
+		<result column="applyDate" property="createtime" jdbcType="TIMESTAMP" />
+	</association>
+  </resultMap>
+
+	<resultMap id="CheckResultMap" type="org.jypj.dev.entity.PlanApply" >
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="PROJECT_ID" property="projectId" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="PROJECT_PUBLISH_WORK" property="projectPublishWork" jdbcType="VARCHAR" />
+		<result column="SCHOOL_ID" property="schoolId" jdbcType="VARCHAR" />
+		<result column="YEAR" property="year" jdbcType="VARCHAR" />
+		<result column="CREATETIME" property="createtime" jdbcType="DATE" />
+		<result column="MODIFYTIME" property="modifytime" jdbcType="DATE" />
+		<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+		<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="schoolCode" property="schoolCode" jdbcType="VARCHAR" />
+		<result column="schoolName" property="schoolName" jdbcType="VARCHAR" />
+		<result column="isNoticePub" property="isNoticePub" jdbcType="VARCHAR" />
+	</resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,PROJECT_ID,STATUS,PROJECT_PUBLISH_WORK,SCHOOL_ID,YEAR,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,REMARK
+  </sql>
+  
+   <insert id="savePlanApplyByField" parameterType="org.jypj.dev.entity.PlanApply" >
+    insert into school_plan_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="projectId != null" >
+    PROJECT_ID,
+   </if>
+   <if test="status != null" >
+    STATUS,
+   </if>
+   <if test="projectPublishWork != null" >
+    PROJECT_PUBLISH_WORK,
+   </if>
+   <if test="schoolId != null" >
+    SCHOOL_ID,
+   </if>
+   <if test="year != null" >
+    YEAR,
+   </if>
+   <if test="createtime != null" >
+    CREATETIME,
+   </if>
+   <if test="modifytime != null" >
+    MODIFYTIME,
+   </if>
+   <if test="createuser != null" >
+    CREATEUSER,
+   </if>
+   <if test="modifyuser != null" >
+    MODIFYUSER,
+   </if>
+   <if test="remark != null" >
+    REMARK,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="projectPublishWork != null" >
+        #{projectPublishWork,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyuser != null" >
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="savePlanApply" parameterType="org.jypj.dev.entity.PlanApply" >
+    insert into school_plan_apply (
+	ID,
+	PROJECT_ID,
+	STATUS,
+	PROJECT_PUBLISH_WORK,
+	SCHOOL_ID,
+	YEAR,
+	CREATETIME,
+	MODIFYTIME,
+	CREATEUSER,
+	MODIFYUSER,
+	 REMARK
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{projectId,jdbcType=VARCHAR},
+	#{status,jdbcType=VARCHAR},
+	#{projectPublishWork,jdbcType=VARCHAR},
+	#{schoolId,jdbcType=VARCHAR},
+	#{year,jdbcType=VARCHAR},
+	#{createtime,jdbcType=DATE},
+	#{modifytime,jdbcType=DATE},
+	#{createuser,jdbcType=VARCHAR},
+	#{modifyuser,jdbcType=VARCHAR},
+	#{remark,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deletePlanApplyById" parameterType="java.lang.String" >
+    delete from school_plan_apply
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deletePlanApplyByObject" parameterType="org.jypj.dev.entity.PlanApply" >
+    delete from school_plan_apply
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updatePlanApplyByField" parameterType="org.jypj.dev.entity.PlanApply" >
+    update school_plan_apply
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="projectId != null" >
+  	 PROJECT_ID=#{projectId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="status != null" >
+  	 STATUS=#{status,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="projectPublishWork != null" >
+  	 PROJECT_PUBLISH_WORK=#{projectPublishWork,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="schoolId != null" >
+  	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="year != null" >
+  	 YEAR=#{year,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createtime != null" >
+  	 CREATETIME=#{createtime,jdbcType=DATE},
+  	 </if>
+  	 MODIFYTIME=SYSDATE,
+  	 <if test="createuser != null" >
+  	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="modifyuser != null" >
+  	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="remark != null" >
+  	 REMARK=#{remark,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updatePlanApply" parameterType="org.jypj.dev.entity.PlanApply" >
+    update school_plan_apply
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 PROJECT_ID=#{projectId,jdbcType=VARCHAR},
+	 STATUS=#{status,jdbcType=VARCHAR},
+	 PROJECT_PUBLISH_WORK=#{projectPublishWork,jdbcType=VARCHAR},
+	 SCHOOL_ID=#{schoolId,jdbcType=VARCHAR},
+	 YEAR=#{year,jdbcType=VARCHAR},
+	 CREATETIME=#{createtime,jdbcType=DATE},
+	 MODIFYTIME=SYSDATE,
+	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+	 REMARK=#{remark,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectPlanApplyById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select a.*,r.id as themeId,r.theme,r.report_end_time,r.createtime as applyDate,r.step 
+    from school_plan_apply a left join RECRUIT_THEME r on a.PROJECT_ID=r.ID where a.ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT t.*,r.id as themeId,r.theme,r.report_end_time,r.createtime as applyDate,r.step,s.TEXT as PROJECT_PUBLISH_NAME,n.INTERVIEW_START
+    	FROM school_plan_apply t 
+    	left join recruit_theme r on t.project_id=r.id 
+    	left join SYS_DICTIONARY s on t.PROJECT_PUBLISH_WORK=s.ID 
+    	left join RECRUIT_NOTICE n on n.THEME_ID=t.PROJECT_ID 
+    where 1=1 and r.status='1'
+    <if test="schoolId !=null and schoolId !='' ">
+    	and t.school_id=#{schoolId,jdbcType=VARCHAR}
+    </if>
+    <if test="status !=null and status !='' ">
+    	and t.status=#{status,jdbcType=VARCHAR}
+    </if>
+    <if test="year !=null and year !='' ">
+    	and to_char(r.CREATETIME,'yyyy')=#{year,jdbcType=VARCHAR}
+    </if>
+    ORDER BY R.CREATETIME DESC,R.REPORT_END_TIME DESC,t.ID ASC
+  </select>
+  
+  <select id="selectOnePageByPlanApply" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.PlanApply" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_plan_apply
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and STATUS=#{status,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectPublishWork != null and projectPublishWork !='' ">
+	  and PROJECT_PUBLISH_WORK=#{projectPublishWork,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="year != null and year !='' ">
+	  and YEAR=#{year,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_plan_apply
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByPlanApply" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.PlanApply" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_plan_apply
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and STATUS=#{status,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectPublishWork != null and projectPublishWork !='' ">
+	  and PROJECT_PUBLISH_WORK=#{projectPublishWork,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="year != null and year !='' ">
+	  and YEAR=#{year,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_plan_apply
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByPlanApply" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.PlanApply" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_plan_apply
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and STATUS=#{status,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectPublishWork != null and projectPublishWork !='' ">
+	  and PROJECT_PUBLISH_WORK=#{projectPublishWork,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="year != null and year !='' ">
+	  and YEAR=#{year,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select>
+
+	<insert id="saveBatch" parameterType="list">
+		INSERT INTO school_plan_apply(ID,PROJECT_ID,STATUS,SCHOOL_ID,PROJECT_PUBLISH_WORK,CREATETIME)
+		<foreach collection="list" item="item" index="index" open="(" separator="union all" close=")" >
+			select
+			sys_guid(),#{item.projectId,jdbcType=VARCHAR},#{item.status,jdbcType=VARCHAR},
+			#{item.schoolId,jdbcType=VARCHAR},#{item.projectPublishWork,jdbcType=VARCHAR},sysdate
+			from dual
+		</foreach>
+	</insert>
+
+
+	<delete id="deleteByProjectId" parameterType="string">
+		  DELETE FROM school_plan_apply
+		  WHERE PROJECT_ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<select id="selectPlanForCheck" resultMap="CheckResultMap">
+		SELECT
+		s.*,
+		d.text schoolName,
+		d.value schoolCode,
+		n.is_publish isNoticePub
+		FROM school_plan_apply s
+		LEFT JOIN SYS_DICTIONARY d ON s.SCHOOL_ID=d.id
+		LEFT JOIN RECRUIT_NOTICE n ON s.PROJECT_ID=n.theme_id
+		WHERE PROJECT_ID = #{themeId,jdbcType=VARCHAR}
+		AND s.STATUS > '0'
+		ORDER BY s.status ,to_number(schoolCode)
+	</select>
+	
+	<select id="selectById" resultMap="CheckResultMap">
+		SELECT
+		s.*,
+		d.text schoolName,
+		d.value schoolCode,
+		n.is_publish isNoticePub
+		FROM school_plan_apply s
+		LEFT JOIN SYS_DICTIONARY d ON s.SCHOOL_ID=d.id
+		LEFT JOIN RECRUIT_NOTICE n ON s.PROJECT_ID=n.theme_id
+		WHERE s.ID = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getPlanApplyYears" parameterType="map" resultType="string">
+		SELECT to_char(theme.CREATETIME,'yyyy') as year FROM SCHOOL_PLAN_APPLY apply 
+			left join RECRUIT_NOTICE notice on notice.THEME_ID=apply.PROJECT_ID 
+    		left join RECRUIT_THEME theme on THEME.ID=apply.PROJECT_ID 
+		WHERE 1=1 
+			<if test="schoolId !=null and schoolId !='' ">
+				AND apply.SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+			</if>
+			<if test="isPublish !=null and isPublish !='' ">
+				AND notice.IS_PUBLISH=#{isPublish,jdbcType=VARCHAR}
+			</if>
+			<if test="status !=null and status !='' ">
+				AND apply.STATUS=#{status,jdbcType=VARCHAR}
+			</if>
+			<if test="themeStatus !=null and themeStatus !='' ">
+				AND theme.STATUS=#{themeStatus,jdbcType=VARCHAR}
+			</if>
+		group by to_char(theme.CREATETIME,'yyyy') order by to_char(theme.CREATETIME,'yyyy') desc
+	</select>
+
+	<select id="findPlanApplyListByThemeId" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		school_plan_apply
+		WHERE PROJECT_ID = #{projectId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectUncheckedByprojectId" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		school_plan_apply
+		WHERE PROJECT_ID = #{projectId,jdbcType=VARCHAR}
+		and status = '1'
+	</select>
+	
+	<select id="selectCheckedByprojectId" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		school_plan_apply
+		WHERE PROJECT_ID = #{projectId,jdbcType=VARCHAR}
+		and status = '2'
+	</select>
+	
+	
+</mapper>

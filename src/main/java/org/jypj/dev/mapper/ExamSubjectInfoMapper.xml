@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.ExamSubjectInfoDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.ExamSubjectInfo" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="EMP_ITEMS_ID" property="empItemsId" jdbcType="VARCHAR" />
+	<result column="TEST_ID" property="testId" jdbcType="VARCHAR" />
+	<result column="SUBJECT_NUM" property="subjectNum" jdbcType="VARCHAR" />
+	<result column="LABS_AMOUNT" property="labsAmount" jdbcType="VARCHAR" />
+	<result column="POST_ID" property="postId" jdbcType="VARCHAR" />
+	<result column="SUBJECT_ID" property="subjectId" jdbcType="VARCHAR" />
+	<result column="TEST_ANMOUNT" property="testAnmount" jdbcType="VARCHAR" />
+	<result column="IS_ADD" property="isAdd" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+	<result column="ADDROOMDES" property="addroomdes" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <resultMap id="BaseResultMap1" type="org.jypj.dev.entity.ScoreEnterTrial" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="ITEMS_ID" property="itemsId" jdbcType="VARCHAR" />
+	<result column="POST_ID" property="postId" jdbcType="VARCHAR" />
+	<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+	<result column="TYPE" property="type" jdbcType="VARCHAR" />
+	<result column="IS_ENTER" property="isEnter" jdbcType="VARCHAR" />
+	<result column="SUBJECT_TYPE" property="subjectType" jdbcType="VARCHAR" />
+	<result column="SCORE_PUBLISH_STATUS" property="scorePublishStatus" jdbcType="VARCHAR" />
+	<result column="LIST_PUBLISH_STATUS" property="listPublishStatus" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+	<result column="SCHOOL_ID" property="schoolId" jdbcType="VARCHAR" />
+	<result column="GROUPID" property="groupId" jdbcType="VARCHAR" />
+	
+  </resultMap>
+  
+   <resultMap id="BaseResultMap3" type="org.jypj.dev.entity.StudentApplyInfo" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="EMPLOY_ITEMS_ID" property="employItemsId" jdbcType="VARCHAR" />
+	<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+	<result column="APPLY_JOB_ID" property="applyJobId" jdbcType="VARCHAR" />
+	<result column="APPLY_JOB_NAME" property="applyJobName" jdbcType="VARCHAR" />
+	<result column="APPLY_DEP_ID" property="applyDepId" jdbcType="VARCHAR" />
+	<result column="IDCARD_ATT_ID" property="idcardAttId" jdbcType="VARCHAR" />
+	<result column="CER_ACH_ATT_ID" property="cerAchAttId" jdbcType="VARCHAR" />
+	<result column="GRA_RECOM_ATT_ID" property="graRecomAttId" jdbcType="VARCHAR" />
+	<result column="ACA_QUA_ATT_ID" property="acaQuaAttId" jdbcType="VARCHAR" />
+	<result column="BAC_ATT_ID" property="bacAttId" jdbcType="VARCHAR" />
+	<result column="BAC_QUA_ATT_ID" property="bacQuaAttId" jdbcType="VARCHAR" />
+	<result column="FAM_PLAN_ATT_ID" property="famPlanAttId" jdbcType="VARCHAR" />
+	<result column="STUDY_WORK_ATT_ID" property="studyWorkAttId" jdbcType="VARCHAR" />
+	<result column="TEA_VIDEO_ATT_ID" property="teaVideoAttId" jdbcType="VARCHAR" />
+	<result column="SUSPEND_EMP_ATT_ID" property="suspendEmpAttId" jdbcType="VARCHAR" />
+	<result column="ABROAD_STUDY_ATT_ID" property="abroadStudyAttId" jdbcType="VARCHAR" />
+	<result column="APPLY_REASON" property="applyReason" jdbcType="VARCHAR" />
+	<result column="APPLY_STATUS" property="applyStatus" jdbcType="VARCHAR" />
+	<result column="APPLY_AUDIT_CODE" property="applyAuditCode" jdbcType="VARCHAR" />
+	<result column="APPLY_AUDIT_NAME" property="applyAuditName" jdbcType="VARCHAR" />
+	<result column="IS_REPAY" property="isRepay" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+	<result column="AUDITTYPE" property="audittype" jdbcType="VARCHAR" />
+	<result column="TRANSCRIPT_ATT_ID" property="transcriptAttId" jdbcType="VARCHAR" />
+	<result column="CER_MAN_ATT_ID" property="cerManAttId" jdbcType="VARCHAR" />
+	<result column="CER_PSY_ATT_ID" property="cerPsyAttId" jdbcType="VARCHAR" />
+	<result column="CER_PED_ATT_ID" property="cerPedAttId" jdbcType="VARCHAR" />
+	<result column="CER_ABI_ATT_ID" property="cerAbiAttId" jdbcType="VARCHAR" />
+	<result column="CER_SHIP_ATT_ID" property="cerShipAttId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,EMP_ITEMS_ID,TEST_ID,SUBJECT_NUM,LABS_AMOUNT,POST_ID,SUBJECT_ID,TEST_ANMOUNT,IS_ADD,CREATE_USER,CTIME,MODIFY_USER,MTIME,ADDROOMDES
+  </sql>
+  
+   <insert id="saveExamSubjectInfoByField" parameterType="org.jypj.dev.entity.ExamSubjectInfo" >
+    insert into exam_subject_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="empItemsId != null" >
+    EMP_ITEMS_ID,
+   </if>
+   <if test="testId != null" >
+    TEST_ID,
+   </if>
+   <if test="subjectNum != null" >
+    SUBJECT_NUM,
+   </if>
+   <if test="labsAmount != null" >
+    LABS_AMOUNT,
+   </if>
+   <if test="postId != null" >
+    POST_ID,
+   </if>
+   <if test="subjectId != null" >
+    SUBJECT_ID,
+   </if>
+   <if test="testAnmount != null" >
+    TEST_ANMOUNT,
+   </if>
+   <if test="isAdd != null" >
+    IS_ADD,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="ctime != null" >
+    CTIME,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+   <if test="mtime != null" >
+    MTIME,
+   </if>
+   <if test="addroomdes != null" >
+    ADDROOMDES,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="empItemsId != null" >
+        #{empItemsId,jdbcType=VARCHAR},
+      </if>
+      <if test="testId != null" >
+        #{testId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectNum != null" >
+        #{subjectNum,jdbcType=VARCHAR},
+      </if>
+      <if test="labsAmount != null" >
+        #{labsAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="testAnmount != null" >
+        #{testAnmount,jdbcType=VARCHAR},
+      </if>
+      <if test="isAdd != null" >
+        #{isAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=DATE},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        #{mtime,jdbcType=DATE},
+      </if>
+      <if test="addroomdes != null" >
+        #{addroomdes,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveExamSubjectInfo" parameterType="org.jypj.dev.entity.ExamSubjectInfo" >
+    insert into exam_subject_info (
+	ID,
+	EMP_ITEMS_ID,
+	TEST_ID,
+	SUBJECT_NUM,
+	LABS_AMOUNT,
+	POST_ID,
+	SUBJECT_ID,
+	TEST_ANMOUNT,
+	IS_ADD,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	MTIME,
+	 ADDROOMDES
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{empItemsId,jdbcType=VARCHAR},
+	#{testId,jdbcType=VARCHAR},
+	#{subjectNum,jdbcType=VARCHAR},
+	#{labsAmount,jdbcType=VARCHAR},
+	#{postId,jdbcType=VARCHAR},
+	#{subjectId,jdbcType=VARCHAR},
+	#{testAnmount,jdbcType=VARCHAR},
+	#{isAdd,jdbcType=VARCHAR},
+	#{createUser,jdbcType=VARCHAR},
+	#{ctime,jdbcType=DATE},
+	#{modifyUser,jdbcType=VARCHAR},
+	#{mtime,jdbcType=DATE},
+	#{addroomdes,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteExamSubjectInfoById" parameterType="java.lang.String" >
+    delete from exam_subject_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteExamSubjectInfoByObject" parameterType="org.jypj.dev.entity.ExamSubjectInfo" >
+    delete from exam_subject_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateExamSubjectInfoByField" parameterType="org.jypj.dev.entity.ExamSubjectInfo" >
+    update exam_subject_info
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="empItemsId != null" >
+  	 EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="testId != null" >
+  	 TEST_ID=#{testId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="subjectNum != null" >
+  	 SUBJECT_NUM=#{subjectNum,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="labsAmount != null" >
+  	 LABS_AMOUNT=#{labsAmount,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="postId != null" >
+  	 POST_ID=#{postId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="subjectId != null" >
+  	 SUBJECT_ID=#{subjectId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="testAnmount != null" >
+  	 TEST_ANMOUNT=#{testAnmount,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isAdd != null" >
+  	 IS_ADD=#{isAdd,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="ctime != null" >
+  	 CTIME=#{ctime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="mtime != null" >
+  	 MTIME=#{mtime,jdbcType=DATE},
+  	 </if>
+     <if test="addroomdes != null" >
+  	 ADDROOMDES=#{addroomdes,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateExamSubjectInfo" parameterType="org.jypj.dev.entity.ExamSubjectInfo" >
+    update exam_subject_info
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR},
+	 TEST_ID=#{testId,jdbcType=VARCHAR},
+	 SUBJECT_NUM=#{subjectNum,jdbcType=VARCHAR},
+	 LABS_AMOUNT=#{labsAmount,jdbcType=VARCHAR},
+	 POST_ID=#{postId,jdbcType=VARCHAR},
+	 SUBJECT_ID=#{subjectId,jdbcType=VARCHAR},
+	 TEST_ANMOUNT=#{testAnmount,jdbcType=VARCHAR},
+	 IS_ADD=#{isAdd,jdbcType=VARCHAR},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 CTIME=#{ctime,jdbcType=DATE},
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MTIME=#{mtime,jdbcType=DATE},
+	 ADDROOMDES=#{addroomdes,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectExamSubjectInfoById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_subject_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_subject_info
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageByExamSubjectInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ExamSubjectInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_subject_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="empItemsId != null and empItemsId !='' ">
+	  and EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testId != null and testId !='' ">
+	  and TEST_ID=#{testId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectNum != null and subjectNum !='' ">
+	  and SUBJECT_NUM=#{subjectNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsAmount != null and labsAmount !='' ">
+	  and LABS_AMOUNT=#{labsAmount,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectId != null and subjectId !='' ">
+	  and SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testAnmount != null and testAnmount !='' ">
+	  and TEST_ANMOUNT=#{testAnmount,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isAdd != null and isAdd !='' ">
+	  and IS_ADD=#{isAdd,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="addroomdes != null and addroomdes !='' ">
+	  and ADDROOMDES=#{addroomdes,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_subject_info
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByExamSubjectInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ExamSubjectInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_subject_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="empItemsId != null and empItemsId !='' ">
+	  and EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testId != null and testId !='' ">
+	  and TEST_ID=#{testId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectNum != null and subjectNum !='' ">
+	  and SUBJECT_NUM=#{subjectNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsAmount != null and labsAmount !='' ">
+	  and LABS_AMOUNT=#{labsAmount,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectId != null and subjectId !='' ">
+	  and SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testAnmount != null and testAnmount !='' ">
+	  and TEST_ANMOUNT=#{testAnmount,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isAdd != null and isAdd !='' ">
+	  and IS_ADD=#{isAdd,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="nyr != null and nyr !='' ">
+	  and to_char(CTIME,'YYYY')=#{nyr,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="addroomdes != null and addroomdes !='' ">
+	  and ADDROOMDES=#{addroomdes,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_subject_info
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByExamSubjectInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ExamSubjectInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_subject_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="empItemsId != null and empItemsId !='' ">
+	  and EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testId != null and testId !='' ">
+	  and TEST_ID=#{testId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectNum != null and subjectNum !='' ">
+	  and SUBJECT_NUM=#{subjectNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="labsAmount != null and labsAmount !='' ">
+	  and LABS_AMOUNT=#{labsAmount,jdbcType=VARCHAR}
+	 </if>
+	 <if test="postId != null and postId !='' ">
+	  and POST_ID=#{postId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="subjectId != null and subjectId !='' ">
+	  and SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testAnmount != null and testAnmount !='' ">
+	  and TEST_ANMOUNT=#{testAnmount,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isAdd != null and isAdd !='' ">
+	  and IS_ADD=#{isAdd,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="addroomdes != null and addroomdes !='' ">
+	  and ADDROOMDES=#{addroomdes,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+
+  <!-- 统计学生报考岗位数量 -->
+  <select id="selectGanWeiNumBYST" parameterType="map" resultType="org.jypj.dev.vo.RoomLayoutVo">
+  select count(rp.id) as ganWeiNum,rp.id as ganWeiId,rp.POST_NAME as ganWeiName,sd.TEXT as xkName ,sd.id as xkId 
+  from  STUDENT_APPLY_INFO sai 
+        left join  RECRUIT_POSTSET rp on sai.APPLY_JOB_ID=rp.ID
+        left join  SYS_DICTIONARY sd  on sd.value=rp.SUBJECT
+        left join  STUDENT_INFO si on si.id=sai.student_id
+        where 
+        sai.EMPLOY_ITEMS_ID=#{itemsId,jdbcType=VARCHAR}
+        and
+        rp.id in ${ganweiIds}
+        and
+        sd.code='xklb' and sai.APPLY_STATUS='8' and si.FREE_STUDENT='0' and  si.PROFESSIONAL_COURSE='0'
+        group by rp.id,rp.POST_NAME,sd.TEXT,sd.ID 
+  </select>
+  
+  
+  <select id="querySecondLayoutRoom" parameterType="map" resultType="org.jypj.dev.vo.AdjustStudentRoomInfoVo">
+  select sai.STUDENT_ID  as sutid,uai.path as imageStr, elr.SEAT_NUM as seatNum,si.TICKETNUM as testCardNum,eli.id as labsid, si.NAME,rp.POST_NAME as ganWeiName,decode(si.SEX,'1','男','女') as sex ,si.IDENTITY_CARD as card,eli.LABS_NAME as labsName,eii.TEST_NAME as kaodianName from STUDENT_INFO si left join 
+  student_apply_info sai on si.ID=sai.STUDENT_ID
+  left join RECRUIT_POSTSET  rp on sai.APPLY_JOB_ID=rp.id
+  left join EXAM_LABS_RECORD elr on elr.STUDENT_ID=si.id
+  left join EXAM_LABS_INFO eli on eli.ID=elr.LABS_ID
+  left join EXAM_ITEMS_INFO eii on eii.id=eli.TEST_ID
+  left join UPLOAD_ATTACHMENT_INFO uai on uai.student_id=si.id and uai.EMPLOY_ITEMS_ID=#{itemsId,jdbcType=VARCHAR} and si.PHOTO_ATT_ID=uai.id
+  where elr.SUBJECT_ID=#{itemsId,jdbcType=VARCHAR} and elr.LABS_ID=#{labsid,jdbcType=VARCHAR} and sai.EMPLOY_ITEMS_ID=#{itemsId,jdbcType=VARCHAR} 
+  </select>
+  
+  <select id="queryLectureGanWei"  parameterType="map" resultType="org.jypj.dev.entity.Postset">
+  select rp.id,rp.POST_NAME as postName  from  SCORE_ENTER_TRIAL t1 left join RECRUIT_POSTSET rp on rp.id=t1.POST_ID
+  where t1.ITEMS_ID=#{itemsId,jdbcType=VARCHAR}   and t1.POST_ID in ${ganweis} and t1.IS_ENTER='1' and t1.LIST_PUBLISH_STATUS='2'
+  group by rp.id,rp.POST_NAME  order by rp.POST_NAME desc
+  </select>
+             
+ <select id="queryLectureGanWeiSchoolNum"  parameterType="map" resultType="org.jypj.dev.vo.AdjustStudentRoomInfoVo">
+ select t1.school_id as schoolId,count(t1.id) as ganweiNum,sd.TEXT as schoolName  from SCORE_ENTER_TRIAL t1 
+ left join SYS_DICTIONARY   sd  on sd.ID=t1.SCHOOL_ID           
+ where t1.ITEMS_ID=#{itemsId,jdbcType=VARCHAR} and t1.POST_ID=#{ganweiId,jdbcType=VARCHAR}    and t1.POST_ID in ${ganweis} and t1.IS_ENTER='1' and t1.LIST_PUBLISH_STATUS='2'
+ <if test="isgroup=='null'">
+ and t1.GROUPID is null 
+ </if>
+ <if test="isgroup=='notnull'">
+ and t1.GROUPID is not null 
+ </if>
+ <if test="groupid!=null and groupid!=''">
+ and t1.GROUPID=#{groupid,jdbcType=VARCHAR}
+ </if>
+ group by  t1.SCHOOL_ID,sd.TEXT  order by  SCHOOL_ID desc
+ </select>
+ 
+ <select id="queryLectureStudentBySchoolId"  parameterType="map" resultMap="BaseResultMap1">
+ 
+ select t1.* from SCORE_ENTER_TRIAL t1 
+ left join SYS_DICTIONARY   sd  on sd.ID=t1.SCHOOL_ID           
+ where t1.ITEMS_ID=#{itemsId,jdbcType=VARCHAR} and t1.POST_ID=#{ganweiId,jdbcType=VARCHAR}  and t1.POST_ID in ${ganweis}
+ and t1.SCHOOL_ID in ${studentsql} and t1.IS_ENTER='1' and t1.LIST_PUBLISH_STATUS='2'
+ </select>
+ 
+ <select id="queryLectureStudentBySchoolIdExcel" parameterType="map" resultType="org.jypj.dev.vo.StudentLectureVo">
+ select rp.id as postId,si.SEX as sex,si.PHONE_NUMBER as phone ,rp.POST_NAME as postName,sd.TEXT as schoolName,si.NAME,si.IDENTITY_CARD as idCard,si.TICKETNUM as testNumber from SCORE_ENTER_TRIAL t1 
+ left join SYS_DICTIONARY   sd  on sd.ID=t1.SCHOOL_ID
+ left join STUDENT_INFO  si   on t1.STUDENT_ID=si.ID
+ left join RECRUIT_POSTSET rp on rp.id=t1.POST_ID         
+ where t1.ITEMS_ID=#{itemsId,jdbcType=VARCHAR} and t1.POST_ID=#{ganweiId,jdbcType=VARCHAR}   and rp.id in ${ganweis} and t1.IS_ENTER='1' and t1.LIST_PUBLISH_STATUS='2'
+ <if test="isgroup=='notnull'">
+ and t1.GROUPID is not null 
+ </if>
+ <if test="groupid!=null and groupid!=''">
+ and t1.GROUPID=#{groupid,jdbcType=VARCHAR}
+ </if>
+ </select>
+ 
+ <select id="queryThemeDate"  resultType="String">
+select to_char(createtime,'yyyy')  as year from RECRUIT_THEME  group by to_char(createtime,'yyyy') order by to_number(to_char(createtime,'yyyy'))
+ </select>
+ 
+ <select id="queryKaoDianNum" resultMap="BaseResultMap3" parameterType="map">
+ select sai.* from student_apply_info sai left join student_info si on si.id=sai.student_id   where 1=1 and
+ sai.EMPLOY_ITEMS_ID=#{itemsId,jdbcType=VARCHAR} and sai.APPLY_STATUS='8' and sai.APPLY_JOB_ID in ${jobids}  and si.FREE_STUDENT='0' and  si.PROFESSIONAL_COURSE='0'
+ </select>
+ 
+ <select id="querySecondKaoDianNum" resultType="int" parameterType="map">
+ select count(elr.id) from EXAM_LABS_RECORD elr left join EXAM_LABS_INFO  eii on eii.ID=elr.LABS_ID
+ where eii.TEST_ID=#{kaodian,jdbcType=VARCHAR} and elr.SUBJECT_ID=#{itemsId,jdbcType=VARCHAR}
+ </select>
+ 
+ 
+<select id="querySchoolApproveGanWeiCount" resultType="org.jypj.dev.vo.AdjustStudentRoomInfoVo" parameterType="map">
+select sd.TEXT as schoolName,sp.SUBJECT_APPROVE_COUNT as ganweiNum from  SCHOOL_POSITION sp left join SYS_DICTIONARY sd on sd.id=sp.SCHOOL_ID  where 
+1=1
+and sp.station_id=#{ganweiId,jdbcType=VARCHAR}
+and PROJECT_ID=#{itemsId,jdbcType=VARCHAR}
+</select>
+   
+<delete id="deleteAll"  parameterType="map">
+delete from  exam_subject_info where EMP_ITEMS_ID=#{empItemsId,jdbcType=VARCHAR} and TEST_ID=#{testId,jdbcType=VARCHAR}
+</delete>
+
+</mapper>

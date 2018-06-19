@@ -1,0 +1,78 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+$(document).ready(function(){
+	var url="";
+	var sloadindex;
+	var auditReasonId='$!auditReason.id';
+	auditReasonId==""?url="${link.contextPath}/dg/auditReason/saveReason":url="${link.contextPath}/dg/auditReason/updateReason";
+	$("#input_form").validator({
+		formClass:'n-yellow',
+        msgClass: 'n-bottom',
+        msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+		timely:3,
+		focusInvalid:true,
+		focusCleanup:true,
+		stopOnError:false,
+		fields: {
+	    	order: "序号:required;integer(+0)；range(0~1000)",
+			reason:"原因:required;length(~500)"
+	    },
+	    valid: function(form){
+	        //表单验证通过，提交表单
+			$.ajax({
+            	url : url,
+				data : $(form).serialize(),
+            	type : 'post',
+            	async: false,
+            	cache : false,
+            	dataType : 'json',
+            	beforeSend: function(){
+                    sloadindex = parent.layer.load(0, {
+                    	shade: [0.3,'#fff']
+                    });
+                },
+				success : function(data) {
+            		parent.layer.close(sloadindex);
+					if(data.flag == 'success'){
+						alert(data.msg);
+    					var index = parent.layer.getFrameIndex(window.name);
+						window.parent.layer.close(index);
+    	        	}else{
+						parent.layer.msg(data.msg, {icon: 2});
+    					return;
+    				}
+            	}
+            });
+	    }
+	});
+});
+</script>
+<div class="dialog dialog-cause">
+    <div class="table-content p15">
+        <form method="post" id="input_form">
+			<input type="hidden" name="id" value="$!auditReason.id"/>
+			<input type="hidden" name="ownerid" value="$!auditReason.ownerid"/>
+			<input type="hidden" name="type" value="$!auditReason.type"/>
+    		<input type="hidden" name="createuser" value="$!auditReason.createuser"/>
+			<input type="hidden" name="modifyuser" value="$!auditReason.modifyuser"/>
+			<input type="hidden" name="remark" value="$!auditReason.remark"/>
+			<table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right" width="20%">序号：</th>
+                        <td>
+                            <input class="input" type="text" name="order" value="$!auditReason.order">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="20%">原因：</th>
+                        <td>
+							<textarea class="textarea mt10" rows="5" name="reason">$!auditReason.reason</textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+			<input style="display: none;" id="submitBtn" type="submit"></input>
+		</form>
+    </div>
+</div>

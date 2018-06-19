@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.TestGradeDao">
+
+	<resultMap id="BaseResultMap" type="org.jypj.dev.entity.Grade">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+		<result column="GRADE" property="grade" jdbcType="VARCHAR" />
+		<result column="IS_EMPLOY" property="isEmploy" jdbcType="VARCHAR" />
+		<result column="RESULT" property="result" jdbcType="VARCHAR" />
+		<result column="YEAR" property="year" jdbcType="VARCHAR" />
+		<result column="PROJECT_ID" property="projectId" jdbcType="VARCHAR" />
+		<result column="POSITION_ID" property="positionId" jdbcType="VARCHAR" />
+		<result column="SCHOOL_ID" property="schoolId" jdbcType="VARCHAR" />
+		<result column="SCORE_PUBLISH_STATUS" property="scorePublishStatus" jdbcType="VARCHAR" />
+		<result column="LIST_PUBLISH_STATUS" property="listPublishStatus" jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="VARCHAR" />
+		<result column="SUBJECT_TYPE" property="subjectType" jdbcType="VARCHAR" />
+		<result column="IS_RESET" property="isReset" jdbcType="VARCHAR" />
+		<result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="MODIFYTIME" property="modifytime" jdbcType="TIMESTAMP" />
+		<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+		<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID,STUDENT_ID,GRADE,IS_EMPLOY,RESULT,YEAR,PROJECT_ID,POSITION_ID,SCHOOL_ID,SCORE_PUBLISH_STATUS,LIST_PUBLISH_STATUS,TYPE,SUBJECT_TYPE,IS_RESET,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,REMARK
+	</sql>
+	<update id="updateEmploy" parameterType="java.lang.String">
+		update school_grade set IS_EMPLOY=#{isEmploy,jdbcType=VARCHAR}
+		where PROJECT_ID = #{employItemsId,jdbcType=VARCHAR}
+	</update>
+</mapper>

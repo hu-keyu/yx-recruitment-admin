@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            queryData();
+        });
+
+        function queryData() {
+            var $serializeForm=$("#list_form").serialize();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/notice/dataGrid',
+                data : $serializeForm,
+                success: function (data) {
+                    if (data) {
+                         /*获取数据总行数*/
+                        $("#totalCounts").val(data.total);
+						$("#currentPage").val(data.currentPage);
+                        /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/
+                        if (parseInt($("#totalCounts").val()) == 0) {
+                            $("#totalCounts").val(1);
+                        }
+						if(parseInt($("#currentPage").val()) == 0) {  
+                        	$("#currentPage").val(1);
+                        }	
+                        /*生成表和套用css样式*/
+                        noticeUrl=data.noticeUrl;//地址
+                        data = data.rows;//获取筛选后的内容
+                        $(".table tbody tr").remove();//清空列表
+                        $.each(data, function (index, e) {
+                            var isPublish="";
+                            switch(e.isPublish){
+                                case 0 : isPublish="未发布";break;
+                                case 1 : isPublish="已发布";break;
+                                default:isPublish="未发布";
+                            }
+                            if(e.themeName.length>20){
+                                var theme = e.themeName.substring(0,19)+"..." ;
+                            }else {
+                                var theme = e.themeName ;
+                            }
+                            var insertHtml=
+                                    '<tr>'+
+                                    '<td title="'+e.themeName+'">'+theme+'</td>'+
+                                    '<td>'+new Date(e.startTime).format("yyyy-MM-dd hh:mm")+'</td>'+
+                                    '<td>'+new Date(e.endTime).format("yyyy-MM-dd hh:mm")+'</td>'+
+                                    '<td>'+isPublish+'</td>'+
+                                    '<td>'+noticeUrl+'</td>'+
+                                    '<td>'+
+                                    '<a class="btn btn-default" href="javascript:void(0);" onclick="addOrUpdate('+"'"+e.id+"'"+');" title="修改">修改</a>'+
+                                    '</td>'+
+                                    '</tr>';
+                            $(".table tbody").append(insertHtml);//将返回的数据追加到表格
+                        });
+                        /*生成分页标签*/
+                        paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));
+                    }
+                }
+            });
+        }
+
+        function paginator(pageIndex, pageSize, totalCount) {
+            $.jqPaginator('#pagination', {
+                totalCounts: totalCount,
+                pageSize: pageSize,
+                currentPage: pageIndex,
+                visiblePages: 7,
+                first:'<a class="first">首页</a>',
+                prev: '<a class="prev">上一页</a>',
+                next: '<a class="next">下一页</a>',
+                last: '<a class="last：">末页</a>',
+                page: '<a class="page">{{page}}</a>',
+                onPageChange: function (num, type) {
+                    if (type === 'change' && num !== parseInt($("#currentPage").val())) {
+                        $("#currentPage").val(num);//点击改变页码时，同步model中的页码
+                        queryData();//重新生成新表
+                    }
+                }
+            });
+        }
+
+        function addOrUpdate(id){
+            if(id==0){
+                var title="招聘公告添加" ;
+                var url = '${link.contextPath}/dg/notice/addPage' ;
+            }else{
+                var title="招聘公告修改" ;
+                var url = '${link.contextPath}/dg/notice/editPage?id='+id ;
+            }
+            layer.open({
+                type: 2,
+                title:[title, 'font-weight:600'],
+                content:[url,'yes'],
+                btn: ['确定', '取消'],
+                shadeClose:false,
+                fix:true,
+                area: ['780px','580px'],
+                maxWidth:474,
+                move: false,
+                yes: function(index, layero){
+                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                    var flag = iframeWin.sure();
+					if(flag){
+						var body = layer.getChildFrame('body', index);
+                    	body.find("#submitBtn").click();
+					}
+                }
+            });
+        }
+
+        function clearSearch(){
+            $("#theme").val("");
+            $("#theme1").val("");
+            queryData() ;
+        }
+
+        function attentionPage(){
+            window.location.href="${link.contextPath}/dg/notice/attentionPage";
+        }
+		
+		function searchFunc(){
+            $("#theme1").val($("#theme").val());
+            $("#currentPage").val("1");
+            queryData();
+        }
+    </script>
+</head>
+<body>
+    #parse("/common/topMenu.vm")
+    #parse("/common/leftTemplate.vm")
+<!-- Main内容模块 S-->
+<div class="content-wrapper">
+    <!-- context内容 S-->
+    <div class="content">
+        <!-- 条件搜索 S-->
+        <form class="form-inline" id="list_form">
+            <input type="hidden" id="currentPage" name="currentPage" value="1"/>
+            <input type="hidden" id="pageSize" name="pageSize" value="20"/>
+            <input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-left">
+                    <li>
+                        <span>招聘年份：</span>
+                        <select class="select" value="year" name="year" onclick="queryData();">
+                            #if($!years.size()>0)
+    							#foreach($list in $years)
+                                    <option value="$!list">$!list</option>
+                                #end
+							#else
+									<option value="">--请选择--</option>
+							#end	
+                        </select>
+                    </li>
+                    <li>
+                        <span>主题名称：</span>
+                        <input id="theme" class="input" type="text" placeholder="请输入主题名称">
+                        <input id="theme1" class="input" type="hidden" name="theme" placeholder="请输入主题名称">
+                    </li>
+                    <li>
+                        <a onclick="searchFunc();" class="btn btn-primary btn-sm" href="javascript:void(0);" title="查找">查找</a>
+                        <a onclick="clearSearch();" class="btn btn-primary btn-sm" href="javascript:void(0);" title="清空">清空</a>
+                    </li>
+                </ul>
+                <ul class="clearfix pull-right">
+                    <li>
+                        <a onclick="addOrUpdate(0);" class="pull-right btn btn-primary btn-sm" href="javascript:void(0);" title="新增">新增</a>
+                    </li>
+                    <li>
+                        <a onclick="attentionPage();" class="pull-right btn btn-primary btn-sm" href="javascript:void(0);" title="注意事项维护">注意事项维护</a>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <!-- 条件搜索 E-->
+        <!-- table表单模块 S-->
+        <div class="table-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>招聘名称</th>
+                        <th>开始日期</th>
+                        <th>结束日期</th>
+                        <th>是否发布</th>
+                        <th>发布招聘地址</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <!-- table表单模块 E-->
+        <!-- 分页+全选模块 S-->
+        <div class="clearfix pagesBox">
+            <div id="pagination" class="pull-right pages"></div>
+        </div>
+        <!-- 分页+全选模块 E-->
+    </div>
+    <!-- context内容 E-->
+
+    <!-- footer S-->
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2016 © Metronic by keenthemes.
+        </div>
+    </div>
+    <!-- footer E-->
+</div>
+<!-- Main内容模块 E-->
+</body>
+</html>

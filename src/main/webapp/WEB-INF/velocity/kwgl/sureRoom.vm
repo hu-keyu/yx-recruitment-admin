@@ -1,0 +1,88 @@
+<div class="table-content" id="printRooms" style="width:100%">
+    <table class="text-center seatPlaceTitle" style="margin-bottom: -1px;min-width:775px">
+        <caption>${kaodianName}-${labname}试室</caption>
+       <thead>
+            <tr>
+                <th style="width:100px;">市名：</th>
+                <td width="30%">东莞市</td>
+                <th style="width:100px;">县区：</th>
+                <td width="30%">东莞市区</td>
+                <th style="width:100px;">应考人数：</th>
+                <td>${kaodianNum}</td>
+            </tr>
+            <tr>
+            	<th style="width:100px;">监考人：</th>
+                <td class="text-left" colspan="5"><input style="width:100%;" class="input" type="text" size="30" maxlength="50" value="${person}" id="persionid"></td>
+            </tr>
+            <tr>
+                <th style="width:100px;">考试时间：</th>
+                <td class="text-left" colspan="5">
+               
+                  开始时间 <input  name="startDateName" id="startDate" class="input Wdate" type="text"  onfocus="WdatePicker({minDate:'$!{dates}',dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'2090-12-20'})" value="${startTime}">&nbsp;&nbsp;&nbsp;&nbsp;
+                  结束时间   <input name="endDateName" id="endDate" class="input Wdate" type="text"  onfocus="WdatePicker({minDate:'$!{dates}',dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'2090-12-20'})" value="${endTime}">
+                </td>
+            </tr>
+        </thead>
+    </table>
+    <table class="seatPlace text-center">
+        <tbody>
+            #set( $indexvar = 0)
+            #foreach($data in $dataMap.entrySet())
+             <tr>
+            #set( $indexvar = $indexvar + 1)
+            #if($indexvar !=  8)
+                #foreach( $vo in $data.value )
+                   #if($vo.name !='')
+                <td width="25%">
+                    <p>
+                           #if($vo.imageStr)
+                        <img src="$vo.imageStr" width="135" height="135" alt="">
+                         #else
+                             <img src="${link.contextPath}/static/images/default.jpg" width="135" height="135" alt="">
+                         #end
+                    </p>
+                     <p><input type="text"></p>
+                    <p>${vo.card}</p>
+                    <p>${vo.testCardNum}</p>
+                    <p>
+                        <span>${vo.seatNum}</span>
+                        <span>${vo.name}</span>
+                    </p>
+                </td>
+                 #else
+                <td width="25%"></td>
+                 #end
+                 #end
+            #end  
+             #if($indexvar ==  8)
+                <td width="25%">
+                </td>
+                #foreach( $vo in $data.value )
+                 #if($vo.name !='')
+                <td width="25%">
+                    <p>
+                          #if($vo.imageStr)
+                        <img src="$vo.imageStr" width="135" height="135" alt="">
+                         #else
+                             <img src="${link.contextPath}/static/images/default.jpg" width="135" height="135" alt="">
+                         #end
+                    </p>
+                    <p><input type="text"></p>
+                    <p>${vo.card}</p>
+                    <p>${vo.testCardNum}</p>
+                    <p>
+                        <span>${vo.seatNum}</span>
+                        <span>${vo.name}</span>
+                    </p>
+                </td>
+                #else
+                  <td width="25%"></td>                    
+                #end
+                 #end
+                  <td width="25%"></td>
+               #end  
+                 </tr>
+             #end
+        </tbody>
+    </table>
+</div>

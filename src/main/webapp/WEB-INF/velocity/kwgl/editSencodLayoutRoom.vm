@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+</head>
+<body>
+    <!-- 岗位选择 S-->
+    <div class="dialog dialog-select">
+        <!-- 条件搜索 S-->
+        <form class="form-inline border-left-none border-right-none">
+          
+            <hr>
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-left">
+                    
+                </ul>
+                <ul class="pull-right">
+                    <li>
+                        <button class="btn btn-primary btn-sm" type="button" onclick="sure()">确定</button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <!-- 条件搜索 E-->
+        <div class="table-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-left" colspan="4">
+                           
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="grid-h-400 overflow">
+                <table class="table">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="selectedBox">
+                <div class="title"><strong>已选择岗位</strong>（提示：单击名称可删除）</div>
+                <div class="listbox" id="selectedGanWeiDiv" style="height:160px;">
+                   <ul class='clearfix'>
+                   </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 岗位选择 E-->
+    <script type="text/javascript">
+     	 var isEdit=true;
+     	 var parentData;
+     	 var editObjectArray;
+     	$(document).ready(function () {  
+		//初始化岗位剩余人数
+		 selectEditData();
+		 var insertHtml="";
+		 if(parentData==null||parentData.length==0)
+		 {
+		  isEdit=false;
+		  parentData=parent.eachData;
+		 }else
+		 {           for(i=0;i<editObjectArray.length;i++)
+                     {
+                     var ganweiHtml="<li id='"+editObjectArray[i].listStr+"li'><label><a href='javascript:void(0)' onclick=del('"+editObjectArray[i].ganweiId+"','"+editObjectArray[i].addRooms+"')>"+editObjectArray[i].ganweiName+"</a></label> || </li>";
+                     var appendhtml=$(".listbox>ul").html();
+                     $(".listbox>ul").html(appendhtml+ganweiHtml);
+                     }
+		 }
+		 for(i=0;i<parentData.length;i++)
+                {
+                   if(parentData[i].restNum>0)
+                   {
+                     insertHtml=insertHtml+"<tr id='"+parentData[i].ganWeiId+"tr'>"+
+                   "<td  class='text-left'><label><input type='checkbox'  id='"+parentData[i].ganWeiId+"checkbox' name='ganwei'>  "+parentData[i].ganWeiName+" 【剩余:<font color='red'><span id='"+parentData[i].ganWeiId+"span'>"+parentData[i].restNum+"</span>人</font>】</label></td><td><input class='input text-center'  name='bsinputNum' type='text' value='1' size='10' id='"+parentData[i].ganWeiId+"input'></td>"+
+                                         "</tr>";
+                   }
+                   if(isEdit)
+                   {
+                    if(parentData[i].restNum==0)
+                    {
+                     insertHtml=insertHtml+"<tr  style='display:none'   id='"+parentData[i].ganWeiId+"tr'>"+
+                     "<td  class='text-left'><label><input type='checkbox'  id='"+parentData[i].ganWeiId+"checkbox' name='ganwei'>  "+parentData[i].ganWeiName+" 【剩余:<font color='red'><span id='"+parentData[i].ganWeiId+"span'>"+parentData[i].restNum+"</span>人</font>】</label></td><td><input class='input text-center' name='bsinputNum' type='text' value='1' size='10' id='"+parentData[i].ganWeiId+"input'></td>"+
+                                         "</tr>";
+                     }
+                   }
+                  
+                }
+          $(".table tbody").append(insertHtml);
+        });
+       
+        function sure()
+        {
+           var objectArray=[parentData.length];
+           //验证是否为正整数,是否超过岗位人数限制
+            var checkNum="^[1-9]+[0-9]*$";
+            var re = new RegExp(checkNum);
+             k=0;
+            for(i=0;i<parentData.length;i++)
+            {
+              var paramObject=new Object();
+              var ganweicheckbox=$("#"+parentData[i].ganWeiId+"checkbox").is(':checked');
+              if(ganweicheckbox)
+              { 
+               var ss=$("#"+parentData[i].ganWeiId+"input").val();
+               var spanNum=$("#"+parentData[i].ganWeiId+"span").html();
+               if (ss.match(re) == null)
+                 {
+               parent.layer.msg(parentData[i].ganWeiName+'-请输入大于零的正整数!', {icon: 2});
+               return;
+                 }
+               if(ss>parseInt(spanNum))
+                 {
+                 parent.layer.msg(parentData[i].ganWeiName+'-超过岗位剩余人数!', {icon: 2});
+                 return;
+                 }
+                paramObject.ganweiName=parentData[i].ganWeiName;
+                paramObject.num=ss;
+                paramObject.ganwid=parentData[i].ganWeiId;
+                paramObject.xkid=parentData[i].xkId;
+                paramObject.restNum=spanNum-ss;
+                objectArray[k]=paramObject;
+                k++;
+              }
+            }
+           var paramJson=JSON.stringify(objectArray);
+           if(k==0)
+           {
+              parent.layer.msg('请选择数据项!', {icon: 2});
+              return;
+           }
+           //请求后台
+             $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/addSecondGanWeiRoom',
+                data : {
+                    "paramJson" :paramJson,
+                    "itemsId" :parent.itemsId,
+                    "kaodian":parent.kaodian
+                  
+                },
+                success: function (data){
+                 if(data.msg=='success')
+                 {
+                     var ganweiName="";
+                     var ganweiid="";
+                     var listr="";
+                     var addrooms="";
+                    //进行input域值修改和等于0 将样式置为不可见
+                     for(i=0;i<objectArray.length;i++)
+                     {
+                      if(objectArray[i].restNum==0)
+                       {
+                         $("#"+objectArray[i].ganwid+"tr").hide();
+                         $("#"+objectArray[i].ganwid+"span").html("0");
+                       }else
+                       {
+                         $("#"+objectArray[i].ganwid+"span").html(objectArray[i].restNum);
+                       }
+                       ganweiName=ganweiName+objectArray[i].ganweiName+"["+objectArray[i].num+"人] ";
+                       ganweiid=ganweiid+objectArray[i].ganwid+",";
+                       listr=listr+objectArray[i].ganwid+objectArray[i].num;
+                       addrooms=addrooms+objectArray[i].ganwid+"-"+objectArray[i].num+",";
+                     }
+                     var ganweiHtml="<li id='"+listr+"li'><label><a href='javascript:void(0)' onclick=del('"+ganweiid+"','"+addrooms+"')>"+ganweiName+"</a></label> || </li>";
+                     var appendhtml=$(".listbox>ul").html();
+                     $(".listbox>ul").html(appendhtml+ganweiHtml);
+                     //注销所有checkbox
+                     $("[name=ganwei]:checkbox").attr("checked", false);
+                     parent.query();
+                 }else if(data.msg=='exception')
+                 {
+                     parent.layer.msg('程序发生未知错误!', {icon: 2});
+                 }else
+                 {
+                     parent.layer.msg(data.msg, {icon: 2});
+                 }
+                     $("input[name='bsinputNum']").val('1'); 
+                }  
+            });  
+        }
+        //删除
+        function del(ganweiid,addrooms)
+        {
+             $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/delSecondGanWeiRoom',
+                data : {
+                    "ganweiid" :ganweiid,
+                    "itemsId" :parent.itemsId,
+                    "kaodian":parent.kaodian,
+                    "ryn"    :parent.ryn,
+                    "addrooms":addrooms
+                  
+                },
+                success: function (data){
+                  var sumId="";
+                  if(data.msg=='exception')
+                  {
+                    parent.layer.msg('程序发生未知错误!', {icon: 2});
+                  }else
+                  {
+                    var datas=data.msg;
+                    for(i=0;i<datas.length;i++)
+                    {
+                    $("#"+datas[i].ganweiId+"tr").show();
+                    $("#"+datas[i].ganweiId+"span").html(parseInt($("#"+datas[i].ganweiId+"span").html())+datas[i].num);
+                    sumId=sumId+datas[i].ganweiId+datas[i].num;
+                    }
+                   $("#"+sumId+"li").remove();//清空数据;
+                   $("input[name='bsinputNum']").val('1');  
+                    parent.query();
+                  }
+                }  
+            });  
+        }
+        
+        //获取编辑数据
+        function selectEditData()
+        {
+           $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/getSelectEditData',
+                data : {
+                    "itemsId" :parent.itemsId,
+                    "kaodian":parent.kaodian,
+                    "ryn"    :parent.ryn
+                  
+                },
+                async: false,
+                success: function (data){
+                    parentData=data.noLayoutList;
+                    editObjectArray=data.LayoutList;
+                }  
+            });  
+        }
+    </script>
+</body>
+</html>

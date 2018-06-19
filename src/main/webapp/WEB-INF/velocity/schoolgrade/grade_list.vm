@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+		$(document).ready(function () {  
+			initThemeData();
+			
+			$("#input_form").validator({
+        		formClass:'n-yellow',
+                msgClass: 'n-bottom',
+                msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+        		timely:3,
+        		focusInvalid:false,
+        		focusCleanup:true,
+        		stopOnError:false,
+        	    valid: function(form){
+        	        //表单验证通过，提交表单
+        	    	$.post(url, $(form).serialize()).done(function(data){
+        				if(data.flag == 'success'){
+        	        		layer.msg(data.msg, {icon: 1});
+        					window.parent.layer.closeAll();
+        	        	}else{
+        					layer.msg(data.msg, {icon: 2});
+        					return false;
+        				}
+        	    	});
+        	    }
+        	});
+			
+        });
+		
+		function queryData() {
+			var $serializeForm=$("#list_form").serialize();
+			var projectId=$("#projectId").val();
+			$.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/grade/selectAllSchoolGrade',
+                data : $serializeForm,
+                success: function (data) {
+                    if (data) {  
+                        /*获取数据总行数*/
+        	            $("#totalCounts").val(data.total);
+						$("#currentPage").val(data.currentPage);
+                        /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/  
+                        if (parseInt($("#totalCounts").val()) == 0) {  
+                        	$("#totalCounts").val(1);
+                        }
+						if(parseInt($("#currentPage").val()) == 0) {  
+                        	$("#currentPage").val(1);
+                        }
+                        /*生成表和套用css样式*/  
+                        data = data.rows;//获取筛选后的内容 
+                        $(".table tbody tr").remove();//清空列表 
+                        $.each(data, function (index, e) {
+                        	var sex="";
+							switch(e.sex){
+								case "1" : sex="男";break;
+								case "2" : sex="女";break;
+							}
+							var insertHtml='<tr>';
+									insertHtml+='<td>'+e.ticketNum+'</td>';
+									insertHtml+='<td>'+e.studentName+'</td>';
+									insertHtml+='<td>'+sex+'</td>';
+									insertHtml+='<td><input type="text" name="grades['+index+'].grade" class="input text-center grid-120" value="'+e.score+'"/></td>';
+									insertHtml+='<td>'+
+													'<input type="hidden" name="grades['+index+'].id" value="'+e.gradeId+'"/>'+
+													'<input type="hidden" name="projectId" value="'+projectId+'"/>';
+    									if(e.offer=='1'){
+    										insertHtml+='<select class="select grid-120" name="grades['+index+'].isEmploy">'+
+    														'<option value="0">否</option>'+
+                                                        	'<option value="1" selected="selected">是</option>'+
+                                                    	'</select>';	
+    									}else{
+    										insertHtml+='<select class="select grid-120" name="grades['+index+'].isEmploy">'+
+    														'<option value="0" selected="selected">否</option>'+
+                                                        	'<option value="1">是</option>'+
+                                                    	'</select>';
+    									}
+										insertHtml+='</td>';
+									insertHtml+='</tr>';
+							$(".table tbody").append(insertHtml);//将返回的数据追加到表格
+                        });
+                        /*生成分页标签*/
+                        paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));
+						operBtn();
+                    }
+                }
+            }); 
+        }
+		
+		function paginator(pageIndex, pageSize, totalCount) {
+        	$.jqPaginator('#pagination', {
+        		totalCounts: totalCount,
+        		pageSize: pageSize,
+        	    currentPage: pageIndex,
+        	    visiblePages: 7,
+        		first:'<a class="first">首页</a>',
+        	    prev: '<a class="prev">上一页</a>',
+        	    next: '<a class="next">下一页</a>',
+        		last: '<a class="last：">末页</a>',
+        	    page: '<a class="page">{{page}}</a>',
+        	    onPageChange: function (num, type) {
+        	    	if (type === 'change' && num !== parseInt($("#currentPage").val())) {  
+                        $("#currentPage").val(num);//点击改变页码时，同步model中的页码  
+                        queryData();//重新生成新表
+                    }
+        	    }
+        	});
+        }
+		
+		function initThemeData(){
+			var year=$("#year").val();
+			if(year){
+    			$("#projectId").html("");
+				$("#positionId").html("");
+				$.ajax({
+        			url : '${link.contextPath}/dg/information/getThemes',
+        			type : 'post',
+        			data:{"year":year},
+        			async: false,
+        			cache : false,
+        			dataType : 'json',
+        			success : function(data) {
+        				if(data.length){
+							var insertHtml="";
+							$.each(data,function(index,e){
+								var themeTitle=e.theme;
+    							if(getLength(themeTitle) > 12){
+    								themeTitle=substr(themeTitle,12);
+    							}
+								insertHtml+='<option value="'+e.id+'" title="'+e.theme+'">'+themeTitle+'</option>';
+							});
+							$("#projectId").append(insertHtml);
+						}else{
+							$("#projectId").append('<option value="">--请选择--</option>');
+							$("#positionId").append('<option value="">--请选择--</option>');
+						}
+						initPosition();
+    				}
+        		});
+			}else{
+				$("#projectId").append('<option value="">--请选择--</option>');
+				$("#positionId").append('<option value="">--请选择--</option>');
+			}
+		}
+		
+		function initPosition(){
+			var projectId=$("#projectId").val();
+			if(projectId){
+    			$("#positionId").html("");
+				$.ajax({
+        			url : '${link.contextPath}/dg/grade/getValidPosition',
+        			type : 'post',
+        			data:{"projectId":projectId},
+        			async: false,
+        			cache : false,
+        			dataType : 'json',
+        			success : function(data) {
+        				if(data.length){
+							var insertHtml="";
+							$.each(data,function(index,e){
+								insertHtml+='<option value="'+e.stationId+'">'+e.postName+'</option>';
+							});
+							$("#positionId").append(insertHtml);
+						}else{
+							$("#positionId").append('<option value="">--请选择--</option>');
+						}
+						queryData();
+						operBtn();
+    				}
+        		});
+			}else{
+				$("#positionId").append('<option value="">--请选择--</option>');
+			}
+		}
+		
+		var sloadindex;
+		function saveGrade(){
+			var $serializeForm=$("#input_form").serialize();
+			if(!$serializeForm){
+				layer.msg("保存的数据为空，请确认！", {icon: 2});
+				return;
+			}
+			$.ajax({
+    			url : '${link.contextPath}/dg/grade/saveGrade',
+    			type : 'post',
+    			data:$serializeForm,
+    			async: false,
+    			cache : false,
+    			dataType : 'json',
+				beforeSend: function(){
+                    sloadindex = layer.load(0, {
+                    	shade: [0.3,'#fff']
+                    });
+                },
+    			success : function(data) {
+    				layer.close(sloadindex);
+					if(data.flag == 'success'){
+						layer.msg(data.msg, {icon: 1});
+						queryData();
+					}else{
+						layer.msg(data.msg, {icon: 2});	
+					}
+    			}
+    		});
+		}
+		
+		function importGrade(){
+			var projectId=$("#projectId").val();
+			if(!projectId){
+				layer.msg("请选择招聘项目后再导入成绩！", {icon: 2});
+				return;
+			}
+			window.location.href="${link.contextPath}/dg/grade/importGrade?projectId="+projectId;
+		}
+		
+		function clearData(){
+			$("#nameOrNum").val("");
+		}
+		
+		function hasGrade(projectId){
+			var names="";
+			$.ajax({
+    			url : '${link.contextPath}/dg/grade/queryHasNoGrade',
+    			type : 'post',
+    			data: {"projectId":projectId},
+    			async: false,
+    			cache : false,
+    			dataType : 'json',
+    			success : function(data) {
+					$.each(data,function(index,e){
+						names+=e.name+",";
+					});			
+    			}
+    		});
+			if(names){
+				names=names.substring(0,names.length-1);
+			}
+			return names;
+		}
+		
+		function publishGrade(){
+			var projectId=$("#projectId").val();
+			if(!projectId){
+				layer.msg("请选择招聘项目后再发布成绩！", {icon: 2});
+				return;
+			}
+			var msg="您确定要发布成绩吗？"
+			var name=hasGrade(projectId);
+			if(name){
+				//msg="考生"+name+"未录入成绩，您确定要发布成绩吗？"
+				msg="有考生未录入成绩，您确定要发布成绩吗？"
+			}
+			layer.confirm(msg, {icon: 3, title:'提示'}, function(index){
+            	publish(projectId);
+            	layer.close(index);
+            });
+		}
+		
+		function publish(projectId){
+			$.ajax({
+    			url : '${link.contextPath}/dg/grade/publishGrade',
+    			type : 'post',
+    			data: {"projectId":projectId},
+    			async: false,
+    			cache : false,
+    			dataType : 'json',
+				beforeSend: function(){
+                    sloadindex = layer.load(0, {
+                    	shade: [0.3,'#fff']
+                    });
+                },
+    			success : function(data) {
+    				layer.close(sloadindex);
+					if(data.flag == 'success'){
+						alert(data.msg);
+						queryData();
+					}else{
+						layer.msg(data.msg, {icon: 2});	
+					}
+    			}
+    		});
+		}
+		
+		function cancelPublishGrade(){
+			layer.confirm("您确定要取消发布成绩吗？", {icon: 3, title:'提示'}, function(index){
+				var projectId=$("#projectId").val();
+    			if(!projectId){
+    				layer.msg("请选择招聘项目后再取消发布成绩！", {icon: 2});
+    				return;
+    			}
+    			$.ajax({
+        			url : '${link.contextPath}/dg/grade/cancelPublishGrade',
+        			type : 'post',
+        			data: {"projectId":projectId},
+        			async: false,
+        			cache : false,
+        			dataType : 'json',
+    				beforeSend: function(){
+                        sloadindex = layer.load(0, {
+                        	shade: [0.3,'#fff']
+                        });
+                    },
+        			success : function(data) {
+        				layer.close(sloadindex);
+    					if(data.flag == 'success'){
+    						alert(data.msg);
+    						queryData();
+    					}else{
+    						layer.msg(data.msg, {icon: 2});	
+    					}
+        			}
+        		});
+				layer.close(index);
+			});
+		}
+		
+		function operBtn(){
+			var projectId=$("#projectId").val();
+			$.ajax({
+    			url : '${link.contextPath}/dg/grade/getPublishCount',
+    			type : 'post',
+    			data: {"projectId":projectId},
+    			async: false,
+    			cache : false,
+    			dataType : 'json',
+    			success : function(data) {
+					if(data.step == 2){
+						var schoolCount=parseInt(data.schoolCount);
+    					var publishSchoolCount=parseInt(data.publishSchoolCount);
+    					var schooTotleCount=parseInt(data.schooTotleCount);
+						if(schoolCount){
+							$("#saveGrade").hide();
+            				$("#importGrade").hide();
+            				$("#publishGrade").hide();
+							if(publishSchoolCount < schooTotleCount){
+    							$("#cancelPublishGrade").show();
+							}else{
+								$("#cancelPublishGrade").hide();
+							}
+						}else{
+							$("#saveGrade").show();
+            				$("#importGrade").show();
+            				$("#publishGrade").show();
+							$("#cancelPublishGrade").hide();
+						}
+						$("#input_form *").attr("disabled",false);
+        			}else{
+						$("#saveGrade").hide();
+        				$("#importGrade").hide();
+        				$("#publishGrade").hide();
+						$("#cancelPublishGrade").hide();
+						$("#input_form *").attr("disabled",true);
+					}
+				}
+    		});
+		}
+		
+		function searchFunc(){
+			$("#currentPage").val("1");
+			$("#nameOrNumHidden").val($("#nameOrNum").val());
+			queryData();
+		}
+    </script>
+</head>
+<body>
+     #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+		<div style="padding:20px 20px 0" class="red">提示：各单位推选进入统一笔试、试讲的名单（即发布录用人员名单），必须满足按招聘岗位1：3比例确定的面试人员总数，如未达总数要求，将取消相应岗位数。（如“小学语文教师”，计划招聘3人，按1：3比例，应有9个人参加笔试、试讲，但假如学校发布了7个人参加笔试、试讲，因其中一个岗位未达比例要求，该岗位只能招聘2人，因故取消1个岗位招考。）</div>
+        <!-- context内容 S-->
+        <div class="content">
+            <!-- 条件搜索 S-->
+            <form class="form-inline" id="list_form">
+				<input type="hidden" id="currentPage" name="currentPage" value="1"/>
+				<input type="hidden" id="pageSize" name="pageSize" value="20"/>
+				<input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+				<div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>年份：</span>
+                            <select class="select" id="year" name="condition['year']" onchange="initThemeData();">
+								#if($!years.size()>0)
+    								#foreach($!list in $!years)
+        								<option value="$!list">$!list</option>
+									#end
+								#else
+									<option value="">--请选择--</option>
+								#end
+                            </select>
+                        </li>
+                        <li>
+                            <span>招聘项目：</span>
+                            <select class="select" id="projectId" name="condition['projectId']" onchange="initPosition();"></select>
+                        </li>
+						<li>
+                            <span>岗位：</span>
+                            <select class="select" id="positionId" name="condition['postId']" onchange="queryData();"></select>
+                        </li>
+						<li>
+                            <input class="input" id="nameOrNum" placeholder="请输入考生姓名或准考证号" type="text">
+							<input type="hidden" name="condition['nameOrNum']" id="nameOrNumHidden"/>
+                        </li>
+						<li>
+							<a onclick="searchFunc();" class="btn btn-primary btn-sm" href="javascript:void(0);" title="查找">查找</a>
+                    	</li>
+						<li>
+							<a onclick="clearData();" class="btn btn-default btn-sm" href="javascript:void(0);" title="清空">清空</a>
+						</li>	
+                    </ul>
+					<ul class="clearfix pull-right">
+						<li id="saveGrade" style="display:none;">
+							<a onclick="saveGrade();" class="pull-right btn btn-default btn-sm" href="javascript:void(0);" title="保存">保存</a>
+                    	</li>
+						<li id="importGrade" style="display:none;">
+							<a onclick="importGrade();;" class="pull-right btn btn-info btn-sm" href="javascript:void(0);" title="成绩导入">成绩导入</a>
+                    	</li>
+						<li id="publishGrade" style="display:none;">
+                    		<a  onclick="publishGrade();" class="pull-right btn btn-primary btn-sm" href="javascript:void(0);" title="发布成绩">发布成绩</a>
+                    	</li>
+						<li id="cancelPublishGrade" style="display:none;">
+							<a onclick="cancelPublishGrade();" class="pull-right btn btn-primary btn-sm" href="javascript:void(0);" title="取消发布成绩">取消发布成绩</a>
+                    	</li>
+                    </ul>
+                </div>
+            </form>
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+			<form id="input_form">
+                <div class="table-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+        						<th>准考证号</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>招聘单位面试成绩</th>
+    							<th>是否录用</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+			</form>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+				<div class="pull-left"><span class="red">（注意：教育局发布面试名单后，才可以录入成绩；所有学校发布面试成绩后，不可再取消发布成绩！)</span></div>
+                <div id="pagination" class="pull-right pages"></div>
+            </div>
+            <!-- 分页+全选模块 E-->
+        </div>
+        <!-- context内容 E-->
+        #parse("/common/foot.vm")
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

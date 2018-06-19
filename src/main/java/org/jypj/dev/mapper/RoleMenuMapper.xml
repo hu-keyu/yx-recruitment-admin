@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.RoleMenuDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.RoleMenu" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+	<result column="MENU_ID" property="menuId" jdbcType="VARCHAR" />
+	<result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+	<result column="MODIFY_DATE" property="modifyDate" jdbcType="DATE" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,ROLE_ID,MENU_ID,CREATE_DATE,MODIFY_DATE,CREATE_USER,MODIFY_USER
+  </sql>
+  
+   <insert id="saveRoleMenuByField" parameterType="org.jypj.dev.entity.RoleMenu" >
+    insert into eims_role_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="roleId != null" >
+    ROLE_ID,
+   </if>
+   <if test="menuId != null" >
+    MENU_ID,
+   </if>
+   <if test="createDate != null" >
+    CREATE_DATE,
+   </if>
+   <if test="modifyDate != null" >
+    MODIFY_DATE,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=DATE},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveRoleMenu" parameterType="org.jypj.dev.entity.RoleMenu" >
+    insert into eims_role_menu (ID,ROLE_ID,MENU_ID,CREATE_DATE,MODIFY_DATE,CREATE_USER,MODIFY_USER)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{roleId,jdbcType=VARCHAR},
+	#{menuId,jdbcType=VARCHAR},
+	#{createDate,jdbcType=DATE},
+	#{modifyDate,jdbcType=DATE},
+	#{createUser,jdbcType=VARCHAR},
+	#{modifyUser,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  	<insert id="saveRoleMenuForBatch" parameterType="list">
+  	insert into eims_role_menu (ID,ROLE_ID,MENU_ID,CREATE_DATE,MODIFY_DATE,CREATE_USER,MODIFY_USER)
+	<foreach collection="list" item="item" index="index" open="(" separator="union all" close=")">
+		select
+		#{item.id,jdbcType=VARCHAR},
+		#{item.roleId,jdbcType=VARCHAR},
+		#{item.menuId,jdbcType=VARCHAR},
+		sysdate,
+		sysdate,
+		#{item.createUser,jdbcType=VARCHAR},
+		#{item.modifyUser,jdbcType=VARCHAR}
+		from dual
+	</foreach>
+  </insert>
+  
+  <delete id="deleteRoleMenuById" parameterType="java.lang.String" >
+    delete from eims_role_menu
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteRoleMenuByObject" parameterType="org.jypj.dev.entity.RoleMenu" >
+    delete from eims_role_menu
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateRoleMenuByField" parameterType="org.jypj.dev.entity.RoleMenu" >
+    update eims_role_menu
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="roleId != null" >
+  	 ROLE_ID=#{roleId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="menuId != null" >
+  	 MENU_ID=#{menuId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createDate != null" >
+  	 CREATE_DATE=#{createDate,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyDate != null" >
+  	 MODIFY_DATE=#{modifyDate,jdbcType=DATE},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateRoleMenu" parameterType="org.jypj.dev.entity.RoleMenu" >
+    update eims_role_menu
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 ROLE_ID=#{roleId,jdbcType=VARCHAR},
+	 MENU_ID=#{menuId,jdbcType=VARCHAR},
+	 CREATE_DATE=#{createDate,jdbcType=DATE},
+	 MODIFY_DATE=#{modifyDate,jdbcType=DATE},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectRoleMenuById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role_menu
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role_menu
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageByRoleMenu" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.RoleMenu" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role_menu
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleId != null and roleId !='' ">
+	  and ROLE_ID=#{roleId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="menuId != null and menuId !='' ">
+	  and MENU_ID=#{menuId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role_menu
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByRoleMenu" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.RoleMenu" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role_menu
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleId != null and roleId !='' ">
+	  and ROLE_ID=#{roleId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="menuId != null and menuId !='' ">
+	  and MENU_ID=#{menuId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role_menu
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByRoleMenu" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.RoleMenu" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_role_menu
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="roleId != null and roleId !='' ">
+	  and ROLE_ID=#{roleId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="menuId != null and menuId !='' ">
+	  and MENU_ID=#{menuId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+  <delete id="deleteRoleMenuByRoleId" parameterType="java.lang.String" >
+    delete from EIMS_ROLE_MENU
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  
+</mapper>

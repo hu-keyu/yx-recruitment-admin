@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+		$(document).ready(function () {  
+			queryData();
+			getTime();
+        });
+		
+		function queryData() {
+			var $serializeForm=$("#list_form").serialize();
+			$.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/planApply/selectAllPlanApply',
+                data : $serializeForm,
+                success: function (data) {
+                    if (data) {  
+                        /*获取数据总行数*/
+        	            $("#totalCounts").val(data.total);
+						$("#currentPage").val(data.currentPage);
+                        /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/  
+                        if (parseInt($("#totalCounts").val()) == 0) {  
+                        	$("#totalCounts").val(1);
+                        }
+						if(parseInt($("#currentPage").val()) == 0) {  
+                        	$("#currentPage").val(1);
+                        }
+                        /*生成表和套用css样式*/  
+                        data = data.rows;//获取筛选后的内容 
+                        $(".table tbody tr").remove();//清空列表 
+                        $.each(data, function (index, e) {
+                        	var status="";
+							switch(e.status){
+								case "1" : status="待审批";break;
+								case "2" : status="已审批";break;
+								default:status="未上报";
+							}
+							var theme=e.themeApply.theme;
+							var themeAfter=theme;
+							if(getLength(theme) > 20){
+								themeAfter=substr(theme,20);
+							}
+							var remark=e.remark?e.remark:"";
+							var insertHtml='<tr>'+
+                                                '<td title="'+theme+'">'+themeAfter+'</td>'+
+                                                '<td>'+e.projectPublishName+'</td>'+
+                                                '<td>'+new Date(e.themeApply.reportEndTime).format("yyyy-MM-dd hh:mm:ss")+'</td>'+
+												'<td>'+remark+'</td>'+
+                                                '<td>'+status+'</td>'+
+                                                '<td>';
+                            if(e.status=='0'){
+    							insertHtml=insertHtml+'<a class="btn btn-default" href="javascript:void(0);" onclick="addPosition(\''+e.themeApply.id+'\',\''+e.id+'\',\'update\');" title="修改">修改</a>&nbsp;';
+								insertHtml=insertHtml+'<a class="btn btn-primary" href="javascript:void(0);" onclick="postReport(\''+e.id+'\');" title="上报">上报</a>&nbsp;';
+								//insertHtml=insertHtml+'<a class="btn btn-success" href="javascript:void(0);" onclick="operPosition(\''+e.themeApply.id+'\',\''+e.id+'\',\''+e.themeApply.step+'\','+e.interviewStartDate+','+e.status+');" title="管理岗位">管理岗位</a>&nbsp;';
+							}else if(e.status=='1'){
+								insertHtml=insertHtml+'<a class="btn btn-info" href="javascript:void(0);" onclick="viewPosition(\''+e.themeApply.id+'\',\''+e.id+'\');" title="查看">查看</a>&nbsp;';
+								insertHtml=insertHtml+'<a class="btn btn-warning" href="javascript:void(0);" onclick="postRecall(\''+e.id+'\');" title="撤回">撤回</a>&nbsp;';
+								//insertHtml=insertHtml+'<a class="btn btn-success" href="javascript:void(0);" onclick="operPosition(\''+e.themeApply.id+'\',\''+e.id+'\',\''+e.themeApply.step+'\','+e.interviewStartDate+','+e.status+');" title="管理岗位">管理岗位</a>&nbsp;';
+							}else if(e.status=='2'){
+								insertHtml=insertHtml+'<a class="btn btn-info" href="javascript:void(0);" onclick="viewPosition(\''+e.themeApply.id+'\',\''+e.id+'\');" title="查看">查看</a>&nbsp;';
+								//insertHtml=insertHtml+'<a class="btn btn-success" href="javascript:void(0);" onclick="operPosition(\''+e.themeApply.id+'\',\''+e.id+'\',\''+e.themeApply.step+'\','+e.interviewStartDate+','+e.status+');" title="管理岗位">管理岗位</a>&nbsp;';
+							}
+							insertHtml=insertHtml+'</td></tr>';
+							$(".table tbody").append(insertHtml);//将返回的数据追加到表格
+                        });
+                        /*生成分页标签*/
+                        paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));  
+                    }  
+                }  
+            });  
+        }
+		
+		function paginator(pageIndex, pageSize, totalCount) {
+        	$.jqPaginator('#pagination', {
+        		totalCounts: totalCount,
+        		pageSize: pageSize,
+        	    currentPage: pageIndex,
+        	    visiblePages: 7,
+        		first:'<a class="first">首页</a>',
+        	    prev: '<a class="prev">上一页</a>',
+        	    next: '<a class="next">下一页</a>',
+        		last: '<a class="last：">末页</a>',
+        	    page: '<a class="page">{{page}}</a>',
+        	    onPageChange: function (num, type) {
+        	    	if (type === 'change' && num !== parseInt($("#currentPage").val())) {  
+                        $("#currentPage").val(num);//点击改变页码时，同步model中的页码  
+                        queryData();//重新生成新表
+                    }
+        	    }
+        	});
+        }
+		
+		function addPosition(themeId,id,flag){
+			window.location.href="${link.contextPath}/dg/planApply/gotoPlanApply?themeId="+themeId+"&planApplyId="+id+"&flag="+flag;
+		}
+		
+		function viewPosition(themeId,id){
+			window.location.href="${link.contextPath}/dg/planApply/gotoPlanApply?themeId="+themeId+"&planApplyId="+id;
+		}
+		
+		function operPosition(themeId,id,step,interviewStartDate,status){
+			if(!themeId){
+				layer.msg("招聘主题ID为空，无法进行岗位管理！", {icon: 2});	
+				return;
+			}
+			if(!id){
+				layer.msg("招聘申报计划ID为空，无法进行岗位管理！", {icon: 2});	
+				return;
+			}
+			if(step && parseInt(step) > 1 ){
+				layer.msg("教育局面试名单已发布，无法进行岗位管理！", {icon: 2});	
+				return;	
+			}
+			if(new Date(date) >= new Date(interviewStartDate)){
+				layer.msg("面试时间已到，无法进行岗位管理！", {icon: 2});
+				return;	
+			}
+			if(parseInt(status) != 2 ){
+				layer.msg("教育局没有审批，无法进行岗位管理！", {icon: 2});
+				return;	
+			}
+			layer.open({
+            	type: 2,
+            	title:['岗位管理', 'font-weight:600'],
+				content:['${link.contextPath}/dg/position/managerPosition?projectId='+themeId+'&planApplyId='+id,'yes'],
+				btn: ['取消'],
+            	shadeClose:false,
+            	fix:true,
+            	area: ['750px','580px'],
+            	maxWidth:474,
+            	move: false,
+            	yes: function(index, layero){
+            		layer.close(index);
+				}
+            });
+		}
+		
+	    //获取服务端时间
+		var date; 
+        function getTime(){
+            $.ajax({
+				type:"OPTIONS",
+				url:"/",
+				complete:function(x){
+					date=x.getResponseHeader("Date");
+				}
+			});
+        }
+		
+		var sloadindex;
+		//上报
+		function postReport(planApplyId){
+    		$.ajax({
+    			url : '${link.contextPath}/dg/planApply/postReport',
+    			type : 'post',
+    			data:{"planApplyId":planApplyId},
+    			async: false,
+    			cache : false,
+    			dataType : 'json',
+				beforeSend: function(){
+                    sloadindex = layer.load(0, {
+                    	shade: [0.3,'#fff']
+                    });
+                },
+    			success : function(data) {
+    				if(data.flag == 'success'){
+    					alert(data.msg);
+    					window.location.href="${link.contextPath}/dg/planApply/planApplyList";				
+    				}else{
+        				layer.close(sloadindex);
+						layer.msg(data.msg, {icon: 2});
+    				}
+    			}
+    		});
+    	}
+		
+		//撤回
+		function postRecall(planApplyId){
+    		$.ajax({
+    			url : '${link.contextPath}/dg/planApply/postRecall',
+    			type : 'post',
+    			data:{"planApplyId":planApplyId},
+    			async: false,
+    			cache : false,
+    			dataType : 'json',
+				beforeSend: function(){
+                    sloadindex = layer.load(0, {
+                    	shade: [0.3,'#fff']
+                    });
+                },
+    			success : function(data) {
+    				if(data.flag == 'success'){
+    					alert(data.msg);
+    					window.location.href="${link.contextPath}/dg/planApply/planApplyList";				
+    				}else{
+        				layer.close(sloadindex);
+						layer.msg(data.msg, {icon: 2});
+    				}
+    			}
+    		});
+    	}
+    </script>
+</head>
+<body>
+     #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+            <!-- 条件搜索 S-->
+            <form class="form-inline" id="list_form">
+				<input type="hidden" id="currentPage" name="currentPage" value="1"/>
+				<input type="hidden" id="pageSize" name="pageSize" value="20"/>
+				<input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+				<div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>年份：</span>
+                            <select class="select" name="condition['year']" onchange="queryData();">
+                                #if($!years.size()>0)
+    								#foreach($!list in $!years)
+        								<option value="$!list">$!list</option>
+									#end
+								#else
+									<option value="">--请选择--</option>
+								#end
+                            </select>
+                        </li>
+                        <li>
+                            <span>状态：</span>
+                            <select class="select" name="condition['status']" onchange="queryData();">
+								<option value="">--请选择--</option>
+                                <option value="0">未上报</option>
+                                <option value="1">待审批</option>
+								<option value="2">已审批</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>招聘主题</th>
+                            <th>主题发布单位</th>
+                            <th>上报截止时间</th>
+                            <th>上报时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+                <div class="pull-left"><span class="red">（注意：面试开始之后，不能进行岗位管理！)</span></div>
+				<div id="pagination" class="pull-right pages"></div>
+            </div>
+            <!-- 分页+全选模块 E-->
+        </div>
+        <!-- context内容 E-->
+        #parse("/common/foot.vm")
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

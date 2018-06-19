@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	#parse("/common/head-meta.vm")
+	<title>东莞招聘</title>
+	#parse("/common/head-js+css.vm")
+</head>
+<body ms-controller="statistics">
+	#parse("/common/topMenu.vm")
+	#parse("/common/leftTemplate.vm")
+<!-- Main内容模块 S-->
+<div class="content-wrapper">
+	<!-- context内容 S-->
+	<div class="content">
+        <!-- table切换 S-->
+        <div class="tabChange">
+            <ul class="clearfix">
+                <li class="active"><a href="${link.contextPath}/dg/statistics/toPeopleCount" title="人数统计">人数统计</a></li>
+                <li><a href="${link.contextPath}/dg/statistics/toRation" title="比例统计">比例统计</a></li>
+                <li><a href="${link.contextPath}/dg/statistics/toJob" title="岗位统计">岗位统计</a></li>
+            </ul>
+        </div>
+        <!-- table切换 E-->
+		<!-- 条件搜索 S-->
+		<form class="form-inline" id="list_form">
+			<div class="clearfix item-group">
+				<ul class="clearfix pull-left">
+					<li>
+						<span>招聘年份：</span>
+						<select class="select" ms-duplex="year">
+							#if($!years.size()>0)
+								#foreach($year in $years)
+									<option value="$!year" #if($foreach.index==0)selected="selected"#end>$!year</option>
+								#end
+							#else
+								<option value="">--请选择--</option>
+							#end
+						</select>
+					</li>
+					<li>
+						<span>主题名称：</span>
+						<select class="select" ms-duplex="themeId">
+							<option ms-repeat-theme="themes" ms-attr-value="{{theme.id}}" ms-attr-title="theme.theme">{{theme.theme|truncate(20,"……")}}</option>
+						</select>
+					</li>
+				</ul>
+				<ul class="clearfix pull-right">
+                	<li>
+                		<a ms-click="exportExcel" class="pull-right btn btn-primary btn-sm" href="javascript:void(0);" title="导出">导出</a>
+                	</li>
+                </ul>
+			</div>
+		</form>
+		<!-- 条件搜索 E-->
+		<!-- table表单模块 S-->
+		<div class="table-content">
+			<table class="table">
+				<thead>
+					<tr>
+                        <th>序号</th>
+						<th>岗位名称</th>
+						<th>岗位数</th>
+						<th>报考人数</th>
+						<th>报考比例</th>
+						<th>面试人数</th>
+						<th>面试比例</th>
+						<th>进入统一笔试人数</th>
+						<th>进入统一试讲人数</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ms-repeat="applicants">
+						<td>{{$index + 1}}</td>
+						<td>{{el.postName}}</td>
+						<td>{{el.jobCount}}</td>
+						<td>{{el.stuCount}}</td>
+						<td>{{el.jobStu | html}}</td>
+						<td>{{el.interviewCount}}</td>
+						<td>{{el.jobInterview | html}}</td>
+						<td>{{el.writtenCount}}</td>
+						<td>{{el.trialCount}}</td>
+                    </tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- table表单模块 E-->
+	</div>
+	<!-- context内容 E-->
+	<!-- footer S-->
+	#parse("common/foot.vm")
+	<!-- footer E-->
+</div>
+<!-- Main内容模块 E-->
+</body>
+<script type="text/javascript">
+	var vm;
+	$(function(){
+		vm=avalon.define({
+			$id:'statistics',
+			years:[],
+			year:'$years.get(0)',
+			themes:[],
+			themeId:'',
+			applicants:[],
+			loadThemes:function(){
+				$.ajax({
+					url:'${link.contextPath}/dg/theme/selectAllByYear',
+					data:{year:vm.year},
+					success:function(data){
+						vm.themes=data;
+						if(data&&data.length>0){
+							vm.themeId=data[0].id;
+						}else{
+						    vm.themeId='';
+						}
+					}
+				});
+			},
+			exportExcel:function(){
+				window.location.href="${link.contextPath}/dg/statistics/exportPeopleCount?itemsId="+vm.themeId+"&year="+vm.year;
+			}
+			
+		});
+		vm.$watch('year',function(){
+		    vm.loadThemes();
+		});
+		vm.$watch('themeId',function(){
+			$.ajax({
+				url:'${link.contextPath}/dg/statistics/selectPeopleCount',
+				data:{year:vm.year,itemsId:vm.themeId},
+				success:function(data){
+					for(var i in data){
+						if(data[i].jobCount){
+							if(data[i].stuCount){
+								data[i].jobStu="1<b>&nbsp;:&nbsp;</b>"+(data[i].stuCount/data[i].jobCount).toFixed(1);
+							}else{
+								data[i].jobStu="1<b>&nbsp;:&nbsp;</b>0";
+							}
+							if(data[i].interviewCount){
+								data[i].jobInterview="1<b>&nbsp;:&nbsp;</b>"+(data[i].interviewCount/data[i].jobCount).toFixed(1);
+							}else{
+								data[i].jobInterview="1<b>&nbsp;:&nbsp;</b>0";
+							}
+						}else{
+							data[i].jobStu="0<b>&nbsp;:&nbsp;</b>"+(data[i].stuCount||"0");
+							data[i].jobInterview="0<b>&nbsp;:&nbsp;</b>"+(data[i].interviewCount||"0");
+						}
+					}
+					vm.applicants=data;
+				}
+			});
+		});
+		vm.loadThemes();
+	});
+</script>
+</html>

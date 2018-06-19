@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.ApplicantsDao">
+	<resultMap id="BaseResultMap" type="org.jypj.dev.vo.ApplicantsVo">
+		<result column="items_id" property="itemsId" jdbcType="VARCHAR" />
+		<result column="items_name" property="itemsName" jdbcType="VARCHAR" />
+		<result column="post_name" property="postName" jdbcType="VARCHAR" />
+		<result column="total_count" property="totalCount" jdbcType="INTEGER" />
+		<result column="men_count" property="menCount" jdbcType="INTEGER" />
+		<result column="men_scale" property="menScale" jdbcType="DECIMAL" />
+		<result column="women_count" property="womenCount" jdbcType="INTEGER" />
+		<result column="women_scale" property="womenScale" jdbcType="DECIMAL" />
+		<result column="graduate_count" property="graduateCount" jdbcType="INTEGER" />
+		<result column="graduate_scale" property="graduateScale" jdbcType="DECIMAL" />
+		<result column="bachelor_count" property="bachelorCount" jdbcType="INTEGER" />
+		<result column="bachelor_scale" property="bachelorScale" jdbcType="DECIMAL" />
+		<result column="college_count" property="collegeCount" jdbcType="INTEGER" />
+		<result column="college_scale" property="collegeScale" jdbcType="DECIMAL" />
+		<result column="secondary_count" property="secondaryCount" jdbcType="INTEGER" />
+		<result column="secondary_scale" property="secondaryScale" jdbcType="DECIMAL" />
+	</resultMap>
+	<resultMap id="peopleCountResult" type="org.jypj.dev.vo.ApplicantsVo">
+		<result column="items_id" property="itemsId" jdbcType="VARCHAR" />
+		<result column="items_name" property="itemsName" jdbcType="VARCHAR" />
+		<result column="post_name" property="postName" jdbcType="VARCHAR" />
+		<result column="job_count" property="jobCount" jdbcType="INTEGER" />
+		<result column="stu_count" property="stuCount" jdbcType="INTEGER" />
+		<result column="interview_count" property="interviewCount" jdbcType="INTEGER" />
+		<result column="written_count" property="writtenCount" jdbcType="INTEGER" />
+		<result column="trial_count" property="trialCount" jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="selectAllByApplicantsVo" resultMap="BaseResultMap" parameterType="org.jypj.dev.vo.ApplicantsVo">
+		select
+			t1.PROJECT_ID as items_id,
+			t2.theme as items_name,
+			t3.post_name as post_name,
+			nvl(s.total_count,0) as total_count,
+			nvl(s.men_count,0) as men_count,
+			nvl(s.women_count,0) as women_count,
+			nvl(s.graduate_count,0) as graduate_count,
+			nvl(s.bachelor_count,0) as bachelor_count,
+			nvl(s.college_count,0) as college_count,
+			nvl(s.secondary_count,0) as secondary_count
+		from (
+			select t.project_id as project_id,t.station_id as station_id,sum(t.subject_approve_count) as job_count
+				from school_position t where exists(
+					select 0 from RECRUIT_THEME where id=t.PROJECT_ID
+					<if test="year != null and year != ''">
+						and TO_CHAR(CREATETIME, 'yyyy') = #{year,jdbcType=VARCHAR}
+					</if>
+				)
+				group by project_id,station_id
+			) t1
+		left join RECRUIT_THEME t2 on t1.project_id=t2.id
+		left join recruit_postset t3 on t1.station_id=t3.id
+		left join (
+			select
+				t4.employ_items_id as items_id,
+				t4.apply_job_id as apply_job_id,
+				count(0) as total_count,
+				sum(decode(t5.sex,1,1,0)) as men_count,
+				sum(decode(t5.sex,2,1,0)) as women_count,
+				sum(decode(t6.edu_code,4,1,0)) as graduate_count,
+				sum(decode(t6.edu_code,3,1,0)) as bachelor_count,
+				sum(decode(t6.edu_code,2,1,0)) as college_count,
+				sum(decode(t6.edu_code,1,1,0)) as secondary_count
+			from student_apply_info t4
+			left join student_info t5 on t4.student_id=t5.id
+			left join (
+					select student_id,max(edu_code) as edu_code 
+						from student_education_info group by student_id
+					) t6 on t4.student_id=t6.student_id
+			where t4.apply_status &gt; 1
+			group by t4.employ_items_id,t4.apply_job_id
+		) s on s.items_id=t1.project_id and s.apply_job_id=t1.station_id
+		<if test="itemsId != null and itemsId != ''">
+			where t1.project_id=#{itemsId,jdbcType=VARCHAR}
+		</if>
+		order by post_name
+	</select>
+
+	<select id="selectAllByItemsId" resultMap="BaseResultMap" parameterType="org.jypj.dev.vo.ApplicantsVo">
+		select
+			r.theme as items_name,
+			s.items_id,
+			nvl(s.total_count,0) as total_count,
+			nvl(s.men_count,0) as men_count,
+			nvl(s.women_count,0) as women_count,
+			nvl(s.graduate_count,0) as graduate_count,
+			nvl(s.bachelor_count,0) as bachelor_count,
+			nvl(s.college_count,0) as college_count,
+			nvl(s.secondary_count,0) as secondary_count
+		from RECRUIT_THEME r
+		left join (
+			select
+				t.employ_items_id as items_id,
+				count(0) as total_count,
+				sum(decode(t1.sex,1,1,0)) as men_count,
+				sum(decode(t1.sex,2,1,0)) as women_count,
+				sum(decode(t2.edu_code,4,1,0)) as graduate_count,
+				sum(decode(t2.edu_code,3,1,0)) as bachelor_count,
+				sum(decode(t2.edu_code,2,1,0)) as college_count,
+				sum(decode(t2.edu_code,1,1,0)) as secondary_count
+			from student_apply_info t
+			left join student_info t1 on t.student_id=t1.id
+			left join (
+					select student_id,max(edu_code) as edu_code 
+						from student_education_info group by student_id
+					) t2 on t.student_id=t2.student_id
+			where t.apply_status &gt; 1
+			group by t.employ_items_id
+		) s
+		on s.items_id=r.id
+		where 1=1
+		<if test="itemsId != null and itemsId != ''">
+			and r.id=#{itemsId,jdbcType=VARCHAR}
+		</if>
+		<if test="year != null and year != ''">
+			and TO_CHAR(r.CREATETIME, 'yyyy') = #{year,jdbcType=VARCHAR}
+		</if>
+		order by r.createtime desc
+	</select>
+
+	<select id="selectPeopleCountByItemsId" resultMap="peopleCountResult" parameterType="org.jypj.dev.vo.ApplicantsVo">
+		select
+			t1.PROJECT_ID as items_id,
+			t2.theme as items_name,
+			t3.post_name as post_name,
+			nvl(t1.job_count,0) as job_count,
+			nvl(t4.stu_count,0) as stu_count,
+			nvl(t5.interview_count,0) as interview_count,
+			nvl(t6.written_count,0) as written_count,
+			nvl(t7.trial_count,0) as trial_count
+		from (
+			select t.project_id as project_id,t.station_id as station_id,sum(t.subject_approve_count) as job_count
+				from school_position t where exists(
+					select 0 from RECRUIT_THEME where id=t.PROJECT_ID
+					<if test="year != null and year != ''">
+						and TO_CHAR(CREATETIME, 'yyyy') = #{year,jdbcType=VARCHAR}
+					</if>
+					)
+				group by project_id,station_id
+			) t1
+		left join RECRUIT_THEME t2 on t1.project_id=t2.id
+		left join recruit_postset t3 on t1.station_id=t3.id
+		left join (
+				select EMPLOY_ITEMS_ID,APPLY_JOB_ID,count(0) as stu_count
+					from student_apply_info where apply_status &gt; 1
+					group by EMPLOY_ITEMS_ID,APPLY_JOB_ID
+				) t4 on t1.PROJECT_ID=t4.EMPLOY_ITEMS_ID and t1.station_id=t4.APPLY_JOB_ID
+		left join (
+				select items_id,post_id,count(0) as interview_count
+					from score_enter_information
+					where is_enter=1
+					group by items_id,post_id
+				) t5 on t1.PROJECT_ID=t5.items_id and t1.station_id=t5.post_id
+		left join (
+				select items_id,post_id,count(0) as written_count
+					from SCORE_ENTER_WRITTEN
+					where is_enter=1
+					group by items_id,post_id
+				) t6 on t1.PROJECT_ID=t6.items_id and t1.station_id=t6.post_id
+		left join (
+				select items_id,post_id,count(0) as trial_count
+					from SCORE_ENTER_TRIAL
+					where is_enter=1
+					group by items_id,post_id
+				) t7 on t1.PROJECT_ID=t7.items_id and t1.station_id=t7.post_id
+		<if test="itemsId != null and itemsId != ''">
+			where t1.project_id=#{itemsId,jdbcType=VARCHAR}
+		</if>
+		order by post_name
+	</select>
+</mapper>

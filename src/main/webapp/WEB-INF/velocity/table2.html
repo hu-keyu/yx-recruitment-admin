@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>东莞招聘</title>
+
+    <!-- 公共重置CSS -->
+
+    <link href="css/common.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1474956227_0993266.css">
+
+    <!-- 样式美化CSS -->
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <!-- 97日历控件 -->
+    <script src="plug-ln/My97DatePicker/WdatePicker.js"></script>
+    <!-- 项目公共JS -->
+    <script src="js/zh.js"></script>
+</head>
+<body>
+    <!-- 顶部导航 S-->
+    <div class="header">
+    	<!-- top S-->
+    	<div class="top clearfix">
+    		<!-- logo S-->
+	    	<div class="logoBox pull-left">
+	    		<img src="images/logo.png" alt="">
+	    	</div>
+	    	<!-- logo E-->
+	    	<!-- 导航模块 S-->
+	    	<div class="navList pull-left">
+	    		<ul class="clearfix">
+	    			<li class="active">
+	    				<a href="#this" title="招聘设置">
+	    					招聘设置
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="#this" title="考务管理">
+	    					考务管理
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="#this" title="成绩管理">
+	    					成绩管理
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="#this" title="查询统计">
+	    					查询统计
+	    				</a>
+	    			</li>
+	    		</ul>
+	    	</div>
+	    	<!-- 导航模块 E-->
+	    	<!-- 操作导航 S-->
+	    	<div class="handleList pull-right">
+	    		<ul class="clearfix">
+	    			<li>
+	    				<a href="#this" title="返回桌面">
+	    					<i class="iconfont">&#xe608;</i>
+	    					<span>返回桌面</span>
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="#this" title="换肤">
+	    					<i class="iconfont">&#xe607;</i>
+	    					<span>换肤</span>
+	    				</a>
+	    			</li>
+	    			<li>
+	    				<a href="#this" title="帮助">
+	    					<i class="iconfont">&#xe609;</i>
+	    					<span>帮助</span>
+	    				</a>
+	    			</li>
+	    			<li class="quit">
+	    				<div class="text-center">
+	    					<i class="iconfont">&#xe60a;</i>
+	    				</div>
+	    				<!-- 滑出层 S-->
+    					<div class="drop-panel">
+    						<div class="panel">
+    							<div class="info">
+    								<em class="flag"></em>
+                                    <div class="pic">
+                                        <em style="background-image: url(images/IMG_1338.JPG);filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/IMG_1338.JPG',  sizingMethod='scale');"></em>
+                                    </div>
+									<ul class="infoList">
+										<li>当前账号：zsf19</li>
+										<li>工作职务：教育局长</li>
+										<li>工作单位：东莞教育局</li>
+									</ul>
+    							</div>
+    							<div class="btnBox">
+    								<a class="password" href="#" title=""><i class="iconfont">&#xe60e;</i>修改密码</a>
+    								<a class="quit" href="#" title=""><i class="iconfont">&#xe60f;</i>退出登录</a>
+    							</div>
+    						</div>
+    					</div>
+    					<!-- 滑出层 E-->
+	    			</li>
+	    		</ul>
+	    	</div>
+	    	<!-- 操作导航 E-->
+    	</div>
+    	<!-- top E-->
+    	<!-- 二级菜单 S-->
+	    <div class="menuList">
+	    	<ul class="clearfix">
+				<li class="active">
+					<a href="#this">岗位设置</a>
+				</li>
+				<li>
+					<a href="#this">招聘主题发布</a>
+				</li>
+				<li>
+					<a href="#this">招聘计划审核</a>
+				</li>
+				<li>
+					<a href="#this">招聘公告发布</a>
+				</li>
+				<li>
+					<a href="#this">招聘人员审核</a>
+				</li>
+				<li>
+					<a href="#this">学科考题管理</a>
+				</li>
+			</ul>
+	    </div>
+	    <!-- 二级菜单 E-->
+    </div>
+    <!-- 顶部导航 E-->
+
+    <!-- 左侧日历+天气+个人信息 S-->
+    <div class="main-sidebar">
+    	<div class="sidebar">
+    		<!-- 个人信息 S-->
+    		<div class="userInfo">
+    			<div class="pic">
+                    <em style="background-image: url(images/IMG_1338.JPG);filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/IMG_1338.JPG',  sizingMethod='scale');"></em>         
+                </div>
+    			<div class="info">
+    				<h3>张远航</h3>
+    				<p>当前账号：<br/>zhangyuanhang-og</p>
+    				<p>工作职务：教育局长</p>
+    			</div>
+    		</div>
+    		<!-- 个人信息 E-->
+    		<!-- 日历 S-->
+    		<div class="title">
+    			<i class="iconfont">&#xe60c;</i>
+    			<span class="text">日历</span>
+    		</div>
+    		<hr>
+    		<div id="calendar" class="calendar"></div>
+    		<!-- 日历 E-->
+    		<!-- 天气 S-->
+    		<div class="title">
+    			<i class="iconfont">&#xe60d;</i>
+    			<span class="text">天气</span>
+    		</div>
+    		<hr>
+    		<div class="weather">
+    			<iframe id="a" name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=149" width="210" height="360" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+    		</div>
+    		<!-- 天气 E-->
+    	</div>
+    </div>
+    <!-- 左侧日历+天气+个人信息 E-->
+
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+    	<!-- context内容 S-->
+    	<div class="content">
+            <!-- 条件搜索 S-->
+            <form class="form-inline">
+                <div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>专业类型：</span>
+                            <select class="select">
+                                <option value="">研究生</option>
+                                <option value="">本科生</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span>一级学科：</span>
+                            <select class="select">
+                                <option value="">研究生</option>
+                                <option value="">本科生</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span>二级学科：</span>
+                            <select class="select">
+                                <option value="">研究生</option>
+                                <option value="">本科生</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span>专业名称：</span>
+                            <input class="input" type="text" name="" placeholder="请输入">
+                        </li>
+                        <li>
+                            <button class="btn btn-primary btn-sm" type="submit">查找</button>
+                            <button class="btn btn-default btn-sm" type="submit">清空</button>
+                        </li>
+                    </ul>
+                    <ul class="clearfix pull-right">
+                        <li>
+                            <button class="btn btn-primary btn-sm" type="submit">新增</button>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="formTable">
+                    <caption>基本信息</caption>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><span class="flag">*</span>姓名：</th>
+                            <td><input class="input" type="text" name="" value="zh"></td>
+                            <th><span class="flag">*</span>性别：</th>
+                            <td>
+                                <select class="select">
+                                    <option value="">男</option>
+                                    <option value="">女</option>
+                                </select>
+                            </td>
+                            <td rowspan="3" colspan="1">
+                                <img src="images/default.jpg" width="120" height="120" alt="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><span class="flag">*</span>民族：</th>
+                            <td>
+                                <select class="select">
+                                    <option value="">汉族</option>
+                                </select>
+                            </td>
+                            <th><span class="flag">*</span>籍贯：</th>
+                            <td>
+                                <input class="input" type="text" name="" value="湖北省武汉市江岸区">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><span class="flag">*</span>生源地：</th>
+                            <td><input class="input" type="text" name="" value="湖北省武汉市江岸区"></td>
+                            <th><span class="flag">*</span>户籍（派出所）：</th>
+                            <td>
+                                <input class="input" type="text" name="" value="二七路">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" rowspan="4">学历</th>
+                            <th>中师：</th>
+                            <td colspan="4">
+                                <input class="input grid-120" type="text" value="--学校名称--">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>毕业时间：</span>
+                                <input class="input grid-120" type="text">
+                                <input class="input grid-120" type="text">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <select class="select grid-120">
+                                    <option value="">== 学位 ==</option>
+                                </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <select class="select grid-120">
+                                    <option value="">== 全日制 ==</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>大专：</th>
+                            <td colspan="4">
+                                <input class="input grid-120" type="text" value="--学校名称--">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>毕业时间：</span>
+                                <input class="input grid-120" type="text">
+                                <input class="input grid-120" type="text">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <select class="select grid-120">
+                                    <option value="">== 学位 ==</option>
+                                </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <select class="select grid-120">
+                                    <option value="">== 全日制 ==</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>本科：</th>
+                            <td colspan="4">
+                                <input class="input grid-120" type="text" value="--学校名称--">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>毕业时间：</span>
+                                <input class="input grid-120" type="text">
+                                <input class="input grid-120" type="text">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <select class="select grid-120">
+                                    <option value="">== 学位 ==</option>
+                                </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <select class="select grid-120">
+                                    <option value="">== 全日制 ==</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>研究生及以上：</th>
+                            <td colspan="4">
+                                <input class="input grid-120" type="text" value="--学校名称--">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>毕业时间：</span>
+                                <input class="input grid-120" type="text">
+                                <input class="input grid-120" type="text">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <select class="select grid-120">
+                                    <option value="">== 学位 ==</option>
+                                </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <select class="select grid-120">
+                                    <option value="">== 全日制 ==</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="formTable">
+                    <caption>其它信息</caption>
+                    <tbody>
+                        <tr>
+                            <th><span class="flag">*</span>是否违反计划生育：</th>
+                            <td>
+                                <select class="select">
+                                    <option value="">男</option>
+                                    <option value="">女</option>
+                                </select>
+                            </td>
+                            <th><span class="flag">*</span>身体是否健康：</th>
+                            <td>
+                                <select class="select">
+                                    <option value="">是</option>
+                                    <option value="">否</option>
+                                </select>
+                            </td>
+                            <th><span class="flag">*</span>政治面貌：</th>
+                            <td>
+                                <select class="select">
+                                    <option value="">中国共产党党员</option>
+                                    <option value="">中国共产党预备党员</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="flag">*</span>照片：</th>
+                            <td colspan="5">
+                                <input class="input" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="flag">*</span>资格证种类：</th>
+                            <td>
+                                <select class="select">
+                                    <option value="">高级教师资格证</option>
+                                    <option value="">无</option>
+                                </select>
+                            </td>
+                            <th><span class="flag">*</span>专业技术资格：</th>
+                            <td>
+                                <select class="select">
+                                    <option value="">讲师(中专)</option>
+                                    <option value="">高级讲师(技校)</option>
+                                </select>
+                            </td>
+                            <th><span class="flag">*</span>专业技术资格证书任教学科：</th>
+                            <td>
+                                <input class="input" type="text" name="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="flag">*</span>普通话成绩：</th>
+                            <td>
+                                <input class="input" type="text" name="">
+                            </td>
+                            <th><span class="flag">*</span>教育学成绩：</th>
+                            <td>
+                                <input class="input" type="text" name="">
+                            </td>
+                            <th><span class="flag">*</span>心理学成绩：</th>
+                            <td>
+                                <input class="input" type="text" name="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="flag">*</span>手机号码：</th>
+                            <td>
+                                <input class="input" type="text" name="">
+                            </td>
+                            <th><span class="flag">*</span>联系电话：</th>
+                            <td colspan="3">
+                                <input class="input" type="text" name="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="flag">*</span>考生类别：</th>
+                            <td>
+                                <select class="select">
+                                    <option value="">毕业生</option>
+                                </select>
+                            </td>
+                            <th><span class="flag">*</span>联系地址：</th>
+                            <td colspan="3">
+                                <input class="input" type="text" name="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="flag">*</span>学习简历：</th>
+                            <td colspan="5">
+                                <textarea class="textarea" rows="5"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="flag">*</span>工作经历：</th>
+                            <td colspan="5">
+                                <textarea class="textarea" rows="5"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="formTable">
+                    <caption>其它信息</caption>
+                    <thead>
+                        <tr>
+                            <th class="text-center">关系</th>
+                            <th class="text-center">姓名</th>
+                            <th class="text-center">年龄</th>
+                            <th class="text-center">工作单位及职务</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">父子</td>
+                            <td class="text-center">张某某</td>
+                            <td class="text-center">54</td>
+                            <td class="text-center">八一小学 ———— 教师</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="formTable">
+                    <caption>个人附件资料</caption>
+                    <tbody>
+                        <tr>
+                            <th style="width: 150px;">身份证：</th>
+                            <td>
+                                <a href="#this" title="">Chrysanthemum.jpg</a>&nbsp;&nbsp;
+                                <a href="#this" title="">在线预览</a>
+                            </td>
+                            <th style="width: 300px;">教师资格证或教育学、心理学、普通话成绩单：</th>
+                            <td>
+                                <a href="#this" title="">Chrysanthemum.jpg</a>&nbsp;&nbsp;
+                                <a href="#this" title="">在线预览</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>毕业证书或就业推荐表：</th>
+                            <td>
+                                <a href="#this" title="">Chrysanthemum.jpg</a>&nbsp;&nbsp;
+                                <a href="#this" title="">在线预览</a>
+                            </td>
+                            <th>学历鉴定证明：</th>
+                            <td>
+                                <a href="#this" title="">Chrysanthemum.jpg</a>&nbsp;&nbsp;
+                                <a href="#this" title="">在线预览</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>学位证书：</th>
+                            <td>
+                                <a href="#this" title="">Chrysanthemum.jpg</a>&nbsp;&nbsp;
+                                <a href="#this" title="">在线预览</a>
+                            </td>
+                            <th>学位鉴定证明：</th>
+                            <td>
+                                <a href="#this" title="">Chrysanthemum.jpg</a>&nbsp;&nbsp;
+                                <a href="#this" title="">在线预览</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>计划生育证明：</th>
+                            <td>
+                                <a href="#this" title="">Chrysanthemum.jpg</a>&nbsp;&nbsp;
+                                <a href="#this" title="">在线预览</a>
+                            </td>
+                            <th>个人学习和工作情况总结：</th>
+                            <td>
+                                <a href="#this" title="">Chrysanthemum.jpg</a>&nbsp;&nbsp;
+                                <a href="#this" title="">在线预览</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>视频上传：</th>
+                            <td colspan="3">
+                                <a href="#this" title="">Chrysanthemum.mp4</a>&nbsp;&nbsp;
+                                <a href="#this" title="">在线播放</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2">其它材料：</th>
+                            <th>暂缓就业协议书（已办理暂缓就业手续的毕业生必须提供）：</th>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>国外留学归来有关材料（国外留学归来人员必须提供）：</th>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="formTable">
+                    <caption>申请岗位信息</caption>
+                    <thead>
+                        <tr>
+                            <th>岗位名称</th>
+                            <th>学科</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>中学语文教师（毕业生）</td>
+                            <td>语文</td>
+                        </tr>
+                        <tr>
+                            <td>中学语文教师（毕业生）</td>
+                            <td>语文</td>
+                        </tr>
+                        <tr>
+                            <td>中学语文教师（毕业生）</td>
+                            <td>语文</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 操作按钮 S-->
+            <div class="text-center pagesBox">
+                <button class="btn btn-primary btn-sm" type="button">保存</button>
+                <button class="btn btn-default btn-sm" type="button">取消</button>
+            </div>
+            <!-- 操作按钮 E-->
+    	</div>
+    	<!-- context内容 E-->
+
+    	<!-- footer S-->
+		<div class="page-footer">
+		    <div class="page-footer-inner">
+		        2016 © Metronic by keenthemes.
+		    </div>
+		</div>
+		<!-- footer E-->
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>东莞招聘——学生报名</title>
+    <!-- 公共重置CSS -->
+    <link href="${link.contextPath}/static/css/common.css" rel="stylesheet">
+    <link href="${link.contextPath}/static/css/student.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1474956227_0993266.css">
+    <!-- 样式美化CSS -->
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="${link.contextPath}/static/js/jquery-1.9.1.min.js"></script>
+    <script src="${link.contextPath}/static/js/jquery-form.js"></script>
+    <!-- 弹出层控件 http://layer.layui.com/ -->
+	<script src="${link.contextPath}/static/lib/layui/layui.js" type="text/javascript"></script>
+	<script src="${link.contextPath}/static/lib/jqPaginator/jqPaginator-1.2.0.min.js" type="text/javascript"></script>
+	<script src="${link.contextPath}/static/lib/nice-validator/jquery.validator.js?local=zh-CN" type="text/javascript"></script>
+    <!-- 项目公共JS -->
+    <script src="${link.contextPath}/static/js/zh-common.js"></script>
+</head>
+<body>
+<!-- 顶部导航 S-->
+<div class="header">
+	<!-- top S-->
+	<div class="top clearfix">
+        <div class="grid-1190 m-auto">
+            <!-- 导航模块 S-->
+            <div class="navList pull-left">
+                <ul class="clearfix">
+                    <li class="default" title="$!theme.theme">$!theme.noticeSubstr</li>
+                </ul>
+            </div>
+            <!-- 导航模块 E-->
+            <!-- 操作导航 S-->
+            <div class="handleList pull-right">
+                <ul class="clearfix">
+                    <li class="quit">
+                        <div class="text-center">
+                            <i class="iconfont">&#xe60a;</i>
+                        </div>
+                        <!-- 滑出层 S-->
+                        <div class="drop-panel">
+                            <div class="panel">
+                                <div class="info">
+                                    <em class="flag"></em>
+                                    <div class="pic">
+                                        <em style="background-image: url($!photo);filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='$!photo',  sizingMethod='scale');"></em>
+                                    </div>
+                                    <ul class="infoList">
+                                        <li>当前账号：$!studentName</li>
+                                    </ul>
+                                </div>
+                                <div class="btnBox">
+                                    <!--<a class="password" href="#" title="" onclick="verifySecret()"><i class="iconfont">&#xe60e;</i>修改密码</a>-->
+                                    <a class="quit" href="${link.contextPath}/login/loginoutStudent" title=""><i class="iconfont">&#xe60f;</i>退出登录</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 滑出层 E-->
+                    </li>
+                </ul>
+            </div>
+            <!-- 操作导航 E-->
+        </div>
+	</div>
+	<!-- top E-->
+	<!-- 二级菜单 S-->
+    <div class="menuList">
+    	<ul class="clearfix grid-1190 m-auto">
+			<li>
+				<a href="${link.contextPath}/dg/studentApplyInfo/registerIndex?studentId=$!sInfo.id&type=$!sInfo.studentType">基本信息</a>
+			</li>
+			<li>
+				<a href="${link.contextPath}/dg/studentApplyInfo/applyPosition">申请岗位</a>
+			</li>
+			<li>
+				<a href="${link.contextPath}/dg/studentApplyInfo/profileConfirm?type=2">现场资料确认</a>
+			</li>
+			<li>
+				<a href="${link.contextPath}/dg/studentApplyInfo/profileConfirm?type=1">单位面试信息</a>
+			</li>
+			<li>
+				<a href="${link.contextPath}/dg/studentApplyInfo/interviewNotice">面试通知书</a>
+			</li>
+			<li>
+				<a href="${link.contextPath}/dg/studentApplyInfo/writtenNotice">笔试通知书</a>
+			</li>
+            <li>
+                <a href="${link.contextPath}/dg/studentApplyInfo/talkNotice">试讲通知书</a>
+            </li>
+            <li class="active">
+                <a href="${link.contextPath}/dg/studentApplyInfo/admissionTicket">准考证打印</a>
+            </li>
+            <li>
+                <a href="${link.contextPath}/dg/studentApplyInfo/recruitProgress">招聘进度查询</a>
+            </li>
+		</ul>
+    </div>
+    <!-- 二级菜单 E-->
+</div>
+<!-- 顶部导航 E-->
+
+<!-- Main内容模块 S-->
+<div class="content-wrapper grid-1190 m-auto">
+	#set($Integer = 0)
+	#if($Integer.parseInt($applyStatus) < 7 and $Integer.parseInt($applyStatus) != 5)
+	<div class="content" >
+		申请资料正在审核中，或者面试名单没有发布，请耐心等待...
+	</div>
+	#elseif($Integer.parseInt($applyStatus) == 5)
+	<div class="content" >
+		您申请的岗位审核不通过，暂无准考证。
+	</div>
+	#else
+	<!-- context内容 S-->
+	<div class="content">
+        <div class="clearfix">
+            <div class="pull-left interview-info" style="width:40%" id="admissForm">
+                <table class="stuTable">
+                    <tbody>
+                        <tr>
+                            <td style="font-size: 15px;font-weight: 600;line-height: initial;" class="text-center" colspan="3">
+                                准考证
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="40%">名称：</th>
+                            <td>$!sInfo.name</td>
+                            <td class="text-center" rowspan="3">
+                                <img src="$!att.path" width="100px" height="100px" alt="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>性别：</th>
+                            <td>#if($!sInfo.sex == '1') 男 #else 女 #end </td>
+                        </tr>
+                        <tr>
+                            <th width="60%">身份证号：</th>
+                            <td>$!sInfo.identityCard</td>
+                        </tr>
+                        <tr>
+                            <th>准考证号：</th>
+                            <td colspan="2">$!sInfo.ticketnum</td>
+                        </tr>
+                        <tr>
+                            <th>报考岗位：</th>
+                            <td colspan="2">$!sApplyInfo.applyJobName</td>
+                        </tr>
+                        <tr>
+                            <th>岗位代码：</th>
+                            <td colspan="2">$!sApplyInfo.applyJobCode</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="notice pull-right" style="width:58%" id="form2">
+					$!sApplyInfo.ticketNoticeItem
+            </div>
+        </div>
+        <!-- 打印 S-->
+        <p id="printBox" class="text-center">
+        	<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0> 
+				<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0 pluginspage="${link.contextPath}/static/lib/print/install_lodop64.exe"></embed>
+			</object>
+        </p>
+        <!-- 打印 E-->
+        <!-- 操作按钮 S-->
+        <div class="text-center pagesBox mt10">
+            <a class="btn btn-primary btn-sm" target="_blank" href="${link.contextPath}/dg/ireport/printTicket?studentApplyId=$!sApplyInfo.id&recruitId=$!sApplyInfo.employItemsId">打印</a>
+        </div>
+        <!-- 操作按钮 E-->
+	</div>
+	<!-- context内容 E-->
+	#end
+</div>
+<!-- Main内容模块 E-->
+</body>
+</html>

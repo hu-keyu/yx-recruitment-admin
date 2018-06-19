@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.VolunteersDao">
+	<resultMap id="BaseResultMap" type="org.jypj.dev.vo.VolunteersVo">
+		<result column="apply_dep_id" property="applyDepId" jdbcType="VARCHAR" />
+		<result column="apply_job_id" property="applyJobId" jdbcType="VARCHAR" />
+		<result column="school_name" property="applyDepName" jdbcType="VARCHAR" />
+		<result column="post_name" property="postName" jdbcType="VARCHAR" />
+		<result column="hasSubmit" property="hasSubmit" jdbcType="INTEGER" />
+		<result column="hasSubmit" property="notPassByJYJ" jdbcType="INTEGER" />
+		<result column="waitAuditByJYJ" property="waitAuditByJYJ" jdbcType="INTEGER" />
+		<result column="hasPass" property="hasPass" jdbcType="INTEGER" />
+	</resultMap>
+	
+	
+	<select id="searchVolunteerPageByMap" resultType="org.jypj.dev.vo.VolunteersVo" parameterType="java.util.Map" >
+		SELECT sai.apply_dep_id as applyDepId
+		,sai.apply_job_id as applyJobId
+		,sd.TEXT as applyDepName
+		,(
+			SELECT rp.post_name
+			FROM recruit_postset rp
+			WHERE rp.id = sai.apply_job_id
+			) as postName
+		,sum(decode(sign(to_number(NVL(sai.apply_status, '0')) - 1), 1, 1, 0)) hasSubmit
+		,sum(CASE sai.audittype
+				WHEN '1'
+					THEN CASE sai.apply_status
+							WHEN '4'
+								THEN 1
+							WHEN '5'
+								THEN 1
+							ELSE 0
+							END
+				ELSE 0
+				END) notPassByJYJ
+		,sum(decode(NVL(sai.apply_status, '0'), '2', 1, 0)) waitAuditByJYJ
+		,sum(decode(sign(to_number(NVL(sai.apply_status, '0')) - 6), 1, 1, 0)) hasPass
+	FROM student_apply_info sai
+	INNER JOIN sys_dictionary sd ON sd.id = sai.apply_dep_id
+	WHERE 1 = 1 
+	<if test="year != null and year !='' ">
+	  and to_char(sai.CTIME,'yyyy')=#{year,jdbcType=VARCHAR}
+	</if>
+  	<if test="projectId != null and projectId !='' ">
+	  and sai.employ_items_id=#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="postId != null and postId !='' ">
+	  and sai.apply_job_id=#{postId,jdbcType=VARCHAR}
+	</if>
+	<if test="schoolName != null and schoolName !='' ">
+	  and sd.text like concat(concat('%',#{schoolName,jdbcType=VARCHAR}),'%') 
+	</if>
+	GROUP BY sai.apply_dep_id
+		,sai.apply_job_id
+		,sd.TEXT
+  </select>
+	
+</mapper>

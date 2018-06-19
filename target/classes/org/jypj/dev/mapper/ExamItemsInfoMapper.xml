@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.ExamItemsInfoDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.ExamItemsInfo" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="ITEMS_ID" property="itemsId" jdbcType="VARCHAR" />
+	<result column="TEST_NUM" property="testNum" jdbcType="VARCHAR" />
+	<result column="TYPE" property="type" jdbcType="VARCHAR" />
+	<result column="TEST_NAME" property="testName" jdbcType="VARCHAR" />
+	<result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+	<result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+	<result column="TEST_ADDR" property="testAddr" jdbcType="VARCHAR" />
+	<result column="SIGN" property="sign" jdbcType="VARCHAR" />
+	<result column="PUBLISH_STATUS" property="publishStatus" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="TIMESTAMP" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="TIMESTAMP" />
+	<result column="PERMIS_GW" property="permisGw" jdbcType="VARCHAR" />
+	<result column="DELETE_STATUS" property="deleteStatus" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List" >
+  ID,ITEMS_ID,TEST_NUM,TYPE,TEST_NAME,START_TIME,END_TIME,TEST_ADDR,SIGN,PUBLISH_STATUS,CREATE_USER,CTIME,MODIFY_USER,MTIME,PERMIS_GW,DELETE_STATUS
+  </sql>
+  
+   <insert id="saveExamItemsInfoByField" parameterType="org.jypj.dev.entity.ExamItemsInfo" >
+    insert into exam_items_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="itemsId != null" >
+    ITEMS_ID,
+   </if>
+   <if test="testNum != null" >
+    TEST_NUM,
+   </if>
+   <if test="type != null" >
+    TYPE,
+   </if>
+   <if test="testName != null" >
+    TEST_NAME,
+   </if>
+   <if test="startTime != null" >
+    START_TIME,
+   </if>
+   <if test="endTime != null" >
+    END_TIME,
+   </if>
+   <if test="testAddr != null" >
+    TEST_ADDR,
+   </if>
+   <if test="sign != null" >
+    SIGN,
+   </if>
+   <if test="publishStatus != null" >
+    PUBLISH_STATUS,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="ctime != null" >
+    CTIME,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+   <if test="mtime != null" >
+    MTIME,
+   </if>
+   <if test="permisGw != null" >
+    PERMIS_GW,
+   </if>
+    <if test="deleteStatus != null" >
+    DELETE_STATUS,
+   </if>
+   
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="itemsId != null" >
+        #{itemsId,jdbcType=VARCHAR},
+      </if>
+      <if test="testNum != null" >
+        #{testNum,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="testName != null" >
+        #{testName,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="testAddr != null" >
+        #{testAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null" >
+        #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="publishStatus != null" >
+        #{publishStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        #{mtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="permisGw != null" >
+        #{permisGw,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveExamItemsInfo" parameterType="org.jypj.dev.entity.ExamItemsInfo" >
+    insert into exam_items_info (
+	ID,
+	ITEMS_ID,
+	TEST_NUM,
+	TYPE,
+	TEST_NAME,
+	START_TIME,
+	END_TIME,
+	TEST_ADDR,
+	SIGN,
+	PUBLISH_STATUS,
+	CREATE_USER,
+	CTIME,
+	MODIFY_USER,
+	MTIME,
+	 PERMIS_GW,
+	 DELETE_STATUS
+	  
+	)
+	values (
+	sys_guid(),
+	#{itemsId,jdbcType=VARCHAR},
+	#{testNum,jdbcType=VARCHAR},
+	#{type,jdbcType=VARCHAR},
+	#{testName,jdbcType=VARCHAR},
+	#{startTime,jdbcType=TIMESTAMP},
+	#{endTime,jdbcType=TIMESTAMP},
+	#{testAddr,jdbcType=VARCHAR},
+	#{sign,jdbcType=VARCHAR},
+	#{publishStatus,jdbcType=VARCHAR},
+	#{createUser,jdbcType=VARCHAR},
+	systimeStamp,
+	#{modifyUser,jdbcType=VARCHAR},
+	#{mtime,jdbcType=TIMESTAMP},
+	#{permisGw,jdbcType=VARCHAR},
+	#{deleteStatus,jdbcType=VARCHAR}
+	
+	)
+  </insert>
+  
+  <delete id="deleteExamItemsInfoById" parameterType="java.lang.String" >
+    delete from exam_items_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteExamItemsInfoByObject" parameterType="org.jypj.dev.entity.ExamItemsInfo" >
+    delete from exam_items_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateExamItemsInfoByField" parameterType="org.jypj.dev.entity.ExamItemsInfo" >
+    update exam_items_info
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="itemsId != null" >
+  	 ITEMS_ID=#{itemsId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="testNum != null" >
+  	 TEST_NUM=#{testNum,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="type != null" >
+  	 TYPE=#{type,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="testName != null" >
+  	 TEST_NAME=#{testName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="startTime != null" >
+  	 START_TIME=#{startTime,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="endTime != null" >
+  	 END_TIME=#{endTime,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="testAddr != null" >
+  	 TEST_ADDR=#{testAddr,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="sign != null" >
+  	 SIGN=#{sign,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="publishStatus != null" >
+  	 PUBLISH_STATUS=#{publishStatus,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="ctime != null" >
+  	 CTIME=#{ctime,jdbcType=TIMESTAMP},
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="mtime != null" >
+  	 MTIME=#{mtime,jdbcType=TIMESTAMP},
+  	 </if>
+     <if test="permisGw != null" >
+  	 PERMIS_GW=#{permisGw,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="deleteStatus != null" >
+  	 DELETE_STATUS=#{deleteStatus,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateExamItemsInfo" parameterType="org.jypj.dev.entity.ExamItemsInfo" >
+    update exam_items_info
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 ITEMS_ID=#{itemsId,jdbcType=VARCHAR},
+	 TEST_NUM=#{testNum,jdbcType=VARCHAR},
+	 TYPE=#{type,jdbcType=VARCHAR},
+	 TEST_NAME=#{testName,jdbcType=VARCHAR},
+	 START_TIME=#{startTime,jdbcType=TIMESTAMP},
+	 END_TIME=#{endTime,jdbcType=TIMESTAMP},
+	 TEST_ADDR=#{testAddr,jdbcType=VARCHAR},
+	 SIGN=#{sign,jdbcType=VARCHAR},
+	 PUBLISH_STATUS=#{publishStatus,jdbcType=VARCHAR},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 CTIME=systimeStamp,
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MTIME=sysdate,
+	 PERMIS_GW=#{permisGw,jdbcType=VARCHAR},
+	 DELETE_STATUS=#{deleteStatus,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectExamItemsInfoById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_items_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT * FROM exam_items_info t where 1=1 and t.DELETE_STATUS='2'
+    <if test="projectId !=null and projectId !='' ">
+    	and t.ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+    </if>
+    <if test="testType !=null and testType !='' ">
+    	and t.TYPE=#{testType,jdbcType=VARCHAR}
+    </if>
+    <!--<if test="year ==null and year =='' ">
+    	to_char(t.CTIME,'yyyy')=(select to_char(sysdate,'yyyy') as dates from dual)
+    </if>
+    <if test="year !=null and year !='' ">
+    	and to_char(t.CTIME,'yyyy')=#{year,jdbcType=VARCHAR}
+    </if>-->
+    	order by t.TEST_NUM asc
+  </select>
+  
+   <select id="selectsPerGw" resultMap="BaseResultMap" parameterType="string" >
+	    SELECT * FROM exam_items_info t where 1=1 and t.DELETE_STATUS='2'
+	    <if test="itemsid !=null and itemsid !='' ">
+	    	and t.ITEMS_ID=#{itemsid,jdbcType=VARCHAR}
+	    </if>
+	    <if test="testid !=null and testid !=''">
+	    	and t.id !=#{testid,jdbcType=VARCHAR}
+	    </if>
+	    <if test="type !=null and type !=''">
+	    	and t.TYPE =#{type,jdbcType=VARCHAR}
+	    </if>
+   </select>
+  
+  <select id="selectItems" resultMap="BaseResultMap">
+    SELECT * FROM exam_items_info t where 1=1 
+    <if test="itemsid !=null and itemsid !='' ">
+    	and t.ITEMS_ID=#{itemsid,jdbcType=VARCHAR}
+    </if>
+    <if test="year !=null and year !='' ">
+    	and to_char(t.CTIME,'yyyy')=#{year,jdbcType=VARCHAR}
+    </if>
+        and DELETE_STATUS='2'
+        and type='2'
+    	order by t.CTIME desc
+  </select>
+  
+  <select id="selectOnePageByExamItemsInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ExamItemsInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_items_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="itemsId != null and itemsId !='' ">
+	  and ITEMS_ID=#{itemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testNum != null and testNum !='' ">
+	  and TEST_NUM=#{testNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testName != null and testName !='' ">
+	  and TEST_NAME=#{testName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="startTime != null and startTime !='' ">
+	  and START_TIME=#{startTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="endTime != null and endTime !='' ">
+	  and END_TIME=#{endTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="testAddr != null and testAddr !='' ">
+	  and TEST_ADDR=#{testAddr,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sign != null and sign !='' ">
+	  and SIGN=#{sign,jdbcType=VARCHAR}
+	 </if>
+	 <if test="publishStatus != null and publishStatus !='' ">
+	  and PUBLISH_STATUS=#{publishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="permisGw != null and permisGw !='' ">
+	  and PERMIS_GW=#{permisGw,jdbcType=VARCHAR}
+	 </if>
+	 <if test="deleteStatus != null and deleteStatus !='' ">
+	  and DELETE_STATUS=#{deleteStatus,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_items_info
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByExamItemsInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ExamItemsInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_items_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="itemsId != null and itemsId !='' ">
+	  and ITEMS_ID=#{itemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testNum != null and testNum !='' ">
+	  and TEST_NUM=#{testNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testName != null and testName !='' ">
+	  and TEST_NAME=#{testName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="startTime != null and startTime !='' ">
+	  and START_TIME=#{startTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="endTime != null and endTime !='' ">
+	  and END_TIME=#{endTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="testAddr != null and testAddr !='' ">
+	  and TEST_ADDR=#{testAddr,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sign != null and sign !='' ">
+	  and SIGN=#{sign,jdbcType=VARCHAR}
+	 </if>
+	 <if test="publishStatus != null and publishStatus !='' ">
+	  and PUBLISH_STATUS=#{publishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="permisGw != null and permisGw !='' ">
+	  and PERMIS_GW=#{permisGw,jdbcType=VARCHAR}
+	 </if>
+	 <if test="deleteStatus != null and deleteStatus !='' ">
+	  and DELETE_STATUS=#{deleteStatus,jdbcType=VARCHAR}
+	 </if>
+	  order by CTIME desc
+  </select> 
+  
+  <!-- 查询试室号是否已经存在(未删除状态下) -->
+  <select id="selectCountByNum" resultType="integer" parameterType="string" >
+     select count(*) from exam_items_info where 1=1 and DELETE_STATUS='2'
+     <if test="itemsId != null and itemsId !='' ">
+	  and ITEMS_ID=#{itemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testNum != null and testNum !='' ">
+	  and TEST_NUM=#{testNum,jdbcType=VARCHAR}
+	 </if>
+   </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_items_info
+    where 1=1 
+   </select> 
+
+  <select id="selectTestNum" resultMap="numMap">
+   	select c.TEST_NUM from (select TEST_NUM from exam_items_info t where 1=1 
+   	<if test="projectId != null and projectId !='' " >
+	  and ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+    <if test="status != null and status !='' and status ==2" >
+	  and DELETE_STATUS=#{status,jdbcType=VARCHAR} order by TEST_NUM desc)c
+	</if>
+	<if test="status != null and status !='' and status ==1" >
+	  and DELETE_STATUS=#{status,jdbcType=VARCHAR} order by TEST_NUM asc)c
+	</if>  
+	 where rownum=1
+   </select> 
+  <resultMap id="numMap" type="string" >
+	<result column="TEST_NUM" property="testNum" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectIdNum" resultMap="numIdMap">
+    	select c.id from (select id from exam_items_info  where 1=1 and DELETE_STATUS='1'
+    <if test="num != null and num !='' ">
+	  	and TEST_NUM=#{num,jdbcType=VARCHAR}
+	</if>
+	    order by TEST_NUM desc)c where rownum=1
+   </select> 
+  <resultMap id="numIdMap" type="string" >
+	<result column="ID" property="id" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectObjectByExamItemsInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ExamItemsInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_items_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="itemsId != null and itemsId !='' ">
+	  and ITEMS_ID=#{itemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testNum != null and testNum !='' ">
+	  and TEST_NUM=#{testNum,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="testName != null and testName !='' ">
+	  and TEST_NAME=#{testName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="startTime != null and startTime !='' ">
+	  and START_TIME=#{startTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="endTime != null and endTime !='' ">
+	  and END_TIME=#{endTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="testAddr != null and testAddr !='' ">
+	  and TEST_ADDR=#{testAddr,jdbcType=VARCHAR}
+	 </if>
+	 <if test="sign != null and sign !='' ">
+	  and SIGN=#{sign,jdbcType=VARCHAR}
+	 </if>
+	 <if test="publishStatus != null and publishStatus !='' ">
+	  and PUBLISH_STATUS=#{publishStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="permisGw != null and permisGw !='' ">
+	  and PERMIS_GW=#{permisGw,jdbcType=VARCHAR}
+	 </if>
+	 <if test="deleteStatus != null and deleteStatus !='' ">
+	  and DELETE_STATUS=#{deleteStatus,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+  <!-- 查询限制岗位数量 (统一笔试)-->
+  <select id="selectLimitPositionNum" resultType="org.jypj.dev.vo.LimitPositionVo">
+	select t.POSITION_ID as positionId,r.POST_NAME as positionName from SCHOOL_GRADE t inner join 
+	RECRUIT_POSTSET r on t.POSITION_ID=r.ID where 1=1 
+	<if test="itemsId != null and itemsId !='' ">
+		and t.PROJECT_ID=#{itemsId,jdbcType=VARCHAR}  
+	</if>
+	<if test="subject != null and subject !='' ">
+		and r.SUBJECT=#{subject,jdbcType=VARCHAR}  
+	</if>
+	<if test="postType != null and postType !='' ">
+		and r.POST_CATEGORY=#{postType,jdbcType=VARCHAR} 
+	</if>
+	<if test="jobName != null and jobName !='' ">
+		and r.POST_NAME like concat(concat('%',#{jobName,jdbcType=VARCHAR}),'%')
+	</if>
+	group by t.POSITION_ID,r.POST_NAME
+  
+  </select>
+  
+  <!-- 查询限制岗位数量 （统一试讲）-->
+  <select id="selectLimitPositionNumTrial" resultType="org.jypj.dev.vo.LimitPositionVo">
+  	select t.POSITION_ID as positionId,r.POST_NAME as positionName from SCHOOL_GRADE t inner join 
+	RECRUIT_POSTSET r on t.POSITION_ID=r.ID where 1=1
+	<if test="itemsId != null and itemsId !='' ">
+		and t.PROJECT_ID=#{itemsId,jdbcType=VARCHAR}  
+	</if>
+	<if test="subject != null and subject !='' ">
+		and r.SUBJECT=#{subject,jdbcType=VARCHAR}  
+	</if>
+	<if test="postType != null and postType !='' ">
+		and r.POST_CATEGORY=#{postType,jdbcType=VARCHAR} 
+	</if>
+	<if test="jobName != null and jobName !='' ">
+		and r.POST_NAME like concat(concat('%',#{jobName,jdbcType=VARCHAR}),'%')
+	</if>
+	 group by t.POSITION_ID,r.POST_NAME
+  
+  </select>
+  
+</mapper>

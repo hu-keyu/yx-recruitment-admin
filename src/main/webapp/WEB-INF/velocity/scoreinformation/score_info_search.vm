@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+		$(document).ready(function () {  
+			getProject();
+        });
+		   
+		function queryData() {
+			var $serializeForm=$("#input_form").serialize();
+			var typeid=$("#typeid").val();
+    		if(typeid=='1'){ 
+    			$("#testtypes").text("单位面试");
+				$("#enters").show();
+				$("#writiens").hide();
+				$("#trials").hide();
+				url='${link.contextPath}/dg/scoreEnterInformation/scoreInformationSearch';
+    		}else if(typeid=='2'){
+				$("#testtypes").text("统一笔试");
+				$("#enters").hide();
+				$("#writiens").hide();
+				$("#trials").hide();
+				url='${link.contextPath}/dg/scoreEnterWritien/writienSearch';
+    		}else if(typeid=='3'){
+				$("#testtypes").text("统一试讲");
+				$("#enters").hide();
+				$("#writiens").hide();
+				$("#trials").hide();
+				url='${link.contextPath}/dg/scoreEnterTrial/enterTrialSearch';
+    		}else if(typeid=='4'){
+    			$("#testtypes").text("体检结果");
+				$("#enters").hide();
+				$("#writiens").hide();
+				$("#trials").hide();
+				url='${link.contextPath}/dg/scoreEnterPhysical/enterPhysicalSearch';
+    		}else if(typeid=='5'){
+    			$("#testtypes").text("考察结果");
+				$("#enters").hide();
+				$("#writiens").hide();
+				$("#trials").hide();
+				url='${link.contextPath}/dg/scoreEnterStudy/enterStudySearch';
+    		}else if(typeid=='7'){
+				$("#testtypes").text("综合成绩");
+				$("#enters").hide();
+				$("#writiens").show();
+				$("#trials").show();
+				url='${link.contextPath}/dg/scoreEnterTrial/synthesizeSearch';
+			}
+			$.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: url,
+                data : $serializeForm,
+                success: function (data) {
+                    if (data) {  
+						var isScore=data.isScore;//成绩发布状态
+                        /*获取数据总行数*/
+                        $("#totalCounts").val(data.total);
+						$("#currentPage").val(data.currentPage);
+                        /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/
+                        if (parseInt($("#totalCounts").val()) == 0) {
+                            $("#totalCounts").val(1);
+                        }
+						if(parseInt($("#currentPage").val()) == 0) {  
+                        	$("#currentPage").val(1);
+                        }
+						$("#ryn").val($!nowYear);  
+                        /*生成表和套用css样式*/  
+                        data = data.rows;//获取筛选后的内容 
+                        $("#tabinput tr").remove();//清空列表 
+                        $.each(data, function (index, e) {
+							var ticketnum="";
+							switch(e.ticketNum){
+								case null : ticketNum="";break;
+								case undefined : ticketNum="161201102001";break;
+								default:ticketnum=e.ticketNum;
+							}
+							var sex="";
+							switch(e.sex){
+								case "1" : sex="男";break;
+								case "2" : sex="女";break;
+								default:sex="女";
+							}
+							var score="";
+							switch(e.score){
+								case null : score="0.0";break;
+								case undefined : score="0.0";break;
+								default:score=e.score;
+							}
+							var offer="";
+							switch(e.offer){
+								case null : offer="0.0";break;
+								case undefined : offer="0.0";break;
+								default:offer=e.offer;
+							}
+							var isPass="";
+							switch(e.isPass){
+								case "1" : isPass="是";break;
+								case "0" : isPass="否";break;
+								default:isPass=e.isPass;
+							}
+							var school="";
+							switch(e.school){
+								case null : school="";break;
+								case undefined : school="";break;
+								default:school=e.school;
+							}
+							if(typeid=='1'){
+								switch(e.phone){
+    								case null : score="0";isPass="";break;
+    								case undefined : score="0";isPass="";break;
+									case "0" : score="0";isPass="";break;
+									case "1" : score=e.score;break;
+    								default:score=e.score;
+    							}
+    							var insertHtml='<tr>'+'<input type="hidden" name="gradeWritens['+(index)+'].studentId" value="'+e.studentId+'"><input type="hidden" name="gradeWritens['+(index)+'].id" value="'+e.id+'">'+
+                                                    '<td>'+ticketnum+'</td>'+
+                                                    '<td>'+e.studentName+'</td>'+
+                                                    '<td>'+sex+'</td>'+
+    												'<td>'+score+'</td>'+
+													'<td>'+isPass+'</td>'+
+													'<td>'+school+'</td>'+
+                                                '</tr>';
+							}else if(typeid=='2'){
+								if(isScore=='1'){
+    								switch(e.score){
+        								case null : score="0.0";break;
+        								case undefined : score="0.0";break;
+        								default:score=e.score;
+        							}
+								}else{
+									score="0.0";
+								}
+    							var insertHtml='<tr>'+'<input type="hidden" name="gradeWritens['+(index)+'].studentId" value="'+e.studentId+'"><input type="hidden" name="gradeWritens['+(index)+'].id" value="'+e.id+'">'+
+                                                    '<td>'+ticketnum+'</td>'+
+                                                    '<td>'+e.studentName+'</td>'+
+                                                    '<td>'+sex+'</td>'+
+    												'<td>'+score+'</td>'+
+													'<td>'+school+'</td>'+
+                                                '</tr>';
+							}else if(typeid=='3'){
+								if(isScore=='1'){
+    								switch(e.score){
+        								case null : score="0.0";break;
+        								case undefined : score="0.0";break;
+        								default:score=e.score;
+        							}
+								}else{
+									score="0.0";
+								}
+								var insertHtml='<tr>'+'<input type="hidden" name="gradeWritens['+(index)+'].studentId" value="'+e.studentId+'"><input type="hidden" name="gradeWritens['+(index)+'].id" value="'+e.id+'">'+
+                                                    '<td>'+ticketnum+'</td>'+
+                                                    '<td>'+e.studentName+'</td>'+
+                                                    '<td>'+sex+'</td>'+
+    												'<td>'+score+'</td>'+
+													'<td>'+school+'</td>'+
+                                                '</tr>';
+							}else if(typeid=='4'){
+								var isPass="";
+								if(isScore=='1'){
+                					switch(e.isPass){
+                						case "1" : isPass="通过";break;
+                						case "2" : isPass="不通过";break;
+                						default:isPass="";
+                					}
+								}else{
+									isPass="";
+								}	
+    							var insertHtml='<tr>'+'<input type="hidden" name="gradeWritens['+(index)+'].studentId" value="'+e.studentId+'"><input type="hidden" name="gradeWritens['+(index)+'].id" value="'+e.id+'">'+
+                                                    '<td>'+ticketnum+'</td>'+
+                                                    '<td>'+e.studentName+'</td>'+
+                                                    '<td>'+sex+'</td>'+
+    												'<td>'+isPass+'</td>'+
+													'<td>'+school+'</td>'+
+                                                '</tr>';
+							}else if(typeid=='5'){
+    							var isPass="";
+								if(isScore=='1'){
+                					switch(e.isPass){
+                						case "1" : isPass="通过";break;
+                						case "2" : isPass="不通过";break;
+                						default:isPass="否";
+                					}
+								}else{
+									isPass="";
+								}	
+    							var insertHtml='<tr>'+'<input type="hidden" name="gradeWritens['+(index)+'].studentId" value="'+e.studentId+'"><input type="hidden" name="gradeWritens['+(index)+'].id" value="'+e.id+'">'+
+                                                    '<td>'+ticketnum+'</td>'+
+                                                    '<td>'+e.studentName+'</td>'+
+                                                    '<td>'+sex+'</td>'+
+    												'<td>'+isPass+'</td>'+
+													'<td>'+school+'</td>'+
+                                                '</tr>';
+							}else if(typeid=='7'){
+								var scyscore="";
+								//是否同分显示
+								var phone="";
+								if(isScore=='1'){
+                					switch(e.scyscore){
+                						case null : scyscore="0";break;
+                						case undefined : scyscore="0";break;
+    									case "" : scyscore="0";break;
+                						default:scyscore=e.scyscore;
+                					}
+    								
+                					switch(e.phone){
+                						case null : phone="";break;
+                						case undefined : phone="";break;
+    									case "" : phone="";break;
+                						default:phone=e.phone;
+                					}
+								}else{
+									scyscore="0";
+								}
+								if(isScore=='1'||isScore=='2'){
+    								switch(e.score){
+        								case null : score="0.0";break;
+        								case undefined : score="0.0";break;
+        								default:score=e.score;
+        							}
+								}else{
+									score="0";
+								}
+								
+								if(isScore=='1'||isScore=='3'){
+        							switch(e.offer){
+        								case null : offer="0.0";break;
+        								case undefined : offer="0.0";break;
+        								default:offer=e.offer;
+        							}
+								}else{
+									offer="0";
+								}	
+								
+								var insertHtml='<tr>'+'<input type="hidden" name="gradeWritens['+(index)+'].studentId" value="'+e.studentId+'"><input type="hidden" name="gradeWritens['+(index)+'].id" value="'+e.id+'">'+
+                                                    '<td>'+ticketnum+'</td>'+
+                                                    '<td>'+e.studentName+'</td>'+
+                                                    '<td>'+sex+'</td>'+
+    												'<td>'+score+'</td>'+
+													'<td>'+offer+'</td>'+
+													'<td>'+scyscore+phone+'</td>'+
+													'<td>'+school+'</td>'+
+                                                '</tr>';		
+							}
+							$("#tabinput").append(insertHtml);//将返回的数据追加到表格
+                        });
+                        /*生成分页标签*/
+                       paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));  
+                    }  
+                }  
+            });  
+        }
+		
+		function paginator(pageIndex, pageSize, totalCount) {
+        	$.jqPaginator('#pagination', {
+        		totalCounts: totalCount,
+        		pageSize: pageSize,
+        	    currentPage: pageIndex,
+        	    visiblePages: 7,
+        		first:'<a class="first">首页</a>',
+        	    prev: '<a class="prev">上一页</a>',
+        	    next: '<a class="next">下一页</a>',
+        		last: '<a class="last：">末页</a>',
+        	    page: '<a class="page">{{page}}</a>',
+        	    onPageChange: function (num, type) {
+        	    	if (type === 'change' && num !== parseInt($("#currentPage").val())) {  
+                        $("#currentPage").val(num);//点击改变页码时，同步model中的页码  
+                        queryData();//重新生成新表
+                    }
+        	    }
+        	});
+        }
+		
+		
+		
+		//获取招聘项目
+    	function getProject() {
+    		var ryn = $("#ryn").val();
+    		if (!ryn) {
+    			return;
+    		}
+    		$("#themeid").empty();
+    		$("#positionid").empty();
+    		$.ajax({
+            	url : '${link.contextPath}/dg/scoreEnterInformation/selectProject?ryn=' + ryn,
+            	type : 'post',
+            	async: false,
+            	cache : false,
+            	dataType : 'json',
+            	success : function(data) {
+            		if (data.themeList.length > 0) {
+	    				var themeList = data.themeList;
+						for (var i = 0; i < themeList.length; i++) {
+							var id = themeList[i].id;
+							var name = themeList[i].theme;
+							if(getLength(name) > 12){
+    							name=substr(name,12);
+    						}
+							$("#themeid").append("<option title='"+themeList[i].theme+"' value='" + id + "'>" + name + "</option>");
+						}
+						getPosition();
+            		} else {
+            			$("#themeid").empty();
+            			$("#themeid").prepend("<option value='0'>== 请选择 ==</option>");
+						$("#tabinput tr").remove();//清空列表 
+            		}
+            	}
+          });
+    	}
+    	
+    	//获取岗位
+    	function getPosition() {
+    		var themeid = $("#themeid").val();
+    		var year = $("#ryn").val();
+    		//alert(themeid);
+    		if (!themeid) {
+    			return;
+    		}
+    		
+    		$("#positionid").empty();
+           	//$("#positionid").prepend("<option value=''>--请选择--</option>");
+    		$.ajax({
+                	url : '${link.contextPath}/dg/scoreEnterInformation/selectPosition?themeid=' + themeid+'&year='+year,
+                	type : 'post',
+                	async: false,
+                	cache : false,
+                	dataType : 'json',
+                	success : function(data) {
+                		if (data.positionList.length > 0) {
+    	    				var positionList = data.positionList;
+    						for (var i = 0; i < positionList.length; i++) {
+    							var id = positionList[i].id;
+    							var name = positionList[i].postName;
+    							$("#positionid").append("<option value='" + id + "'>" + name + "</option>");
+    						}
+    						queryData();
+                		}else {
+                			$("#positionid").empty();
+                			$("#positionid").prepend("<option value='0'>== 请选择 ==</option>");
+							$("#tabinput tr").remove();//清空列表 
+                		}
+                	}
+                });
+    	}
+	
+		//导出成绩
+		function exportExcels(){
+			var $serializeForm=$("#list_form").serialize();
+			var typeid=$("#typeid").val();
+			var projectId=$("#themeid").val();
+			if(!projectId){
+    			layer.msg("招聘主题为空，请重试！", {icon: 2});	
+    			return;	
+    		}
+    		if(!typeid){
+    			layer.msg("考试类型为空，请重试！", {icon: 2});	
+    			return;	
+    		}
+    		window.location.href='${link.contextPath}/dg/scoreGradeStudy/exportExcels?projectId=' + projectId+'&testType='+typeid;
+	    }
+		
+		function searchFunc(){
+    		$("#currentPage").val("1");
+    		$("#nameOrNum").val($("#numName").val());
+    		queryData();
+    	}
+    </script>
+</head>
+<body>
+	 #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+   <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+            <!-- 条件搜索 S-->
+
+             <form class="form-inline" id="input_form" onsubmit="return false;">
+				<input type="hidden" id="currentPage" name="currentPage" value="1"/>
+				<input type="hidden" id="pageSize" name="pageSize" value="20"/>
+				<input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+                <div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>年份：</span>
+                            <select class="select" id="ryn" name="condition['year']" onchange="getProject();">
+								#foreach( $vo in $nyrdics )
+                              <option value="$vo">$vo</option>
+                                #end
+                            </select>
+                        </li>
+                        <li>
+                            <span>招聘项目：</span>
+                            <select class="select"  id="themeid" name="condition['projectId']" onchange="getPosition();">
+								<!--#foreach( $vo in $themelist )
+                              <option value="$vo.id">$vo.theme</option>
+								#end-->
+                            </select>
+                        </li>
+						 <li>
+                            <span>岗位：</span>
+                            <select class="select" name="condition['postId']" id="positionid" onchange="queryData();">
+                               
+                            </select>
+                        </li>
+                        <li>
+                            <span>类型：</span>
+                            <select class="select" id="typeid" name="condition['testType']" onchange="queryData();">
+								#foreach( $vo in $kslxdics )
+									#if($vo.value != '6')
+										<option value="$vo.value">$vo.text</option>
+									#end
+								#end
+								<option value="7">综合成绩</option>
+                            </select>
+                        </li>
+						
+						 <li>
+                            <!--<input class="input" type="text" name="condition['nameOrNum']" placeholder="输入姓名或准考证号">-->
+							<input class="input" type="text" id="numName" placeholder="输入姓名或准考证号">
+							<input type="hidden" id="nameOrNum" name="condition['nameOrNum']" value=""/>	
+                        </li>
+                        <li>
+                            <!--<a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="queryData();">查找</a>-->
+							<a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="searchFunc();">查找</a>
+                        </li>
+						 <li>
+							<a href="javascript:void(0);" class="btn btn-default btn-sm" onclick="exportExcels();">导出</a>
+						 </li>
+                    </ul>
+                    
+                </div>
+ </form>           
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>准考证号</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+							<th id="writiens" style="display:none">统一笔试成绩</th>
+							<th id="trials" style="display:none">统一试讲成绩</th>
+                            <th><span id="testtypes"></span></th>
+							<th id="enters">是否录取</th>
+							<th>报考单位</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabinput">
+                    </tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+				<div class="pull-left"><span>综合成绩=统一笔试成绩*30%+统一试讲成绩*70%</span></div>
+                <div id="pagination" class="pull-right pages"></div>
+            </div>
+            <!-- 分页+全选模块 E-->
+    	</div>
+    	<!-- context内容 E-->
+
+    	<!-- footer S-->
+		<div class="page-footer">
+		    <div class="page-footer-inner">
+		        2016 © Metronic by keenthemes.
+		    </div>
+		</div>
+		<!-- footer E-->
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

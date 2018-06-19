@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.UserDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.User" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
+	<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+	<result column="PASSWORD_REAL" property="passwordReal" jdbcType="VARCHAR" />
+	<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+	<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+	<result column="USER_TYPE" property="userType" jdbcType="VARCHAR" />
+	<result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+	<result column="ROLE_IDS" property="roleIds" jdbcType="VARCHAR" typeHandler="org.jypj.dev.util.StringArrayTypeHandler"/>
+	<result column="ROLE_NAMES" property="roleNames" jdbcType="VARCHAR"/>
+	<result column="USER_TYPE_NAME" property="userTypeName" jdbcType="VARCHAR"/>
+	<result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+	<result column="MODIFY_DATE" property="modifyDate" jdbcType="DATE" />
+	<result column="NICK_NAME" property="nickName" jdbcType="VARCHAR" />
+	<result column="CATEGORYS" property="categorys" jdbcType="VARCHAR" />
+	<result column="SCHOOLID" property="schoolId" jdbcType="VARCHAR" />
+	<result column="ORGINID" property="orginId" jdbcType="VARCHAR" />
+	<result column="SKIN" property="skin" jdbcType="VARCHAR" />
+	<result column="schoolName" property="schoolName" jdbcType="VARCHAR" />
+	<result column="orginName" property="orginName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,LOGIN_NAME,PASSWORD,PASSWORD_REAL,USER_NAME,EMAIL,USER_TYPE,USER_ID,CREATE_DATE,MODIFY_DATE,NICK_NAME,CATEGORYS,SCHOOLID,ORGINID,SKIN
+  </sql>
+  
+   <insert id="saveUserByField" parameterType="org.jypj.dev.entity.User" >
+    insert into eims_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="loginName != null" >
+    LOGIN_NAME,
+   </if>
+   <if test="password != null" >
+    PASSWORD,
+   </if>
+   <if test="passwordReal != null" >
+    PASSWORD_REAL,
+   </if>
+   <if test="userName != null" >
+    USER_NAME,
+   </if>
+   <if test="email != null" >
+    EMAIL,
+   </if>
+   <if test="userType != null" >
+    USER_TYPE,
+   </if>
+   <if test="userId != null" >
+    USER_ID,
+   </if>
+   <if test="createDate != null" >
+    CREATE_DATE,
+   </if>
+   <if test="modifyDate != null" >
+    MODIFY_DATE,
+   </if>
+   <if test="nickName != null" >
+    NICK_NAME,
+   </if>
+   <if test="categorys != null" >
+    CATEGORYS,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="passwordReal != null" >
+        #{passwordReal,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=DATE},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="categorys != null" >
+        #{categorys,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveUser" parameterType="org.jypj.dev.entity.User" >
+    insert into eims_user (
+	ID,
+	LOGIN_NAME,
+	PASSWORD,
+	PASSWORD_REAL,
+	USER_NAME,
+	EMAIL,
+	USER_TYPE,
+	USER_ID,
+	CREATE_DATE,
+	MODIFY_DATE,
+	NICK_NAME,
+	CATEGORYS,
+	SCHOOLID,
+	ORGINID
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{loginName,jdbcType=VARCHAR},
+	#{password,jdbcType=VARCHAR},
+	#{passwordReal,jdbcType=VARCHAR},
+	#{userName,jdbcType=VARCHAR},
+	#{email,jdbcType=VARCHAR},
+	#{userType,jdbcType=VARCHAR},
+	#{userId,jdbcType=VARCHAR},
+	sysdate,
+	sysdate,
+	#{nickName,jdbcType=VARCHAR},
+	#{categorys,jdbcType=VARCHAR},
+	#{schoolId,jdbcType=VARCHAR},
+	#{orginId,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteUserById" parameterType="java.lang.String" >
+    delete from eims_user
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteUserByIds">
+    delete from EIMS_USER
+    where ID in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+     #{id,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+  
+  <delete id="deleteUserByObject" parameterType="org.jypj.dev.entity.User" >
+    delete from eims_user
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateUserByField" parameterType="org.jypj.dev.entity.User" >
+    update eims_user
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="loginName != null" >
+  	 LOGIN_NAME=#{loginName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="password != null" >
+  	 PASSWORD=#{password,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="passwordReal != null" >
+  	 PASSWORD_REAL=#{passwordReal,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="userName != null" >
+  	 USER_NAME=#{userName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="email != null" >
+  	 EMAIL=#{email,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="userType != null" >
+  	 USER_TYPE=#{userType,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="userId != null" >
+  	 USER_ID=#{userId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createDate != null" >
+  	 CREATE_DATE=#{createDate,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifyDate != null" >
+  	 MODIFY_DATE=#{modifyDate,jdbcType=DATE},
+  	 </if>
+  	 <if test="nickName != null" >
+  	 NICK_NAME=#{nickName,jdbcType=VARCHAR},
+  	 </if>
+     <if test="categorys != null" >
+  	 CATEGORYS=#{categorys,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateUser" parameterType="org.jypj.dev.entity.User" >
+    update eims_user
+    <set >
+	 LOGIN_NAME=#{loginName,jdbcType=VARCHAR},
+	 USER_NAME=#{userName,jdbcType=VARCHAR},
+	 EMAIL=#{email,jdbcType=VARCHAR},
+	 USER_TYPE=#{userType,jdbcType=VARCHAR},
+	 USER_ID=#{userId,jdbcType=VARCHAR},
+	 MODIFY_DATE=sysdate,
+	 NICK_NAME=#{nickName,jdbcType=VARCHAR},
+	 CATEGORYS=#{categorys,jdbcType=VARCHAR},
+	 SCHOOLID=#{schoolId,jdbcType=VARCHAR},
+	 ORGINID=#{orginId,jdbcType=VARCHAR},
+	 SKIN=#{skin,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectUserById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_user
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select t.ID,t.LOGIN_NAME,t.PASSWORD,t.PASSWORD_REAL,t.USER_NAME,t.EMAIL,t.USER_TYPE,
+    t.USER_ID,t.CREATE_DATE,t.MODIFY_DATE,t.NICK_NAME,t.CATEGORYS,t.ORGINID,t.SCHOOLID,
+    t.DEPARTID,t.SKIN,d.TEXT as schoolName,d2.TEXT as orginName
+	from EIMS_USER t 
+	LEFT JOIN SYS_DICTIONARY d on t.schoolid=d.id and d.code='dwdm'
+	LEFT JOIN SYS_DICTIONARY d2 on t.orginid=d2.id and d2.code='dwdm'
+    where 1=1 
+    <if test="nickName != null and nickName !='' ">
+	  and NICK_NAME=#{nickName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userType != null and userType !='' ">
+	  and USER_TYPE=#{userType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userName != null and userName !='' ">
+	  and USER_NAME like '%'||#{userName,jdbcType=VARCHAR}||'%'
+	 </if>
+	 <if test="loginName != null and loginName !='' ">
+	  and LOGIN_NAME like '%'||#{loginName,jdbcType=VARCHAR}||'%'
+	 </if>
+	 order by user_type,login_name,user_name
+  </select> 
+  
+   <select id="selectOnePageByUser" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.User" >
+    select 
+    <include refid="Base_Column_List" />,
+    (select wm_concat(t1.ROLE_ID) from EIMS_USER_ROLE t1 where t1.EIMS_USER_ID=u.ID) as ROLE_IDS,
+    (select wm_concat(r.ROLE_NAME) from EIMS_ROLE r where exists(select 1 from EIMS_USER_ROLE ur where ur.ROLE_ID=r.ID and u.ID=ur.EIMS_USER_ID)) as ROLE_NAMES,
+    (select TEXT from SYS_DICTIONARY where VALUE=u.USER_TYPE and CODE='sys_user_type') as USER_TYPE_NAME
+    from EIMS_USER u
+    where 1=1 
+	 <if test="nickName != null and nickName !='' ">
+	  and NICK_NAME=#{nickName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="userType != null and userType !='' ">
+	  and USER_TYPE=#{userType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userName != null and userName !='' ">
+	  and USER_NAME like '%'||#{userName,jdbcType=VARCHAR}||'%'
+	 </if>
+	 <if test="password != null and password !='' ">
+	  and PASSWORD=#{password,jdbcType=VARCHAR}
+	 </if>
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="loginName != null and loginName !='' ">
+	  and LOGIN_NAME like '%'||#{loginName,jdbcType=VARCHAR}||'%'
+	 </if>
+	 <if test="passwordReal != null and passwordReal !='' ">
+	  and PASSWORD_REAL=#{passwordReal,jdbcType=VARCHAR}
+	 </if>
+	 <if test="email != null and email !='' ">
+	  and EMAIL=#{email,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userId != null and userId !='' ">
+	  and USER_ID=#{userId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	  <if test="categorys != null and categorys !='' ">
+	  and CATEGORYS=#{categorys,jdbcType=VARCHAR}
+	 </if>
+	 order by u.USER_TYPE,u.LOGIN_NAME
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_user
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByUser" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.User" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_user
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="loginName != null and loginName !='' ">
+	  and LOGIN_NAME=#{loginName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="password != null and password !='' ">
+	  and PASSWORD=#{password,jdbcType=VARCHAR}
+	 </if>
+	 <if test="passwordReal != null and passwordReal !='' ">
+	  and PASSWORD_REAL=#{passwordReal,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userName != null and userName !='' ">
+	  and USER_NAME=#{userName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="email != null and email !='' ">
+	  and EMAIL=#{email,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userType != null and userType !='' ">
+	  and USER_TYPE=#{userType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userId != null and userId !='' ">
+	  and USER_ID=#{userId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="nickName != null and nickName !='' ">
+	  and NICK_NAME=#{nickName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="categorys != null and categorys !='' ">
+	  and CATEGORYS=#{categorys,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_user
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByUser" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.User" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_user
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="loginName != null and loginName !='' ">
+	  and LOGIN_NAME=#{loginName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="password != null and password !='' ">
+	  and PASSWORD=#{password,jdbcType=VARCHAR}
+	 </if>
+	 <if test="passwordReal != null and passwordReal !='' ">
+	  and PASSWORD_REAL=#{passwordReal,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userName != null and userName !='' ">
+	  and USER_NAME=#{userName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="email != null and email !='' ">
+	  and EMAIL=#{email,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userType != null and userType !='' ">
+	  and USER_TYPE=#{userType,jdbcType=VARCHAR}
+	 </if>
+	 <if test="userId != null and userId !='' ">
+	  and USER_ID=#{userId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createDate != null and createDate !='' ">
+	  and CREATE_DATE=#{createDate,jdbcType=DATE}
+	 </if>
+	 <if test="modifyDate != null and modifyDate !='' ">
+	  and MODIFY_DATE=#{modifyDate,jdbcType=DATE}
+	 </if>
+	 <if test="nickName != null and nickName !='' ">
+	  and NICK_NAME=#{nickName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="categorys != null and categorys !='' ">
+	  and CATEGORYS=#{categorys,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectUserByLoginName" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+  	from EIMS_USER
+  	where LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectRepeatUserByLoginName" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.User" >
+    select 
+    <include refid="Base_Column_List" />
+    from eims_user
+    where 1=1  
+    and LOGIN_NAME=#{loginName,jdbcType=VARCHAR}
+    <if test="id != null and id !='' ">
+	  and ID &lt;&gt; #{id,jdbcType=VARCHAR}
+	</if>
+	<if test="id == null">
+	  and ID is not null 
+	</if>
+   </select> 
+   
+   <update id="resetPasswd" parameterType="map">
+   		update eims_user
+   		set
+   		PASSWORD_REAL=#{newPasswd,jdbcType=VARCHAR},
+   		PASSWORD=#{encrypt,jdbcType=VARCHAR}
+   		where ID=#{id,jdbcType=VARCHAR} 
+   </update>
+</mapper>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+		$(document).ready(function () {  
+			getProject();
+        });
+		   
+		function queryData() {
+			var $serializeForm=$("#input_form").serialize();
+			var typeid=$("#typeid").val();
+    		if(typeid=='2'){
+    			$("#testtypes").text("统一笔试成绩");
+				url='${link.contextPath}/dg/scoreGradeWriten/gradesWritienList';
+    		}else if(typeid=='3'){
+    			$("#testtypes").text("统一试讲成绩");
+				url='${link.contextPath}/dg/scoreGradeTrial/gradesTrialList';
+				
+    		}else if(typeid=='4'){
+    			$("#testtypes").text("体检结果");
+				url='${link.contextPath}/dg/scoreGradePhysical/gradesPhysicalList';
+				
+    		}else if(typeid=='5'){
+    			$("#testtypes").text("考察结果");
+				url='${link.contextPath}/dg/scoreGradeStudy/gradesStudyList';
+				
+    		}
+			$("#savegrades").hide();//保存成绩
+			$("#cancelPub").hide();//取消发布成绩
+			$("#publishgrades").hide();//发布成绩
+			$("#commongradesbtn").hide();//发布普通科成绩
+			$("#artgradebtn").hide();//发布艺术科成绩
+			$("#commoncelbtn").hide();//取消发布普通科成绩
+			$("#artcelbtn").hide();//取消发布艺术科成绩
+			$.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: url,
+                data : $serializeForm,
+                success: function (data) {
+                    if (data) {  
+						var step=data.step;
+						var isscore=data.isscore;
+						if(typeid=='2'){
+							if(step<8){
+    							if(step>=4&&isscore!=1&&isscore!=null){
+    								$("#savegrades").show();//保存成绩
+                					$("#publishgrades").show();//发布成绩
+    								$("#cancelPub").hide();//取消发布成绩
+    							}else if(step>=4&&isscore==1){
+    								$("#savegrades").hide();//保存成绩
+    								$("#cancelPub").show();//取消发布成绩
+    								$("#publishgrades").hide();//发布成绩
+    							}else{
+    								$("#savegrades").hide();//保存成绩
+                    				$("#cancelPub").hide();//取消发布成绩
+                    				$("#publishgrades").hide();//发布成绩
+    							}
+							 }else{
+							 	$("#savegrades").hide();//保存成绩
+                				$("#cancelPub").hide();//取消发布成绩
+                				$("#publishgrades").hide();//发布成绩
+							 }
+            				$("#commongradesbtn").hide();//发布普通科成绩
+            				$("#artgradebtn").hide();//发布艺术科成绩
+            				$("#commoncelbtn").hide();//取消发布普通科成绩
+            				$("#artcelbtn").hide();//取消发布艺术科成绩
+            				
+                		}else if(typeid=='3'){
+							var status=data.status;
+							if(step>=3&&step<8){
+    								if(status==1){//成绩未发布
+										$("#savegrades").show();//保存成绩
+                    					$("#publishgrades").show();//发布成绩
+        								$("#cancelPub").hide();//取消发布成绩
+									}else if(status==2){//成绩已发布
+            							$("#savegrades").hide();//保存成绩
+										$("#cancelPub").show();//取消发布成绩
+										$("#publishgrades").hide();//发布成绩
+        							}else if(status==3){//名单只发布一科
+            							$("#savegrades").show();//保存成绩
+										$("#cancelPub").hide();//取消发布成绩
+										$("#publishgrades").hide();//发布成绩
+        							}else if(status==4){//名单都没发布
+            							$("#savegrades").hide();//保存成绩
+										$("#cancelPub").hide();//取消发布成绩
+										$("#publishgrades").hide();//发布成绩
+        							}else{
+    									$("#savegrades").hide();//保存成绩
+                        				$("#cancelPub").hide();//取消发布成绩
+										$("#publishgrades").hide();//发布成绩
+    								}
+							}else if(step>=8){//已发布名单
+    							$("#savegrades").hide();//保存成绩
+                				$("#cancelPub").hide();//取消发布成绩
+								$("#publishgrades").hide();//发布成绩
+    						}else{
+    							$("#savegrades").hide();//保存成绩
+                				$("#cancelPub").hide();//取消发布成绩
+								$("#publishgrades").hide();//发布成绩
+							}		
+                		}else if(typeid=='4'){
+                			if(step==8){
+								$("#savegrades").show();//保存成绩
+            					$("#publishgrades").show();//发布成绩
+								$("#cancelPub").hide();//取消发布成绩
+							}else if(step==9){
+								$("#cancelPub").show();//取消发布成绩
+								$("#savegrades").hide();//保存成绩
+            					$("#publishgrades").hide();//发布成绩
+							}else{
+								$("#savegrades").hide();//保存成绩
+                				$("#cancelPub").hide();//取消发布成绩
+                				$("#publishgrades").hide();//发布成绩
+							}
+            				$("#commongradesbtn").hide();//发布普通科成绩
+            				$("#artgradebtn").hide();//发布艺术科成绩
+            				$("#commoncelbtn").hide();//取消发布普通科成绩
+            				$("#artcelbtn").hide();//取消发布艺术科成绩
+                		}else if(typeid=='5'){
+            				if(step==10){
+								$("#savegrades").show();//保存成绩
+            					$("#publishgrades").show();//发布成绩
+								$("#cancelPub").hide();//取消发布成绩
+							}else if(step==11){
+								$("#cancelPub").show();//取消发布成绩
+								$("#savegrades").hide();//保存成绩
+            					$("#publishgrades").hide();//发布成绩
+							}else{
+								$("#savegrades").hide();//保存成绩
+                				$("#cancelPub").hide();//取消发布成绩
+                				$("#publishgrades").hide();//发布成绩
+							}
+            				$("#commongradesbtn").hide();//发布普通科成绩
+            				$("#artgradebtn").hide();//发布艺术科成绩
+            				$("#commoncelbtn").hide();//取消发布普通科成绩
+            				$("#artcelbtn").hide();//取消发布艺术科成绩
+                		}
+					
+					
+                       /*获取数据总行数*/
+                        $("#totalCounts").val(data.total);
+						$("#currentPage").val(data.currentPage);
+                        /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/
+                        if (parseInt($("#totalCounts").val()) == 0) {
+                            $("#totalCounts").val(1);
+                        }
+						if(parseInt($("#currentPage").val()) == 0) {  
+                        	$("#currentPage").val(1);
+                        }
+						$("#ryn").val($!nowYear);  
+                        /*生成表和套用css样式*/  
+                        data = data.rows;//获取筛选后的内容 
+                        $("#tabinput tr").remove();//清空列表 
+                        $.each(data, function (index, e) {
+							var ticketnum="";
+							switch(e.ticketNum){
+								case null : ticketNum="";break;
+								case undefined : ticketNum="161201102001";break;
+								default:ticketnum=e.ticketNum;
+							}
+							var sex="";
+							switch(e.sex){
+								case "1" : sex="男";break;
+								case "2" : sex="女";break;
+								default:sex="女";
+							}
+							var score="";
+							switch(e.score){
+								case null : score="0.0";break;
+								case undefined : score="0.0";break;
+								default:score=e.score;
+							}
+							var school="";
+							switch(e.school){
+								case null : school="";break;
+								case undefined : school="";break;
+								default:school=e.school;
+							}
+							if(typeid=='2'){
+    							var insertHtml='<tr>'+'<input type="hidden" name="gradeWritens['+(index)+'].studentId" value="'+e.studentId+'"><input type="hidden" name="gradeWritens['+(index)+'].id" value="'+e.id+'">'+
+                                                    '<td>'+ticketnum+'</td>'+
+                                                    '<td>'+e.studentName+'</td>'+
+                                                    '<td>'+sex+'</td>'+
+    												'<td class="text-center">'+'<input class="input" type="text" name="gradeWritens['+(index)+'].grade" value="'+score+'">'+'</td>'+
+    												/*'<td>'+'<select class="select" name="grades['+(index)+'].result">'+
+                                                                '<option value="1">通过</option>'+
+                                                                '<option value="2">不通过</option>'+
+                                                            '</select>'+
+    												'</td>'+*/
+													'<td>'+school+'</td>'+
+                                                '</tr>';
+							}else if(typeid=='3'){
+								var insertHtml='<tr>'+'<input type="hidden" name="gradeTrials['+(index)+'].studentId" value="'+e.studentId+'"><input type="hidden" name="gradeTrials['+(index)+'].id" value="'+e.id+'">'+
+                                                    '<td>'+ticketnum+'</td>'+
+                                                    '<td>'+e.studentName+'</td>'+
+                                                    '<td>'+sex+'</td>'+
+    												'<td class="text-center">'+'<input class="input" type="text" name="gradeTrials['+(index)+'].grade" value="'+score+'">'+'</td>'+
+													'<td>'+school+'</td>'+
+                                                '</tr>';
+							}else if(typeid=='4'){
+    							var insertHtml='<tr>'+'<input type="hidden" name="gradePhysicals['+(index)+'].studentId" value="'+e.studentId+'"><input type="hidden" name="gradePhysicals['+(index)+'].id" value="'+e.id+'">'+
+                                                    '<td>'+ticketnum+'</td>'+
+                                                    '<td>'+e.studentName+'</td>'+
+                                                    '<td>'+sex+'</td>';
+									if(e.isPass=='1'){
+    										insertHtml+='<td>'+'<select class="select grid-120" name="gradePhysicals['+(index)+'].result">'+
+    													'<option value="1"  selected="selected">通过</option>'+
+                                                        '<option value="2">未通过</option>'+
+                                                    '</select>';		
+    									}else{
+    										insertHtml+='<td>'+'<select class="select grid-120" name="gradePhysicals['+(index)+'].result">'+
+    													'<option value="1">通过</option>'+
+                                                        '<option value="2" selected="selected">未通过</option>'+
+                                                    '</select>';
+    									}/*else{
+											insertHtml+='<td>'+'<select class="select grid-120" name="gradePhysicals['+(index)+'].result">'+
+														'<option value="">请选择</option>'+
+    													'<option value="1">通过</option>'+
+                                                        '<option value="2">未通过</option>'+
+                                                    '</select>';
+										
+										}*/
+										insertHtml+='</td>'+'<td>'+school+'</td>';
+									insertHtml+='</tr>';
+							}else if(typeid=='5'){
+    							var insertHtml='<tr>'+'<input type="hidden" name="gradeStudies['+(index)+'].studentId" value="'+e.studentId+'"><input type="hidden" name="gradeStudies['+(index)+'].id" value="'+e.id+'">'+
+                                                    '<td>'+ticketnum+'</td>'+
+                                                    '<td>'+e.studentName+'</td>'+
+                                                    '<td>'+sex+'</td>';
+									if(e.isPass=='1'){
+    										insertHtml+='<td>'+'<select class="select grid-120" name="gradeStudies['+(index)+'].result">'+
+    													'<option value="1"  selected="selected">通过</option>'+
+                                                        '<option value="2">未通过</option>'+
+                                                    '</select>';		
+    									}else{
+    										insertHtml+='<td>'+'<select class="select grid-120" name="gradeStudies['+(index)+'].result">'+
+    													'<option value="1">通过</option>'+
+                                                        '<option value="2" selected="selected">未通过</option>'+
+                                                    '</select>';
+    									}/*else{
+											insertHtml+='<td>'+'<select class="select grid-120" name="gradeStudies['+(index)+'].result">'+
+														'<option value="">请选择</option>'+
+    													'<option value="1">通过</option>'+
+                                                        '<option value="2">未通过</option>'+
+                                                    '</select>';
+										
+										}*/
+										insertHtml+='</td>'+'<td>'+school+'</td>';
+									insertHtml+='</tr>';
+							}
+							$("#tabinput").append(insertHtml);//将返回的数据追加到表格
+                        });
+                        /*生成分页标签*/
+                       paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));  
+                    }  
+                }  
+            });  
+        }
+		
+		function paginator(pageIndex, pageSize, totalCount) {
+        	$.jqPaginator('#pagination', {
+        		totalCounts: totalCount,
+        		pageSize: pageSize,
+        	    currentPage: pageIndex,
+        	    visiblePages: 7,
+        		first:'<a class="first">首页</a>',
+        	    prev: '<a class="prev">上一页</a>',
+        	    next: '<a class="next">下一页</a>',
+        		last: '<a class="last：">末页</a>',
+        	    page: '<a class="page">{{page}}</a>',
+        	    onPageChange: function (num, type) {
+        	    	if (type === 'change' && num !== parseInt($("#currentPage").val())) {  
+                        $("#currentPage").val(num);//点击改变页码时，同步model中的页码  
+                        queryData();//重新生成新表
+                    }
+        	    }
+        	});
+        }
+		
+		//获取招聘项目
+    	function getProject() {
+    		var ryn = $("#ryn").val();
+    		if (!ryn) {
+    			return;
+    		}
+    		$("#themeid").empty();
+    		$("#positionid").empty();
+    		$.ajax({
+                	url : '${link.contextPath}/dg/scoreEnterInformation/selectProject?ryn=' + ryn,
+                	type : 'post',
+                	async: false,
+                	cache : false,
+                	dataType : 'json',
+                	success : function(data) {
+                		if (data.themeList.length > 0) {
+    	    				var themeList = data.themeList;
+    						for (var i = 0; i < themeList.length; i++) {
+    							var id = themeList[i].id;
+    							var name = themeList[i].theme;
+								if(getLength(name) > 12){
+        							name=substr(name,12);
+        						}
+    							$("#themeid").append("<option title='"+themeList[i].theme+"' value='" + id + "'>" + name + "</option>");
+    						}
+    						getPosition();
+                		} else {
+                			$("#themeid").empty();
+                			$("#themeid").prepend("<option value='0'>== 请选择 ==</option>");
+							$("#tabinput tr").remove();//清空列表 
+							$("#savegrades").hide();//保存成绩
+            				$("#cancelPub").hide();//取消发布成绩
+            				$("#publishgrades").hide();//发布成绩
+            				$("#commongradesbtn").hide();//发布普通科成绩
+            				$("#artgradebtn").hide();//发布艺术科成绩
+            				$("#commoncelbtn").hide();//取消发布普通科成绩
+            				$("#artcelbtn").hide();//取消发布艺术科成绩
+                		}
+                	}
+                });
+    	}
+    	
+    	//获取岗位
+    	function getPosition() {
+    		var themeid = $("#themeid").val();
+    		var year = $("#ryn").val();
+    		//alert(themeid);
+    		if (!themeid) {
+    			return;
+    		}
+    		
+    		$("#positionid").empty();
+           	//$("#positionid").prepend("<option value=''>--请选择--</option>");
+    		$.ajax({
+                	url : '${link.contextPath}/dg/scoreEnterInformation/selectPosition?themeid=' + themeid+'&year='+year,
+                	type : 'post',
+                	async: false,
+                	cache : false,
+                	dataType : 'json',
+                	success : function(data) {
+                		if (data.positionList.length > 0) {
+    	    				var positionList = data.positionList;
+    						for (var i = 0; i < positionList.length; i++) {
+    							var id = positionList[i].id;
+    							var name = positionList[i].postName;
+    							$("#positionid").append("<option value='" + id + "'>" + name + "</option>");
+    						}
+    						queryData();
+                		}else {
+                			$("#positionid").empty();
+                			$("#positionid").prepend("<option value='0'>== 请选择 ==</option>");
+							$("#tabinput tr").remove();//清空列表 
+							$("#savegrades").hide();//保存成绩
+            				$("#cancelPub").hide();//取消发布成绩
+            				$("#publishgrades").hide();//发布成绩
+            				$("#commongradesbtn").hide();//发布普通科成绩
+            				$("#artgradebtn").hide();//发布艺术科成绩
+            				$("#commoncelbtn").hide();//取消发布普通科成绩
+            				$("#artcelbtn").hide();//取消发布艺术科成绩
+                		}
+                	}
+                });
+    	}
+		
+	var sloadindex;	
+	//保存成绩
+	function saveScores() {
+		var $serializeForm=$("#input_form").serialize();
+		if(!$serializeForm){
+			layer.msg("保存的数据为空，请确认！", {icon: 2});	
+			return;
+		}
+		var typeid=$("#typeid").val();
+		if(typeid=='2'){  //统一笔试
+			url='${link.contextPath}/dg/scoreGradeWriten/saveScoreInfo';
+		}else if(typeid=='3'){  //统一试讲	
+			url='${link.contextPath}/dg/scoreGradeTrial/saveTrialScoreInfo';
+		}else if(typeid=='4'){  //体检
+			url='${link.contextPath}/dg/scoreGradePhysical/savePhysicalScoreInfo';
+		}else if(typeid=='5'){  //考察
+			url='${link.contextPath}/dg/scoreGradeStudy/saveStudyScoreInfo';
+		}else if(typeid=='6'){  //公示
+			
+		}
+		$.ajax({
+			beforeSend: function(){
+                sloadindex = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+                });
+            },
+        	url : url,
+			data : $serializeForm,
+        	type : 'post',
+        	async: false,
+        	cache : false,
+        	dataType : 'json',
+        	success : function(data) {
+				layer.close(sloadindex);
+				if(data.flag=='success'){
+					layer.msg(data.msg, {icon: 1});
+					queryData();
+				}else{
+					layer.msg(data.msg, {icon: 2});
+					
+				}
+        	}	
+         });
+		
+	}
+	
+	
+	//发布成绩
+	function publishs() {
+		var $serializeForm=$("#input_form").serialize();
+		var typeid=$("#typeid").val();
+		var url=""
+		if(typeid=='2'){  //统一笔试
+			url='${link.contextPath}/dg/scoreGradeWriten/publishWritienGrade';
+		}else if(typeid=='3'){  //统一试讲
+			url='${link.contextPath}/dg/scoreGradeTrial/publishTrials';
+		}else if(typeid=='4'){  //体检
+			url='${link.contextPath}/dg/scoreGradePhysical/publishPhysicalGrade';
+		}else if(typeid=='5'){  //考察
+			url='${link.contextPath}/dg/scoreGradeStudy/publishStudyGrade';
+		}else if(typeid=='6'){  //公示
+			
+		}
+		$.ajax({
+			beforeSend: function(){
+                sloadindex = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+                });
+            },
+        	url : url,
+			data : $serializeForm,
+        	type : 'post',
+        	async: false,
+        	cache : false,
+        	dataType : 'json',
+        	success : function(data) {
+				layer.close(sloadindex);
+				if(data.flag=='success'){
+					layer.msg(data.msg, {icon: 1});
+					//setTimeout(function() {
+						queryData();
+	               // }, 2000);
+				}else{
+					layer.msg(data.msg, {icon: 2});
+				}
+			}
+        });
+	}
+	
+	//统一试讲发布成绩
+	function commonOrartpub(flag) {
+		var $serializeForm=$("#input_form").serialize();
+		var typeid=$("#typeid").val();
+		var url='${link.contextPath}/dg/scoreGradeTrial/publishTrials?flag=' + flag;
+		$.ajax({
+			beforeSend: function(){
+                sloadindex = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+                });
+            },
+        	url : url,
+			data : $serializeForm,
+        	type : 'post',
+        	async: false,
+        	cache : false,
+        	dataType : 'json',
+        	success : function(data) {
+				layer.close(sloadindex);
+				if(data.flag=='success'){
+					layer.msg(data.msg, {icon: 1});
+					queryData();
+				}else{
+					layer.msg(data.msg, {icon: 2});
+				}
+			}
+        });
+	}
+	
+	//统一试讲取消发布成绩
+	function celcommonOrart(flag) {
+		var $serializeForm=$("#input_form").serialize();
+		var url='${link.contextPath}/dg/scoreGradeTrial/celpublishTrials?flag=' + flag;
+		$.ajax({
+			beforeSend: function(){
+                sloadindex = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+                });
+            },
+        	url : url,
+			data : $serializeForm,
+        	type : 'post',
+        	async: false,
+        	cache : false,
+        	dataType : 'json',
+        	success : function(data) {
+				layer.close(sloadindex);
+				if(data.flag=='success'){
+					layer.msg(data.msg, {icon: 1});
+					queryData();
+				}else{
+					layer.msg(data.msg, {icon: 2});
+				}
+			}
+        });
+	}
+	
+	//取消发布成绩
+	function celpublish() {
+		var $serializeForm=$("#input_form").serialize();
+		var typeid=$("#typeid").val();
+		var url=""
+		if(typeid=='2'){  //统一笔试
+			url='${link.contextPath}/dg/scoreGradeWriten/celpublishWritien';
+		}else if(typeid=='3'){  //统一试讲
+			url='${link.contextPath}/dg/scoreGradeTrial/celpublishTrials';
+		}else if(typeid=='4'){  //体检
+			url='${link.contextPath}/dg/scoreGradePhysical/celpublishPhysicals';
+		}else if(typeid=='5'){  //考察
+			url='${link.contextPath}/dg/scoreGradeStudy/celpublishStudys';
+		}else if(typeid=='6'){  //公示
+			
+		}
+		$.ajax({
+			beforeSend: function(){
+                sloadindex = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+                });
+            },
+        	url : url,
+			data : $serializeForm,
+        	type : 'post',
+        	async: false,
+        	cache : false,
+        	dataType : 'json',
+        	success : function(data) {
+				layer.close(sloadindex);
+				if(data.flag=='success'){
+					layer.msg(data.msg, {icon: 1});
+					//setTimeout(function() {
+						queryData();
+	                //}, 2000);
+				}else{
+					layer.msg(data.msg, {icon: 2});
+				}
+			}
+        });
+	}
+	
+	function searchFunc(){
+		$("#currentPage").val("1");
+		$("#nameOrNum").val($("#numName").val());
+		queryData();
+	}
+    </script>
+</head>
+<body>
+	 #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+   <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <form class="content" id="input_form" onsubmit="return false;">
+            <!-- 条件搜索 S-->
+
+             <div class="form-inline" >
+				<input type="hidden" id="currentPage" name="currentPage" value="1"/>
+				<input type="hidden" id="pageSize" name="pageSize" value="20"/>
+				<input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+                <div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>年份：</span>
+                            <select class="select" id="ryn" name="condition['year']" onchange="getProject();">
+								#foreach( $vo in $nyrdics )
+                              <option value="$vo">$vo</option>
+                                #end
+                            </select>
+                        </li>
+                        <li>
+                            <span>招聘项目：</span>
+                            <select class="select"  id="themeid" name="condition['projectId']" onchange="getPosition();">
+								<!--#foreach( $vo in $themelist )
+                              <option value="$vo.id">$vo.theme</option>
+								#end-->
+                            </select>
+                        </li>
+						 <li>
+                            <span>岗位：</span>
+                            <select class="select" name="condition['postId']" id="positionid" onchange="queryData();">
+                               
+                            </select>
+                        </li>
+                        <li>
+                            <span>类型：</span>
+                            <select class="select" id="typeid" name="condition['testType']" onchange="queryData();">
+								#foreach( $vo in $kslxdics )
+									#if($vo.value != '1'&&$vo.value !='6')
+										<option value="$vo.value">$vo.text</option>
+									#end
+                                #end
+                            </select>
+                        </li>
+						
+						 <li>
+                            <!--<input class="input" type="text" name="condition['nameOrNum']" placeholder="输入姓名或准考证号">-->
+							<input class="input" type="text" id="numName" placeholder="输入姓名或准考证号">
+							<input type="hidden" id="nameOrNum" name="condition['nameOrNum']" value=""/>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="searchFunc();">查找</a>
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>准考证号</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th><span id="testtypes"></span></th>
+							<th>报考单位</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabinput">
+                    </tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+                <div class="pull-left checkAllBox">
+					<a href="javascript:void(0);" class="btn btn-default btn-sm" onclick="saveScores()" id="savegrades" style="display:none">保存</a>
+					<span class="handle" id="cancelPub" style="display:none">
+						<a href="javascript:void(0);" class="btn btn-default btn-sm" onclick="celpublish()">取消发布成绩</a>
+					</span>
+					<span class="handle" id="publishgrades" style="display:none">
+						<a href="javascript:void(0);" class="btn btn-default btn-sm" onclick="publishs()">发布成绩</a>
+					</span>
+					<!--<span class="handle" id="commongradesbtn" style="display:none">
+						<a href="javascript:void(0);" class="btn btn-default btn-sm" onclick="commonOrartpub(1)">发布普通科成绩</a>
+					</span>
+					<span class="handle" id="artgradebtn" style="display:none">
+						<a href="javascript:void(0);" class="btn btn-default btn-sm" onclick="commonOrartpub(2)">发布艺术科成绩</a>
+					</span>
+					<span class="handle" id="commoncelbtn" style="display:none">
+						<a href="javascript:void(0);" class="btn btn-default btn-sm" onclick="celcommonOrart(1)">取消发布普通科成绩</a>
+					</span>
+					<span class="handle" id="artcelbtn" style="display:none">
+						<a href="javascript:void(0);" class="btn btn-default btn-sm" onclick="celcommonOrart(2)">取消发布艺术科成绩</a>
+					</span>-->
+                </div> 
+                <div id="pagination" class="pull-right pages"></div>
+           </div>
+            <!-- 分页+全选模块 E-->
+    	</form>
+    	<!-- context内容 E-->
+
+    	<!-- footer S-->
+		<div class="page-footer">
+		    <div class="page-footer-inner">
+		        2016 © Metronic by keenthemes.
+		    </div>
+		</div>
+		<!-- footer E-->
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

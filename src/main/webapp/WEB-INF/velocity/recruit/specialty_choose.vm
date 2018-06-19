@@ -1,0 +1,400 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        getFprofess();
+
+        $(document).on("click","input[name = chkItem]:checkbox",function(){
+            checkProfess($(this));
+        });
+
+        $(document).on("dblclick","label.profess",function(){
+            var text=$.trim($(this).text());
+            var code=$(this).attr("code");
+            delete profess[code];
+            $(this).parent("li").remove();
+            $("#professTable").find("input:checkbox."+code).prop("checked", false);
+            //有一个没选中，全选就不选中
+            if($("#chkAll").is(":checked")){
+                $("#chkAll").prop("checked", false);
+            }
+        });
+
+        $("#chkAll").click(function(){
+            $("input[name = chkItem]:checkbox").each(function(index,e){
+                if($("#chkAll").is(":checked")){
+                    $(e).prop("checked", true);
+                }else{
+                    $(e).prop("checked", false);
+                }
+                checkProfess($(e));
+            });
+        });
+
+    });
+
+    function checkProfess($dom){
+        var code=$dom.attr("class");
+        var text=$dom.attr("text");
+        if($dom.is(":checked")){//选中
+            if(!profess[code]){
+                profess[code]=code+text;
+                var name = "" ;
+                if(text.length>20){
+                    name = text.substring(0,20)+"..."
+                }else{
+                    name = text ;
+                }
+                $("#chosedProfess").append("<li><label class='profess "+code+"' code='"+code+"' title='"+code+text+"'>"+code+name+"&nbsp;&nbsp;&nbsp;</label></li>");
+            }
+            //每个选项都选中就将全选选中
+            var chklen=$("input[name = chkItem]:checkbox:checked").size();
+            if($("input[name = chkItem]:checkbox").size() == chklen){
+                $("#chkAll").prop("checked", true);
+            }
+        }else{//未选中
+            delete profess[code];
+            $("#chosedProfess").find("label."+code).parent("li").remove();
+            //有一个没选中，全选就不选中
+            if($("#chkAll").is(":checked")){
+                $("#chkAll").prop("checked", false);
+            }
+        }
+    }
+
+    var profess={};
+    var limitProfession=window.parent.professCode;
+    var limitProfessionText=window.parent.professText;
+
+    //获取一级学科
+    function getFprofess() {
+        var zylx = $("#zylx").val();
+        if (!zylx) {
+            return;
+        }
+        $("#fProfess").empty();
+        $("#fProfess").prepend("<option value=''>--请选择--</option>");
+        $("#sProfess").empty();
+        $("#sProfess").prepend("<option value=''>--请选择--</option>");
+        $.ajax({
+            url : '${link.contextPath}/dg/studentInfo/getFprofess?zylx=' + zylx,
+            type : 'post',
+            async: false,
+            cache : false,
+            dataType : 'json',
+            success : function(data) {
+                if (data.speciaList.length > 0) {
+                    var speciaList = data.speciaList;
+                    for (var i = 0; i < speciaList.length; i++) {
+                        var id = speciaList[i].id;
+                        var name = speciaList[i].name;
+                        if(name.length>6){
+                            name = name.substring(0,6)+"..." ;
+                        }
+                        $("#fProfess").append("<option value='" + id + "' title='" + speciaList[i].name + "'>" + name + "</option>");
+                    }
+                    joinData(data.speciaList);
+                } else {
+                    $("#professTable").html("");
+                    $("#fProfess").empty();
+                    $("#fProfess").prepend("<option value=''>--请选择--</option>");
+                }
+                checkData();
+            }
+        });
+    }
+
+    //获取二级学科
+    function getSprofess() {
+        var fProfess = $("#fProfess").val();
+        if (!fProfess) {
+            return;
+        }
+        $("#sProfess").empty();
+        $("#sProfess").prepend("<option value='0'>--请选择--</option>");
+        $.ajax({
+            url : '${link.contextPath}/dg/studentInfo/getSprofess?fProfess=' + fProfess,
+            type : 'post',
+            async: false,
+            cache : false,
+            dataType : 'json',
+            success : function(data) {
+                if (data.speciaList.length > 0) {
+                    var speciaList = data.speciaList;
+                    for (var i = 0; i < speciaList.length; i++) {
+                        var id = speciaList[i].id;
+                        var name = speciaList[i].name;
+                        if(name.length>6){
+                            name = name.substring(0,6)+"..." ;
+                        }
+                        $("#sProfess").append("<option value='" + id + "' title='" + speciaList[i].name + "'>" + name + "</option>");
+                    }
+                    joinData(data.speciaList);
+                }else {
+                    $("#professTable").html("");
+                    $("#sProfess").empty();
+                    $("#sProfess").prepend("<option value=''>--请选择--</option>");
+                }
+                checkData();
+            }
+        });
+    }
+
+    //获取二级学科下的所有专业
+    function getAllProfess() {
+        var sProfess = $("#sProfess").val();
+        if (!fProfess) {
+            alert("请选择二级学科！");
+        }
+        $("#professTable").html('');
+        $.ajax({
+            url : '${link.contextPath}/dg/studentInfo/getAllprofess?sProfess=' + sProfess,
+            type : 'post',
+            async: false,
+            cache : false,
+            dataType : 'json',
+            success : function(data) {
+                if (data.speciaList.length > 0) {
+                    joinData(data.speciaList);
+                }else{
+                    $("#professTable").html("");
+                }
+                checkData();
+            }
+        });
+    }
+
+    function joinData(speciaList){
+        $("#professTable").html("");
+        var insertHtml="";
+        var len=speciaList.length % 4;
+        for (var i = 0; i < speciaList.length; i++) {
+            var name = "" ;
+            if(speciaList[i].name.length>5){
+                name = speciaList[i].name.substring(0,5)+"..." ;
+            }else{
+                name = speciaList[i].name ;
+            }
+            insertHtml=insertHtml+ "<td class='text-left'><label title='"+speciaList[i].code+speciaList[i].name+"'><input type='checkbox' name='chkItem' class='"+speciaList[i].code+"' text='"+speciaList[i].name+"' >" + speciaList[i].code + name + "</label></td>";
+            if ((i+1) % 4 == 0) {
+                $("#professTable").append("<tr>"+insertHtml+"</tr>");
+                insertHtml="";
+            }
+        }
+        insertHtml="";
+        //有余数时
+        for (var i = speciaList.length-len; i <= speciaList.length-1; i++) {
+            var name = "" ;
+            if(speciaList[i].name.length>5){
+                name = speciaList[i].name.substring(0,5)+"..." ;
+            }else{
+                name = speciaList[i].name ;
+            }
+            insertHtml=insertHtml+ "<td class='text-left'><label title='"+speciaList[i].code+speciaList[i].name+"'><input type='checkbox' name='chkItem' class='"+speciaList[i].code+"' text='"+speciaList[i].name+"'>" + speciaList[i].code + name + "</label></td>";
+            if(i == speciaList.length-1){
+                $("#professTable").append("<tr>"+insertHtml+"</tr>");
+            }
+        }
+    }
+
+    function clearData(){
+        limitProfession="" ;
+        limitProfessionText="";
+        profess={};
+        $("#chkAll").prop("checked", false);
+        $("input[name = chkItem]:checkbox").prop("checked", false);
+        $("#chosedProfess").find("li").remove();
+    }
+
+    function checkData(){
+        var professText=[];
+        var professCode=[];
+        if(!$.isEmptyObject(profess)){
+            for(var i in profess){
+                professCode.push(i);
+                professText.push(profess[i]);
+            }
+            limitProfession=professCode.join(",");
+            limitProfessionText=professText.join(",");
+        }
+        if(limitProfession && limitProfessionText){
+            if(typeof limitProfession!='string'){
+                var limitProfessions=limitProfession;
+                var limitProfessionTexts=limitProfessionText
+            }else{
+                var limitProfessions=limitProfession.split(",");
+                var limitProfessionTexts=limitProfessionText.split(",");
+            }
+            for(var i=0;i<limitProfessions.length;i++){
+                var $dom=$("input[name = chkItem]:checkbox."+limitProfessions[i]);
+                if($dom.length){
+                        $dom.prop("checked", true);
+                    //每个选项都选中就将全选选中
+                }
+                if(!profess[limitProfessions[i]]){
+                    profess[limitProfessions[i]]=limitProfessionTexts[i];
+                    var name = "" ;
+                    if(limitProfessionTexts[i].length>20){
+                        name = limitProfessionTexts[i].substring(0,20)+"..." ;
+                    }else{
+                        name = limitProfessionTexts[i] ;
+                    }
+                    $("#chosedProfess").append("<li><label class='profess "+limitProfessions[i]+"' code='"+limitProfessions[i]+"' title='"+limitProfessionTexts[i]+"'>"+name+"&nbsp;&nbsp;&nbsp;</label></li>");
+                }
+            }
+            var chklen=$("input[name = chkItem]:checkbox:checked").size();
+            if($("input[name = chkItem]:checkbox").size() == chklen){
+                $("#chkAll").prop("checked", true);
+            }else{
+                $("#chkAll").prop("checked", false);
+            }
+        }
+    }
+
+    function searchSpe() {
+        if($.isEmptyObject(profess)){
+            limitProfession="";
+            limitProfessionText="";
+        }
+        var name = $("#name").val() ;
+        $("#professTable").html('');
+        $.ajax({
+            url : '${link.contextPath}/dg/specialty/selectByName',
+            type : 'post',
+            async: false,
+            cache : false,
+            dataType : 'json',
+            data :{"name":name},
+            success : function(data) {
+                if (data.length > 0) {
+                    joinData(data);
+                }else{
+                    $("#professTable").html("");
+                }
+                resetFprofess();
+            }
+        });
+    }
+	
+	function resetFprofess() {
+		var zylx = $("#zylx").val();
+		if (!zylx) {
+			return;
+		}
+		$("#fProfess").empty();
+        $("#fProfess").prepend("<option value=''>--请选择--</option>");
+		$("#sProfess").empty();
+       	$("#sProfess").prepend("<option value=''>--请选择--</option>");
+		$.ajax({
+        	url : '${link.contextPath}/dg/studentInfo/getFprofess?zylx=' + zylx,
+        	type : 'post',
+        	async: false,
+        	cache : false,
+        	dataType : 'json',
+        	success : function(data) {
+        		if (data.speciaList.length > 0) {
+    				var speciaList = data.speciaList;
+					for (var i = 0; i < speciaList.length; i++) {
+						var id = speciaList[i].id;
+						var name = speciaList[i].name;
+                        if(name.length>6){
+                            name = name.substring(0,6)+"..." ;
+                        }
+						$("#fProfess").append("<option value='" + id + "' title='" + speciaList[i].name + "'>" + name + "</option>");
+					}
+        		} else {
+        			$("#professTable").html("");
+					$("#fProfess").empty();
+        			$("#fProfess").prepend("<option value=''>--请选择--</option>");
+        		}
+				checkData();
+        	}
+        });
+	}
+</script>
+<!-- 岗位选择 S-->
+<div class="dialog dialog-select">
+    <!-- 条件搜索 S-->
+    <form class="form-inline border-left-none border-right-none" name="form1">
+        <div class="clearfix item-group">
+            <ul class="clearfix pull-left">
+                <li>
+                    <span>查找对象：</span>
+                    <input class="input" type="text" name="name" id="name">
+                </li>
+                <li>
+                    <a onclick="searchSpe();" class="btn btn-primary btn-sm" href="javascript:void(0);">搜索</a>
+                </li>
+            </ul>
+            <ul class="pull-right">
+                <li>
+                    <button class="btn btn-primary btn-sm" type="button" onclick="clearData();">清空所选专业</button>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <div class="clearfix item-group">
+            <ul class="clearfix pull-left">
+                <li>
+                    <span>专业类型：</span>
+                    <select class="select" name="zylx" id="zylx" onChange="getFprofess()">
+                        #foreach($list in $zylxs)
+                            <option value="$!list.value">$!list.text</option>
+                        #end
+                    </select>
+                </li>
+                <li>
+                    <span>一级学科：</span>
+                    <select class="select" name="fProfess" id="fProfess" onChange="getSprofess()">
+                        <option value="">--请选择--</option>
+                    </select>
+                </li>
+                <li>
+                    <span>二级学科：</span>
+                    <select class="select" name="sProfess" id="sProfess" onChange="getAllProfess()">
+                        <option value="">--请选择--</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+    </form>
+    <!-- 条件搜索 E-->
+    <div class="table-content">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="text-left" colspan="4">
+                    <label><input type="checkbox" id="chkAll">全选</label>
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <div class="grid-h-130 overflow">
+            <table class="table" >
+                <tbody id="professTable">
+                <!--
+                    <tr>
+                        <td class="text-left"><label><input type="checkbox" name="">A01哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A02哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A03哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A04哲学</label></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left"><label><input type="checkbox" name="">A05哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A06哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A07哲学</label></td>
+                        <td class="text-left"><label><input type="checkbox" name="">A08哲学</label></td>
+                    </tr>
+                    -->
+                </tbody>
+            </table>
+        </div>
+        <div class="selectedBox">
+            <div class="title"><strong>已选择专业</strong>（提示：双击名称可删除）</strong></div>
+            <div class="listbox">
+                <ul class="clearfix" id="chosedProfess"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 岗位选择 E-->

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            queryData();
+        });
+
+        function queryData() {
+            var $serializeForm=$("#list_form").serialize();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '',
+                data : $serializeForm,
+                success: function (data) {
+                    if (data) {
+                        /*获取数据总行数*/
+                        $("#totalCounts").val(data.total);
+                        /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/
+                        if (parseInt($("#totalCounts").val()) == 0) {
+                            $("#totalCounts").val(1);
+                        }
+                        /*生成表和套用css样式*/
+                        data = data.rows;//获取筛选后的内容
+                        $(".table tbody tr").remove();//清空列表
+                        $.each(data, function (index, e) {
+                            var status="";
+                            switch(e.status){
+                                case "1" : status="待审批";break;
+                                case "2" : status="已审批";break;
+                                default:status="未上报";
+                            }
+                            var insertHtml='<tr>'+
+                                    '<td>测试笔试不通过</td>'+
+                                    '<td>东莞市教育局</td>'+
+                                    '<td>2016-10-12 23:59</td>'+
+                                    '<td>2016-10-12</td>'+
+                                    '<td>'+status+'</td>'+
+                                    '<td>'+
+                                    '<a class="btn btn-default" href="javascript:void(0);" onclick="addPosition();" title="修改">修改</a>'+
+                                    '<a class="btn btn-info" href="#this" title="查看">查看</a>'+
+                                    '<a class="btn btn-success" href="#this" title="上报">上报</a>'+
+                                    '<a class="btn btn-warning" href="#this" title="撤回">撤回</a>'+
+                                    '<a class="btn btn-primary" href="#this" title="管理岗位">管理岗位</a>'+
+                                    '</td>'+
+                                    '</tr>';
+                            $(".table tbody").append(insertHtml);//将返回的数据追加到表格
+                        });
+                        /*生成分页标签*/
+                        paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));
+                    }
+                }
+            });
+        }
+
+        function paginator(pageIndex, pageSize, totalCount) {
+            $.jqPaginator('#pagination', {
+                totalCounts: totalCount,
+                pageSize: pageSize,
+                currentPage: pageIndex,
+                visiblePages: 7,
+                first:'<a class="first">首页</a>',
+                prev: '<a class="prev">上一页</a>',
+                next: '<a class="next">下一页</a>',
+                last: '<a class="last：">末页</a>',
+                page: '<a class="page">{{page}}</a>',
+                onPageChange: function (num, type) {
+                    if (type === 'change' && num !== parseInt($("#currentPage").val())) {
+                        $("#currentPage").val(num);//点击改变页码时，同步model中的页码
+                        queryData();//重新生成新表
+                    }
+                }
+            });
+        }
+
+       /* function addPosition(){
+            window.location.href="";
+        }*/
+    </script>
+</head>
+<body>
+    #parse("/common/topMenu.vm")
+    #parse("/common/leftTemplate.vm")
+<!-- Main内容模块 S-->
+<div class="content-wrapper">
+    <!-- context内容 S-->
+    <div class="content">
+        <!-- 条件搜索 S-->
+        <form class="form-inline">
+            <div class="clearfix item-group">
+                <ul class="clearfix pull-right">
+                    <li>
+                        <button onclick="layer.open({
+                                type: 2,
+                                title:['title454484', 'font-weight:600'],
+                                content:'${link.contextPath}/dg/postset/addPage',
+                                btn: ['确定', '取消'],
+                                shadeClose:true,
+                                fix:true,
+                                area: ['800px','500px'],
+                                move: false
+                                })"
+                        class="btn btn-primary btn-sm" type="button">新增</button>
+                        <button class="btn btn-default btn-sm" type="button">返回</button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <!-- 条件搜索 E-->
+        <!-- table表单模块 S-->
+        <div class="table-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>不通过原因</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>专业不符合</td>
+                        <td>
+                            <a class="btn btn-warning" href="#this" title="编辑">编辑</a>
+                            <a class="btn btn-danger" href="#this" title="删除">删除</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>学历不够</td>
+                        <td>
+                            <a class="btn btn-warning" href="#this" title="编辑">编辑</a>
+                            <a class="btn btn-danger" href="#this" title="删除">删除</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>普通话水平不够</td>
+                        <td>
+                            <a class="btn btn-warning" href="#this" title="编辑">编辑</a>
+                            <a class="btn btn-danger" href="#this" title="删除">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- table表单模块 E-->
+        <!-- 分页+全选模块 S-->
+        <div class="clearfix pagesBox">
+            <div class="pull-right pages">
+                <a class="disabled" href="#this" title="">上一页</a>
+                <a class="active" href="#this" title="">1</a>
+                <a href="#this" title="">2</a>
+                <a href="#this" title="">3</a>
+                <a href="#this" title="">下一页</a>
+            </div>
+        </div>
+        <!-- 分页+全选模块 E-->
+    </div>
+    <!-- context内容 E-->
+
+    <!-- footer S-->
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2016 © Metronic by keenthemes.
+        </div>
+    </div>
+    <!-- footer E-->
+</div>
+<!-- Main内容模块 E-->
+</body>
+</html>

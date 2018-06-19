@@ -1,0 +1,163 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+
+	$(function(){
+		var storey = '$!{specialty.storey}' ;
+		var prefix = '$!{specialty.prefix}' ;
+		var suffix = '$!{specialty.suffix}' ;
+		var code = '$!{specialty.code}' ;
+		var name = '$!{specialty.name}' ;
+		if(storey==1){
+			$("#yjin [prefix=prefix]").html(prefix) ;
+			$("#code1").val(suffix) ;
+			$("#name1").val(name) ;
+			$("#ejin").hide();
+			$("#sjin").hide();
+		}
+		if(storey==2){
+			$("#ejin [prefix=prefix]").html(prefix) ;
+			$("#code2").val(suffix) ;
+			$("#name2").val(name) ;
+			$("#yjin").hide();
+			$("#sjin").hide();
+		}
+		if(storey==3){
+			$("#sjin [prefix=prefix]").html(prefix) ;
+			$("#code3").val(suffix) ;
+			$("#name3").val(name) ;
+			$("#yjin").hide();
+			$("#ejin").hide();
+		}
+		
+	})
+
+	function sure(){
+		var storey = '$!{specialty.storey}' ;
+		var reg = /^\d{2}$/
+		var regu = /^[ ]+$/
+		var flag = true ;
+		if(storey==1){
+			if(!reg.test($("#code1").val())){
+				layer.msg("一级学科代码请填写两位数字！", {icon: 2});
+				flag = false ;
+			}
+			if($("#name1").val()==''||regu.test($("#name1").val())){
+				layer.msg("请填写一级学科名称！", {icon: 2});
+				flag = false ;
+			}
+			if($("#name1").length>50){
+				layer.msg("一级学科名称不能超过五十个字符！", {icon: 2});
+				flag = false ;
+			}
+		}
+		if(storey==2){
+			if(!reg.test($("#code2").val())){
+				layer.msg("二级学科代码请填写两位数字！", {icon: 2});
+				flag = false ;
+			}
+			if($("#name2").val()==''||regu.test($("#name2").val())){
+				layer.msg("请填写二级学科名称！", {icon: 2});
+				flag = false ;
+			}
+			if($("#name2").length>50){
+				layer.msg("二级学科名称不能超过五十个字符！", {icon: 2});
+				flag = false ;
+			}
+		}
+		if(storey==3){
+			if(!reg.test($("#code3").val())){
+				layer.msg("专业代码请填写两位数字！", {icon: 2});
+				flag = false ;
+			}
+			if($("#name3").val()==''||regu.test($("#name3").val())){
+				layer.msg("请填写专业名称！", {icon: 2});
+				flag = false ;
+			}
+			if($("#name3").length>50){
+				layer.msg("专业名称不能超过五十个字符！", {icon: 2});
+				flag = false ;
+			}
+		}
+		return flag ;
+	}
+    
+	$(document).ready(function(){
+        $("#input_form").validator({
+            formClass:'n-yellow',
+            msgClass: "n-bottom",
+            msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+            timely:3,
+            focusInvalid:true,
+            focusCleanup:true,
+            stopOnError:false,
+            rules: {
+                // 使用正则表达式定义规则
+                postcode: [/^\d{3}$/, '请输入3位数字'],
+            },
+            fields: {
+				
+            },
+            valid: function(form){
+                url='${link.contextPath}/dg/specialty/update';
+                //表单验证通过，提交表单
+                $.post(url, $(form).serialize()).done(function(data){
+                    if(data.success){
+						parent.layer.msg(data.msg, {icon: 1});
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.window.location.reload();
+                        //parent.layer.close(index); //再执行关闭
+                    }else{
+						parent.layer.msg(data.msg, {icon: 2});
+					}
+                });
+            }
+        });
+
+    })
+</script>
+<!-- 专业新增 S-->
+<div class="dialog dialog-info" >
+    <div class="table-content">
+        <form method="post" id="input_form">
+            <table class="formTable">
+                <tbody>
+                    <tr id="yjin">
+                        <th class="text-right">一级学科代码：</th>
+                        <td>
+                            <span prefix="prefix"></span><input style="margin-left:10px;" class="input grid-150" id="code1" type="text" name="code1">
+                        </td>
+                        <th class="text-right">一级学科名称：</th>
+                        <td>
+                            <input class="input" type="text" name="name1" id="name1">
+                        </td>
+                    </tr>
+					<tr id="ejin">
+                        <th class="text-right">二级学科代码：</th>
+                        <td>
+                            <span prefix="prefix"></span><input style="margin-left:10px;" class="input grid-150" id="code2" type="text" name="code2">
+                        </td>
+                        <th class="text-right" >二级学科名称：</th>
+                        <td>
+                            <input class="input" type="text" name="name2" id="name2">
+                        </td>
+                    </tr>
+					<tr id="sjin">
+                        <th class="text-right">专业代码：</th>
+                        <td>
+                            <span prefix="prefix"></span><input style="margin-left:10px;" class="input grid-150" id="code3" type="text" name="code3">
+                        </td>
+                        <th class="text-right zyin">专业名称：</th>
+                        <td>
+                            <input class="input" type="text" name="name3" id="name3">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+			<input type="hidden" name="prefix" id="prefix" value="$!{specialty.prefix}"/>
+			<input type="hidden" name="storey" value="$!{specialty.storey}"/>
+			<input type="hidden" name="id"  value="$!{specialty.id}"/>
+			<input style="display: none;" id="submitBtn" type="submit"></input>
+        </form>
+    </div>
+</div>
+<!-- 专业新增 E-->

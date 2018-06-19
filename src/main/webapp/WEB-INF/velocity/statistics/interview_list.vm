@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+		$(document).ready(function () {  
+			initThemeData();
+			queryData();
+        });
+		
+		function queryData() {
+			var $serializeForm=$("#list_form").serialize();
+			$.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/statistics/selectAllInformation',
+                data : $serializeForm,
+                success: function (data) {
+                    if (data) {  
+                        /*获取数据总行数*/
+        	            $("#totalCounts").val(data.total);
+						$("#currentPage").val(data.currentPage);
+                        /*如果后台筛选出的结果为0，则修改结果为1，否则生成分页标签页数会保持在筛选之前的状态*/  
+                        if (parseInt($("#totalCounts").val()) == 0) {  
+                        	$("#totalCounts").val(1);
+                        }
+						if(parseInt($("#currentPage").val()) == 0) {  
+                        	$("#currentPage").val(1);
+                        }
+                        /*生成表和套用css样式*/  
+                        data = data.rows;//获取筛选后的内容 
+                        $(".table tbody tr").remove();//清空列表 
+                        $.each(data, function (index, e) {
+                        	var status="";
+							switch(e.status){
+								case "0" : status="未发布";break;
+								case "1" : status="已发布";break;
+							}
+							var insertHtml='<tr>';
+									insertHtml+='<td>'+e.schoolName+'</td>';
+									if(e.type=='1'){
+    									insertHtml+='<td>'+e.postName+'</td>';
+									}
+                              		insertHtml+='<td>'+new Date(e.startDate).format("yyyy-MM-dd hh:mm")+'</td>'+
+                                                '<td>'+new Date(e.endDate).format("yyyy-MM-dd hh:mm")+'</td>'+
+												'<td>'+e.site+'</td>'+
+                                                '<td>'+status+'</td>';
+									insertHtml+='</tr>';
+							$(".table tbody").append(insertHtml);//将返回的数据追加到表格
+                        });
+                        /*生成分页标签*/
+                        paginator(parseInt($("#currentPage").val()), parseInt($("#pageSize").val()), parseInt($("#totalCounts").val()));  
+                    }
+                }
+            }); 
+        }
+		
+		function paginator(pageIndex, pageSize, totalCount) {
+        	$.jqPaginator('#pagination', {
+        		totalCounts: totalCount,
+        		pageSize: pageSize,
+        	    currentPage: pageIndex,
+        	    visiblePages: 7,
+        		first:'<a class="first">首页</a>',
+        	    prev: '<a class="prev">上一页</a>',
+        	    next: '<a class="next">下一页</a>',
+        		last: '<a class="last：">末页</a>',
+        	    page: '<a class="page">{{page}}</a>',
+        	    onPageChange: function (num, type) {
+        	    	if (type === 'change' && num !== parseInt($("#currentPage").val())) {  
+                        $("#currentPage").val(num);//点击改变页码时，同步model中的页码  
+                        queryData();//重新生成新表
+                    }
+        	    }
+        	});
+        }
+		
+		function initThemeData(){
+			var year=$("#year").val();
+			if(year){
+    			$("#projectId").html("");
+				$.ajax({
+        			url : '${link.contextPath}/dg/information/getThemes',
+        			type : 'post',
+        			data:{"year":year},
+        			async: false,
+        			cache : false,
+        			dataType : 'json',
+        			success : function(data) {
+        				if(data.length){
+							var insertHtml="";
+							$.each(data,function(index,e){
+								var themeTitle=e.theme;
+    							if(getLength(themeTitle) > 12){
+    								themeTitle=substr(themeTitle,12);
+    							}
+								insertHtml+='<option value="'+e.id+'" title="'+e.theme+'">'+themeTitle+'</option>';
+							});
+							$("#projectId").append(insertHtml);
+						}else{
+							$("#projectId").append('<option value="">--请选择--</option>');
+						}
+    				}
+        		});
+			}else{
+				$("#projectId").append('<option value="">--请选择--</option>');
+			}
+		}
+		
+		function changeType(obj){
+			if(obj.value=='1'){
+				$("#setColumnName").show();
+			}else{
+				$("#setColumnName").hide();
+			}
+		}
+    </script>
+</head>
+<body>
+     #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+            <!-- 条件搜索 S-->
+            <form class="form-inline" id="list_form">
+				<input type="hidden" id="currentPage" name="currentPage" value="1"/>
+				<input type="hidden" id="pageSize" name="pageSize" value="20"/>
+				<input type="hidden" id="totalCounts" name="totalCounts" value="1"/>
+				<div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>年份：</span>
+                            <select class="select" id="year" name="condition['year']" onchange="initThemeData();queryData();">
+                                #if($!years.size()>0)
+    								#foreach($!list in $!years)
+        								<option value="$!list">$!list</option>
+									#end
+								#else
+									<option value="">--请选择--</option>
+								#end
+                            </select>
+                        </li>
+                        <li>
+                            <span>招聘项目：</span>
+                            <select class="select" id="projectId" name="condition['projectId']" onchange="queryData();"></select>
+                        </li>
+						<li>
+                            <span>类型：</span>
+                            <select class="select" id="type" name="condition['type']" onchange="changeType(this);queryData();">
+								<option value="1">招聘单位面试信息</option>
+                                <option value="2">现场资料信息</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+    						<th>单位名称</th>
+							<th id="setColumnName">岗位</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>地点</th>
+							<th>是否已发布</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+                <div id="pagination" class="pull-right pages"></div>
+            </div>
+            <!-- 分页+全选模块 E-->
+        </div>
+        <!-- context内容 E-->
+        #parse("/common/foot.vm")
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

@@ -1,0 +1,133 @@
+#parse("/common/head-js+css.vm")
+<script type="text/javascript">
+$(document).ready(function(){
+	var url="";
+	var informationId='$!information.id';
+	informationId==""?url="${link.contextPath}/dg/information/saveInformation":url="${link.contextPath}/dg/information/updateInformation";
+	var sloadindex;
+	$("#input_form").validator({
+		formClass:'n-yellow',
+        msgClass: 'n-bottom',
+        msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+		timely:3,
+		focusInvalid:true,
+		focusCleanup:true,
+		stopOnError:false,
+		fields: {
+	    	status: "发布状态:required",
+			positionIdHidden: "岗位:required",
+			site:"地点:required;length(~50)",
+			startDate:"开始时间:required",
+			endDate:{
+				rule: "结束时间: required;match(gt, startDate, datetime)"
+			}
+	    },
+	    valid: function(form){
+	        //表单验证通过，提交表单
+			$.ajax({
+            	url : url,
+				data : $(form).serialize(),
+            	type : 'post',
+            	async: false,
+            	cache : false,
+            	dataType : 'json',
+            	beforeSend: function(){
+                    sloadindex = parent.layer.load(0, {
+                    	shade: [0.3,'#fff']
+                    });
+                },
+				success : function(data) {
+            		if(data.flag == 'success'){
+						alert(data.msg);
+    					window.parent.layer.closeAll();
+    	        	}else{
+						parent.layer.close(sloadindex);
+						parent.layer.msg(data.msg, {icon: 2});
+    					return;
+    				}
+            	}
+            });
+	    }
+	});
+});
+
+function setStationId(stationId){
+	$("#stationId").val(stationId);
+}
+</script>
+<!-- 资料面试信息 S-->
+<div class="dialog dialog-info">
+    <div class="table-content">
+        <form method="post" id="input_form">
+    		<input type="hidden" name="id" value="$!information.id"/>
+			<input type="hidden" name="projectId" value="$!information.projectId"/>
+			<input type="hidden" name="schoolId" value="$!information.schoolId"/>
+			<input type="hidden" name="type" value="$!information.type"/>
+			<input type="hidden" name="createuser" value="$!information.createuser"/>
+			<input type="hidden" name="modifyuser" value="$!information.modifyuser"/>
+			<input type="hidden" name="remark" value="$!information.remark"/>
+			<table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right">项目名称：</th>
+                        <td title="$!theme.theme">
+							#if($!theme.theme.length()>10)
+                                $!theme.theme.substring(0,10)...
+                            #else
+                                $!theme.theme
+                            #end
+						</td>
+                        <th class="text-right"><span class="flag">*</span>是否发布：</th>
+                        <td>
+    						<select class="select" name="status">
+    							<option value="0" #if($!information.status == '0') selected #end>未发布</option>
+    							<option value="1" #if($!information.status == '1') selected #end>已发布</option>
+                            </select>
+    					</td>
+                    </tr>
+					#if($!information.type == '1')
+                        <tr>
+                            <th class="text-right"><span class="flag">*</span>岗位：</th>
+                            <td>
+        						<select class="select" onchange="setStationId(this.value);" name="positionIdHidden" #if($!information.id) disabled #end>
+        							<option value="" #if($!information.positionId == '') selected #end>--请选择岗位--</option>
+    								#foreach($!list in $!positions)
+            							<option value="$!list.stationId" #if($!information.positionId == $!list.stationId) selected #end>$!list.postName</option>
+    								#end
+                                </select>
+								<input type="hidden" id="stationId" name="positionId" id="positionId" value="$!information.positionId"/>
+                            </td>
+                            <th class="text-right"><span class="flag">*</span>地点：</th>
+                            <td>
+                                <input class="input" type="text" name="site" value="$!information.site">
+                            </td>
+                        </tr>
+					#end
+                    <tr>
+                        <th class="text-right"><span class="flag">*</span>开始时间：</th>
+                        <td>
+                        	<input id="startWdate" name="startDate" class="input Wdate" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:00',minDate:'$!date.format('yyyy-MM-dd HH:mm:ss',$!themeNotice.interviewStart)',maxDate:'#F{$dp.$D(\'endWdate\')}',maxDate:'$!date.format('yyyy-MM-dd HH:mm:ss',$!themeNotice.interviewEnd)'});" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!information.startDate)">
+                        </td>
+                        <th class="text-right"><span class="flag">*</span>结束时间：</th>
+                        <td>
+                        	<input id="endWdate" name="endDate" class="input Wdate" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:00',minDate:'$!date.format('yyyy-MM-dd HH:mm:ss',$!themeNotice.interviewStart)',minDate:'#F{$dp.$D(\'startWdate\')}',maxDate:'$!date.format('yyyy-MM-dd HH:mm:ss',$!themeNotice.interviewEnd)'})" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!information.endDate)">
+                        </td>
+                    </tr>
+					#if($!information.type == '2')
+						<tr>
+                            <th class="text-right"><span class="flag">*</span>地点：</th>
+                            <td colspan="3">
+                                <input class="input" type="text" name="site" value="$!information.site">
+                            </td>
+                        </tr>
+					#end
+                    <tr>
+                        <td colspan="4"><span >温馨提示：单位面试时间请设置在$!date.format('yyyy-MM-dd HH:mm:ss',$!themeNotice.interviewStart)到$!date.format('yyyy-MM-dd HH:mm:ss',$!themeNotice.interviewEnd)之间</span></td>
+                    </tr>
+                </tbody>
+            </table>
+			<input style="display: none;" id="submitBtn" type="submit"></input>
+		</form>
+    </div>
+</div>
+<!-- 资料面试信息  E-->

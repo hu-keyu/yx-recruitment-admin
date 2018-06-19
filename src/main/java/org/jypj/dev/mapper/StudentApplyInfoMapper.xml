@@ -1,0 +1,1046 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.StudentApplyInfoDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.StudentApplyInfo" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="EMPLOY_ITEMS_ID" property="employItemsId" jdbcType="VARCHAR" />
+	<result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+	<result column="APPLY_JOB_ID" property="applyJobId" jdbcType="VARCHAR" />
+	<result column="APPLY_JOB_NAME" property="applyJobName" jdbcType="VARCHAR" />
+	<result column="APPLY_DEP_ID" property="applyDepId" jdbcType="VARCHAR" />
+	<result column="IDCARD_ATT_ID" property="idcardAttId" jdbcType="VARCHAR" />
+	<result column="CER_ACH_ATT_ID" property="cerAchAttId" jdbcType="VARCHAR" />
+	<result column="GRA_RECOM_ATT_ID" property="graRecomAttId" jdbcType="VARCHAR" />
+	<result column="ACA_QUA_ATT_ID" property="acaQuaAttId" jdbcType="VARCHAR" />
+	<result column="BAC_ATT_ID" property="bacAttId" jdbcType="VARCHAR" />
+	<result column="BAC_QUA_ATT_ID" property="bacQuaAttId" jdbcType="VARCHAR" />
+	<result column="FAM_PLAN_ATT_ID" property="famPlanAttId" jdbcType="VARCHAR" />
+	<result column="STUDY_WORK_ATT_ID" property="studyWorkAttId" jdbcType="VARCHAR" />
+	<result column="TEA_VIDEO_ATT_ID" property="teaVideoAttId" jdbcType="VARCHAR" />
+	<result column="SUSPEND_EMP_ATT_ID" property="suspendEmpAttId" jdbcType="VARCHAR" />
+	<result column="ABROAD_STUDY_ATT_ID" property="abroadStudyAttId" jdbcType="VARCHAR" />
+	<result column="APPLY_REASON" property="applyReason" jdbcType="VARCHAR" />
+	<result column="APPLY_STATUS" property="applyStatus" jdbcType="VARCHAR" />
+	<result column="APPLY_AUDIT_CODE" property="applyAuditCode" jdbcType="VARCHAR" />
+	<result column="APPLY_AUDIT_NAME" property="applyAuditName" jdbcType="VARCHAR" />
+	<result column="IS_REPAY" property="isRepay" jdbcType="VARCHAR" />
+	<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	<result column="CTIME" property="ctime" jdbcType="DATE" />
+	<result column="MODIFY_USER" property="modifyUser" jdbcType="VARCHAR" />
+	<result column="MTIME" property="mtime" jdbcType="DATE" />
+	<result column="AUDITTYPE" property="audittype" jdbcType="VARCHAR" />
+	<result column="TRANSCRIPT_ATT_ID" property="transcriptAttId" jdbcType="VARCHAR" />
+	<result column="CER_MAN_ATT_ID" property="cerManAttId" jdbcType="VARCHAR" />
+	<result column="CER_PSY_ATT_ID" property="cerPsyAttId" jdbcType="VARCHAR" />
+	<result column="CER_PED_ATT_ID" property="cerPedAttId" jdbcType="VARCHAR" />
+	<result column="CER_ABI_ATT_ID" property="cerAbiAttId" jdbcType="VARCHAR" />
+	<result column="CER_SHIP_ATT_ID" property="cerShipAttId" jdbcType="VARCHAR" />
+	<result column="SUBMITTIME" property="submitTime" jdbcType="DATE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,EMPLOY_ITEMS_ID,STUDENT_ID,APPLY_JOB_ID,APPLY_JOB_NAME,APPLY_DEP_ID,IDCARD_ATT_ID,CER_ACH_ATT_ID,GRA_RECOM_ATT_ID,ACA_QUA_ATT_ID,BAC_ATT_ID,BAC_QUA_ATT_ID,FAM_PLAN_ATT_ID,STUDY_WORK_ATT_ID,TEA_VIDEO_ATT_ID,SUSPEND_EMP_ATT_ID,ABROAD_STUDY_ATT_ID,APPLY_REASON,APPLY_STATUS,APPLY_AUDIT_CODE,APPLY_AUDIT_NAME,IS_REPAY,CREATE_USER,CTIME,MODIFY_USER,MTIME,AUDITTYPE,TRANSCRIPT_ATT_ID,CER_MAN_ATT_ID,CER_PSY_ATT_ID,CER_PED_ATT_ID,CER_ABI_ATT_ID,CER_SHIP_ATT_ID,SUBMITTIME
+  </sql>
+  
+   <insert id="saveStudentApplyInfoByField" parameterType="org.jypj.dev.entity.StudentApplyInfo" >
+    insert into student_apply_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="employItemsId != null" >
+    EMPLOY_ITEMS_ID,
+   </if>
+   <if test="studentId != null" >
+    STUDENT_ID,
+   </if>
+   <if test="applyJobId != null" >
+    APPLY_JOB_ID,
+   </if>
+   <if test="applyJobName != null" >
+    APPLY_JOB_NAME,
+   </if>
+   <if test="applyDepId != null" >
+    APPLY_DEP_ID,
+   </if>
+   <if test="idcardAttId != null" >
+    IDCARD_ATT_ID,
+   </if>
+   <if test="cerAchAttId != null" >
+    CER_ACH_ATT_ID,
+   </if>
+   <if test="graRecomAttId != null" >
+    GRA_RECOM_ATT_ID,
+   </if>
+   <if test="acaQuaAttId != null" >
+    ACA_QUA_ATT_ID,
+   </if>
+   <if test="bacAttId != null" >
+    BAC_ATT_ID,
+   </if>
+   <if test="bacQuaAttId != null" >
+    BAC_QUA_ATT_ID,
+   </if>
+   <if test="famPlanAttId != null" >
+    FAM_PLAN_ATT_ID,
+   </if>
+   <if test="studyWorkAttId != null" >
+    STUDY_WORK_ATT_ID,
+   </if>
+   <if test="teaVideoAttId != null" >
+    TEA_VIDEO_ATT_ID,
+   </if>
+   <if test="suspendEmpAttId != null" >
+    SUSPEND_EMP_ATT_ID,
+   </if>
+   <if test="abroadStudyAttId != null" >
+    ABROAD_STUDY_ATT_ID,
+   </if>
+   <if test="transcriptAttId != null" >
+    TRANSCRIPT_ATT_ID,
+   </if>
+   <if test="applyReason != null" >
+    APPLY_REASON,
+   </if>
+   <if test="applyStatus != null" >
+    APPLY_STATUS,
+   </if>
+   <if test="applyAuditCode != null" >
+    APPLY_AUDIT_CODE,
+   </if>
+   <if test="applyAuditName != null" >
+    APPLY_AUDIT_NAME,
+   </if>
+   <if test="isRepay != null" >
+    IS_REPAY,
+   </if>
+   <if test="createUser != null" >
+    CREATE_USER,
+   </if>
+   <if test="ctime != null" >
+    CTIME,
+   </if>
+   <if test="modifyUser != null" >
+    MODIFY_USER,
+   </if>
+   <if test="mtime != null" >
+    MTIME,
+   </if>
+      <if test="submitTime != null" >
+    SUBMITTIME,
+   </if>
+   
+   
+   <if test="cerManAttId != null" >
+    CER_MAN_ATT_ID,
+   </if>
+   <if test="cerPsyAttId != null" >
+    CER_PSY_ATT_ID,
+   </if>
+   <if test="cerPedAttId != null" >
+    CER_PED_ATT_ID,
+   </if>
+   <if test="cerAbiAttId != null" >
+    CER_ABI_ATT_ID,
+   </if>
+   <if test="cerShipAttId != null" >
+    CER_SHIP_ATT_ID,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="employItemsId != null" >
+        #{employItemsId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyJobId != null" >
+        #{applyJobId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyJobName != null" >
+        #{applyJobName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDepId != null" >
+        #{applyDepId,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardAttId != null" >
+        #{idcardAttId,jdbcType=VARCHAR},
+      </if>
+      <if test="cerAchAttId != null" >
+        #{cerAchAttId,jdbcType=VARCHAR},
+      </if>
+      <if test="graRecomAttId != null" >
+        #{graRecomAttId,jdbcType=VARCHAR},
+      </if>
+      <if test="acaQuaAttId != null" >
+        #{acaQuaAttId,jdbcType=VARCHAR},
+      </if>
+      <if test="bacAttId != null" >
+        #{bacAttId,jdbcType=VARCHAR},
+      </if>
+      <if test="bacQuaAttId != null" >
+        #{bacQuaAttId,jdbcType=VARCHAR},
+      </if>
+      <if test="famPlanAttId != null" >
+        #{famPlanAttId,jdbcType=VARCHAR},
+      </if>
+      <if test="studyWorkAttId != null" >
+        #{studyWorkAttId,jdbcType=VARCHAR},
+      </if>
+      <if test="teaVideoAttId != null" >
+        #{teaVideoAttId,jdbcType=VARCHAR},
+      </if>
+      <if test="suspendEmpAttId != null" >
+        #{suspendEmpAttId,jdbcType=VARCHAR},
+      </if>
+      <if test="abroadStudyAttId != null" >
+        #{abroadStudyAttId,jdbcType=VARCHAR},
+      </if>
+            <if test="transcriptAttId != null" >
+        #{transcriptAttId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyReason != null" >
+        #{applyReason,jdbcType=VARCHAR},
+      </if>
+      <if test="applyStatus != null" >
+        #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="applyAuditCode != null" >
+        #{applyAuditCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applyAuditName != null" >
+        #{applyAuditName,jdbcType=VARCHAR},
+      </if>
+      <if test="isRepay != null" >
+        #{isRepay,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=DATE},
+      </if>
+           <if test="submitTime != null" >
+        #{submitTime,jdbcType=DATE},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        #{mtime,jdbcType=DATE},
+      </if>
+	   <if test="cerManAttId != null" >
+        #{cerManAttId,jdbcType=VARCHAR},
+	   </if>
+	   <if test="cerPsyAttId != null" >
+        #{cerPsyAttId,jdbcType=VARCHAR},
+	   </if>
+	   <if test="cerPedAttId != null" >
+        #{cerPedAttId,jdbcType=VARCHAR},
+	   </if>
+	   <if test="cerAbiAttId != null" >
+        #{cerAbiAttId,jdbcType=VARCHAR},
+	   </if>
+	   <if test="cerShipAttId != null" >
+        #{cerShipAttId,jdbcType=VARCHAR},
+	   </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveStudentApplyInfo" parameterType="org.jypj.dev.entity.StudentApplyInfo" >
+    insert into student_apply_info (
+	ID,
+	EMPLOY_ITEMS_ID,
+	STUDENT_ID,
+	APPLY_JOB_ID,
+	APPLY_JOB_NAME,
+	APPLY_DEP_ID,
+	IDCARD_ATT_ID,
+	CER_ACH_ATT_ID,
+	GRA_RECOM_ATT_ID,
+	ACA_QUA_ATT_ID,
+	BAC_ATT_ID,
+	BAC_QUA_ATT_ID,
+	FAM_PLAN_ATT_ID,
+	STUDY_WORK_ATT_ID,
+	TEA_VIDEO_ATT_ID,
+	SUSPEND_EMP_ATT_ID,
+	ABROAD_STUDY_ATT_ID,
+	TRANSCRIPT_ATT_ID,
+	APPLY_REASON,
+	APPLY_STATUS,
+	APPLY_AUDIT_CODE,
+	APPLY_AUDIT_NAME,
+	IS_REPAY,
+	CREATE_USER,
+	CTIME,
+	<if test="submitTime != null" >
+		SUBMITTIME,
+	</if>
+	MODIFY_USER,
+	 MTIME,
+	 CER_MAN_ATT_ID,
+	 CER_PSY_ATT_ID,
+	 CER_PED_ATT_ID,
+	 CER_ABI_ATT_ID,
+	 CER_SHIP_ATT_ID
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{employItemsId,jdbcType=VARCHAR},
+	#{studentId,jdbcType=VARCHAR},
+	#{applyJobId,jdbcType=VARCHAR},
+	#{applyJobName,jdbcType=VARCHAR},
+	#{applyDepId,jdbcType=VARCHAR},
+	#{idcardAttId,jdbcType=VARCHAR},
+	#{cerAchAttId,jdbcType=VARCHAR},
+	#{graRecomAttId,jdbcType=VARCHAR},
+	#{acaQuaAttId,jdbcType=VARCHAR},
+	#{bacAttId,jdbcType=VARCHAR},
+	#{bacQuaAttId,jdbcType=VARCHAR},
+	#{famPlanAttId,jdbcType=VARCHAR},
+	#{studyWorkAttId,jdbcType=VARCHAR},
+	#{teaVideoAttId,jdbcType=VARCHAR},
+	#{suspendEmpAttId,jdbcType=VARCHAR},
+	#{abroadStudyAttId,jdbcType=VARCHAR},
+	#{transcriptAttId,jdbcType=VARCHAR},
+	#{applyReason,jdbcType=VARCHAR},
+	#{applyStatus,jdbcType=VARCHAR},
+	#{applyAuditCode,jdbcType=VARCHAR},
+	#{applyAuditName,jdbcType=VARCHAR},
+	#{isRepay,jdbcType=VARCHAR},
+	#{createUser,jdbcType=VARCHAR},
+	sysdate,
+	<if test="submitTime != null" >
+		sysdate,
+	</if>
+	#{modifyUser,jdbcType=VARCHAR},
+	sysdate,
+	#{cerManAttId,jdbcType=VARCHAR},
+	#{cerPsyAttId,jdbcType=VARCHAR},
+	#{cerPedAttId,jdbcType=VARCHAR},
+	#{cerAbiAttId,jdbcType=VARCHAR},
+	#{cerShipAttId,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteStudentApplyInfoById" parameterType="java.lang.String" >
+    delete from student_apply_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  
+  <delete id="deleteAllObjectBySid" parameterType="java.lang.String" >
+    delete from student_apply_info
+    where STUDENT_ID = #{sid,jdbcType=VARCHAR}
+  </delete>
+  
+  
+  <delete id="deleteStudentApplyInfoByObject" parameterType="org.jypj.dev.entity.StudentApplyInfo" >
+    delete from student_apply_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateStudentApplyInfoByField" parameterType="org.jypj.dev.entity.StudentApplyInfo" >
+    update student_apply_info
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="employItemsId != null" >
+  	 EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="studentId != null" >
+  	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="applyJobId != null" >
+  	 APPLY_JOB_ID=#{applyJobId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="applyJobName != null" >
+  	 APPLY_JOB_NAME=#{applyJobName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="applyDepId != null" >
+  	 APPLY_DEP_ID=#{applyDepId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="idcardAttId != null" >
+  	 IDCARD_ATT_ID=#{idcardAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="cerAchAttId != null" >
+  	 CER_ACH_ATT_ID=#{cerAchAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="graRecomAttId != null" >
+  	 GRA_RECOM_ATT_ID=#{graRecomAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="acaQuaAttId != null" >
+  	 ACA_QUA_ATT_ID=#{acaQuaAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="bacAttId != null" >
+  	 BAC_ATT_ID=#{bacAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="bacQuaAttId != null" >
+  	 BAC_QUA_ATT_ID=#{bacQuaAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="famPlanAttId != null" >
+  	 FAM_PLAN_ATT_ID=#{famPlanAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="studyWorkAttId != null" >
+  	 STUDY_WORK_ATT_ID=#{studyWorkAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="teaVideoAttId != null" >
+  	 TEA_VIDEO_ATT_ID=#{teaVideoAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="suspendEmpAttId != null" >
+  	 SUSPEND_EMP_ATT_ID=#{suspendEmpAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="abroadStudyAttId != null" >
+  	 ABROAD_STUDY_ATT_ID=#{abroadStudyAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 
+  	   	 <if test="transcriptAttId != null" >
+  	 TRANSCRIPT_ATT_ID=#{transcriptAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 
+  	 
+  	 <if test="applyReason != null" >
+  	 APPLY_REASON=#{applyReason,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="applyStatus != null" >
+  	 APPLY_STATUS=#{applyStatus,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="applyAuditCode != null" >
+  	 APPLY_AUDIT_CODE=#{applyAuditCode,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="applyAuditName != null" >
+  	 APPLY_AUDIT_NAME=#{applyAuditName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isRepay != null" >
+  	 IS_REPAY=#{isRepay,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="createUser != null" >
+  	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="ctime != null" >
+  	 CTIME=#{ctime,jdbcType=DATE},
+  	 </if>
+  	   	 <if test="submitTime != null" >
+  	 SUBMITTIME=sysdate,
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="mtime != null" >
+  	 MTIME=sysdate,
+  	 </if>
+  	 
+  	 <if test="cerManAttId != null" >
+  	 CER_MAN_ATT_ID=#{cerManAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="cerPsyAttId != null" >
+  	 CER_PSY_ATT_ID=#{cerPsyAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="cerPedAttId != null" >
+  	 CER_PED_ATT_ID=#{cerPedAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="cerAbiAttId != null" >
+  	 CER_ABI_ATT_ID=#{cerAbiAttId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="cerShipAttId != null" >
+  	 CER_SHIP_ATT_ID=#{cerShipAttId,jdbcType=VARCHAR},
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateStudentApplyInfo" parameterType="org.jypj.dev.entity.StudentApplyInfo" >
+    update student_apply_info
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR},
+	 STUDENT_ID=#{studentId,jdbcType=VARCHAR},
+	 APPLY_JOB_ID=#{applyJobId,jdbcType=VARCHAR},
+	 APPLY_JOB_NAME=#{applyJobName,jdbcType=VARCHAR},
+	 APPLY_DEP_ID=#{applyDepId,jdbcType=VARCHAR},
+	 IDCARD_ATT_ID=#{idcardAttId,jdbcType=VARCHAR},
+	 CER_ACH_ATT_ID=#{cerAchAttId,jdbcType=VARCHAR},
+	 GRA_RECOM_ATT_ID=#{graRecomAttId,jdbcType=VARCHAR},
+	 ACA_QUA_ATT_ID=#{acaQuaAttId,jdbcType=VARCHAR},
+	 BAC_ATT_ID=#{bacAttId,jdbcType=VARCHAR},
+	 BAC_QUA_ATT_ID=#{bacQuaAttId,jdbcType=VARCHAR},
+	 FAM_PLAN_ATT_ID=#{famPlanAttId,jdbcType=VARCHAR},
+	 STUDY_WORK_ATT_ID=#{studyWorkAttId,jdbcType=VARCHAR},
+	 TEA_VIDEO_ATT_ID=#{teaVideoAttId,jdbcType=VARCHAR},
+	 SUSPEND_EMP_ATT_ID=#{suspendEmpAttId,jdbcType=VARCHAR},
+	 ABROAD_STUDY_ATT_ID=#{abroadStudyAttId,jdbcType=VARCHAR},
+	 TRANSCRIPT_ATT_ID=#{transcriptAttId,jdbcType=VARCHAR},
+	 APPLY_REASON=#{applyReason,jdbcType=VARCHAR},
+	 APPLY_STATUS=#{applyStatus,jdbcType=VARCHAR},
+	 APPLY_AUDIT_CODE=#{applyAuditCode,jdbcType=VARCHAR},
+	 APPLY_AUDIT_NAME=#{applyAuditName,jdbcType=VARCHAR},
+	 IS_REPAY=#{isRepay,jdbcType=VARCHAR},
+	 CREATE_USER=#{createUser,jdbcType=VARCHAR},
+	 CTIME=#{ctime,jdbcType=DATE},
+	 SUBMITTIME=#{submitTime,jdbcType=DATE},
+	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+	 MTIME=#{mtime,jdbcType=DATE},
+	 CER_MAN_ATT_ID=#{cerManAttId,jdbcType=VARCHAR},
+	 CER_PSY_ATT_ID=#{cerPsyAttId,jdbcType=VARCHAR},
+	 CER_PED_ATT_ID=#{cerPedAttId,jdbcType=VARCHAR},
+	 CER_ABI_ATT_ID=#{cerAbiAttId,jdbcType=VARCHAR},
+	 CER_SHIP_ATT_ID=#{cerShipAttId,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="cancelPosition" parameterType="org.jypj.dev.entity.StudentApplyInfo">
+  	update student_apply_info
+    <set >
+  	 <if test="applyStatus != null" >
+  	 APPLY_STATUS=#{applyStatus,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="isRepay != null" >
+  	 IS_REPAY=#{isRepay,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="modifyUser != null" >
+  	 MODIFY_USER=#{modifyUser,jdbcType=VARCHAR},
+  	 </if>
+  	 MTIME=SYSDATE
+    </set>
+    where 1=1 
+    <if test="employItemsId !=null and employItemsId !='' ">
+   		and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+    </if>
+    <if test="applyJobId !=null and applyJobId !='' ">
+   		and APPLY_JOB_ID=#{applyJobId,jdbcType=VARCHAR}
+    </if>
+    <if test="applyDepId !=null and applyDepId !='' ">
+   		and APPLY_DEP_ID=#{applyDepId,jdbcType=VARCHAR}
+    </if>
+  </update>
+  
+  <select id="selectStudentApplyInfoById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_apply_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+    <select id="selectCountOfEnterWritten" resultType="java.lang.Integer" parameterType="org.jypj.dev.entity.StudentApplyInfo" >
+    select count(0) from student_apply_info sai where sai.employ_items_id = #{employItemsId,jdbcType=VARCHAR}
+	and to_number(sai.apply_status) >= 8
+  </select>
+  
+   <select id="checkApplyStatus" resultType="java.lang.Integer" parameterType="org.jypj.dev.entity.StudentApplyInfo" >
+	select count(0) from student_apply_info sai where 
+	sai.student_id = #{studentId,jdbcType=VARCHAR}
+	and sai.employ_items_id=#{employItemsId,jdbcType=VARCHAR}
+	and sai.apply_status in ('2','3')
+   </select>
+  
+  <select id="selectInterviewList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_apply_info
+    where to_number(apply_status) >= #{applyStatus,jdbcType=INTEGER} and STUDENT_ID = #{sid,jdbcType=VARCHAR}
+    and EMPLOY_ITEMS_ID = #{recruitId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectWrittenOrTalkList" resultType="org.jypj.dev.vo.TalkNoticeVo" parameterType="java.util.Map" >
+	  SELECT DISTINCT sai.id studentApplyId,sai.employ_items_id recruitId,
+	   rp.post_name postName
+		,si.NAME studentName
+		,si.identity_card identityCard
+		,si.ticketnum admissionTicket
+		,sd.TEXT subject
+		,eii.test_name talkExam
+		,elg.group_name talkGroup
+		,to_char(elg.start_date, 'yyyy-mm-dd') || (
+			CASE elg.period
+				WHEN '1'
+					THEN ' 上午'
+				ELSE ' 下午'
+				END
+			) talkTime
+		,eii.test_addr talkAddr
+		,eii.sign talkEnviron
+	FROM student_apply_info sai
+	INNER JOIN student_info si ON si.id = sai.student_id
+		AND si.employ_items_id = sai.employ_items_id
+	INNER JOIN recruit_postset rp ON rp.id = sai.apply_job_id
+	INNER JOIN sys_dictionary sd ON sd.value = rp.subject
+		AND sd.code LIKE 'xklb'
+	INNER JOIN score_enter_trial ser ON ser.items_id = sai.employ_items_id
+		AND ser.school_id = sai.apply_dep_id
+		AND ser.post_id = sai.apply_job_id
+		AND ser.list_publish_status = '2' AND ser.student_id = si.id AND ser.is_enter = '1'
+	INNER JOIN exam_lecture_group elg ON elg.id = ser.groupid
+		AND elg.is_show = '1'
+	INNER JOIN exam_items_info eii ON eii.id = elg.kaodian
+    where sai.STUDENT_ID = #{sid,jdbcType=VARCHAR}
+    and sai.EMPLOY_ITEMS_ID = #{recruitId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="appliedStudent" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    select count(1) 
+    from student_apply_info
+    where APPLY_STATUS in ('2','3','6','7','8','9','10','11','12','13') AND EMPLOY_ITEMS_ID = #{recruitId,jdbcType=VARCHAR} 
+    AND APPLY_DEP_ID = #{schoolId,jdbcType=VARCHAR}
+    AND  APPLY_JOB_ID = #{positionId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_apply_info
+    where 1=1 
+  </select> 
+  
+  <!--查询学生资料审核的状态-->
+  <select id="selectStatus" resultType="int" parameterType="java.util.Map" >
+   select count(1) from STUDENT_APPLY_INFO t where 1=1
+   	<if test="status != null and status !='' ">
+	  and APPLY_STATUS=#{status,jdbcType=VARCHAR}
+	</if>
+	<!--<if test="year != null and year !='' ">
+	  and to_char(t.CTIME,'yyyy')=#{year,jdbcType=VARCHAR}
+	</if>-->
+  	<if test="projectId != null and projectId !='' ">
+	  and t.EMPLOY_ITEMS_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	
+  </select>
+  
+  <!--查询简历是否审核完（发布面试名单专用）-->
+  <select id="selectListAuditorCount" resultType="int" parameterType="java.lang.String" >
+   	select count(id) from STUDENT_APPLY_INFO t where 1=1 and apply_status in ('2','3')
+  	<if test="itemId != null and itemId !='' ">
+	  and t.EMPLOY_ITEMS_ID=#{itemId,jdbcType=VARCHAR}
+	</if>
+  </select>
+  
+  <!--根据岗位ID查询面试入围名单-->
+  <select id="selectPageEnter" resultType="org.jypj.dev.vo.ScoreEntersOutVo" parameterType="java.util.Map" >
+    select d.TEXT as school ,t.NAME as studentName ,t.ID as studentId ,t.TICKETNUM as ticketNum ,t.SEX as sex 
+    from STUDENT_APPLY_INFO s inner join STUDENT_INFO t on s.STUDENT_ID=t.ID  left join SYS_DICTIONARY d on s.APPLY_DEP_ID=d.ID 
+	where 1=1 and t.TICKETNUM is not null
+   	<if test="status != null and status !='' ">
+	  	and s.APPLY_STATUS=#{status,jdbcType=VARCHAR}
+	</if>
+	<!--<if test="year != null and year !='' ">
+	  	and to_char(s.CTIME,'yyyy')=#{year,jdbcType=VARCHAR}
+	</if>-->
+  	<if test="projectId != null and projectId !='' ">
+	  	and s.EMPLOY_ITEMS_ID =#{projectId,jdbcType=VARCHAR}
+	</if>
+	<if test="postId != null and postId !='' ">
+	 	and s.APPLY_JOB_ID=#{postId,jdbcType=VARCHAR}
+	</if>
+	<if test="nameOrNum != null and nameOrNum !='' ">
+	  	and (t.NAME like concat(concat('%',#{nameOrNum,jdbcType=VARCHAR}),'%') 
+	  	or t.TICKETNUM like concat(concat('%',#{nameOrNum,jdbcType=VARCHAR}),'%'))
+	</if>
+	order by s.APPLY_DEP_ID,t.TICKETNUM,s.CTIME,s.id
+  </select>
+  
+  <!--查询要发布的面试名单的学生-->
+  <select id="selectAllpublish" resultType="org.jypj.dev.vo.ScoreEntersOutVo" parameterType="java.util.Map" >
+   	select d.TEXT as school ,s.APPLY_DEP_ID as schoolId, t.NAME as studentName ,t.ID as studentId ,t.TICKETNUM as ticketnum , t.identity_card as idCard,t.SEX as sex,
+   	s.APPLY_JOB_ID as postId,s.EMPLOY_ITEMS_ID as projectId,s.id as applyId 
+    from STUDENT_APPLY_INFO s inner join STUDENT_INFO t on s.STUDENT_ID=t.ID  inner join SYS_DICTIONARY d on s.APPLY_DEP_ID=d.ID 
+	where 1=1 and t.TICKETNUM is not null and t.TICKETNUM !='undefined'
+	<if test="status != null and status !='' ">
+  		and s.APPLY_STATUS=#{status,jdbcType=VARCHAR}
+	</if>
+	<if test="projectId != null and projectId !='' ">
+	  	and s.EMPLOY_ITEMS_ID =#{projectId,jdbcType=VARCHAR}
+	</if>
+	<!--<if test="year != null and year !='' ">
+	  	and to_char(s.CTIME,'yyyy')=#{year,jdbcType=VARCHAR}
+	</if>-->
+  </select>
+  
+  <select id="selectOnePageByStudentApplyInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.StudentApplyInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_apply_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyJobId != null and applyJobId !='' ">
+	  and APPLY_JOB_ID=#{applyJobId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyJobName != null and applyJobName !='' ">
+	  and APPLY_JOB_NAME=#{applyJobName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyDepId != null and applyDepId !='' ">
+	  and APPLY_DEP_ID=#{applyDepId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="idcardAttId != null and idcardAttId !='' ">
+	  and IDCARD_ATT_ID=#{idcardAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerAchAttId != null and cerAchAttId !='' ">
+	  and CER_ACH_ATT_ID=#{cerAchAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="graRecomAttId != null and graRecomAttId !='' ">
+	  and GRA_RECOM_ATT_ID=#{graRecomAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="acaQuaAttId != null and acaQuaAttId !='' ">
+	  and ACA_QUA_ATT_ID=#{acaQuaAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="bacAttId != null and bacAttId !='' ">
+	  and BAC_ATT_ID=#{bacAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="bacQuaAttId != null and bacQuaAttId !='' ">
+	  and BAC_QUA_ATT_ID=#{bacQuaAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="famPlanAttId != null and famPlanAttId !='' ">
+	  and FAM_PLAN_ATT_ID=#{famPlanAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studyWorkAttId != null and studyWorkAttId !='' ">
+	  and STUDY_WORK_ATT_ID=#{studyWorkAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="teaVideoAttId != null and teaVideoAttId !='' ">
+	  and TEA_VIDEO_ATT_ID=#{teaVideoAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="suspendEmpAttId != null and suspendEmpAttId !='' ">
+	  and SUSPEND_EMP_ATT_ID=#{suspendEmpAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="abroadStudyAttId != null and abroadStudyAttId !='' ">
+	  and ABROAD_STUDY_ATT_ID=#{abroadStudyAttId,jdbcType=VARCHAR}
+	 </if>
+	 	 <if test="transcriptAttId != null and transcriptAttId !='' ">
+	  and TRANSCRIPT_ATT_ID=#{transcriptAttId,jdbcType=VARCHAR}
+	 </if>
+	 
+	 <if test="applyReason != null and applyReason !='' ">
+	  and APPLY_REASON=#{applyReason,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyStatus != null and applyStatus !='' ">
+	  and APPLY_STATUS=#{applyStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyAuditCode != null and applyAuditCode !='' ">
+	  and APPLY_AUDIT_CODE=#{applyAuditCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyAuditName != null and applyAuditName !='' ">
+	  and APPLY_AUDIT_NAME=#{applyAuditName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isRepay != null and isRepay !='' ">
+	  and IS_REPAY=#{isRepay,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 	 <if test="submitTime != null and submitTime !='' ">
+	  and SUBMITTIME=#{submitTime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 
+	 <if test="cerManAttId != null and cerManAttId !='' ">
+	  and CER_MAN_ATT_ID=#{cerManAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerPsyAttId != null and cerPsyAttId !='' ">
+	  and CER_PSY_ATT_ID=#{cerPsyAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerPedAttId != null and cerPedAttId !='' ">
+	  and CER_PED_ATT_ID=#{cerPedAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerAbiAttId != null and cerAbiAttId !='' ">
+	  and CER_ABI_ATT_ID=#{cerAbiAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerShipAttId != null and cerShipAttId !='' ">
+	  and CER_SHIP_ATT_ID=#{cerShipAttId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_apply_info
+    where 1=1 
+    <if test="studentIds != null and studentIds !=''">
+    	AND STUDENT_ID IN 
+		<foreach collection="studentIds" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+    </if>
+    <if test="employItemsId != null and employItemsId !=''">
+    	and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+    </if>
+    <if test="schoolId != null and schoolId !=''">
+    	and APPLY_DEP_ID=#{schoolId,jdbcType=VARCHAR}
+    </if>
+  </select> 
+  
+   <select id="selectAllByStudentApplyInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.StudentApplyInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_apply_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyJobId != null and applyJobId !='' ">
+	  and APPLY_JOB_ID=#{applyJobId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyJobName != null and applyJobName !='' ">
+	  and APPLY_JOB_NAME=#{applyJobName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyDepId != null and applyDepId !='' ">
+	  and APPLY_DEP_ID=#{applyDepId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="idcardAttId != null and idcardAttId !='' ">
+	  and IDCARD_ATT_ID=#{idcardAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerAchAttId != null and cerAchAttId !='' ">
+	  and CER_ACH_ATT_ID=#{cerAchAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="graRecomAttId != null and graRecomAttId !='' ">
+	  and GRA_RECOM_ATT_ID=#{graRecomAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="acaQuaAttId != null and acaQuaAttId !='' ">
+	  and ACA_QUA_ATT_ID=#{acaQuaAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="bacAttId != null and bacAttId !='' ">
+	  and BAC_ATT_ID=#{bacAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="bacQuaAttId != null and bacQuaAttId !='' ">
+	  and BAC_QUA_ATT_ID=#{bacQuaAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="famPlanAttId != null and famPlanAttId !='' ">
+	  and FAM_PLAN_ATT_ID=#{famPlanAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studyWorkAttId != null and studyWorkAttId !='' ">
+	  and STUDY_WORK_ATT_ID=#{studyWorkAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="teaVideoAttId != null and teaVideoAttId !='' ">
+	  and TEA_VIDEO_ATT_ID=#{teaVideoAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="suspendEmpAttId != null and suspendEmpAttId !='' ">
+	  and SUSPEND_EMP_ATT_ID=#{suspendEmpAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="abroadStudyAttId != null and abroadStudyAttId !='' ">
+	  and ABROAD_STUDY_ATT_ID=#{abroadStudyAttId,jdbcType=VARCHAR}
+	 </if>
+	 
+	 	 <if test="transcriptAttId != null and transcriptAttId !='' ">
+	  and TRANSCRIPT_ATT_ID=#{transcriptAttId,jdbcType=VARCHAR}
+	 </if>
+	 
+	 
+	 <if test="applyReason != null and applyReason !='' ">
+	  and APPLY_REASON=#{applyReason,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyStatus != null and applyStatus !='' ">
+	  and APPLY_STATUS=#{applyStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyAuditCode != null and applyAuditCode !='' ">
+	  and APPLY_AUDIT_CODE=#{applyAuditCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyAuditName != null and applyAuditName !='' ">
+	  and APPLY_AUDIT_NAME=#{applyAuditName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isRepay != null and isRepay !='' ">
+	  and IS_REPAY=#{isRepay,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 	 <if test="submitTime != null and submitTime !='' ">
+	  and SUBMITTIME=#{submitTime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="cerManAttId != null and cerManAttId !='' ">
+	  and CER_MAN_ATT_ID=#{cerManAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerPsyAttId != null and cerPsyAttId !='' ">
+	  and CER_PSY_ATT_ID=#{cerPsyAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerPedAttId != null and cerPedAttId !='' ">
+	  and CER_PED_ATT_ID=#{cerPedAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerAbiAttId != null and cerAbiAttId !='' ">
+	  and CER_ABI_ATT_ID=#{cerAbiAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerShipAttId != null and cerShipAttId !='' ">
+	  and CER_SHIP_ATT_ID=#{cerShipAttId,jdbcType=VARCHAR}
+	 </if>
+	  <if test="postSetStr != null and postSetStr !='' ">
+	  and APPLY_JOB_ID in ${postSetStr}
+	 </if>
+	
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_apply_info
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByStudentApplyInfo" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.StudentApplyInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_apply_info
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="employItemsId != null and employItemsId !='' ">
+	  and EMPLOY_ITEMS_ID=#{employItemsId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studentId != null and studentId !='' ">
+	  and STUDENT_ID=#{studentId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyJobId != null and applyJobId !='' ">
+	  and APPLY_JOB_ID=#{applyJobId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyJobName != null and applyJobName !='' ">
+	  and APPLY_JOB_NAME=#{applyJobName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyDepId != null and applyDepId !='' ">
+	  and APPLY_DEP_ID=#{applyDepId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="idcardAttId != null and idcardAttId !='' ">
+	  and IDCARD_ATT_ID=#{idcardAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerAchAttId != null and cerAchAttId !='' ">
+	  and CER_ACH_ATT_ID=#{cerAchAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="graRecomAttId != null and graRecomAttId !='' ">
+	  and GRA_RECOM_ATT_ID=#{graRecomAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="acaQuaAttId != null and acaQuaAttId !='' ">
+	  and ACA_QUA_ATT_ID=#{acaQuaAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="bacAttId != null and bacAttId !='' ">
+	  and BAC_ATT_ID=#{bacAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="bacQuaAttId != null and bacQuaAttId !='' ">
+	  and BAC_QUA_ATT_ID=#{bacQuaAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="famPlanAttId != null and famPlanAttId !='' ">
+	  and FAM_PLAN_ATT_ID=#{famPlanAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="studyWorkAttId != null and studyWorkAttId !='' ">
+	  and STUDY_WORK_ATT_ID=#{studyWorkAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="teaVideoAttId != null and teaVideoAttId !='' ">
+	  and TEA_VIDEO_ATT_ID=#{teaVideoAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="suspendEmpAttId != null and suspendEmpAttId !='' ">
+	  and SUSPEND_EMP_ATT_ID=#{suspendEmpAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="abroadStudyAttId != null and abroadStudyAttId !='' ">
+	  and ABROAD_STUDY_ATT_ID=#{abroadStudyAttId,jdbcType=VARCHAR}
+	 </if>
+	 	 <if test="transcriptAttId != null and transcriptAttId !='' ">
+	  and TRANSCRIPT_ATT_ID=#{transcriptAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyReason != null and applyReason !='' ">
+	  and APPLY_REASON=#{applyReason,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyStatus != null and applyStatus !='' ">
+	  and APPLY_STATUS=#{applyStatus,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyAuditCode != null and applyAuditCode !='' ">
+	  and APPLY_AUDIT_CODE=#{applyAuditCode,jdbcType=VARCHAR}
+	 </if>
+	 <if test="applyAuditName != null and applyAuditName !='' ">
+	  and APPLY_AUDIT_NAME=#{applyAuditName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="isRepay != null and isRepay !='' ">
+	  and IS_REPAY=#{isRepay,jdbcType=VARCHAR}
+	 </if>
+	 <if test="createUser != null and createUser !='' ">
+	  and CREATE_USER=#{createUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="ctime != null and ctime !='' ">
+	  and CTIME=#{ctime,jdbcType=DATE}
+	 </if>
+	 	 <if test="submitTime != null and submitTime !='' ">
+	  and SUBMITTIME=#{submitTime,jdbcType=DATE}
+	 </if>
+	 <if test="modifyUser != null and modifyUser !='' ">
+	  and MODIFY_USER=#{modifyUser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="mtime != null and mtime !='' ">
+	  and MTIME=#{mtime,jdbcType=DATE}
+	 </if>
+	 <if test="cerManAttId != null and cerManAttId !='' ">
+	  and CER_MAN_ATT_ID=#{cerManAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerPsyAttId != null and cerPsyAttId !='' ">
+	  and CER_PSY_ATT_ID=#{cerPsyAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerPedAttId != null and cerPedAttId !='' ">
+	  and CER_PED_ATT_ID=#{cerPedAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerAbiAttId != null and cerAbiAttId !='' ">
+	  and CER_ABI_ATT_ID=#{cerAbiAttId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="cerShipAttId != null and cerShipAttId !='' ">
+	  and CER_SHIP_ATT_ID=#{cerShipAttId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+  <update id="updateList" parameterType="list">
+  		<foreach collection="list" item="item" index="index" open="begin" close="end;" separator="" > 
+	        update STUDENT_APPLY_INFO 
+	        <set>
+	        	<if test="item.applyStatus != null and item.applyStatus !='' " >
+			    	APPLY_STATUS=#{item.applyStatus,jdbcType=VARCHAR},
+			    </if>
+	        	<if test="item.modifyUser != null and item.modifyUser !='' " >
+		        	MODIFY_USER=#{item.modifyUser,jdbcType=VARCHAR},
+			    </if>
+			    <if test="item.audittype != null and item.audittype !='' " >
+		        	AUDITTYPE=#{item.audittype,jdbcType=VARCHAR},
+			    </if>
+		        APPLY_AUDIT_CODE=#{item.applyAuditCode,jdbcType=VARCHAR},
+	        	MTIME=SYSDATE
+	        </set>
+	        where ID = #{item.id,jdbcType=VARCHAR};
+       </foreach>
+  </update>
+
+	<select id="selectByApplyJobId" resultType="java.lang.Integer">
+		SELECT
+		COUNT (id)
+		from student_apply_info
+		WHERE APPLY_JOB_ID=#{applyJobId,jdbcType=VARCHAR}
+	</select>
+  
+</mapper>

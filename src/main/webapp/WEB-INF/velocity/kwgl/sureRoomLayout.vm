@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>试室确认</title>
+    #parse("/common/head-js+css.vm")
+    <script src="${link.contextPath}/static/dayin/jquery.jqprint-0.3.js"></script>
+    <script src="${link.contextPath}/static/dayin/jquery-migrate-1.2.1.min.js"></script>
+	<script type="text/javascript">
+	      var itemsId;
+		  var  labid;
+		  var kaodian;
+		  var nyr;
+    $(document).ready(function () {  
+	 $("#saveButton").hide();
+	 $("#printButton").hide();
+    });
+       function selectSubject()
+       {
+          $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/selectSubject',
+                data : {
+                    "nyr" :$("#ryn").val(),
+                },
+                success: function (data) {
+                       var opstr="<span>招聘项目：</span><select class='select' id='themeid' name='themeid' onchange='selectThemeRoom()'><option value=''>请选择</option>";
+                       for(i=0;i<data.length;i++)
+                       {
+                              if(data[i].theme.length>20)
+                        {
+                        tempname=data[i].theme.substring(0,19)+"...";
+                        }else
+                        {
+                         tempname=data[i].theme;
+                        }
+                        opstr=opstr+"<option title='"+data[i].theme+"' value='"+data[i].id+"'>"+tempname+"</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#themeidDiv").html(opstr);
+                }  
+            });  
+       }
+       //获取招聘主题的考点
+		function selectThemeRoom() {
+				    if(typeof($("#themeid").val())=='undefined')
+		    {
+		      layer.msg('主题不能为空!', {icon: 2});
+		      return;
+		    }
+            $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/selectThemeRoom',
+                data : {
+                    "itemsId" :$("#themeid").val(),
+                    "bsType":'2'
+                },
+                success: function (data) {
+                       var opstr="<span>考点：</span><select class='select' id='kaodian' name='kaodian' onchange='selectLabs()'><option value=''>请选择</option>";
+                      var tempname;
+                       for(i=0;i<data.length;i++)
+                       {
+                          if(data[i].testName.length>20)
+                        {
+                        tempname=data[i].testName.substring(0,19)+"...";
+                        }else
+                        {
+                         tempname=data[i].testName;
+                        }
+                        opstr=opstr+"<option title='"+data[i].testName+"' value='"+data[i].id+"'>"+tempname+"</option>";
+                       }
+                       opstr=opstr+"</select>";
+                       $("#kaodianDiv").html(opstr);
+                }  
+            });  
+        }
+          //获取附加试室信息
+        function selectLabs()
+        {
+            $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/selectLabs',
+                data : {
+                    "itemsId" :$("#themeid").val(),
+                     "kaodian" :$("#kaodian").val()
+                },
+                success: function (data) {
+                       var opstr="<span>试室：</span><select class='select' id='layout1' name='layout1'><option value=''>请选择</option>";
+                       for(i=0;i<data.length;i++)
+                       {
+                        opstr=opstr+"<option value='"+data[i].id+"'>"+data[i].labsName+"</option>";
+                       }
+                       $("#labsdiv").html(opstr);
+                   
+                }  
+            });  
+        }
+        function query(type)
+        {
+        if($("#printType").val()=='1')
+        {
+         $("#saveButton").show();
+        }
+	  
+       var flag= checkData();
+       if(!flag)
+       {
+         return;
+       }
+         $("#printButton").show();
+        $.ajax({  
+                type: "POST",
+                dataType: "html",
+                url: "${link.contextPath}/dg/examSubjectInfo/PrintRoom",
+                data : {
+                    "itemsId" :$("#themeid").val(),
+                     "kaodian" :$("#kaodian").val(),
+                     "labid":labid,
+                     "type":$("#printType").val()
+                },
+                success: function (data) {
+                 $("#table1").html(data);
+                }  
+            });  
+       
+        }
+        function checkData()
+        {
+           itemsId=$("#themeid").val();//主题类型
+		   labid=$("#layout1").val();
+		   kaodian=$("#kaodian").val();//考点id
+		   nyr=$("#ryn").val();
+		   var printType=$("#printType").val();
+		  if(nyr=="" || nyr=='undefined')
+		  {
+		  layer.msg('年份不能为空!', {icon: 2});
+		  return false;
+		  }
+		  if(itemsId=="" || itemsId=='undefined')
+		  {
+		  layer.msg('招聘项目不能为空!', {icon: 2});
+		  return false;
+		  }
+		  if(labid=="" || labid=='undefined')
+		  {
+		  layer.msg('试室不能为空!', {icon: 2});
+		  return false;
+		  }
+		  if(kaodian=="" || kaodian=='undefined')
+		  {
+		  layer.msg('考点不能为空!', {icon: 2});
+		  return false;
+		  }
+		  if(printType=="" || printType=='undefined')
+		  {
+		  layer.msg('打印类型不能为空!', {icon: 2});
+		  return false;
+		  }
+		  return true;
+        }
+        
+          function sureForm()
+    {
+       var personName=$("#persionid").val();
+       var startDate=$("#startDate").val();
+       var endDate=$("#endDate").val();
+       if(startDate>endDate)
+       {
+        parent.layer.msg('开始时间不能大于结束时间!', {icon: 2});
+        return;
+       }
+        $.ajax({  
+                type: "POST",
+                dataType: "json",
+                url: '${link.contextPath}/dg/examSubjectInfo/suerLabsInfo',
+                data : {
+                    "labid" :parent.labid,
+                    "personName" :personName,
+                    "startDate" :startDate,
+                    "endDate" :endDate
+                },
+                success: function (data) {
+                      if(data.msg=='success')
+                      {
+                         layer.msg('确认成功!', {icon: 1});
+                          $.ajax({  
+                type: "POST",
+                dataType: "html",
+                url: "${link.contextPath}/dg/examSubjectInfo/PrintRoom",
+                data : {
+                    "itemsId" :$("#themeid").val(),
+                     "kaodian" :$("#kaodian").val(),
+                     "labid":labid,
+                     "type":$("#printType").val()
+                },
+                success: function (data) {
+                 $("#table1").html(data);
+                }  
+            });  
+                      }
+                }  
+            });  
+    }
+          
+    function  printRooms(){
+    $("#printRooms").jqprint()({
+    globalStyles: true,
+    mediaPrint: false,
+    stylesheet: null,
+    noPrintSelector: ".no-print",
+    iframe: true,
+    append: null,
+    prepend: null,
+    manuallyCopyFormValues: true,
+    deferred: $.Deferred()
+});   
+
+    }
+    
+    function surePrint()
+    {
+      if($("#printType").val()=='1')
+      {
+       $("#saveButton").show();
+      }else
+      {
+       $("#saveButton").hide();
+      }
+    }
+    
+    </script>
+</head>
+<body>
+     #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+            <!-- 条件搜索 S-->
+            <form class="form-inline">
+				<div class="clearfix item-group">
+                    <ul class="clearfix pull-left">
+                        <li>
+                            <span>年份：</span>
+                            <select class="select" id="ryn" onchange="selectSubject()">
+                              <option value="">请选择</option>
+                              #foreach( $vo in $dateList )
+                              <option value="$vo">$vo</option>
+                                #end
+                            </select>
+                        </li>
+                         <li>
+                              <span id="themeidDiv">
+                            </span>
+                        </li>
+                         <li>
+                            <span id="kaodianDiv">
+                            </span>
+                        </li>
+                           <li>
+                            <span id="labsdiv">
+                            </span>
+                        </li>
+                         <li>
+                           <span>打印类型：</span>
+                            <select class="select" id="printType" onchange="surePrint();">
+                              <option value="">请选择</option>
+                              <option value="1">试室确认</option>
+                              <option value="3">试室门贴</option>
+                              <option value="5">座位表门贴</option>
+                              <option value="4">桌贴</option>
+                            </select>
+                        </li>
+                         <li id="query">
+                           <input type="button" value="查询"  class="btn btn-primary btn-sm" onclick="query()"/>
+                           <input type="button" value="保存"  id="saveButton" class="btn btn-primary btn-sm" onclick="sureForm()"/>
+                           <input type="button" value="打印"  id="printButton" class="btn btn-primary btn-sm" onclick="printRooms()"/>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+            <!-- 条件搜索 E-->
+    		<!-- table表单模块 S-->
+            <div class="table-content"  id="table1">
+             
+            </div>
+            <!-- table表单模块 E-->
+            <!-- 分页+全选模块 S-->
+            <div class="clearfix pagesBox">
+                <div id="pagination" class="pull-right pages"></div>
+            </div>
+            <!-- 分页+全选模块 E-->
+        </div>
+        <!-- context内容 E-->
+        #parse("/common/foot.vm")
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

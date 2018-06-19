@@ -1,0 +1,103 @@
+#parse("/common/head-js+css.vm")
+
+<script>
+$(document).ready(function(){
+        $("#input_form").validator({
+            formClass:'n-yellow',
+            msgClass: "n-bottom",
+            msgArrow: '<span class="n-arrow"><b>◆</b><i>◆</i></span>',
+            timely:3,
+            focusInvalid:true,
+            focusCleanup:true,
+            stopOnError:false,
+            rules: {
+                // 使用正则表达式定义规则
+                postcode: [/^\d{3}$/, '请输入3位数字'],
+            },
+            fields: {
+                roleName: "登录名称必选:required;length(1~20)",
+                roleCode: "用户姓名必填:required;length(1~20)",
+				describe: "描述:length(1~200)",
+				sortOrder: {
+                    rule: "排序:integer;length(1~3)",
+                    msg:{
+                        integer:"排序请填写整数数字"
+                    }
+                }
+            },
+            valid: function(form){
+                url='${link.contextPath}/dg/role/add';
+                //表单验证通过，提交表单
+                $.post(url, $(form).serialize()).done(function(data){
+				/***
+					parent.layer.msg(data.msg, { time: 0 //不自动关闭
+                          	,btn: ['确定']
+                          	,yes: function(index){ window.parent.layer.closeAll(); }
+                        });
+					**/
+                    parent.layer.msg(data.msg, {icon: 2});
+                    if(data.success){
+                        window.parent.layer.closeAll();
+                    }
+                });
+            }
+        });
+    })
+	
+	function sure(){
+		var roleCode = $("#roleCode").val();
+	    $.ajax({
+            type: 'post',
+            url: '${link.contextPath}/dg/role/isRepeat',
+            dataType: "json",
+            data: {roleCode : roleCode},
+            success: function(data) {
+                if(data.success){
+                    $("#input_form").submit();
+                }else{
+                    parent.layer.msg('角色编号不能重复,保存失败！', {icon: 2});
+                    return false ;
+                }
+            }
+        });
+	}
+</script>
+<div class="dialog">
+<!-- table表单模块 S-->
+        <form class="table-content" method="post" id="input_form">
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th class="text-right" width="15%"><span class="flag">*</span>角色名称：</th>
+                        <td><input class="input" type="text" name="roleName" ></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" width="15%"><span class="flag">*</span>角色编号：</th>
+                        <td><input class="input" type="text" name="roleCode" id="roleCode"></td>
+                    </tr>
+                    <!--<tr>
+                        <th class="text-right" width="15%">类型：</th>
+                        <td>
+							<select  class="select" name="roleType">
+								<option value="">== 请选择 ==</option>
+								<option value="000">人事科</option>
+								<option value="002">招聘业务</option>
+								<option value="999">超级管理员</option>
+							 </select>
+						</td>
+                    </tr>-->
+                    <tr>
+                        <th class="text-right" width="15%">描述：</th>
+                        <td>
+                            <textarea class="textarea" rows="5" name="describe"></textarea>
+                        </td>
+                    </tr>
+                     <tr>
+                        <th class="text-right" width="15%">排序：</th>
+                        <td><input class="input" type="text" name="sortOrder" ></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <!-- table表单模块 E-->
+</div>

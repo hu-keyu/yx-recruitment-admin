@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.ThemeUnitDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.ThemeUnit" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="THEME_ID" property="themeId" jdbcType="VARCHAR" />
+	<result column="UNIT_ID" property="unitId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,THEME_ID,UNIT_ID
+  </sql>
+  
+   <insert id="saveThemeUnitByField" parameterType="org.jypj.dev.entity.ThemeUnit" >
+    insert into recruit_theme_reportunit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="themeId != null" >
+    THEME_ID,
+   </if>
+   <if test="unitId != null" >
+    UNIT_ID,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="themeId != null" >
+        #{themeId,jdbcType=VARCHAR},
+      </if>
+      <if test="unitId != null" >
+        #{unitId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveThemeUnit" parameterType="org.jypj.dev.entity.ThemeUnit" >
+    insert into recruit_theme_reportunit (
+	ID,
+	THEME_ID,
+	 UNIT_ID
+	)
+	values (
+	#{id,jdbcType=VARCHAR},
+	#{themeId,jdbcType=VARCHAR},
+	#{unitId,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteThemeUnitById" parameterType="java.lang.String" >
+    delete from recruit_theme_reportunit
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteThemeUnitByObject" parameterType="org.jypj.dev.entity.ThemeUnit" >
+    delete from recruit_theme_reportunit
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateThemeUnitByField" parameterType="org.jypj.dev.entity.ThemeUnit" >
+    update recruit_theme_reportunit
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="themeId != null" >
+  	 THEME_ID=#{themeId,jdbcType=VARCHAR},
+  	 </if>
+     <if test="unitId != null" >
+  	 UNIT_ID=#{unitId,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateThemeUnit" parameterType="org.jypj.dev.entity.ThemeUnit" >
+    update recruit_theme_reportunit
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 THEME_ID=#{themeId,jdbcType=VARCHAR},
+	 UNIT_ID=#{unitId,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectThemeUnitById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme_reportunit
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme_reportunit
+    where 1=1 
+  </select> 
+  
+  <select id="selectOnePageByThemeUnit" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ThemeUnit" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme_reportunit
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="themeId != null and themeId !='' ">
+	  and THEME_ID=#{themeId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="unitId != null and unitId !='' ">
+	  and UNIT_ID=#{unitId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme_reportunit
+    where 1=1 
+  </select> 
+  
+   <select id="selectAllByThemeUnit" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ThemeUnit" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme_reportunit
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="themeId != null and themeId !='' ">
+	  and THEME_ID=#{themeId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="unitId != null and unitId !='' ">
+	  and UNIT_ID=#{unitId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme_reportunit
+    where 1=1 
+   </select> 
+  
+  <select id="selectObjectByThemeUnit" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.ThemeUnit" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_theme_reportunit
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="themeId != null and themeId !='' ">
+	  and THEME_ID=#{themeId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="unitId != null and unitId !='' ">
+	  and UNIT_ID=#{unitId,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+</mapper>

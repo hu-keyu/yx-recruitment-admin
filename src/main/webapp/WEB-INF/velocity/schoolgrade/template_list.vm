@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    #parse("/common/head-meta.vm")
+    <title>东莞招聘</title>
+    #parse("/common/head-js+css.vm")
+	<script type="text/javascript">
+		$(document).ready(function () {  
+			$("#checkAll").click(function(){
+				if($(this).is(":checked")){
+					$("input[name='chk']:enabled").prop("checked", true);
+				}else{
+					$("input[name='chk']:enabled").prop("checked", false);
+				}
+			});
+			
+			$(document).on("click","input[name='chk']:enabled",function(){
+				if($("input[name='chk']:enabled:checked").length == $("input[name='chk']:enabled").length){
+					$("#checkAll").prop("checked", true);
+				}else{
+					$("#checkAll").prop("checked", false);
+				}
+    	    });
+        });
+		
+		function exportTemplate(){
+			var projectId='$!projectId';
+			if(!projectId){
+				layer.msg("招聘项目为空无法导出面试模板！", {icon: 2});	
+				return;
+			}
+			var employ="0";//是否录用 默认否
+			var msg="您未勾选是否录取字段，将根据招聘公告设置的录取形式（比例和分数线），自动算出考生是否录取，确定下载此模板导入面试成绩吗？";
+			if($("input:checkbox[name='chk'][value='yes']").is(":checked")){
+				employ="1";
+				msg="您勾选了是否录取字段，考生是否录取将以导入的该字段为准，确定下载此模板导入面试成绩吗？";
+			}
+			layer.confirm(msg, {icon: 3, title:'提示'}, function(index){
+    			window.location.href="${link.contextPath}/dg/grade/exportInterviewTemplate?projectId="+projectId+"&employ="+employ;
+        		layer.close(index);
+       		});
+		}
+    </script>
+</head>
+<body>
+     #parse("/common/topMenu.vm")
+     #parse("/common/leftTemplate.vm")
+    <!-- Main内容模块 S-->
+    <div class="content-wrapper">
+        <!-- context内容 S-->
+        <div class="content">
+    		<form class="form-inline">
+                <div class="clearfix item-group">
+                    <ul class="clearfix pull-right">
+                        <li>
+                            <a class="btn btn-primary btn-sm" onclick="exportTemplate();" href="javascript:void(0);" title="导出模板">导出模板</a>
+                        </li>
+						<li>
+                            <a class="btn btn-warning btn-sm" onclick="window.history.go(-1);" href="javascript:void(0);" title="返回">返回</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+			<!-- table表单模块 S-->
+            <div class="table-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+							<th><label><input type="checkbox" id="checkAll"/></label></th>
+    						<th>字段名称</th>
+                            <th>字段说明</th>
+                            <th>字段范例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<tr>
+                            <td><label><input checked type="checkbox" disabled name="chk"/></label></td>
+    						<td>准考证号</td>
+                            <td>字符型，限长 25 个字符</td>
+                            <td>如：2014110010001</td>
+                        </tr>
+						<tr>
+                            <td><label><input checked type="checkbox" disabled name="chk"/></label></td>
+    						<td>姓名</td>
+                            <td>字符型，限长 30 个字符</td>
+                            <td></td>
+                        </tr>
+						<tr>
+                            <td><label><input checked type="checkbox" disabled name="chk"/></label></td>
+    						<td>报考岗位</td>
+                            <td>字符型，限长 30 个字符</td>
+                            <td></td>
+                        </tr>
+						<tr>
+                            <td><label><input checked type="checkbox" disabled name="chk"/></label></td>
+    						<td>成绩</td>
+                            <td>字符型，1到3位正整数、小数点前面部分输入1到3位正数，小数点后面部分输入1到2位小数</td>
+                            <td>输入分数，如：98.50</td>
+                        </tr>
+						<tr>
+							<td><label><input type="checkbox" name="chk" value="yes"/></label></td>
+    						<td>是否录取</td>
+                            <td>
+								<select class="select grid-120">
+        							<option value="是">是</option>
+									<option value="否">否</option>
+                                </select>
+							</td>
+                            <td>若没有勾选该字段，将根据招聘公告设置的录取形式（比例和分数线），自动算出考生是否录取</td>
+                        </tr>
+					</tbody>
+                </table>
+            </div>
+            <!-- table表单模块 E-->
+        </div>
+        <!-- context内容 E-->
+        #parse("/common/foot.vm")
+    </div>
+    <!-- Main内容模块 E-->
+</body>
+</html>

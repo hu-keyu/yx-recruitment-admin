@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jypj.dev.dao.GradeExportLogDao" >
+
+  <resultMap id="BaseResultMap" type="org.jypj.dev.entity.GradeExportLog" >
+	<id column="ID" property="id" jdbcType="VARCHAR" />
+	<result column="PROJECT_ID" property="projectId" jdbcType="VARCHAR" />
+	<result column="TYPE" property="type" jdbcType="VARCHAR" />
+	<result column="FILE_NAME" property="fileName" jdbcType="VARCHAR" />
+	<result column="STATUS" property="status" jdbcType="VARCHAR" />
+	<result column="RESULT" property="result" jdbcType="VARCHAR" />
+	<result column="ORDER_NUMBER" property="orderNumber" jdbcType="DECIMAL" />
+	<result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+	<result column="MODIFYTIME" property="modifytime" jdbcType="TIMESTAMP" />
+	<result column="CREATEUSER" property="createuser" jdbcType="VARCHAR" />
+	<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+	<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+	<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+	<result column="SCHOOL_ID" property="schoolId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+  ID,PROJECT_ID,TYPE,FILE_NAME,STATUS,RESULT,ORDER_NUMBER,CREATETIME,MODIFYTIME,CREATEUSER,MODIFYUSER,REMARK,SCHOOL_ID
+  </sql>
+  
+   <insert id="saveGradeExportLogByField" parameterType="org.jypj.dev.entity.GradeExportLog" >
+    insert into school_grade_export_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test="id != null" >
+    ID,
+   </if>
+   <if test="projectId != null" >
+    PROJECT_ID,
+   </if>
+   <if test="type != null" >
+    TYPE,
+   </if>
+   <if test="fileName != null" >
+    FILE_NAME,
+   </if>
+   <if test="status != null" >
+    STATUS,
+   </if>
+   <if test="result != null" >
+    RESULT,
+   </if>
+   <if test="orderNumber != null" >
+    ORDER_NUMBER,
+   </if>
+   <if test="createtime != null" >
+    CREATETIME,
+   </if>
+   <if test="modifytime != null" >
+    MODIFYTIME,
+   </if>
+   <if test="createuser != null" >
+    CREATEUSER,
+   </if>
+   <if test="modifyuser != null" >
+    MODIFYUSER,
+   </if>
+   <if test="remark != null" >
+    REMARK,
+   </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyuser != null" >
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="saveGradeExportLog" parameterType="org.jypj.dev.entity.GradeExportLog" >
+    insert into school_grade_export_log (
+	ID,
+	PROJECT_ID,
+	TYPE,
+	FILE_NAME,
+	STATUS,
+	RESULT,
+	ORDER_NUMBER,
+	CREATETIME,
+	MODIFYTIME,
+	CREATEUSER,
+	MODIFYUSER,
+	REMARK,
+	SCHOOL_ID
+	)
+	values (
+	sys_guid(),
+	#{projectId,jdbcType=VARCHAR},
+	#{type,jdbcType=VARCHAR},
+	#{fileName,jdbcType=VARCHAR},
+	#{status,jdbcType=VARCHAR},
+	#{result,jdbcType=VARCHAR},
+	#{orderNumber,jdbcType=DECIMAL},
+	sysdate,
+	sysdate,
+	#{createuser,jdbcType=VARCHAR},
+	#{modifyuser,jdbcType=VARCHAR},
+	#{remark,jdbcType=VARCHAR},
+	#{schoolId,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <delete id="deleteGradeExportLogById" parameterType="java.lang.String" >
+    delete from school_grade_export_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteGradeExportLogByObject" parameterType="org.jypj.dev.entity.GradeExportLog" >
+    delete from school_grade_export_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateGradeExportLogByField" parameterType="org.jypj.dev.entity.GradeExportLog" >
+    update school_grade_export_log
+    <set >
+  	 <if test="id != null" >
+  	 ID=#{id,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="projectId != null" >
+  	 PROJECT_ID=#{projectId,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="type != null" >
+  	 TYPE=#{type,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="fileName != null" >
+  	 FILE_NAME=#{fileName,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="status != null" >
+  	 STATUS=#{status,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="result != null" >
+  	 RESULT=#{result,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="orderNumber != null" >
+  	 ORDER_NUMBER=#{orderNumber,jdbcType=DECIMAL},
+  	 </if>
+  	 <if test="createtime != null" >
+  	 CREATETIME=#{createtime,jdbcType=DATE},
+  	 </if>
+  	 <if test="modifytime != null" >
+  	 MODIFYTIME=#{modifytime,jdbcType=DATE},
+  	 </if>
+  	 <if test="createuser != null" >
+  	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+  	 </if>
+  	 <if test="modifyuser != null" >
+  	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+  	 </if>
+     <if test="remark != null" >
+  	 REMARK=#{remark,jdbcType=VARCHAR}
+  	 </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateGradeExportLog" parameterType="org.jypj.dev.entity.GradeExportLog" >
+    update school_grade_export_log
+    <set >
+	 ID=#{id,jdbcType=VARCHAR},
+	 PROJECT_ID=#{projectId,jdbcType=VARCHAR},
+	 TYPE=#{type,jdbcType=VARCHAR},
+	 FILE_NAME=#{fileName,jdbcType=VARCHAR},
+	 STATUS=#{status,jdbcType=VARCHAR},
+	 RESULT=#{result,jdbcType=VARCHAR},
+	 ORDER_NUMBER=#{orderNumber,jdbcType=DECIMAL},
+	 CREATETIME=#{createtime,jdbcType=DATE},
+	 MODIFYTIME=#{modifytime,jdbcType=DATE},
+	 CREATEUSER=#{createuser,jdbcType=VARCHAR},
+	 MODIFYUSER=#{modifyuser,jdbcType=VARCHAR},
+	 REMARK=#{remark,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectGradeExportLogById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_grade_export_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectOnePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select u.USER_NAME,log_.* from school_grade_export_log log_
+    	 inner join SCHOOL_PLAN_APPLY a on a.PROJECT_ID=log_.PROJECT_ID and a.SCHOOL_ID=log_.SCHOOL_ID 
+    	 left join EIMS_USER u on u.ID=log_.CREATEUSER
+    where 1=1 and a.STATUS='2' 
+    <if test="type != null and type !='' ">
+	  and log_.TYPE=#{type,jdbcType=VARCHAR}
+	</if>
+    <if test="projectId != null and projectId !='' ">
+	  and log_.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+    <if test="schoolId != null and schoolId !='' ">
+	  and log_.SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	</if>
+	order by log_.ORDER_NUMBER desc,log_.CREATETIME desc,log_.id asc
+  </select> 
+  
+  <select id="selectOnePageByGradeExportLog" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.GradeExportLog" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_grade_export_log
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="fileName != null and fileName !='' ">
+	  and FILE_NAME=#{fileName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and STATUS=#{status,jdbcType=VARCHAR}
+	 </if>
+	 <if test="result != null and result !='' ">
+	  and RESULT=#{result,jdbcType=VARCHAR}
+	 </if>
+	 <if test="orderNumber != null and orderNumber !='' ">
+	  and ORDER_NUMBER=#{orderNumber,jdbcType=DECIMAL}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_grade_export_log
+    where 1=1 
+  </select> 
+  
+  <!--查询教育局端错误文件-->
+  <select id="selectScorePageByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select u.USER_NAME,log_.* from school_grade_export_log log_
+    	 left join EIMS_USER u on u.ID=log_.CREATEUSER
+    where 1=1 and log_.TYPE!='1'
+    <if test="testType != null and testType !='' ">
+	  and log_.TYPE=#{testType,jdbcType=VARCHAR}
+	</if>
+    <if test="projectId != null and projectId !='' ">
+	  and log_.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	</if>
+	order by log_.ORDER_NUMBER desc,log_.CREATETIME desc,log_.ID asc
+  </select>
+  
+   <select id="selectAllByGradeExportLog" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.GradeExportLog" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_grade_export_log
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="fileName != null and fileName !='' ">
+	  and FILE_NAME=#{fileName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and STATUS=#{status,jdbcType=VARCHAR}
+	 </if>
+	 <if test="result != null and result !='' ">
+	  and RESULT=#{result,jdbcType=VARCHAR}
+	 </if>
+	 <if test="orderNumber != null and orderNumber !='' ">
+	  and ORDER_NUMBER=#{orderNumber,jdbcType=DECIMAL}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+   <select id="selectObjectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_grade_export_log
+    where 1=1 
+   </select> 
+   
+  <!-- 教育局端查询最大序列号 -->
+  <select id="maxOrderNumberEducation" resultType="string" parameterType="org.jypj.dev.entity.GradeExportLog">
+  	SELECT max(ORDER_NUMBER) FROM SCHOOL_GRADE_EXPORT_LOG g WHERE 1=1 
+  	 <if test="id != null and id !='' ">
+	  and g.ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and g.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and g.TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="fileName != null and fileName !='' ">
+	  and g.FILE_NAME=#{fileName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and g.STATUS=#{status,jdbcType=VARCHAR}
+	 </if>
+	 <if test="result != null and result !='' ">
+	  and g.RESULT=#{result,jdbcType=VARCHAR}
+	 </if>
+	 <if test="orderNumber != null and orderNumber !='' ">
+	  and g.ORDER_NUMBER=#{orderNumber,jdbcType=DECIMAL}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and g.CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and g.MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and g.CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and g.MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and g.REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and g.SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+  </select>
+  
+  <select id="selectObjectByGradeExportLog" resultMap="BaseResultMap" parameterType="org.jypj.dev.entity.GradeExportLog" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_grade_export_log
+    where 1=1 
+	 <if test="id != null and id !='' ">
+	  and ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="fileName != null and fileName !='' ">
+	  and FILE_NAME=#{fileName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and STATUS=#{status,jdbcType=VARCHAR}
+	 </if>
+	 <if test="result != null and result !='' ">
+	  and RESULT=#{result,jdbcType=VARCHAR}
+	 </if>
+	 <if test="orderNumber != null and orderNumber !='' ">
+	  and ORDER_NUMBER=#{orderNumber,jdbcType=DECIMAL}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+  </select> 
+  
+  <select id="maxOrderNumber" resultType="string" parameterType="org.jypj.dev.entity.GradeExportLog">
+  	SELECT max(ORDER_NUMBER) FROM SCHOOL_GRADE_EXPORT_LOG g
+  		inner join SCHOOL_PLAN_APPLY a on a.PROJECT_ID=g.PROJECT_ID and a.SCHOOL_ID=g.SCHOOL_ID
+  	WHERE 1=1 and a.STATUS='2' 
+  	 <if test="id != null and id !='' ">
+	  and g.ID=#{id,jdbcType=VARCHAR}
+	 </if>
+	 <if test="projectId != null and projectId !='' ">
+	  and g.PROJECT_ID=#{projectId,jdbcType=VARCHAR}
+	 </if>
+	 <if test="type != null and type !='' ">
+	  and g.TYPE=#{type,jdbcType=VARCHAR}
+	 </if>
+	 <if test="fileName != null and fileName !='' ">
+	  and g.FILE_NAME=#{fileName,jdbcType=VARCHAR}
+	 </if>
+	 <if test="status != null and status !='' ">
+	  and g.STATUS=#{status,jdbcType=VARCHAR}
+	 </if>
+	 <if test="result != null and result !='' ">
+	  and g.RESULT=#{result,jdbcType=VARCHAR}
+	 </if>
+	 <if test="orderNumber != null and orderNumber !='' ">
+	  and g.ORDER_NUMBER=#{orderNumber,jdbcType=DECIMAL}
+	 </if>
+	 <if test="createtime != null and createtime !='' ">
+	  and g.CREATETIME=#{createtime,jdbcType=DATE}
+	 </if>
+	 <if test="modifytime != null and modifytime !='' ">
+	  and g.MODIFYTIME=#{modifytime,jdbcType=DATE}
+	 </if>
+	 <if test="createuser != null and createuser !='' ">
+	  and g.CREATEUSER=#{createuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="modifyuser != null and modifyuser !='' ">
+	  and g.MODIFYUSER=#{modifyuser,jdbcType=VARCHAR}
+	 </if>
+	 <if test="remark != null and remark !='' ">
+	  and g.REMARK=#{remark,jdbcType=VARCHAR}
+	 </if>
+	 <if test="schoolId != null and schoolId !='' ">
+	  and g.SCHOOL_ID=#{schoolId,jdbcType=VARCHAR}
+	 </if>
+  </select>
+</mapper>
