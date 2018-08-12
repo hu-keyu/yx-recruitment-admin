@@ -67,6 +67,5 @@ public class CacheLoader implements ApplicationContextAware, ServletContextAware
 	}
 
 	public void testGithubBugfix2() {
-		int x = 0;
 	}
 }
