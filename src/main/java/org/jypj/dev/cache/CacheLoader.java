@@ -58,4 +58,8 @@ public class CacheLoader implements ApplicationContextAware, ServletContextAware
 
 	}
 
+	public void testGithub() {
+
+	}
+
 }
